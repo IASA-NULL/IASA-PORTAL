@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IASA Portal</title>
+    <script src="/static/js/main.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Splash-->
+    <script>
+        var timerStart = Date.now();
+        window.addEventListener('load', () => {
+            var ti = 500 - (Date.now() - timerStart)
+            if (ti < 1) ti = 1
+            setTimeout(function () {
+                document.getElementById('preloader').style.opacity = '0'
+            }, ti)
+            setTimeout(function () {
+                document.getElementById('preloader').remove()
+            }, ti + 500)
+        })
+    </script>
+    <style>
+        .fade {
+            transition: opacity .5s ease;
+        }
+
+        #splashSvg {
+            max-width: 60vw;
+            height: auto;
+            transform: translate(calc(50vw - 50%), calc(50vh - 50%));
+            background: initial;
+        }
+
+        #logo-flag {
+            opacity: 0;
+            animation: logo-obj-anim .5s ease forwards;
+            animation-delay: .2s;
+        }
+
+        #logo-school {
+            opacity: 0;
+            animation: logo-obj-anim .5s ease forwards;
+            animation-delay: .5s;
+        }
+
+        @keyframes logo-obj-anim {
+            from {
+                opacity: 0;
+                transform: translate(-25px, -25px);
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        #logo-l1 {
+            stroke-dasharray: 160.4;
+            stroke-dashoffset: 160.4;
+            animation: logo-dash-1 .1s linear forwards;
+            animation-delay: .1s;
+            opacity: 0;
+        }
+
+        @keyframes logo-dash-1 {
+            from {
+                opacity: 1;
+            }
+            to {
+                stroke-dashoffset: 0;
+                opacity: 1;
+            }
+        }
+
+        #logo-l2 {
+            stroke-dasharray: 239.1;
+            stroke-dashoffset: 239.1;
+            animation: logo-dash-2 .2s ease forwards;
+            animation-delay: 0s;
+            opacity: 0;
+        }
+
+        @keyframes logo-dash-2 {
+            from {
+                opacity: 1;
+            }
+            to {
+                stroke-dashoffset: 0;
+                opacity: 1;
+            }
+        }
+
+        #logo-l3 {
+            stroke-dasharray: 447.8;
+            stroke-dashoffset: 447.8;
+            animation: logo-dash-3 .2s linear forwards;
+            animation-delay: .2s;
+            opacity: 0;
+        }
+
+        @keyframes logo-dash-3 {
+            from {
+                opacity: 1;
+            }
+            to {
+                stroke-dashoffset: 0;
+                opacity: 1;
+            }
+        }
+
+        #logo-l4 {
+            stroke-dasharray: 421.1;
+            stroke-dashoffset: 421.1;
+            animation: logo-dash-4 .5s ease forwards;
+            animation-delay: .4s;
+            opacity: 0;
+        }
+
+        @keyframes logo-dash-4 {
+            from {
+                opacity: 1;
+            }
+            to {
+                stroke-dashoffset: 0;
+                opacity: 1;
+            }
+        }
+
+        #logo-l5 {
+            stroke-dasharray: 418.1;
+            stroke-dashoffset: 418.1;
+            animation: logo-dash-5 .5s ease forwards;
+            animation-delay: .3s;
+            opacity: 0;
+        }
+
+        @keyframes logo-dash-5 {
+            from {
+                opacity: 1;
+            }
+            to {
+                stroke-dashoffset: 0;
+                opacity: 1;
+            }
+        }
+
+        #logo-l6 {
+            stroke-dasharray: 418.1;
+            stroke-dashoffset: 418.1;
+            animation: logo-dash-6 .5s ease forwards;
+            animation-delay: .5s;
+            opacity: 0;
+        }
+
+        @keyframes logo-dash-6 {
+            from {
+                opacity: 1;
+            }
+            to {
+                stroke-dashoffset: 0;
+                opacity: 1;
+            }
+        }
+
+        html, body, #app {
+            margin: 0;
+            padding: 0;
+        }
+
+        .--react-link {
+            text-decoration: none;
+        }
+
+    </style>
+    <div style="z-index:5000;height:100vh;width:100vw;margin:0;padding:0;position: fixed;background:#ffffff;opacity:1;top:0;left:0;cursor:wait;"
+         id="preloader" class="fade">
+        <svg id="splashSvg" width="504" height="489" viewBox="0 0 504 489" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(-22 -115)">
+                <path id="logo-flag" d="M120 154l135 78.5L120 311z" fill="#FFFF2D" fill-rule="evenodd"/>
+                <path id="logo-school" fill="#5351DB" d="M127 365h389v233H127z" opacity="0"/>
+                <path d="M237.462 202.729 98.5001 122.5 " stroke="#404040" stroke-width="13.3333" stroke-linecap="round"
+                      stroke-miterlimit="8" fill="none" fill-rule="evenodd" id="logo-l1"/>
+                <path d="M0 0 207.128 119.585" stroke="#404040" stroke-width="13.3333" stroke-linecap="round"
+                      stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(1 0 0 -1 30.5001 323.085)"
+                      id="logo-l2"/>
+                <path d="M97.5001 122.5 97.5002 570.347" stroke="#404040" stroke-width="13.3333" stroke-linecap="round"
+                      stroke-miterlimit="8" fill="none" fill-rule="evenodd" id="logo-l3"/>
+                <path d="M97.5001 570.5 518.665 570.5" stroke="#404040" stroke-width="13.3333" stroke-linecap="round"
+                      stroke-miterlimit="8" fill="none" fill-rule="evenodd" id="logo-l4"/>
+                <path d="M0 0 0.000104987 256.624" stroke="#404040" stroke-width="13.3333" stroke-linecap="round"
+                      stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(1 0 0 -1 487.5 597.124)"
+                      id="logo-l5"/>
+                <path d="M0 0 418.119 0.000104987" stroke="#404040" stroke-width="13.3333" stroke-linecap="round"
+                      stroke-miterlimit="8" fill="none" fill-rule="evenodd"
+                      transform="matrix(-1 -8.74228e-08 -8.74228e-08 1 486.619 339.5)" id="logo-l6"/>
+            </g>
+        </svg>
+    </div>
+    <!--Splash-->
+</head>
+<body>
+<div id="app"></div>
+</body>
+</html>
