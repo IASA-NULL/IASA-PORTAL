@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>IASA Portal</title>
     <script src="/static/js/main.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
@@ -166,34 +166,44 @@
         html, body, #app {
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
 
-        .--react-link {
-            text-decoration: none;
+        #app {
+            min-height: 100vh;
+        }
+
+        .mdc-drawer--modal {
+            z-index: 9 !important;
+        }
+
+        .mdc-drawer-scrim {
+            z-index: 8;
         }
 
     </style>
-    <div style="z-index:5000;height:100vh;width:100vw;margin:0;padding:0;position: fixed;background:#ffffff;opacity:1;top:0;left:0;cursor:wait;"
-         id="preloader" class="fade">
-        <svg id="splashSvg" width="504" height="489" viewBox="0 0 504 489" xmlns="http://www.w3.org/2000/svg">
+    <div class="fade"
+         id="preloader"
+         style="z-index:5000;height:100vh;width:100vw;margin:0;padding:0;position: fixed;background:#ffffff;opacity:1;top:0;left:0;cursor:wait;">
+        <svg height="489" id="splashSvg" viewBox="0 0 504 489" width="504" xmlns="http://www.w3.org/2000/svg">
             <g transform="translate(-22 -115)">
-                <path id="logo-flag" d="M120 154l135 78.5L120 311z" fill="#FFFF2D" fill-rule="evenodd"/>
-                <path id="logo-school" fill="#5351DB" d="M127 365h389v233H127z" opacity="0"/>
-                <path d="M237.462 202.729 98.5001 122.5 " stroke="#404040" stroke-width="13.3333" stroke-linecap="round"
-                      stroke-miterlimit="8" fill="none" fill-rule="evenodd" id="logo-l1"/>
-                <path d="M0 0 207.128 119.585" stroke="#404040" stroke-width="13.3333" stroke-linecap="round"
-                      stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(1 0 0 -1 30.5001 323.085)"
-                      id="logo-l2"/>
-                <path d="M97.5001 122.5 97.5002 570.347" stroke="#404040" stroke-width="13.3333" stroke-linecap="round"
-                      stroke-miterlimit="8" fill="none" fill-rule="evenodd" id="logo-l3"/>
-                <path d="M97.5001 570.5 518.665 570.5" stroke="#404040" stroke-width="13.3333" stroke-linecap="round"
-                      stroke-miterlimit="8" fill="none" fill-rule="evenodd" id="logo-l4"/>
-                <path d="M0 0 0.000104987 256.624" stroke="#404040" stroke-width="13.3333" stroke-linecap="round"
-                      stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(1 0 0 -1 487.5 597.124)"
-                      id="logo-l5"/>
-                <path d="M0 0 418.119 0.000104987" stroke="#404040" stroke-width="13.3333" stroke-linecap="round"
-                      stroke-miterlimit="8" fill="none" fill-rule="evenodd"
-                      transform="matrix(-1 -8.74228e-08 -8.74228e-08 1 486.619 339.5)" id="logo-l6"/>
+                <path d="M120 154l135 78.5L120 311z" fill="#FFFF2D" fill-rule="evenodd" id="logo-flag"/>
+                <path d="M127 365h389v233H127z" fill="#5351DB" id="logo-school" opacity="0"/>
+                <path d="M237.462 202.729 98.5001 122.5 " fill="none" fill-rule="evenodd" id="logo-l1"
+                      stroke="#404040" stroke-linecap="round" stroke-miterlimit="8" stroke-width="13.3333"/>
+                <path d="M0 0 207.128 119.585" fill="none" fill-rule="evenodd" id="logo-l2"
+                      stroke="#404040" stroke-linecap="round" stroke-miterlimit="8" stroke-width="13.3333"
+                      transform="matrix(1 0 0 -1 30.5001 323.085)"/>
+                <path d="M97.5001 122.5 97.5002 570.347" fill="none" fill-rule="evenodd" id="logo-l3"
+                      stroke="#404040" stroke-linecap="round" stroke-miterlimit="8" stroke-width="13.3333"/>
+                <path d="M97.5001 570.5 518.665 570.5" fill="none" fill-rule="evenodd" id="logo-l4"
+                      stroke="#404040" stroke-linecap="round" stroke-miterlimit="8" stroke-width="13.3333"/>
+                <path d="M0 0 0.000104987 256.624" fill="none" fill-rule="evenodd" id="logo-l5"
+                      stroke="#404040" stroke-linecap="round" stroke-miterlimit="8" stroke-width="13.3333"
+                      transform="matrix(1 0 0 -1 487.5 597.124)"/>
+                <path d="M0 0 418.119 0.000104987" fill="none" fill-rule="evenodd" id="logo-l6"
+                      stroke="#404040" stroke-linecap="round" stroke-miterlimit="8"
+                      stroke-width="13.3333" transform="matrix(-1 -8.74228e-08 -8.74228e-08 1 486.619 339.5)"/>
             </g>
         </svg>
     </div>
