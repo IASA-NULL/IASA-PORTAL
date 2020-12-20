@@ -3,8 +3,10 @@ import {ListItem} from "@rmwc/list";
 import * as React from "react";
 import {useState} from "react";
 
-export function ListLink(props: { body: string, to: string, onClick: any }) {
-    return <Link style={{textDecoration: 'none'}} to={props.to} onClick={props.onClick}><ListItem
+export function ListLink(props: { body: string, to: string, onClick?: any, type?: boolean }) {
+    if (props.type) return <a style={{textDecoration: 'none'}} href={props.to} onClick={props.onClick}><ListItem
+        activated={props.to === location.pathname}>{props.body}</ListItem></a>
+    else return <Link style={{textDecoration: 'none'}} to={props.to} onClick={props.onClick}><ListItem
         activated={props.to === location.pathname}>{props.body}</ListItem></Link>
 }
 

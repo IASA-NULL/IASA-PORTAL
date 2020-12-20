@@ -1,4 +1,5 @@
 import * as React from 'react'
+
 import {Button} from '@rmwc/button'
 import {Typography} from '@rmwc/typography'
 import {
@@ -131,7 +132,8 @@ class Myeonbul extends React.Component<MyeonbulRequest, MyeonbulResponse> {
             <Typography use="headline5">면불 신청 내역 확인하기</Typography>
             <br/>
             <br/>
-            <DataTable style={{width: 'calc(100% - 40px)', margin: '20px'}}>
+            <DataTable stickyRows={1} stickyColumns={0}
+                       style={{width: 'calc(100% - 40px)', margin: '20px', maxHeight: 'calc(100vh - 300px)'}}>
                 <DataTableContent>
                     <DataTableHead>
                         <DataTableRow>
