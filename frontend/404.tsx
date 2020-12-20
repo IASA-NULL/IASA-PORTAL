@@ -13,15 +13,18 @@ class NotFound extends React.Component<any, {}> {
         super(props)
     }
 
-    public handleClick() {
-        this.props.history.push('/counter')
+    public toMain() {
+        this.props.history.push('/')
     }
 
     public render() {
         return (
             <>
-                <Typography use={'headline1'}>404</Typography>
-                <Button onClick={this.handleClick.bind(this)} outlined>메인으로</Button>
+                <Typography use="headline3">404</Typography>
+                <Typography use="subtitle1" style={{marginLeft: '10px'}}>페이지를 찾을 수 없어요 :(</Typography>
+                <br/>
+                <br/>
+                <Button onClick={this.toMain.bind(this)} outlined>메인으로</Button>
             </>
         )
     }

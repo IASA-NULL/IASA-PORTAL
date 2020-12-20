@@ -15,7 +15,7 @@ interface CounterState {
 class Counter extends React.Component<CounterProps, CounterState> {
     public state = {
         number: 0,
-    };
+    }
 
     constructor(props: CounterProps) {
         super(props)
@@ -25,18 +25,17 @@ class Counter extends React.Component<CounterProps, CounterState> {
     public handleClick = () => {
         this.setState({
             number: this.state.number + 1,
-        });
-    };
+        })
+    }
 
     public render() {
-        return (
-            <div>
-                <Typography use="headline1">{this.state.number}</Typography>
-                <br/>
-                <Button onClick={this.handleClick} outlined>증가</Button>
-            </div>
-        );
+        return <div>
+            <Typography use="headline1">{this.state.number}</Typography>
+            <br/>
+            <br/>
+            <Button onClick={this.handleClick} outlined>증가</Button>
+        </div>
     }
 }
 
-export default Counter;
+export default Counter

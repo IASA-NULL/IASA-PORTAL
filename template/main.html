@@ -10,6 +10,7 @@
     <!--Splash-->
     <script>
         var timerStart = Date.now();
+        pdl = []
         window.addEventListener('load', () => {
             var ti = 500 - (Date.now() - timerStart)
             if (ti < 1) ti = 1
@@ -179,6 +180,25 @@
 
         .mdc-drawer-scrim {
             z-index: 8;
+        }
+
+        .before-fadein {
+            padding-top: 40px;
+            opacity: 0;
+        }
+
+        .fadein {
+            animation: fadein 0.2s cubic-bezier(0, 1, 0, 1);
+        }
+
+        @keyframes fadein {
+            0% {
+                padding-top: 40px;
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
         }
 
     </style>

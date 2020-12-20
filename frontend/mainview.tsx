@@ -19,11 +19,16 @@ import '@rmwc/list/styles'
 import '@rmwc/top-app-bar/styles'
 import '@rmwc/grid/styles'
 import '@rmwc/theme/styles'
+import '@rmwc/avatar/styles'
 
 import {ListLink, useForceUpdate} from './util'
 
+
 function Navbar() {
     const [open, setOpen] = React.useState(window.innerWidth > 760)
+    const closeIfModal = (() => {
+        if (window.innerWidth <= 760) setOpen(false)
+    })
     return <>
         <TopAppBar fixed style={{zIndex: 10}}>
             <TopAppBarRow>
@@ -37,14 +42,29 @@ function Navbar() {
         <Drawer dismissible={window.innerWidth > 760} modal={window.innerWidth <= 760} open={open}
                 onClose={() => setOpen(false)} style={{position: 'fixed'}}>
             <DrawerHeader>
-                <DrawerTitle>이서현</DrawerTitle>
-                <DrawerSubtitle>Subtitle</DrawerSubtitle>
+                <DrawerTitle>
+                    <span title="Avatar"
+                          className="rmwc-icon rmwc-icon--component material-icons rmwc-avatar rmwc-avatar--xlarge rmwc-avatar--has-image">
+                        <div className="rmwc-avatar__icon"
+                             style={{
+                                 backgroundImage: 'url("/static/img/avatar.png")',
+                                 backgroundSize: 'cover',
+                                 width: '50px',
+                                 height: '50px',
+                                 borderRadius: '100px', marginTop: '20px', marginBottom: '10px'
+                             }}/>
+                    </span>
+                    <br/>
+                    이서현
+                </DrawerTitle>
+                <DrawerSubtitle>04seohyun@iasa.kr</DrawerSubtitle>
             </DrawerHeader>
             <DrawerContent>
                 <List>
-                    <ListLink body="메인" to="/"/>
-                    <ListLink body="카운터" to="/counter"/>
-                    <ListLink body="404" to="/404"/>
+                    <ListLink body="메인" to="/" onClick={closeIfModal}/>
+                    <ListLink body="카운터" to="/counter" onClick={closeIfModal}/>
+                    <ListLink body="면불" to="/myeonbul" onClick={closeIfModal}/>
+                    <ListLink body="404" to="/404" onClick={closeIfModal}/>
                 </List>
             </DrawerContent>
         </Drawer>
@@ -69,25 +89,44 @@ function Footer() {
     </Theme>
 }
 
+class AppContentWrapper extends React.Component<any, {}> {
+    private myRef: any
+
+    constructor(props: { appCont: JSX.Element }) {
+        super(props)
+        this.myRef = React.createRef()
+    }
+
+    public componentWillUpdate() {
+        this.myRef.current.className = 'before-fadein'
+        setTimeout(() => {
+            this.myRef.current.className = 'fadein'
+        }, 100)
+    }
+
+    public render() {
+        return (
+            <div className="fadein" style={{padding: '20px'}} ref={this.myRef}>
+                {this.props.appCont}
+            </div>
+        )
+    }
+}
+
 export default function MainView(props: { appCont: JSX.Element }) {
-    let headerHeight = 64, footerHeight = 100
+    let appCont = <AppContentWrapper appCont={props.appCont}/>
+    let headerHeight = 48, footerHeight = 100
     if (document.querySelector('header')) headerHeight = document.querySelector('header').offsetHeight
     if (document.querySelector('footer')) footerHeight = document.querySelector('footer').offsetHeight
     const forceUpdate = useForceUpdate()
-    let resizeCounter: NodeJS.Timeout
     document.addEventListener('DOMContentLoaded', () => {
-        clearTimeout(resizeCounter)
-        resizeCounter = setTimeout(forceUpdate, 100)
-    })
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeCounter)
-        resizeCounter = setTimeout(forceUpdate, 100)
+        setTimeout(forceUpdate, 500)
     })
     return <>
         <Navbar/>
         <DrawerAppContent
             style={{minHeight: `calc(100vh - ${headerHeight + footerHeight}px)`}}>
-            {props.appCont}
+            {appCont}
         </DrawerAppContent>
         <Footer/>
     </>
