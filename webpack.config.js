@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
     entry: './frontend/index.tsx',
     devtool: 'source-map',
-    target: 'es5',
+    target: 'es6',
     output: {
         path: path.resolve(__dirname, 'static', 'js'),
         filename: 'main.js',

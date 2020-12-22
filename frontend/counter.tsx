@@ -1,8 +1,6 @@
 import * as React from 'react'
 import {Button} from '@rmwc/button'
 import {Typography} from '@rmwc/typography'
-import '@rmwc/button/styles'
-import '@rmwc/typography/styles'
 
 interface CounterProps {
     startNumber: number;

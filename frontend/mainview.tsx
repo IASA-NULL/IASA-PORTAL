@@ -12,113 +12,188 @@ import {
     TopAppBarFixedAdjust
 } from "@rmwc/top-app-bar"
 import {Grid, GridRow, GridCell} from '@rmwc/grid'
-import {Theme} from '@rmwc/theme'
+import {Theme, ThemeProvider} from '@rmwc/theme'
 import {Typography} from '@rmwc/typography'
 import {IconButton} from '@rmwc/icon-button'
-import {Tooltip} from '@rmwc/tooltip'
-
-import '@rmwc/button/styles'
-import '@rmwc/drawer/styles'
-import '@rmwc/list/styles'
-import '@rmwc/top-app-bar/styles'
-import '@rmwc/grid/styles'
-import '@rmwc/theme/styles'
-import '@rmwc/avatar/styles'
-import '@rmwc/typography/styles'
-import '@rmwc/icon-button/styles'
-import '@rmwc/tooltip/styles'
+import {SnackbarQueue, createSnackbarQueue} from '@rmwc/snackbar'
 
 import {ListLink, useForceUpdate} from './util'
 
 
 export const DefaultStudentNavList = [
     {
-        type: false,
+        type: 0,
         target: '/',
         body: '메인'
     },
     {
-        type: false,
+        type: 0,
         target: '/counter',
         body: '카운터'
     },
     {
-        type: false,
+        type: 0,
         target: '/myeonbul',
         body: '면불'
-    }
+    },
+    {
+        type: 0,
+        target: '/meal',
+        body: '급식'
+    },
 ]
 
 export const TermsNavList = [
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_index',
         body: '약관'
     },
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_welcome',
         body: '인삿말'
     },
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_services',
         body: '서비스'
     },
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_account',
         body: '계정'
     },
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_contents',
         body: '콘텐츠'
     },
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_userdata',
         body: '개인정보 보호'
     },
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_otherright',
         body: '타인 존중'
     },
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_caution',
         body: '금지 사항'
     },
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_stop',
         body: '서비스의 제한'
     },
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_response',
         body: 'NULL의 책임'
     },
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_change',
         body: '서비스의 변경'
     },
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_hear',
         body: '사용자의 의견'
     },
     {
-        type: true,
-        target: '#',
+        type: 2,
+        target: 'cont_alert',
         body: '약관의 변경'
-    }
+    },
+]
+
+export const UserDataNavList = [
+    {
+        type: 2,
+        target: 'cont_index',
+        body: '개인정보 처리방침'
+    },
+    {
+        type: 2,
+        target: 'cont_why',
+        body: '개인정보처리방침의 의의'
+    },
+    {
+        type: 2,
+        target: 'cont_collect',
+        body: '수집하는 개인정보'
+    },
+    {
+        type: 2,
+        target: 'cont_usage',
+        body: '수집한 개인정보의 이용'
+    },
+    {
+        type: 2,
+        target: 'cont_give',
+        body: '개인정보의 제공 및 위탁'
+    },
+    {
+        type: 2,
+        target: 'cont_destroy',
+        body: '개인정보의 파기'
+    },
+    {
+        type: 2,
+        target: 'cont_right',
+        body: '이용자의 권리와 행사 방법'
+    },
+    {
+        type: 2,
+        target: 'cont_effort',
+        body: '개인정보보호를 위한 NULL의 노력'
+    },
+    {
+        type: 2,
+        target: 'cont_who',
+        body: '담당자 안내'
+    },
+    {
+        type: 2,
+        target: 'cont_where',
+        body: '개인정보처리방침의 적용 범위'
+    },
+    {
+        type: 2,
+        target: 'cont_alert',
+        body: '개정 전 고지 의무'
+    },
+]
+
+export const OpensourceNavList = [
+    {
+        type: 2,
+        target: 'cont_mdc',
+        body: 'Material Components for the web'
+    },
+    {
+        type: 2,
+        target: 'cont_react',
+        body: 'React'
+    },
+    {
+        type: 2,
+        target: 'cont_quaggaJS',
+        body: 'quaggaJS'
+    },
+    {
+        type: 2,
+        target: 'cont_icons',
+        body: 'Google Material Design Icons'
+    },
 ]
 
 
-function Navbar(props: { list: { type: boolean, target: string, body: string }[] }) {
+function Navbar(props: { list: { type: number, target: string, body: string }[] }) {
     const [open, setOpen] = React.useState(window.innerWidth > 760)
     const closeIfModal = (() => {
         if (window.innerWidth <= 760) setOpen(false)
@@ -134,10 +209,11 @@ function Navbar(props: { list: { type: boolean, target: string, body: string }[]
             </TopAppBarRow>
         </TopAppBar>
         <TopAppBarFixedAdjust/>
-        <Drawer dismissible={window.innerWidth > 760} modal={window.innerWidth <= 760} open={open}
-                onClose={() => setOpen(false)} style={{position: 'fixed'}}>
-            <DrawerHeader>
-                <DrawerTitle>
+        <Theme use={['background', 'textPrimaryOnDark']} wrap>
+            <Drawer dismissible={window.innerWidth > 760} modal={window.innerWidth <= 760} open={open}
+                    onClose={() => setOpen(false)} style={{position: 'fixed'}}>
+                <DrawerHeader>
+                    <DrawerTitle>
                     <span title="Avatar"
                           className="rmwc-icon rmwc-icon--component material-icons rmwc-avatar rmwc-avatar--xlarge rmwc-avatar--has-image">
                         <div className="rmwc-avatar__icon"
@@ -149,21 +225,22 @@ function Navbar(props: { list: { type: boolean, target: string, body: string }[]
                                  borderRadius: '100px', marginTop: '20px', marginBottom: '10px'
                              }}/>
                     </span>
-                    <br/>
-                    이서현
-                </DrawerTitle>
-                <DrawerSubtitle>04seohyun@iasa.kr</DrawerSubtitle>
-            </DrawerHeader>
-            <DrawerContent>
-                <List>
-                    {
-                        props.list.map((el) => {
-                            return <ListLink body={el.body} to={el.target} onClick={closeIfModal}/>
-                        })
-                    }
-                </List>
-            </DrawerContent>
-        </Drawer>
+                        <br/>
+                        이서현
+                    </DrawerTitle>
+                    <DrawerSubtitle>04seohyun@iasa.kr</DrawerSubtitle>
+                </DrawerHeader>
+                <DrawerContent>
+                    <List>
+                        {
+                            props.list.map((el) => {
+                                return <ListLink body={el.body} to={el.target} onClick={closeIfModal} type={el.type}/>
+                            })
+                        }
+                    </List>
+                </DrawerContent>
+            </Drawer>
+        </Theme>
     </>
 }
 
@@ -180,20 +257,14 @@ function Footer() {
             <Grid>
                 <GridRow>
                     <GridCell desktop={4} tablet={3} phone={1}>
-                        <Tooltip content="Facebook">
-                            <IconButton icon="facebook" tag="a" target="_blank"
-                                        href="//www.facebook.com/인천과학예술영재학교-정보동아리-NULL-115441743332161"/>
-                        </Tooltip>
+                        <IconButton icon="facebook" tag="a" target="_blank"
+                                    href="//www.facebook.com/인천과학예술영재학교-정보동아리-NULL-115441743332161"/>
                     </GridCell>
                     <GridCell desktop={4} tablet={2} phone={2}>
-                        <Tooltip content="null@iasa.kr">
-                            <IconButton icon="mail" tag="a" href="mailto:null@iasa.kr"/>
-                        </Tooltip>
+                        <IconButton icon="mail" tag="a" href="mailto:null@iasa.kr"/>
                     </GridCell>
                     <GridCell desktop={4} tablet={3} phone={1}>
-                        <Tooltip content="010-1234-5678">
-                            <IconButton icon="call"/>
-                        </Tooltip>
+                        <IconButton icon="call" tag="a" href="tel:010-3193-6628"/>
                     </GridCell>
                 </GridRow>
                 <br/>
@@ -229,6 +300,8 @@ class AppContentWrapper extends React.Component<any, {}> {
     public componentWillUpdate() {
         this.myRef.current.className = 'before-fadein'
         setTimeout(() => {
+            //@ts-ignore
+            scrollObj.scroll(0)
             this.myRef.current.className = 'fadein'
         }, 100)
     }
@@ -242,7 +315,7 @@ class AppContentWrapper extends React.Component<any, {}> {
     }
 }
 
-export function MainView(props: { appCont: JSX.Element, navList: { type: boolean, target: string, body: string }[] }) {
+export function MainView(props: { appCont: JSX.Element, navList: { type: number, target: string, body: string }[], messages: any }) {
     let appCont = <AppContentWrapper appCont={props.appCont}/>
     let headerHeight = 48, footerHeight = 100
     if (document.querySelector('header')) headerHeight = document.querySelector('header').offsetHeight
@@ -262,6 +335,7 @@ export function MainView(props: { appCont: JSX.Element, navList: { type: boolean
             }}>
             {appCont}
         </DrawerAppContent>
+        <SnackbarQueue messages={props.messages}/>
         <Footer/>
     </>
 }

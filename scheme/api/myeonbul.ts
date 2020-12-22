@@ -1,4 +1,4 @@
-import teacher from "../teacher/teacher";
+import {teacher} from "../teacher/teacher";
 import commonApi from "./commonApi";
 
 export interface MyeonbulRequest {

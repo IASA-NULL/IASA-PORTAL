@@ -3,10 +3,18 @@ import {ListItem} from "@rmwc/list";
 import * as React from "react";
 import {useState} from "react";
 
-export function ListLink(props: { body: string, to: string, onClick?: any, type?: boolean }) {
-    if (props.type) return <a style={{textDecoration: 'none'}} href={props.to} onClick={props.onClick}><ListItem
+const {AnchorLink} = require('react-anchor-link-smooth-scroll')
+
+export function ListLink(props: { body: string, to: string, onClick?: any, type?: number }) {
+    if (props.type === 1) return <a style={{textDecoration: 'none'}} href={props.to} onClick={props.onClick}><ListItem
         activated={props.to === location.pathname}>{props.body}</ListItem></a>
-    else return <Link style={{textDecoration: 'none'}} to={props.to} onClick={props.onClick}><ListItem
+    else if (props.type === 2) {
+        return <ListItem onClick={() => {
+            // @ts-ignore
+            scrollObj.scroll({el: document.getElementById(props.to), margin: 80}, 500)
+            props.onClick()
+        }} activated={props.to === location.pathname}>{props.body}</ListItem>
+    } else return <Link style={{textDecoration: 'none'}} to={props.to} onClick={props.onClick}><ListItem
         activated={props.to === location.pathname}>{props.body}</ListItem></Link>
 }
 

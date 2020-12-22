@@ -4,9 +4,6 @@ import {RouteComponentProps, withRouter} from "react-router-dom"
 import {Button} from '@rmwc/button'
 import {Typography} from '@rmwc/typography'
 
-import '@rmwc/button/styles'
-import '@rmwc/typography/styles'
-
 
 class NotFound extends React.Component<any, {}> {
     constructor(props: RouteComponentProps) {

@@ -13,19 +13,29 @@ import {
 } from '@rmwc/data-table'
 import {Checkbox} from '@rmwc/checkbox'
 import {TextField} from '@rmwc/textfield'
-import {Grid, GridCell, GridRow} from "@rmwc/grid";
-
-import '@rmwc/button/styles'
-import '@rmwc/typography/styles'
-import '@rmwc/data-table/styles'
-import '@rmwc/checkbox/styles'
-import '@rmwc/textfield/styles'
-import '@rmwc/grid/styles'
+import {Grid, GridCell, GridRow} from '@rmwc/grid'
+import {Menu, MenuSurfaceAnchor, MenuItem} from '@rmwc/menu'
+import {ListDivider} from '@rmwc/list'
 
 import {MyeonbulRequest, MyeonbulResponse, MyeonbulResponseOne} from "../scheme/api/myeonbul"
+import {teacher, currentTeacherList} from '../scheme/teacher/teacher'
+import teacherList from "../scheme/teacher/2021/list"
 
-class Myeonbul extends React.Component<MyeonbulRequest, MyeonbulResponse> {
-    constructor(props: MyeonbulRequest) {
+interface MyeonbulProps {
+    notify: any,
+    data: MyeonbulRequest
+}
+
+interface MyeonbulState {
+    data?: MyeonbulResponse,
+    loaded: boolean,
+    teacherSelectOpened: boolean,
+    selectedTeacher: teacher,
+    teacherSearch: string
+}
+
+class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
+    constructor(props: MyeonbulProps) {
         super(props)
     }
 
@@ -34,12 +44,7 @@ class Myeonbul extends React.Component<MyeonbulRequest, MyeonbulResponse> {
     }
 
     public refresh() {
-        let waitData = {
-            success: false,
-            message: '로드 중...',
-            data: [] as MyeonbulResponseOne[]
-        }
-        this.setState(waitData)
+        this.setState({loaded: false})
 
         setTimeout(() => {
             let tempData = {
@@ -48,7 +53,7 @@ class Myeonbul extends React.Component<MyeonbulRequest, MyeonbulResponse> {
                 //@ts-ignore
                 data: pdl
             }
-            this.setState(tempData)
+            this.setState({loaded: true, data: tempData})
         }, 500)
 
         /*
@@ -58,48 +63,71 @@ class Myeonbul extends React.Component<MyeonbulRequest, MyeonbulResponse> {
         */
     }
 
+    public register() {
+        this.props.notify({
+            title: <b>성공!</b>,
+            body: '면불 신청에 성공했어요.',
+            icon: 'check',
+            actions: [
+                {
+                    title: '닫기'
+                }
+            ]
+        })
+    }
+
     public render() {
         let tableBody
-        try {
-            tableBody = this.state.data.map((el: MyeonbulResponseOne) => {
-                try {
-                    let formattedDate: string, begin = new Date(el.timeRange.begin), end = new Date(el.timeRange.end)
-                    if (el.timeRange.nickname)
-                        formattedDate = `${end.getFullYear()}/${end.getMonth() + 1}/${end.getDate()} ${el.timeRange.nickname}`
-                    else if (begin.getDay() === end.getDay())
-                        formattedDate = `${end.getFullYear()}/${end.getMonth() + 1}/${end.getDate()} ${begin.getHours()}:${begin.getMinutes()} - ${end.getHours()}:${end.getMinutes()}`
-                    else
-                        formattedDate = `${begin.getFullYear()}/${begin.getMonth() + 1}/${begin.getDate()} ${begin.getHours()}:${begin.getMinutes()} - ${end.getFullYear()}/${end.getMonth() + 1}/${end.getDate()} ${end.getHours()}:${end.getMinutes()}`
-                    return <DataTableRow>
-                        <DataTableCell>{formattedDate}</DataTableCell>
-                        <DataTableCell alignEnd>{el.place}</DataTableCell>
-                        <DataTableCell alignEnd>{el.teacher.name}</DataTableCell>
-                        <DataTableCell alignEnd>
-                            {el.approved ? <Checkbox checked/> : <Checkbox checked={false}/>}
-                        </DataTableCell>
-                    </DataTableRow>
-                } catch (e) {
-                    return null
-                }
-            }).filter(x => x)
-        } catch (e) {
-        }
-        if (!tableBody || tableBody.length === 0) {
-            let message
+        if (this.state?.loaded) {
             try {
-                message = this.state.message
+                tableBody = this.state.data.data.map((el: MyeonbulResponseOne) => {
+                    try {
+                        let formattedDate: string, begin = new Date(el.timeRange.begin),
+                            end = new Date(el.timeRange.end)
+                        if (el.timeRange.nickname)
+                            formattedDate = `${end.getFullYear()}/${end.getMonth() + 1}/${end.getDate()} ${el.timeRange.nickname}`
+                        else if (begin.getDay() === end.getDay())
+                            formattedDate = `${end.getFullYear()}/${end.getMonth() + 1}/${end.getDate()} ${begin.getHours()}:${begin.getMinutes()} - ${end.getHours()}:${end.getMinutes()}`
+                        else
+                            formattedDate = `${begin.getFullYear()}/${begin.getMonth() + 1}/${begin.getDate()} ${begin.getHours()}:${begin.getMinutes()} - ${end.getFullYear()}/${end.getMonth() + 1}/${end.getDate()} ${end.getHours()}:${end.getMinutes()}`
+                        return <DataTableRow>
+                            <DataTableCell>{formattedDate}</DataTableCell>
+                            <DataTableCell alignEnd>{el.place}</DataTableCell>
+                            <DataTableCell alignEnd>{el.teacher.name}</DataTableCell>
+                            <DataTableCell alignEnd>
+                                {el.approved ? <Checkbox checked/> : <Checkbox checked={false}/>}
+                            </DataTableCell>
+                        </DataTableRow>
+                    } catch (e) {
+                        return null
+                    }
+                }).filter(x => x)
             } catch (e) {
             }
-            if (!message) message = '면불 내역이 없어요!'
-            tableBody = <DataTableRow>
-                <DataTableCell>
-                    <div>{message}</div>
-                </DataTableCell>
-                <DataTableCell/>
-                <DataTableCell/>
-                <DataTableCell/>
-            </DataTableRow>
-        }
+            if (!tableBody || tableBody.length === 0) {
+                let message
+                try {
+                    message = this.state.data.message
+                } catch (e) {
+                }
+                if (!message) message = '면불 내역이 없어요!'
+                tableBody = <DataTableRow>
+                    <DataTableCell>
+                        <div>{message}</div>
+                    </DataTableCell>
+                    <DataTableCell/>
+                    <DataTableCell/>
+                    <DataTableCell/>
+                </DataTableRow>
+            }
+        } else tableBody = <DataTableRow>
+            <DataTableCell>
+                <div>로딩 중...</div>
+            </DataTableCell>
+            <DataTableCell/>
+            <DataTableCell/>
+            <DataTableCell/>
+        </DataTableRow>
         return <div>
             <Typography use="headline3">면불</Typography>
             <Typography use="subtitle1" style={{marginLeft: '10px'}}>면불을 신청하거나 선생님의 승인 여부를 확인할 수
@@ -117,14 +145,45 @@ class Myeonbul extends React.Component<MyeonbulRequest, MyeonbulResponse> {
                         <TextField style={{width: '100%', height: '100%'}} outlined label="면불 장소"/>
                     </GridCell>
                     <GridCell desktop={4} tablet={4} phone={4}>
-                        <TextField style={{width: '100%', height: '100%'}} outlined label="면불 담당 선생님"/>
+                        <MenuSurfaceAnchor>
+                            <Menu
+                                open={this.state?.teacherSelectOpened}
+                                onClose={(e) => {
+                                    this.setState({teacherSelectOpened: false})
+                                }}>
+                                <TextField label="검색" style={{width: '100%', marginTop: '-8px', marginBottom: '8px'}}
+                                           value={this.state?.teacherSearch} onChange={(e) => {
+                                    this.setState({teacherSearch: (e.target as HTMLInputElement).value})
+                                }}/>
+                                {
+                                    currentTeacherList.map(subject => {
+                                        let teacherList = subject.teacherList.map(teacher => {
+                                            if (!this.state?.teacherSearch || teacher.name.includes(this.state?.teacherSearch))
+                                                return <MenuItem onClick={() => {
+                                                    this.setState({selectedTeacher: teacher})
+                                                }}>{teacher.name}</MenuItem>
+                                        }).filter(x => x)
+                                        if (teacherList.length > 0) return <>
+                                            <ListDivider/>
+                                            <Typography use="caption">{subject.subject}</Typography>
+                                            {teacherList}
+                                        </>
+                                    })
+                                }
+                            </Menu>
+
+                            <TextField style={{width: '100%', height: '100%'}} outlined label="면불 담당 선생님"
+                                       onClick={(e) => {
+                                           this.setState({teacherSelectOpened: true})
+                                       }} value={this.state?.selectedTeacher?.name}/>
+                        </MenuSurfaceAnchor>
                     </GridCell>
                     <GridCell desktop={8} tablet={4} phone={4}>
                         <TextField style={{width: '100%', height: '100%'}} outlined label="면불 사유"/>
                     </GridCell>
                     <GridCell desktop={4} tablet={8} phone={4}>
                         <Button style={{width: '100%', height: '100%', minHeight: '45.2px'}} outlined label="신청"
-                                trailingIcon="send"/>
+                                trailingIcon="send" onClick={this.register.bind(this)}/>
                     </GridCell>
                 </GridRow>
             </Grid>
