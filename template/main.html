@@ -10,10 +10,10 @@
         let timerStart = Date.now();
         pdl = []
         document.addEventListener("DOMContentLoaded", function () {
-            scrollObj = OverlayScrollbars(document.querySelectorAll("body"), {})
+            scrollObj = OverlayScrollbars(document.body, {})
         })
         window.addEventListener('load', () => {
-            var ti = 500 - (Date.now() - timerStart)
+            let ti = 500 - (Date.now() - timerStart)
             if (ti < 1) ti = 1
             setTimeout(function () {
                 document.getElementById('preloader').style.opacity = '0'
@@ -202,6 +202,6 @@
     <link href="/static/css/common.css" rel="stylesheet">
 </head>
 <body>
-<div id="app"></div>
+<div class="mdc-typography" id="app"></div>
 </body>
 </html>

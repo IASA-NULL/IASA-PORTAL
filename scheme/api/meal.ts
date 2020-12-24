@@ -1,7 +1,13 @@
-import commonApi from "./commonApi";
+import commonApi from "./commonApi"
+import {
+    ObjectType,
+    Field,
+    TSGraphQLInt,
+    TSGraphQLString,
+} from 'ts-graphql'
 
 export enum AllergicInfo {
-    난류,
+    난류 = 1,
     유유,
     메밀,
     땅콩,
@@ -90,9 +96,28 @@ export interface Menu {
     name: string
 }
 
+export interface Origin {
+    name: string,
+    origin: string
+}
+
+export interface Energy {
+    name: string,
+    value: number,
+    unit: string
+}
+
 export interface MealResponse extends commonApi {
     data: {
         menu: Menu[],
-        image: string
+        image?: string,
+        score?: number,
+        kcal?: number,
+        origin?: Origin[],
+        energy?: Energy[]
     }
+}
+
+export function mealTimeToString(target: mealTime) {
+    return `${target.year}_${target.month}_${target.day}_${target.type}`
 }

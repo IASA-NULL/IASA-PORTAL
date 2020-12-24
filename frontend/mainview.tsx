@@ -18,6 +18,7 @@ import {IconButton} from '@rmwc/icon-button'
 import {SnackbarQueue, createSnackbarQueue} from '@rmwc/snackbar'
 
 import {ListLink, useForceUpdate} from './util'
+import {token} from "../scheme/api/auth";
 
 
 export const DefaultStudentNavList = [
@@ -193,7 +194,7 @@ export const OpensourceNavList = [
 ]
 
 
-function Navbar(props: { list: { type: number, target: string, body: string }[] }) {
+function Navbar(props: { list: { type: number, target: string, body: string }[], accountInfo: token }) {
     const [open, setOpen] = React.useState(window.innerWidth > 760)
     const closeIfModal = (() => {
         if (window.innerWidth <= 760) setOpen(false)
@@ -202,7 +203,8 @@ function Navbar(props: { list: { type: number, target: string, body: string }[] 
         <TopAppBar fixed style={{zIndex: 10}}>
             <TopAppBarRow>
                 <TopAppBarSection>
-                    <TopAppBarNavigationIcon icon="menu" onClick={() => setOpen(!open)}/>
+                    {(props.list.length > 0) ?
+                        <TopAppBarNavigationIcon icon="menu" onClick={() => setOpen(!open)}/> : <></>}
                     <TopAppBarTitle><Link to="/" style={{textDecoration: 'none', color: 'white'}}>IASA
                         Portal</Link></TopAppBarTitle>
                 </TopAppBarSection>
@@ -210,7 +212,8 @@ function Navbar(props: { list: { type: number, target: string, body: string }[] 
         </TopAppBar>
         <TopAppBarFixedAdjust/>
         <Theme use={['background', 'textPrimaryOnDark']} wrap>
-            <Drawer dismissible={window.innerWidth > 760} modal={window.innerWidth <= 760} open={open}
+            <Drawer dismissible={window.innerWidth > 760} modal={window.innerWidth <= 760}
+                    open={open && (props.list.length > 0)}
                     onClose={() => setOpen(false)} style={{position: 'fixed'}}>
                 <DrawerHeader>
                     <DrawerTitle>
@@ -218,7 +221,7 @@ function Navbar(props: { list: { type: number, target: string, body: string }[] 
                           className="rmwc-icon rmwc-icon--component material-icons rmwc-avatar rmwc-avatar--xlarge rmwc-avatar--has-image">
                         <div className="rmwc-avatar__icon"
                              style={{
-                                 backgroundImage: 'url("/static/img/avatar.png")',
+                                 backgroundImage: `url("${props?.accountInfo?.avatarSrc}")`,
                                  backgroundSize: 'cover',
                                  width: '50px',
                                  height: '50px',
@@ -226,9 +229,9 @@ function Navbar(props: { list: { type: number, target: string, body: string }[] 
                              }}/>
                     </span>
                         <br/>
-                        이서현
+                        {props?.accountInfo?.name}
                     </DrawerTitle>
-                    <DrawerSubtitle>04seohyun@iasa.kr</DrawerSubtitle>
+                    <DrawerSubtitle>{props?.accountInfo?.id}@iasa.kr</DrawerSubtitle>
                 </DrawerHeader>
                 <DrawerContent>
                     <List>
@@ -315,11 +318,12 @@ class AppContentWrapper extends React.Component<any, {}> {
     }
 }
 
-export function MainView(props: { appCont: JSX.Element, navList: { type: number, target: string, body: string }[], messages: any }) {
+export function MainView(props: { appCont: JSX.Element, navList?: { type: number, target: string, body: string }[], messages: any, accountInfo: token }) {
     let appCont = <AppContentWrapper appCont={props.appCont}/>
     let headerHeight = 48, footerHeight = 100
     if (document.querySelector('header')) headerHeight = document.querySelector('header').offsetHeight
     if (document.querySelector('footer')) footerHeight = document.querySelector('footer').offsetHeight
+    if (!props.navList) props.navList = []
     const forceUpdate = useForceUpdate()
     document.addEventListener('load', () => {
         if (document.querySelector('header')) headerHeight = document.querySelector('header').offsetHeight
@@ -327,7 +331,7 @@ export function MainView(props: { appCont: JSX.Element, navList: { type: number,
         setTimeout(forceUpdate, 100)
     })
     return <>
-        <Navbar list={props.navList}/>
+        <Navbar list={props.navList} accountInfo={props.accountInfo}/>
         <DrawerAppContent
             style={{
                 minHeight: `calc(100vh - ${headerHeight + footerHeight}px)`,

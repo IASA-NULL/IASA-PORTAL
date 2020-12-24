@@ -89,8 +89,8 @@ class Userdata extends React.Component<any, {}> {
                     <td className="mdc-data-table__cell">사이트 호스팅</td>
                 </tr>
                 <tr className="mdc-data-table__header-row">
-                    <td className="mdc-data-table__cell">AIM</td>
-                    <td className="mdc-data-table__cell">면불 시스템 연동</td>
+                    <td className="mdc-data-table__cell">CloudFlare</td>
+                    <td className="mdc-data-table__cell">리소스 최적화, DDoS 방어</td>
                 </tr>
                 </tbody>
             </table>
