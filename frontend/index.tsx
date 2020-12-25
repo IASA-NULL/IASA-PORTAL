@@ -10,15 +10,22 @@ import '@rmwc/list/collapsible-list.css'
 import '@material/list/dist/mdc.list.css'
 import createURL from "../scheme/url"
 import {Permission, token} from '../scheme/api/auth'
-import {DefaultStudentNavList, MainView, OpensourceNavList, TermsNavList, UserDataNavList} from "./mainview";
-import {LoremIpsum} from "./util";
-import Counter from "./counter";
-import Myeonbul from "./myeonbul";
-import Meal from "./meal";
-import Terms from "./terms";
-import Userdata from "./userdata";
-import Opensource from "./opensource";
-import NotFound from "./404";
+import {
+    DefaultStudentNavList,
+    DefaultTeacherNavList,
+    MainView,
+    OpensourceNavList,
+    TermsNavList,
+    UserDataNavList
+} from "./mainview"
+import {LoremIpsum} from "./util"
+import MyeonbulStudent from "./student/myeonbul"
+import Meal from "./common/meal"
+import Terms from "./common/terms"
+import Userdata from "./common/userdata"
+import Opensource from "./common/opensource"
+import NotFound from "./common/404"
+import About from "./noauth/about"
 
 
 const lightTheme = {
@@ -104,14 +111,10 @@ class App extends React.Component<any, IState> {
                     <MainView accountInfo={this.state.data} messages={messages} navList={DefaultStudentNavList}
                               appCont={<LoremIpsum count={50}/>}/>
                 </Route>
-                <Route path="/counter">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={DefaultStudentNavList}
-                              appCont={<Counter startNumber={0}/>}/>
-                </Route>
                 <Route path="/myeonbul">
                     <MainView accountInfo={this.state.data} messages={messages} navList={DefaultStudentNavList}
-                              appCont={<Myeonbul notify={notify}
-                                                 data={{token: '', request: {type: '', uid: 1}}}/>}/>
+                              appCont={<MyeonbulStudent notify={notify}
+                                                        data={{token: '', request: {type: '', uid: 1}}}/>}/>
                 </Route>
                 <Route path="/meal">
                     <MainView accountInfo={this.state.data} messages={messages} navList={DefaultStudentNavList}
@@ -138,6 +141,11 @@ class App extends React.Component<any, IState> {
             </Switch>
         } else if (this.state?.data?.permission === Permission.teacher) {
             mainView = <Switch>
+                <Route path="/meal">
+                    <MainView accountInfo={this.state.data} messages={messages} navList={DefaultStudentNavList}
+                              appCont={<Meal/>}/>
+                </Route>
+
                 <Route path="/terms">
                     <MainView accountInfo={this.state.data} messages={messages} navList={TermsNavList}
                               appCont={<Terms/>}/>
@@ -152,7 +160,7 @@ class App extends React.Component<any, IState> {
                 </Route>
 
                 <Route>
-                    <MainView accountInfo={this.state.data} messages={messages} navList={DefaultStudentNavList}
+                    <MainView accountInfo={this.state.data} messages={messages} navList={DefaultTeacherNavList}
                               appCont={<NotFound/>}/>
                 </Route>
             </Switch>
@@ -179,7 +187,7 @@ class App extends React.Component<any, IState> {
         } else if (this.state?.data?.permission === Permission.none) {
             mainView = <Switch>
                 <Route exact path="/about">
-                    <MainView accountInfo={this.state.data} messages={messages} appCont={<NotFound/>}/>
+                    <About/>
                 </Route>
 
                 <Route path="/terms">

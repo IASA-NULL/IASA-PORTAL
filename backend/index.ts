@@ -18,6 +18,13 @@ app.use(compression())
 app.use(logger('dev'))
 app.use(favicon(path.join(__dirname, '..', '..', 'static', 'favicon.ico')))
 
+app.use((req, res, next) => {
+    if (req.headers['user-agent'].indexOf("MSIE") > -1 || req.headers['user-agent'].indexOf("rv:") > -1)
+        res.sendFile(path.join(__dirname, '..', '..', 'template', 'noIE.html'))
+    else
+        next()
+})
+
 app.use(authRouter)
 
 app.use('/static', express.static(path.join(__dirname, '..', '..', 'static')))
@@ -26,7 +33,6 @@ app.use("/api", apiRouter)
 
 
 app.get("*", (req, res) => {
-    req.cookies.auth
     res.sendFile(path.join(__dirname, '..', '..', 'template', 'main.html'))
 })
 

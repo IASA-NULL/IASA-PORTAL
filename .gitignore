@@ -2,3 +2,6 @@ build
 node_modules
 frontend/node_modules
 secret
+static/js/main.js
+static/js/main.js.map
+static/js/main.js.LICENSE.txt

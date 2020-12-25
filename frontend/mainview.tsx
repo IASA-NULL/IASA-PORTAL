@@ -9,16 +9,18 @@ import {
     TopAppBarSection,
     TopAppBarNavigationIcon,
     TopAppBarTitle,
-    TopAppBarFixedAdjust
+    TopAppBarFixedAdjust,
+    TopAppBarActionItem
 } from "@rmwc/top-app-bar"
 import {Grid, GridRow, GridCell} from '@rmwc/grid'
 import {Theme, ThemeProvider} from '@rmwc/theme'
 import {Typography} from '@rmwc/typography'
 import {IconButton} from '@rmwc/icon-button'
 import {SnackbarQueue, createSnackbarQueue} from '@rmwc/snackbar'
+import {Menu, MenuItem, MenuSurfaceAnchor} from '@rmwc/menu'
 
 import {ListLink, useForceUpdate} from './util'
-import {token} from "../scheme/api/auth";
+import {token} from "../scheme/api/auth"
 
 
 export const DefaultStudentNavList = [
@@ -29,8 +31,21 @@ export const DefaultStudentNavList = [
     },
     {
         type: 0,
-        target: '/counter',
-        body: '카운터'
+        target: '/myeonbul',
+        body: '면불'
+    },
+    {
+        type: 0,
+        target: '/meal',
+        body: '급식'
+    },
+]
+
+export const DefaultTeacherNavList = [
+    {
+        type: 0,
+        target: '/',
+        body: '메인'
     },
     {
         type: 0,
@@ -195,27 +210,45 @@ export const OpensourceNavList = [
 
 
 function Navbar(props: { list: { type: number, target: string, body: string }[], accountInfo: token }) {
-    const [open, setOpen] = React.useState(window.innerWidth > 760)
+    const [drawerOpen, setDrawerOpen] = React.useState(window.innerWidth > 760)
+    const [accountMenuOpen, setAccountMenuOpen] = React.useState(false)
     const closeIfModal = (() => {
-        if (window.innerWidth <= 760) setOpen(false)
+        if (window.innerWidth <= 760) setDrawerOpen(false)
     })
     return <>
         <TopAppBar fixed style={{zIndex: 10}}>
             <TopAppBarRow>
-                <TopAppBarSection>
+                <TopAppBarSection alignStart>
                     {(props.list.length > 0) ?
-                        <TopAppBarNavigationIcon icon="menu" onClick={() => setOpen(!open)}/> : <></>}
+                        <TopAppBarNavigationIcon icon="menu" onClick={() => setDrawerOpen(!drawerOpen)}/> : <></>}
                     <TopAppBarTitle><Link to="/" style={{textDecoration: 'none', color: 'white'}}>IASA
                         Portal</Link></TopAppBarTitle>
+                </TopAppBarSection>
+                <TopAppBarSection alignEnd>
+                    <MenuSurfaceAnchor>
+                        <Menu open={accountMenuOpen} onClose={evt => setAccountMenuOpen(false)}>
+                            {props?.accountInfo?.id ? <>
+                                <p style={{margin: '10px'}}>{props?.accountInfo?.id}</p>
+                                <Link to="/mypage" style={{color: 'black'}}><MenuItem>마이페이지</MenuItem></Link>
+                                <MenuItem onClick={() => {
+                                    location.replace('/deauth')
+                                }}>로그아웃</MenuItem>
+                            </> : <MenuItem onClick={() => {
+                                location.replace('/auth')
+                            }}>로그인</MenuItem>}
+                        </Menu>
+                        <TopAppBarActionItem icon="account_circle"
+                                             onClick={evt => setAccountMenuOpen(!accountMenuOpen)}/>
+                    </MenuSurfaceAnchor>
                 </TopAppBarSection>
             </TopAppBarRow>
         </TopAppBar>
         <TopAppBarFixedAdjust/>
         <Theme use={['background', 'textPrimaryOnDark']} wrap>
             <Drawer dismissible={window.innerWidth > 760} modal={window.innerWidth <= 760}
-                    open={open && (props.list.length > 0)}
-                    onClose={() => setOpen(false)} style={{position: 'fixed'}}>
-                <DrawerHeader>
+                    open={drawerOpen && (props.list.length > 0)}
+                    onClose={() => setDrawerOpen(false)} style={{position: 'fixed'}}>
+                {props?.accountInfo?.id ? <DrawerHeader>
                     <DrawerTitle>
                     <span title="Avatar"
                           className="rmwc-icon rmwc-icon--component material-icons rmwc-avatar rmwc-avatar--xlarge rmwc-avatar--has-image">
@@ -232,7 +265,7 @@ function Navbar(props: { list: { type: number, target: string, body: string }[],
                         {props?.accountInfo?.name}
                     </DrawerTitle>
                     <DrawerSubtitle>{props?.accountInfo?.id}@iasa.kr</DrawerSubtitle>
-                </DrawerHeader>
+                </DrawerHeader> : <></>}
                 <DrawerContent>
                     <List>
                         {

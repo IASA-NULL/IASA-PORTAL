@@ -31,7 +31,7 @@ router.use("*", (req, res, next) => {
             } as token, getSecret()), {maxAge: maxTime, httpOnly: true, secure: true})
         } else if (req.auth.expire < Date.now()) {
             req.auth = undefined
-            res.cookie('auth', '', {maxAge: -1, httpOnly: true, secure: true})
+            res.cookie('auth', '', {maxAge: -1, httpOnly: true})
         }
     } catch (e) {
 
@@ -48,12 +48,12 @@ router.get('/auth', (req, res, next) => {
         expire: Date.now() + maxTime,
         permission: Permission.student,
         avatarSrc: '/static/img/avatar.png'
-    } as token, getSecret()), {maxAge: maxTime, httpOnly: true, secure: true})
+    } as token, getSecret()), {maxAge: maxTime, httpOnly: true})
     res.redirect('/')
 })
 
 router.get('/deauth', (req, res, next) => {
-    res.cookie('auth', '', {maxAge: -1, httpOnly: true, secure: true})
+    res.cookie('auth', '', {maxAge: -1, httpOnly: true})
     res.redirect('/')
 })
 
