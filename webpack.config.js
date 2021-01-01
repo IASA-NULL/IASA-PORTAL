@@ -2,12 +2,15 @@ const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
-    entry: './frontend/index.tsx',
+    entry: {
+        main: './frontend/index.tsx',
+        auth: './frontend/auth.tsx'
+    },
     devtool: 'source-map',
     target: 'es6',
     output: {
         path: path.resolve(__dirname, 'static', 'js'),
-        filename: 'main.js',
+        filename: '[name].js',
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx"]

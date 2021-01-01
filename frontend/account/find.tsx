@@ -8,7 +8,23 @@ interface IProps {
     context: any
 }
 
-export class Signup extends React.Component<IProps, undefined> {
+export class FindID extends React.Component<IProps, undefined> {
+    constructor(props: IProps) {
+        super(props)
+    }
+
+    public render() {
+        return <div style={{
+            width: this.props.isMobile ? 'calc(100vw - 60px)' : '380px',
+            padding: `5px ${this.props.isMobile ? 30 : 60}px`,
+            float: 'left'
+        }}>
+        </div>
+    }
+}
+
+
+export class FindPassword extends React.Component<any, IProps> {
     constructor(props: IProps) {
         super(props)
     }

@@ -28,7 +28,7 @@ function About(props: RouteComponentProps) {
                     <MenuSurfaceAnchor>
                         <Menu open={accountMenuOpen} onClose={evt => setAccountMenuOpen(false)}>
                             <MenuItem onClick={() => {
-                                location.replace('/auth')
+                                location.replace('/signin')
                             }}>로그인</MenuItem>
                         </Menu>
                         <TopAppBarActionItem icon="account_circle"
@@ -67,7 +67,7 @@ function About(props: RouteComponentProps) {
                     padding: '20px',
                     fontSize: '20px'
                 } as React.CSSProperties} onClick={() => {
-                    location.replace('/auth')
+                    location.replace('/signin')
                 }}>로그인</Button>
             </div>
             <div style={{textAlign: 'center', alignSelf: 'flex-end'}}>

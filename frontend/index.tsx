@@ -96,8 +96,8 @@ class App extends React.Component<any, IState> {
 
     public refresh() {
         this.setState({loaded: false})
-        fetch(createURL('api', 'info')).then(res => res.json()).then(data => {
-            this.setState({loaded: true, data: data})
+        fetch(createURL('api', 'account', 'info')).then(res => res.json()).then(data => {
+            this.setState({loaded: true, data: data.data})
         })
     }
 

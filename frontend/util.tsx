@@ -1,21 +1,48 @@
 import {Link} from "react-router-dom";
-import {ListItem} from "@rmwc/list";
-import * as React from "react";
-import {useState} from "react";
+import {ListItem} from "@rmwc/list"
+import * as React from "react"
+import {useState} from "react"
+import {MenuItem} from '@rmwc/menu'
 
 const {AnchorLink} = require('react-anchor-link-smooth-scroll')
 
-export function ListLink(props: { body: string, to: string, onClick?: any, type?: number }) {
-    if (props.type === 1) return <a style={{textDecoration: 'none'}} href={props.to} onClick={props.onClick}><ListItem
+export enum LinkType {
+    a = 1,
+    js,
+    link
+}
+
+export function ListLink(props: { body: string, to: string, onClick?: any, type?: LinkType }) {
+    if (props.type === LinkType.a) return <a style={{textDecoration: 'none', color: 'black', whiteSpace: 'nowrap'}}
+                                             href={props.to}
+                                             onClick={props.onClick}><ListItem
         activated={props.to === location.pathname}>{props.body}</ListItem></a>
-    else if (props.type === 2) {
+    else if (props.type === LinkType.js) {
         return <ListItem onClick={() => {
             // @ts-ignore
             scrollObj.scroll({el: document.getElementById(props.to), margin: 80}, 500)
             props.onClick()
         }} activated={props.to === location.pathname}>{props.body}</ListItem>
-    } else return <Link style={{textDecoration: 'none'}} to={props.to} onClick={props.onClick}><ListItem
+    } else return <Link style={{textDecoration: 'none', color: 'black', whiteSpace: 'nowrap'}} to={props.to}
+                        onClick={props.onClick}><ListItem
         activated={props.to === location.pathname}>{props.body}</ListItem></Link>
+}
+
+export function MenuLink(props: { body: string, to: string, onClick?: any, type?: LinkType }) {
+    if (props.type === LinkType.a) return <a style={{textDecoration: 'none', color: 'black', whiteSpace: 'nowrap'}}
+                                             href={props.to}
+                                             onClick={props.onClick}>
+        <MenuItem activated={props.to === location.pathname}>{props.body}</MenuItem>
+    </a>
+    else if (props.type === LinkType.js) {
+        return <MenuItem onClick={() => {
+            // @ts-ignore
+            scrollObj.scroll({el: document.getElementById(props.to), margin: 80}, 500)
+            props.onClick()
+        }} activated={props.to === location.pathname}>{props.body}</MenuItem>
+    } else return <Link style={{textDecoration: 'none', color: 'black', whiteSpace: 'nowrap'}} to={props.to}
+                        onClick={props.onClick}><MenuItem
+        activated={props.to === location.pathname}>{props.body}</MenuItem></Link>
 }
 
 export function LoremIpsum(props: { count: number }) {

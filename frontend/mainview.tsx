@@ -234,7 +234,7 @@ function Navbar(props: { list: { type: number, target: string, body: string }[],
                                     location.replace('/deauth')
                                 }}>로그아웃</MenuItem>
                             </> : <MenuItem onClick={() => {
-                                location.replace('/auth')
+                                location.replace('/signin')
                             }}>로그인</MenuItem>}
                         </Menu>
                         <TopAppBarActionItem icon="account_circle"

@@ -2,6 +2,7 @@ import express, {response} from 'express'
 import jwt from 'jsonwebtoken'
 import {Permission, token} from "../scheme/api/auth"
 import getSecret from "./util/secret"
+import path from "path";
 
 const maxTime = 1000 * 10 * 60 * 60 * 24 * 7
 const reSignTime = 1000 * 10 * 60 * 60 * 24 * 3
@@ -37,6 +38,10 @@ router.use("*", (req, res, next) => {
 
     }
     next()
+})
+
+router.get('/signin', (req, res, next) => {
+    res.sendFile(path.join(__dirname, '..', '..', 'template', 'auth.html'))
 })
 
 router.get('/auth', (req, res, next) => {

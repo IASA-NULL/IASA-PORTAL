@@ -2,6 +2,7 @@ import {mealTime, MealResponse, AllergicInfo, mealTimeToString} from "../../sche
 import nodeFetch from 'node-fetch'
 
 import db from '../util/db'
+import createResponse from "../createResponse"
 
 const fetch = require('fetch-cookie')(nodeFetch)
 
@@ -139,16 +140,13 @@ export default function getMeal(target: mealTime) {
                 } catch (e) {
                 }
 
-                let res: MealResponse = {
-                    success: true,
-                    data: {
-                        menu: menuList,
-                        image: imageBase64,
-                        origin: originList,
-                        energy: energyList,
-                        kcal: kcal
-                    }
-                }
+                let res: MealResponse = createResponse({
+                    menu: menuList,
+                    image: imageBase64,
+                    origin: originList,
+                    energy: energyList,
+                    kcal: kcal
+                })
                 if (allLoaded) db.set('meal', mealTimeToString(target), res.data)
                 resolve(res)
                 return
@@ -158,10 +156,6 @@ export default function getMeal(target: mealTime) {
             await fetch('http://iasa.icehs.kr/')
             await fetch('http://iasa.icehs.kr/foodlist.do?m=040406&s=isaa')
         }
-
-        resolve({
-            success: false,
-            data: '급식 정보가 없어요.'
-        })
+        resolve(createResponse(false, '급식 정보가 없어요.'))
     })
 }
