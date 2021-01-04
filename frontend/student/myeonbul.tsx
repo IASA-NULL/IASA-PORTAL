@@ -20,9 +20,9 @@ import {ListDivider} from '@rmwc/list'
 import {MyeonbulRequest, MyeonbulResponse, MyeonbulResponseOne} from "../../scheme/api/myeonbul"
 import {teacher, currentTeacherList} from '../../scheme/teacher/teacher'
 import teacherList from "../../scheme/teacher/2021/list"
+import {createSnackbarQueue, SnackbarQueue} from "@rmwc/snackbar"
 
 interface MyeonbulProps {
-    notify: any,
     data: MyeonbulRequest
 }
 
@@ -31,12 +31,19 @@ interface MyeonbulState {
     loaded: boolean,
     teacherSelectOpened: boolean,
     selectedTeacher: teacher,
-    teacherSearch: string
+    teacherSearch: string,
+
 }
 
 class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
+    messages: any
+    notify: any
+
     constructor(props: MyeonbulProps) {
         super(props)
+        let qu = createSnackbarQueue()
+        this.messages = qu.messages
+        this.notify = qu.notify
     }
 
     public componentDidMount() {
@@ -64,15 +71,11 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
     }
 
     public register() {
-        this.props.notify({
+        this.notify({
             title: <b>성공!</b>,
             body: '면불 신청에 성공했어요.',
             icon: 'check',
-            actions: [
-                {
-                    title: '닫기'
-                }
-            ]
+            dismissIcon: true
         })
     }
 
@@ -210,6 +213,7 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
             <br/>
             <br/>
             <Button outlined onClick={this.refresh.bind(this)} style={{marginLeft: '20px'}}>새로고침</Button>
+            <SnackbarQueue messages={this.messages}/>
         </div>
     }
 }

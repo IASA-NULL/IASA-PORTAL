@@ -4,8 +4,8 @@ import {Permission, token} from "../scheme/api/auth"
 import getSecret from "./util/secret"
 import path from "path";
 
-const maxTime = 1000 * 10 * 60 * 60 * 24 * 7
-const reSignTime = 1000 * 10 * 60 * 60 * 24 * 3
+const maxTime = 1000 * 60 * 60 * 24 * 7
+const reSignTime = 1000 * 60 * 60 * 24 * 3
 
 declare global {
     namespace Express {
@@ -20,16 +20,11 @@ const router = express.Router()
 router.use("*", (req, res, next) => {
     try {
         req.auth = jwt.verify(req.cookies.auth, getSecret()) as token
-        if (req.auth.expire < Date.now() - reSignTime) {
+        if (req.auth.expire < Date.now() + reSignTime) {
             res.cookie('auth', jwt.sign({
-                name: '이서현',
-                id: '04seohyun',
-                uid: 20190001,
-                code: 20209,
-                expire: Date.now() + maxTime,
-                permission: Permission.student,
-                avatarSrc: '/static/img/avatar.png'
-            } as token, getSecret()), {maxAge: maxTime, httpOnly: true, secure: true})
+                ...req.auth,
+                expire: Date.now() + maxTime
+            }, getSecret()), {maxAge: maxTime, httpOnly: true})
         } else if (req.auth.expire < Date.now()) {
             req.auth = undefined
             res.cookie('auth', '', {maxAge: -1, httpOnly: true})
@@ -44,20 +39,7 @@ router.get('/signin', (req, res, next) => {
     res.sendFile(path.join(__dirname, '..', '..', 'template', 'auth.html'))
 })
 
-router.get('/auth', (req, res, next) => {
-    res.cookie('auth', jwt.sign({
-        name: '이서현',
-        id: '04seohyun',
-        uid: 20190001,
-        code: 20209,
-        expire: Date.now() + maxTime,
-        permission: Permission.student,
-        avatarSrc: '/static/img/avatar.png'
-    } as token, getSecret()), {maxAge: maxTime, httpOnly: true})
-    res.redirect('/')
-})
-
-router.get('/deauth', (req, res, next) => {
+router.get('/signout', (req, res, next) => {
     res.cookie('auth', '', {maxAge: -1, httpOnly: true})
     res.redirect('/')
 })

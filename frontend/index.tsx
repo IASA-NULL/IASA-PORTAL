@@ -102,85 +102,83 @@ class App extends React.Component<any, IState> {
     }
 
     public render() {
-        const {messages, notify} = createSnackbarQueue()
         let theme = lightTheme, mainView
         //if (localStorage.theme === "1" || (localStorage.theme === "2" && window.matchMedia('(prefers-color-scheme: dark)').matches)) theme = darkTheme
         if (this.state?.data?.permission === Permission.student) {
             mainView = <Switch>
                 <Route exact path="/">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={DefaultStudentNavList}
+                    <MainView accountInfo={this.state.data}  navList={DefaultStudentNavList}
                               appCont={<LoremIpsum count={50}/>}/>
                 </Route>
                 <Route path="/myeonbul">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={DefaultStudentNavList}
-                              appCont={<MyeonbulStudent notify={notify}
-                                                        data={{token: '', request: {type: '', uid: 1}}}/>}/>
+                    <MainView accountInfo={this.state.data}  navList={DefaultStudentNavList}
+                              appCont={<MyeonbulStudent data={{token: '', request: {type: '', uid: 1}}}/>}/>
                 </Route>
                 <Route path="/meal">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={DefaultStudentNavList}
+                    <MainView accountInfo={this.state.data}  navList={DefaultStudentNavList}
                               appCont={<Meal/>}/>
                 </Route>
 
                 <Route path="/terms">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={TermsNavList}
+                    <MainView accountInfo={this.state.data}  navList={TermsNavList}
                               appCont={<Terms/>}/>
                 </Route>
                 <Route path="/userdata">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={UserDataNavList}
+                    <MainView accountInfo={this.state.data}  navList={UserDataNavList}
                               appCont={<Userdata/>}/>
                 </Route>
                 <Route path="/opensource">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={OpensourceNavList}
+                    <MainView accountInfo={this.state.data}  navList={OpensourceNavList}
                               appCont={<Opensource/>}/>
                 </Route>
 
                 <Route>
-                    <MainView accountInfo={this.state.data} messages={messages} navList={DefaultStudentNavList}
+                    <MainView accountInfo={this.state.data}  navList={DefaultStudentNavList}
                               appCont={<NotFound/>}/>
                 </Route>
             </Switch>
         } else if (this.state?.data?.permission === Permission.teacher) {
             mainView = <Switch>
                 <Route path="/meal">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={DefaultStudentNavList}
+                    <MainView accountInfo={this.state.data}  navList={DefaultStudentNavList}
                               appCont={<Meal/>}/>
                 </Route>
 
                 <Route path="/terms">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={TermsNavList}
+                    <MainView accountInfo={this.state.data}  navList={TermsNavList}
                               appCont={<Terms/>}/>
                 </Route>
                 <Route path="/userdata">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={UserDataNavList}
+                    <MainView accountInfo={this.state.data}  navList={UserDataNavList}
                               appCont={<Userdata/>}/>
                 </Route>
                 <Route path="/opensource">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={OpensourceNavList}
+                    <MainView accountInfo={this.state.data}  navList={OpensourceNavList}
                               appCont={<Opensource/>}/>
                 </Route>
 
                 <Route>
-                    <MainView accountInfo={this.state.data} messages={messages} navList={DefaultTeacherNavList}
+                    <MainView accountInfo={this.state.data}  navList={DefaultTeacherNavList}
                               appCont={<NotFound/>}/>
                 </Route>
             </Switch>
         } else if (this.state?.data?.permission === Permission.admin) {
             mainView = <Switch>
                 <Route path="/terms">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={TermsNavList}
+                    <MainView accountInfo={this.state.data}  navList={TermsNavList}
                               appCont={<Terms/>}/>
                 </Route>
                 <Route path="/userdata">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={UserDataNavList}
+                    <MainView accountInfo={this.state.data}  navList={UserDataNavList}
                               appCont={<Userdata/>}/>
                 </Route>
                 <Route path="/opensource">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={OpensourceNavList}
+                    <MainView accountInfo={this.state.data}  navList={OpensourceNavList}
                               appCont={<Opensource/>}/>
                 </Route>
 
                 <Route>
-                    <MainView accountInfo={this.state.data} messages={messages} navList={DefaultStudentNavList}
+                    <MainView accountInfo={this.state.data}  navList={DefaultStudentNavList}
                               appCont={<NotFound/>}/>
                 </Route>
             </Switch>
@@ -191,15 +189,15 @@ class App extends React.Component<any, IState> {
                 </Route>
 
                 <Route path="/terms">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={TermsNavList}
+                    <MainView accountInfo={this.state.data}  navList={TermsNavList}
                               appCont={<Terms/>}/>
                 </Route>
                 <Route path="/userdata">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={UserDataNavList}
+                    <MainView accountInfo={this.state.data}  navList={UserDataNavList}
                               appCont={<Userdata/>}/>
                 </Route>
                 <Route path="/opensource">
-                    <MainView accountInfo={this.state.data} messages={messages} navList={OpensourceNavList}
+                    <MainView accountInfo={this.state.data}  navList={OpensourceNavList}
                               appCont={<Opensource/>}/>
                 </Route>
 

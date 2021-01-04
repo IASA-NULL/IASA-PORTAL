@@ -141,11 +141,7 @@ class MealOne extends React.Component<MealProps, MealState> {
                             title: <b>아직 개발 중이에요.</b>,
                             body: '곧 급식을 평가할 수 있어요!',
                             icon: 'build',
-                            actions: [
-                                {
-                                    title: '닫기'
-                                }
-                            ]
+                            dismissIcon: true
                         })()
                     }} icon="thumb_up"/>
                     <CardActionIcon onClick={() => {
@@ -153,11 +149,7 @@ class MealOne extends React.Component<MealProps, MealState> {
                             title: <b>아직 개발 중이에요.</b>,
                             body: '곧 급식을 평가할 수 있어요!',
                             icon: 'build',
-                            actions: [
-                                {
-                                    title: '닫기'
-                                }
-                            ]
+                            dismissIcon: true
                         })()
                     }} icon="thumb_down"/>
                 </CardActionIcons>

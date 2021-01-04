@@ -20,6 +20,7 @@ import {FindID, FindPassword} from "./account/find"
 import {Signup} from "./account/signup"
 import {TextField} from "@rmwc/textfield";
 import createURL from "../scheme/url";
+import {main} from "ts-node/dist/bin";
 
 const lightTheme = {
     primary: '#5351db',
@@ -86,10 +87,13 @@ interface IState {
     formList: JSX.Element[],
     currentPage: number,
     errMessage: string,
-    title: string,
-    subtitle: string
+    title: {
+        main: string,
+        sub: string
+    }[],
 
     id: string,
+    password: string
 }
 
 
@@ -108,18 +112,18 @@ class App extends React.Component<any, IState> {
         this.setState({
             formList: [<IdForm setState={this.setState} isMobile={isMobile} next={
                 this.getIdInfo(<PasswordForm setState={this.setState} isMobile={isMobile} find={
-                    this.next(
-                        <FindPassword setState={this.setState} isMobile={isMobile}
-                                      context={context}/>
-                    )
-                } context={context}/>)
+                    this.next(<FindPassword setState={this.setState} isMobile={isMobile}
+                                            context={context}/>, "비밀번호 찾기", "이메일을 입력하세요.")
+                } context={context} next={this.signin()}/>)
             } find={
-                this.next(<FindID setState={this.setState} isMobile={isMobile} context={context}/>)
+                this.next(<FindID setState={this.setState} isMobile={isMobile}
+                                  context={context}/>, "아이디 찾기", "이메일을 입력하세요.")
             } create={
-                this.next(<Signup setState={this.setState} isMobile={isMobile} context={context}/>)
+                this.next(<Signup setState={this.setState} isMobile={isMobile}
+                                  context={context}/>, "가입하기", "계속하려면 NULL에 개인별로 부여되는 코드를 요청하세요.")
             } context={context}/>]
         })
-        this.setState({currentPage: 0})
+        this.setState({currentPage: 0, title: [{main: '로그인', sub: 'IASA PORTAL로 계속'}]})
         setTimeout(() => {
             this.setState({loaded: true})
         }, 500)
@@ -136,12 +140,25 @@ class App extends React.Component<any, IState> {
         this.setState({[key]: value})
     }
 
-    public next(form: JSX.Element) {
+    public next(form: JSX.Element, mainTitle: string, subTitle: string) {
         return () => {
             this.setState({loaded: true})
             if (this.state.formList.length > this.state.currentPage + 1) {
-                this.setState({formList: [...this.state.formList.slice(0, this.state.currentPage + 1), form]})
-            } else this.setState({formList: [...this.state.formList, form]})
+                this.setState({
+                    formList: [...this.state.formList.slice(0, this.state.currentPage + 1), form],
+                    title: [...this.state.title.slice(0, this.state.currentPage + 1), {
+                        main: mainTitle,
+                        sub: subTitle
+                    }]
+                })
+            } else {
+                this.setState({
+                    formList: [...this.state.formList, form], title: [...this.state.title, {
+                        main: mainTitle,
+                        sub: subTitle
+                    }]
+                })
+            }
             this.setState({currentPage: this.state.currentPage + 1})
         }
     }
@@ -161,7 +178,7 @@ class App extends React.Component<any, IState> {
                     })
                 }).then(res => res.json()).then(res => {
                     if (res.success) {
-                        this.next(form)()
+                        this.next(form, `${res.data}님, 안녕하세요.`, '비밀번호를 입력해서 로그인')()
                     } else {
                         this.setState({errMessage: res.message, loaded: true})
                     }
@@ -170,6 +187,35 @@ class App extends React.Component<any, IState> {
                 })
             } else {
                 this.setState({errMessage: '아이디를 입력하세요.'})
+            }
+        }
+    }
+
+    public signin() {
+        return () => {
+            this.setState({errMessage: ''})
+            if (this.state?.password) {
+                this.setState({loaded: false})
+                fetch(createURL('api', 'account', 'signin'), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: this.state?.id,
+                        password: this.state?.password,
+                    })
+                }).then(res => res.json()).then(res => {
+                    if (res.success) {
+                        location.replace('/')
+                    } else {
+                        this.setState({errMessage: res.message, loaded: true})
+                    }
+                }).catch(e => {
+                    this.setState({errMessage: '서버와 통신 중 오류가 발생했어요.'})
+                })
+            } else {
+                this.setState({errMessage: '비밀번호를 입력하세요.'})
             }
         }
     }
@@ -236,10 +282,12 @@ class App extends React.Component<any, IState> {
                                 <img src="/static/img/logo.jpg" style={{width: '80px'}}/>
                                 <br/>
                                 <br/>
-                                <Typography use="headline4">로그인</Typography>
+                                <Typography
+                                    use="headline4">{(this.state?.title ?? [])[this.state?.currentPage ?? 0]?.main}</Typography>
                                 <br/>
                                 <br/>
-                                <Typography use="subtitle1">IASA Portal로 계속</Typography>
+                                <Typography
+                                    use="subtitle1">{(this.state?.title ?? [])[this.state?.currentPage ?? 0]?.sub}</Typography>
                                 <br/>
                                 <br/>
                                 <br/>

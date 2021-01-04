@@ -33,7 +33,7 @@ router.use('/account', accountRouter)
 router.use('*', (req, res, next) => {
     res.send({
         success: false,
-        message: '알 수 없는 요청입니다.'
+        message: '알 수 없는 요청이에요.'
     })
 })
 

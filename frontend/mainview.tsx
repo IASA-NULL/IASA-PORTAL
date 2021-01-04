@@ -231,7 +231,7 @@ function Navbar(props: { list: { type: number, target: string, body: string }[],
                                 <p style={{margin: '10px'}}>{props?.accountInfo?.id}</p>
                                 <Link to="/mypage" style={{color: 'black'}}><MenuItem>마이페이지</MenuItem></Link>
                                 <MenuItem onClick={() => {
-                                    location.replace('/deauth')
+                                    location.replace('/signout')
                                 }}>로그아웃</MenuItem>
                             </> : <MenuItem onClick={() => {
                                 location.replace('/signin')
@@ -351,7 +351,7 @@ class AppContentWrapper extends React.Component<any, {}> {
     }
 }
 
-export function MainView(props: { appCont: JSX.Element, navList?: { type: number, target: string, body: string }[], messages: any, accountInfo: token }) {
+export function MainView(props: { appCont: JSX.Element, navList?: { type: number, target: string, body: string }[], accountInfo: token }) {
     let appCont = <AppContentWrapper appCont={props.appCont}/>
     let headerHeight = 48, footerHeight = 100
     if (document.querySelector('header')) headerHeight = document.querySelector('header').offsetHeight
@@ -372,7 +372,6 @@ export function MainView(props: { appCont: JSX.Element, navList?: { type: number
             }}>
             {appCont}
         </DrawerAppContent>
-        <SnackbarQueue messages={props.messages}/>
         <Footer/>
     </>
 }

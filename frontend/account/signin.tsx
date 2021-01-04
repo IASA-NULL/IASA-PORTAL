@@ -16,11 +16,16 @@ interface IdFormProps extends IProps {
 }
 
 interface PasswordFormProps extends IProps {
+    next: any,
     find: any
 }
 
 interface IdFormState {
     id: string
+}
+
+interface PasswordFormState {
+    password: string
 }
 
 export class IdForm extends React.Component<IdFormProps, IdFormState> {
@@ -74,24 +79,47 @@ export class IdForm extends React.Component<IdFormProps, IdFormState> {
     }
 }
 
-
-export class PasswordForm extends React.Component<any, PasswordFormProps> {
+export class PasswordForm extends React.Component<PasswordFormProps, PasswordFormState> {
     constructor(props: PasswordFormProps) {
         super(props)
     }
 
+    public componentDidMount() {
+        window.addEventListener('loginStateUpdate', () => {
+            this.forceUpdate()
+        })
+    }
+
+    public handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({password: e.target.value})
+        this.props.context.set('password', e.target.value.trim().toLowerCase())
+    }
+
     public render() {
+        let errS = this.props.context.get('errMessage')
+        let errMessage = errS ? <>
+            <div style={{color: '#ff5959', clear: 'both', display: 'flex', justifyContent: 'center', margin: '20px'}}>
+                <Icon icon={{icon: 'error_outline', size: 'xsmall'}}/>
+                <span style={{padding: '3px'}}>{errS}</span>
+            </div>
+        </> : <></>
         return <div style={{
             width: this.props.isMobile ? 'calc(100vw - 60px)' : '380px',
             padding: `5px ${this.props.isMobile ? 30 : 60}px`,
             float: 'left'
         }}>
-            <TextField style={{width: '100%'}} outlined label="비밀번호" disabled={!this.props.context.get('loaded')}/>
+            <TextField style={{width: '100%'}} outlined label="아이디" disabled={!this.props.context.get('loaded')}
+                       value={this.state?.password} onChange={this.handleChange.bind(this)} onKeyDown={(e) => {
+                if (e.key === 'Enter') this.props.next()
+            }}/>
+            <br/>
+            {errMessage}
             <br/>
             <div style={{clear: 'both', marginTop: '30px', marginBottom: '30px'}}>
                 <Button style={{float: 'left'}} onClick={this.props.find} disabled={!this.props.context.get('loaded')}>비밀번호를
                     잊으셨나요?</Button>
-                <Button style={{float: 'right'}} raised disabled={!this.props.context.get('loaded')}>로그인</Button>
+                <Button style={{float: 'right'}} raised disabled={!this.props.context.get('loaded')}
+                        onClick={this.props.next}>로그인</Button>
             </div>
         </div>
     }
