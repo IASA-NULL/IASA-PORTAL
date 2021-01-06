@@ -14,12 +14,16 @@ function isHangul(ch: string) {
 
 export default function getMeal(target: mealTime) {
     return new Promise(async (resolve, reject) => {
-        if (await db.get('meal', mealTimeToString(target))) {
-            resolve({
-                success: true,
-                data: await db.get('meal', mealTimeToString(target))
-            })
-            return
+        try {
+            if (await db.get('meal', mealTimeToString(target))) {
+                resolve({
+                    success: true,
+                    data: await db.get('meal', mealTimeToString(target))
+                })
+                return
+            }
+        } catch (e) {
+
         }
 
         let data
@@ -147,7 +151,9 @@ export default function getMeal(target: mealTime) {
                     energy: energyList,
                     kcal: kcal
                 })
-                if (allLoaded) db.set('meal', mealTimeToString(target), res.data)
+                if (allLoaded) {
+                    db.set('meal', mealTimeToString(target), res.data).catch()
+                }
                 resolve(res)
                 return
             } catch (e) {

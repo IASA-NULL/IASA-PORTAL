@@ -39,6 +39,7 @@ import {
 } from '../../scheme/api/meal'
 import createURL from "../../scheme/url";
 import meal from "../../backend/api/meal";
+import {BrIfMobile} from "../util";
 
 
 interface MealProps {
@@ -185,8 +186,7 @@ class Meal extends React.Component<any, MearContainerState> {
         if (document.documentElement.offsetWidth < 700) this.elementPerPage = 1
         else if (document.documentElement.offsetWidth < 1020) this.elementPerPage = 2
         else if (document.documentElement.offsetWidth < 1440) this.elementPerPage = 3
-        else if (document.documentElement.offsetWidth < 1660) this.elementPerPage = 4
-        else this.elementPerPage = 5
+        else this.elementPerPage = 4
 
         this.elementList = [] as JSX.Element[]
     }
@@ -388,6 +388,7 @@ class Meal extends React.Component<any, MearContainerState> {
         }
         return <div>
             <Typography use="headline3">급식</Typography>
+            <BrIfMobile/>
             <Typography use="subtitle1" style={{marginLeft: '10px'}}>급식 식단표를 확인하거나 급식을 평가할 수 있어요.</Typography>
             <br/>
             <Dialog open={this.state?.detailOpened} onClose={() => {
@@ -433,6 +434,8 @@ class Meal extends React.Component<any, MearContainerState> {
             <Button outlined label="이후" trailingIcon="keyboard_arrow_right" style={{float: 'right'}} onClick={() => {
                 this.siema.next()
             }}/>
+            <br/>
+            <br/>
             <div style={{height: '20px'}}/>
             <SnackbarQueue messages={this.messages}/>
         </div>

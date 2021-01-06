@@ -2,7 +2,7 @@ import * as React from "react"
 import {Link} from 'react-router-dom'
 
 import {Drawer, DrawerHeader, DrawerTitle, DrawerSubtitle, DrawerContent, DrawerAppContent} from "@rmwc/drawer"
-import {List} from "@rmwc/list"
+import {List, CollapsibleList, SimpleListItem} from "@rmwc/list"
 import {
     TopAppBar,
     TopAppBarRow,
@@ -13,203 +13,100 @@ import {
     TopAppBarActionItem
 } from "@rmwc/top-app-bar"
 import {Grid, GridRow, GridCell} from '@rmwc/grid'
-import {Theme, ThemeProvider} from '@rmwc/theme'
+import {Theme} from '@rmwc/theme'
 import {Typography} from '@rmwc/typography'
 import {IconButton} from '@rmwc/icon-button'
-import {SnackbarQueue, createSnackbarQueue} from '@rmwc/snackbar'
 import {Menu, MenuItem, MenuSurfaceAnchor} from '@rmwc/menu'
 
-import {ListLink, useForceUpdate} from './util'
+import {ListLink, useForceUpdate, LinkType} from './util'
 import {token} from "../scheme/api/auth"
 
 
-export const DefaultStudentNavList = [
-    {
-        type: 0,
-        target: '/',
-        body: '메인'
-    },
-    {
-        type: 0,
-        target: '/myeonbul',
-        body: '면불'
-    },
-    {
-        type: 0,
-        target: '/meal',
-        body: '급식'
-    },
-]
+export const DefaultStudentNavList = (closeIfModal: any) => {
+    return <>
+        <ListLink body="메인" to="/" onClick={closeIfModal} type={LinkType.link} icon="home"/>
+        <ListLink body="빠른 공유" to="/share" onClick={closeIfModal} type={LinkType.link} icon="share"/>
+        <CollapsibleList defaultOpen={['/myeonbul', '/music'].includes(location.pathname)}
+                         handle={<SimpleListItem text="신청" graphic="playlist_add_check" metaIcon="chevron_right"/>}>
+            <div style={{paddingLeft: '20px'}}>
+                <ListLink body="면불" to="/myeonbul" onClick={closeIfModal} type={LinkType.link} icon="pan_tool"/>
+                <ListLink body="기상곡" to="/music" onClick={closeIfModal} type={LinkType.link} icon="music_note"/>
+            </div>
+        </CollapsibleList>
+        <CollapsibleList defaultOpen={['/penalty', '/meal'].includes(location.pathname)}
+                         handle={<SimpleListItem text="생활" graphic="night_shelter" metaIcon="chevron_right"/>}>
+            <div style={{paddingLeft: '20px'}}>
+                <ListLink body="벌점" to="/penalty" onClick={closeIfModal} type={LinkType.link} icon="assignment_late"/>
+                <ListLink body="급식" to="/meal" onClick={closeIfModal} type={LinkType.link} icon="fastfood"/>
+            </div>
+        </CollapsibleList>
+        <CollapsibleList defaultOpen={['/share', '/program/nac', '/program/ip'].includes(location.pathname)}
+                         handle={<SimpleListItem text="프로그램" graphic="folder" metaIcon="chevron_right"/>}>
+            <div style={{paddingLeft: '20px'}}>
+                <ListLink body="인터넷 연결 도구" to="/program/nac" onClick={closeIfModal} type={LinkType.link}
+                          icon="wysiwyg"/>
+                <ListLink body="IP" to="/program/ip" onClick={closeIfModal} type={LinkType.link} icon="wysiwyg"/>
+                <ListLink body="IASA CLIENT" to="/program/client" onClick={closeIfModal} type={LinkType.link}
+                          icon="wysiwyg"/>
+            </div>
+        </CollapsibleList>
+    </>
+}
 
-export const DefaultTeacherNavList = [
-    {
-        type: 0,
-        target: '/',
-        body: '메인'
-    },
-    {
-        type: 0,
-        target: '/myeonbul',
-        body: '면불'
-    },
-    {
-        type: 0,
-        target: '/meal',
-        body: '급식'
-    },
-]
+export const DefaultTeacherNavList = (closeIfModal: any) => {
+    return <>
+        <ListLink body="메인" to="/" onClick={closeIfModal} type={LinkType.link} icon="home"/>
+        <ListLink body="면불" to="/myeonbul" onClick={closeIfModal} type={LinkType.link} icon="pan_tool"/>
+        <ListLink body="급식" to="/meal" onClick={closeIfModal} type={LinkType.link} icon="fastfood"/>
+        <ListLink body="빠른 공유" to="/share" onClick={closeIfModal} type={LinkType.link} icon="share"/>
+    </>
+}
 
-export const TermsNavList = [
-    {
-        type: 2,
-        target: 'cont_index',
-        body: '약관'
-    },
-    {
-        type: 2,
-        target: 'cont_welcome',
-        body: '인삿말'
-    },
-    {
-        type: 2,
-        target: 'cont_services',
-        body: '서비스'
-    },
-    {
-        type: 2,
-        target: 'cont_account',
-        body: '계정'
-    },
-    {
-        type: 2,
-        target: 'cont_contents',
-        body: '콘텐츠'
-    },
-    {
-        type: 2,
-        target: 'cont_userdata',
-        body: '개인정보 보호'
-    },
-    {
-        type: 2,
-        target: 'cont_otherright',
-        body: '타인 존중'
-    },
-    {
-        type: 2,
-        target: 'cont_caution',
-        body: '금지 사항'
-    },
-    {
-        type: 2,
-        target: 'cont_stop',
-        body: '서비스의 제한'
-    },
-    {
-        type: 2,
-        target: 'cont_response',
-        body: 'NULL의 책임'
-    },
-    {
-        type: 2,
-        target: 'cont_change',
-        body: '서비스의 변경'
-    },
-    {
-        type: 2,
-        target: 'cont_hear',
-        body: '사용자의 의견'
-    },
-    {
-        type: 2,
-        target: 'cont_alert',
-        body: '약관의 변경'
-    },
-]
+export const TermsNavList = (closeIfModal: any) => {
+    return <>
+        <ListLink body="약관" to="cont_index" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="인삿말" to="cont_welcome" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="서비스" to="cont_services" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="계정" to="cont_account" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="콘텐츠" to="cont_contents" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="개인정보 보호" to="cont_userdata" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="타인 존중" to="cont_otherright" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="금지 사항" to="cont_caution" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="서비스의 제한" to="cont_stop" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="NULL의 책임" to="cont_response" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="서비스의 변경" to="cont_change" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="사용자의 의견" to="cont_hear" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="약관의 변경'" to="cont_alert" onClick={closeIfModal} type={LinkType.js}/>
+    </>
+}
 
-export const UserDataNavList = [
-    {
-        type: 2,
-        target: 'cont_index',
-        body: '개인정보 처리방침'
-    },
-    {
-        type: 2,
-        target: 'cont_why',
-        body: '개인정보처리방침의 의의'
-    },
-    {
-        type: 2,
-        target: 'cont_collect',
-        body: '수집하는 개인정보'
-    },
-    {
-        type: 2,
-        target: 'cont_usage',
-        body: '수집한 개인정보의 이용'
-    },
-    {
-        type: 2,
-        target: 'cont_give',
-        body: '개인정보의 제공 및 위탁'
-    },
-    {
-        type: 2,
-        target: 'cont_destroy',
-        body: '개인정보의 파기'
-    },
-    {
-        type: 2,
-        target: 'cont_right',
-        body: '이용자의 권리와 행사 방법'
-    },
-    {
-        type: 2,
-        target: 'cont_effort',
-        body: '개인정보보호를 위한 NULL의 노력'
-    },
-    {
-        type: 2,
-        target: 'cont_who',
-        body: '담당자 안내'
-    },
-    {
-        type: 2,
-        target: 'cont_where',
-        body: '개인정보처리방침의 적용 범위'
-    },
-    {
-        type: 2,
-        target: 'cont_alert',
-        body: '개정 전 고지 의무'
-    },
-]
+export const UserDataNavList = (closeIfModal: any) => {
+    return <>
+        <ListLink body="개인정보 처리방침" to="cont_index" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="개인정보처리방침의 의의" to="cont_why" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="수집하는 개인정보" to="cont_collect" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="수집한 개인정보의 이용" to="cont_usage" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="개인정보의 제공 및 위탁" to="cont_give" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="개인정보의 파기" to="cont_destroy" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="이용자의 권리와 행사 방법" to="cont_right" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="개인정보보호를 위한 NULL의 노력" to="cont_effort" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="담당자 안내" to="cont_who" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="개인정보처리방침의 적용 범위" to="cont_where" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="개정 전 고지 의무" to="cont_alert" onClick={closeIfModal} type={LinkType.js}/>
+    </>
+}
 
-export const OpensourceNavList = [
-    {
-        type: 2,
-        target: 'cont_mdc',
-        body: 'Material Components for the web'
-    },
-    {
-        type: 2,
-        target: 'cont_react',
-        body: 'React'
-    },
-    {
-        type: 2,
-        target: 'cont_quaggaJS',
-        body: 'quaggaJS'
-    },
-    {
-        type: 2,
-        target: 'cont_icons',
-        body: 'Google Material Design Icons'
-    },
-]
+export const OpensourceNavList = (closeIfModal: any) => {
+    return <>
+        <ListLink body="Material Components for the web" to="cont_mdc" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="React" to="cont_react" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="quaggaJS" to="cont_quaggaJS" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="Google Material Design Icons" to="cont_icons" onClick={closeIfModal} type={LinkType.js}/>
+    </>
+}
 
 
-function Navbar(props: { list: { type: number, target: string, body: string }[], accountInfo: token }) {
+function Navbar(props: { list?: any, accountInfo: token }) {
     const [drawerOpen, setDrawerOpen] = React.useState(window.innerWidth > 760)
     const [accountMenuOpen, setAccountMenuOpen] = React.useState(false)
     const closeIfModal = (() => {
@@ -219,7 +116,7 @@ function Navbar(props: { list: { type: number, target: string, body: string }[],
         <TopAppBar fixed style={{zIndex: 10}}>
             <TopAppBarRow>
                 <TopAppBarSection alignStart>
-                    {(props.list.length > 0) ?
+                    {(props.list) ?
                         <TopAppBarNavigationIcon icon="menu" onClick={() => setDrawerOpen(!drawerOpen)}/> : <></>}
                     <TopAppBarTitle><Link to="/" style={{textDecoration: 'none', color: 'white'}}>IASA
                         Portal</Link></TopAppBarTitle>
@@ -246,7 +143,7 @@ function Navbar(props: { list: { type: number, target: string, body: string }[],
         <TopAppBarFixedAdjust/>
         <Theme use={['background', 'textPrimaryOnDark']} wrap>
             <Drawer dismissible={window.innerWidth > 760} modal={window.innerWidth <= 760}
-                    open={drawerOpen && (props.list.length > 0)}
+                    open={drawerOpen && props.list}
                     onClose={() => setDrawerOpen(false)} style={{position: 'fixed'}}>
                 {props?.accountInfo?.id ? <DrawerHeader>
                     <DrawerTitle>
@@ -268,11 +165,7 @@ function Navbar(props: { list: { type: number, target: string, body: string }[],
                 </DrawerHeader> : <></>}
                 <DrawerContent>
                     <List>
-                        {
-                            props.list.map((el) => {
-                                return <ListLink body={el.body} to={el.target} onClick={closeIfModal} type={el.type}/>
-                            })
-                        }
+                        {props.list ? props.list(closeIfModal) : <></>}
                     </List>
                 </DrawerContent>
             </Drawer>
@@ -292,31 +185,40 @@ function Footer() {
             <br/>
             <Grid>
                 <GridRow>
-                    <GridCell desktop={4} tablet={3} phone={1}>
-                        <IconButton icon="facebook" tag="a" target="_blank"
-                                    href="//www.facebook.com/인천과학예술영재학교-정보동아리-NULL-115441743332161"/>
-                    </GridCell>
-                    <GridCell desktop={4} tablet={2} phone={2}>
-                        <IconButton icon="mail" tag="a" href="mailto:null@iasa.kr"/>
-                    </GridCell>
-                    <GridCell desktop={4} tablet={3} phone={1}>
-                        <IconButton icon="call" tag="a" href="tel:010-3193-6628"/>
-                    </GridCell>
-                </GridRow>
-                <br/>
-                <br/>
-                <GridRow>
-                    <GridCell desktop={3} tablet={2} phone={2}>
-                        <Link style={{color: 'white', textDecoration: 'none'}} to="/terms">이용약관</Link>
-                    </GridCell>
-                    <GridCell desktop={3} tablet={2} phone={2}>
-                        <Link style={{color: 'white', textDecoration: 'none'}} to="/userdata">개인정보 처리방침</Link>
-                    </GridCell>
-                    <GridCell desktop={3} tablet={2} phone={2}>
-                        <Link style={{color: 'white', textDecoration: 'none'}} to="/opensource">오픈소스</Link>
-                    </GridCell>
-                    <GridCell desktop={3} tablet={2} phone={2}>
-                        <a style={{color: 'white', textDecoration: 'none'}} href="//docs.iasa.kr">OpenAPI</a>
+                    <GridCell desktop={3} tablet={1} phone={0}/>
+                    <GridCell desktop={6} tablet={6} phone={4}>
+                        <Grid>
+                            <GridRow>
+                                <GridCell desktop={4} tablet={3} phone={1}>
+                                    <IconButton icon="facebook" tag="a" target="_blank"
+                                                href="//www.facebook.com/인천과학예술영재학교-정보동아리-NULL-115441743332161"/>
+                                </GridCell>
+                                <GridCell desktop={4} tablet={2} phone={2}>
+                                    <IconButton icon="mail" tag="a" href="mailto:null@iasa.kr"/>
+                                </GridCell>
+                                <GridCell desktop={4} tablet={3} phone={1}>
+                                    <IconButton icon="call" tag="a" href="tel:010-3193-6628"/>
+                                </GridCell>
+                            </GridRow>
+                            <br/>
+                            <br/>
+                            <GridRow>
+                                <GridCell desktop={3} tablet={2} phone={2}>
+                                    <Link style={{color: 'white', textDecoration: 'none'}} to="/terms">이용약관</Link>
+                                </GridCell>
+                                <GridCell desktop={3} tablet={2} phone={2}>
+                                    <Link style={{color: 'white', textDecoration: 'none'}} to="/userdata">개인정보
+                                        처리방침</Link>
+                                </GridCell>
+                                <GridCell desktop={3} tablet={2} phone={2}>
+                                    <Link style={{color: 'white', textDecoration: 'none'}} to="/opensource">오픈소스</Link>
+                                </GridCell>
+                                <GridCell desktop={3} tablet={2} phone={2}>
+                                    <a style={{color: 'white', textDecoration: 'none'}}
+                                       href="//docs.iasa.kr">OpenAPI</a>
+                                </GridCell>
+                            </GridRow>
+                        </Grid>
                     </GridCell>
                 </GridRow>
             </Grid>
@@ -351,12 +253,12 @@ class AppContentWrapper extends React.Component<any, {}> {
     }
 }
 
-export function MainView(props: { appCont: JSX.Element, navList?: { type: number, target: string, body: string }[], accountInfo: token }) {
+export function MainView(props: { appCont: JSX.Element, navList?: any, accountInfo: token }) {
     let appCont = <AppContentWrapper appCont={props.appCont}/>
     let headerHeight = 48, footerHeight = 100
     if (document.querySelector('header')) headerHeight = document.querySelector('header').offsetHeight
     if (document.querySelector('footer')) footerHeight = document.querySelector('footer').offsetHeight
-    if (!props.navList) props.navList = []
+    if (!props.navList) props.navList = undefined
     const forceUpdate = useForceUpdate()
     document.addEventListener('load', () => {
         if (document.querySelector('header')) headerHeight = document.querySelector('header').offsetHeight
@@ -368,6 +270,7 @@ export function MainView(props: { appCont: JSX.Element, navList?: { type: number
         <DrawerAppContent
             style={{
                 minHeight: `calc(100vh - ${headerHeight + footerHeight}px)`,
+                maxWidth: '1440px',
                 transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
             }}>
             {appCont}

@@ -1,10 +1,8 @@
 import {Link} from "react-router-dom";
-import {ListItem} from "@rmwc/list"
+import {ListItem, ListItemText, ListItemGraphic} from "@rmwc/list"
 import * as React from "react"
 import {useState} from "react"
 import {MenuItem} from '@rmwc/menu'
-
-const {AnchorLink} = require('react-anchor-link-smooth-scroll')
 
 export enum LinkType {
     a = 1,
@@ -12,20 +10,37 @@ export enum LinkType {
     link
 }
 
-export function ListLink(props: { body: string, to: string, onClick?: any, type?: LinkType }) {
-    if (props.type === LinkType.a) return <a style={{textDecoration: 'none', color: 'black', whiteSpace: 'nowrap'}}
-                                             href={props.to}
-                                             onClick={props.onClick}><ListItem
-        activated={props.to === location.pathname}>{props.body}</ListItem></a>
+export function ListLink(props: { body: string, to: string, onClick?: any, type?: LinkType, icon?: string }) {
+    if (props.type === LinkType.a)
+        return <a style={{textDecoration: 'none', color: 'black', whiteSpace: 'nowrap'}} href={props.to}
+                  onClick={props.onClick}>
+            <ListItem activated={props.to === location.pathname}>
+                {props.icon ? <ListItemGraphic icon={props.icon}/> : <></>}
+                <ListItemText>
+                    {props.body}
+                </ListItemText>
+            </ListItem>
+        </a>
     else if (props.type === LinkType.js) {
         return <ListItem onClick={() => {
             // @ts-ignore
             scrollObj.scroll({el: document.getElementById(props.to), margin: 80}, 500)
             props.onClick()
-        }} activated={props.to === location.pathname}>{props.body}</ListItem>
+        }} activated={props.to === location.pathname}>
+            {props.icon ? <ListItemGraphic icon={props.icon}/> : <></>}
+            <ListItemText>
+                {props.body}
+            </ListItemText>
+        </ListItem>
     } else return <Link style={{textDecoration: 'none', color: 'black', whiteSpace: 'nowrap'}} to={props.to}
-                        onClick={props.onClick}><ListItem
-        activated={props.to === location.pathname}>{props.body}</ListItem></Link>
+                        onClick={props.onClick}>
+        <ListItem activated={props.to === location.pathname}>
+            {props.icon ? <ListItemGraphic icon={props.icon}/> : <></>}
+            <ListItemText>
+                {props.body}
+            </ListItemText>
+        </ListItem>
+    </Link>
 }
 
 export function MenuLink(props: { body: string, to: string, onClick?: any, type?: LinkType }) {
@@ -58,4 +73,9 @@ export function LoremIpsum(props: { count: number }) {
 export function useForceUpdate() {
     const [value, setValue] = useState(0)
     return () => setValue(value => ++value)
+}
+
+export function BrIfMobile() {
+    if (window.innerWidth <= 760) return <br/>
+    return <></>
 }

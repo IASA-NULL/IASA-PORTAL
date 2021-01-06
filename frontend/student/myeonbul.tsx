@@ -16,14 +16,16 @@ import {TextField} from '@rmwc/textfield'
 import {Grid, GridCell, GridRow} from '@rmwc/grid'
 import {Menu, MenuSurfaceAnchor, MenuItem} from '@rmwc/menu'
 import {ListDivider} from '@rmwc/list'
-
-import {MyeonbulRequest, MyeonbulResponse, MyeonbulResponseOne} from "../../scheme/api/myeonbul"
-import {teacher, currentTeacherList} from '../../scheme/teacher/teacher'
-import teacherList from "../../scheme/teacher/2021/list"
 import {createSnackbarQueue, SnackbarQueue} from "@rmwc/snackbar"
 
+import {MyeonbulResponse, MyeonbulResponseOne} from "../../scheme/api/myeonbul"
+import {teacher, currentTeacherList} from '../../scheme/teacher/teacher'
+import teacherList from "../../scheme/teacher/2021/list"
+import {token} from "../../scheme/api/auth"
+import {BrIfMobile} from "../util";
+
 interface MyeonbulProps {
-    data: MyeonbulRequest
+    data: token
 }
 
 interface MyeonbulState {
@@ -133,6 +135,7 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
         </DataTableRow>
         return <div>
             <Typography use="headline3">면불</Typography>
+            <BrIfMobile/>
             <Typography use="subtitle1" style={{marginLeft: '10px'}}>면불을 신청하거나 선생님의 승인 여부를 확인할 수
                 있어요.</Typography>
             <br/>

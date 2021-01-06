@@ -20,12 +20,15 @@ import {
 } from "./mainview"
 import {LoremIpsum} from "./util"
 import MyeonbulStudent from "./student/myeonbul"
+import PenaltyStudent from "./student/penalty"
 import Meal from "./common/meal"
 import Terms from "./common/terms"
 import Userdata from "./common/userdata"
 import Opensource from "./common/opensource"
 import NotFound from "./common/404"
 import About from "./noauth/about"
+import Music from './student/music'
+import {Program_Ip} from "./student/program/ip";
 
 
 const lightTheme = {
@@ -107,79 +110,93 @@ class App extends React.Component<any, IState> {
         if (this.state?.data?.permission === Permission.student) {
             mainView = <Switch>
                 <Route exact path="/">
-                    <MainView accountInfo={this.state.data}  navList={DefaultStudentNavList}
+                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList}
                               appCont={<LoremIpsum count={50}/>}/>
                 </Route>
+
                 <Route path="/myeonbul">
-                    <MainView accountInfo={this.state.data}  navList={DefaultStudentNavList}
-                              appCont={<MyeonbulStudent data={{token: '', request: {type: '', uid: 1}}}/>}/>
+                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList}
+                              appCont={<MyeonbulStudent data={this.state?.data}/>}/>
                 </Route>
-                <Route path="/meal">
-                    <MainView accountInfo={this.state.data}  navList={DefaultStudentNavList}
-                              appCont={<Meal/>}/>
+                <Route path="/music">
+                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList} appCont={<Music/>}/>
                 </Route>
 
+                <Route path="/meal">
+                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList} appCont={<Meal/>}/>
+                </Route>
+                <Route path="/penalty">
+                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList}
+                              appCont={<PenaltyStudent data={this.state?.data}/>}/>
+                </Route>
+
+
                 <Route path="/terms">
-                    <MainView accountInfo={this.state.data}  navList={TermsNavList}
-                              appCont={<Terms/>}/>
+                    <MainView accountInfo={this.state.data} navList={TermsNavList} appCont={<Terms/>}/>
                 </Route>
                 <Route path="/userdata">
-                    <MainView accountInfo={this.state.data}  navList={UserDataNavList}
-                              appCont={<Userdata/>}/>
+                    <MainView accountInfo={this.state.data} navList={UserDataNavList} appCont={<Userdata/>}/>
                 </Route>
                 <Route path="/opensource">
-                    <MainView accountInfo={this.state.data}  navList={OpensourceNavList}
-                              appCont={<Opensource/>}/>
+                    <MainView accountInfo={this.state.data} navList={OpensourceNavList} appCont={<Opensource/>}/>
+                </Route>
+
+
+                <Route path="/program/ip">
+                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList} appCont={<Program_Ip/>}/>
                 </Route>
 
                 <Route>
-                    <MainView accountInfo={this.state.data}  navList={DefaultStudentNavList}
-                              appCont={<NotFound/>}/>
+                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList} appCont={<NotFound/>}/>
                 </Route>
             </Switch>
         } else if (this.state?.data?.permission === Permission.teacher) {
             mainView = <Switch>
                 <Route path="/meal">
-                    <MainView accountInfo={this.state.data}  navList={DefaultStudentNavList}
+                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList}
                               appCont={<Meal/>}/>
                 </Route>
 
                 <Route path="/terms">
-                    <MainView accountInfo={this.state.data}  navList={TermsNavList}
+                    <MainView accountInfo={this.state.data} navList={TermsNavList}
                               appCont={<Terms/>}/>
                 </Route>
                 <Route path="/userdata">
-                    <MainView accountInfo={this.state.data}  navList={UserDataNavList}
+                    <MainView accountInfo={this.state.data} navList={UserDataNavList}
                               appCont={<Userdata/>}/>
                 </Route>
                 <Route path="/opensource">
-                    <MainView accountInfo={this.state.data}  navList={OpensourceNavList}
+                    <MainView accountInfo={this.state.data} navList={OpensourceNavList}
                               appCont={<Opensource/>}/>
                 </Route>
 
+                <Route path="/program/ip">
+                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList} appCont={<Program_Ip/>}/>
+                </Route>
+
                 <Route>
-                    <MainView accountInfo={this.state.data}  navList={DefaultTeacherNavList}
-                              appCont={<NotFound/>}/>
+                    <MainView accountInfo={this.state.data} navList={DefaultTeacherNavList} appCont={<NotFound/>}/>
                 </Route>
             </Switch>
         } else if (this.state?.data?.permission === Permission.admin) {
             mainView = <Switch>
                 <Route path="/terms">
-                    <MainView accountInfo={this.state.data}  navList={TermsNavList}
-                              appCont={<Terms/>}/>
+                    <MainView accountInfo={this.state.data} navList={TermsNavList} appCont={<Terms/>}/>
                 </Route>
                 <Route path="/userdata">
-                    <MainView accountInfo={this.state.data}  navList={UserDataNavList}
-                              appCont={<Userdata/>}/>
+                    <MainView accountInfo={this.state.data} navList={UserDataNavList} appCont={<Userdata/>}/>
                 </Route>
                 <Route path="/opensource">
-                    <MainView accountInfo={this.state.data}  navList={OpensourceNavList}
-                              appCont={<Opensource/>}/>
+                    <MainView accountInfo={this.state.data} navList={OpensourceNavList} appCont={<Opensource/>}/>
+                </Route>
+
+
+                <Route path="/program/ip">
+                    <MainView accountInfo={this.state.data} appCont={<Program_Ip/>}/>
                 </Route>
 
                 <Route>
-                    <MainView accountInfo={this.state.data}  navList={DefaultStudentNavList}
-                              appCont={<NotFound/>}/>
+                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList} appCont={<NotFound/>}/>
                 </Route>
             </Switch>
         } else if (this.state?.data?.permission === Permission.none) {
@@ -189,16 +206,18 @@ class App extends React.Component<any, IState> {
                 </Route>
 
                 <Route path="/terms">
-                    <MainView accountInfo={this.state.data}  navList={TermsNavList}
-                              appCont={<Terms/>}/>
+                    <MainView accountInfo={this.state.data} navList={TermsNavList} appCont={<Terms/>}/>
                 </Route>
                 <Route path="/userdata">
-                    <MainView accountInfo={this.state.data}  navList={UserDataNavList}
-                              appCont={<Userdata/>}/>
+                    <MainView accountInfo={this.state.data} navList={UserDataNavList} appCont={<Userdata/>}/>
                 </Route>
                 <Route path="/opensource">
-                    <MainView accountInfo={this.state.data}  navList={OpensourceNavList}
-                              appCont={<Opensource/>}/>
+                    <MainView accountInfo={this.state.data} navList={OpensourceNavList} appCont={<Opensource/>}/>
+                </Route>
+
+
+                <Route path="/program/ip">
+                    <MainView accountInfo={this.state.data} appCont={<Program_Ip/>}/>
                 </Route>
 
                 <Route>

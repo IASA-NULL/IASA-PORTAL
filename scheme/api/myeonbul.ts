@@ -2,7 +2,6 @@ import {teacher} from "../teacher/teacher";
 import commonApi from "./commonApi";
 
 export interface MyeonbulRequest {
-    token: string
     request: {
         type: string,
         uid: number
