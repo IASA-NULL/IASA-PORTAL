@@ -20,6 +20,7 @@ import {Menu, MenuItem, MenuSurfaceAnchor} from '@rmwc/menu'
 
 import {ListLink, useForceUpdate, LinkType} from './util'
 import {token} from "../scheme/api/auth"
+import createURL from "../scheme/url";
 
 
 export const DefaultStudentNavList = (closeIfModal: any) => {
@@ -40,7 +41,7 @@ export const DefaultStudentNavList = (closeIfModal: any) => {
                 <ListLink body="급식" to="/meal" onClick={closeIfModal} type={LinkType.link} icon="fastfood"/>
             </div>
         </CollapsibleList>
-        <CollapsibleList defaultOpen={['/share', '/program/nac', '/program/ip'].includes(location.pathname)}
+        <CollapsibleList defaultOpen={['/program/nac', '/program/ip', '/program/client'].includes(location.pathname)}
                          handle={<SimpleListItem text="프로그램" graphic="folder" metaIcon="chevron_right"/>}>
             <div style={{paddingLeft: '20px'}}>
                 <ListLink body="인터넷 연결 도구" to="/program/nac" onClick={closeIfModal} type={LinkType.link}
@@ -113,7 +114,8 @@ function Navbar(props: { list?: any, accountInfo: token }) {
         if (window.innerWidth <= 760) setDrawerOpen(false)
     })
     return <>
-        <TopAppBar fixed style={{zIndex: 10}}>
+        <TopAppBar fixed
+                   style={{zIndex: 10, boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
             <TopAppBarRow>
                 <TopAppBarSection alignStart>
                     {(props.list) ?
@@ -151,7 +153,7 @@ function Navbar(props: { list?: any, accountInfo: token }) {
                           className="rmwc-icon rmwc-icon--component material-icons rmwc-avatar rmwc-avatar--xlarge rmwc-avatar--has-image">
                         <div className="rmwc-avatar__icon"
                              style={{
-                                 backgroundImage: `url("${props?.accountInfo?.avatarSrc}")`,
+                                 backgroundImage: `url("${createURL('api', 'account', 'avatar')}")`,
                                  backgroundSize: 'cover',
                                  width: '50px',
                                  height: '50px',
@@ -175,7 +177,7 @@ function Navbar(props: { list?: any, accountInfo: token }) {
 
 function Footer() {
     return <Theme use={['primaryBg', 'onPrimary']} wrap>
-        <footer style={{position: 'relative', width: '100vw', zIndex: 7, textAlign: 'center'}}>
+        <footer style={{position: 'relative', width: '100%', zIndex: 7, textAlign: 'center'}}>
             <br/>
             <br/>
             <Typography use="headline4">IASA PORTAL</Typography>
@@ -269,12 +271,15 @@ export function MainView(props: { appCont: JSX.Element, navList?: any, accountIn
         <Navbar list={props.navList} accountInfo={props.accountInfo}/>
         <DrawerAppContent
             style={{
-                minHeight: `calc(100vh - ${headerHeight + footerHeight}px)`,
-                maxWidth: '1440px',
                 transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
             }}>
-            {appCont}
+            <div style={{
+                minHeight: `calc(100vh - ${headerHeight + footerHeight}px)`,
+                maxWidth: '1440px'
+            }}>
+                {appCont}
+            </div>
+            <Footer/>
         </DrawerAppContent>
-        <Footer/>
     </>
 }

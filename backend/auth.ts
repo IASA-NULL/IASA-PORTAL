@@ -19,12 +19,12 @@ const router = express.Router()
 
 router.use("*", (req, res, next) => {
     try {
-        req.auth = jwt.verify(req.cookies.auth, getSecret()) as token
+        req.auth = jwt.verify(req.cookies.auth, getSecret('token')) as token
         if (req.auth.expire < Date.now() + reSignTime) {
             res.cookie('auth', jwt.sign({
                 ...req.auth,
                 expire: Date.now() + maxTime
-            }, getSecret()), {maxAge: maxTime, httpOnly: true})
+            }, getSecret('token')), {maxAge: maxTime, httpOnly: true})
         } else if (req.auth.expire < Date.now()) {
             req.auth = undefined
             res.cookie('auth', '', {maxAge: -1, httpOnly: true})

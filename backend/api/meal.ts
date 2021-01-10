@@ -3,6 +3,7 @@ import nodeFetch from 'node-fetch'
 
 import db from '../util/db'
 import createResponse from "../createResponse"
+import express from "express"
 
 const fetch = require('fetch-cookie')(nodeFetch)
 
@@ -12,13 +13,13 @@ function isHangul(ch: string) {
 
 }
 
-export default function getMeal(target: mealTime) {
+function getMeal(target: mealTime) {
     return new Promise(async (resolve, reject) => {
         try {
-            if (await db.get('meal', mealTimeToString(target))) {
+            if (await db.get('meal', 'time', mealTimeToString(target))) {
                 resolve({
                     success: true,
-                    data: await db.get('meal', mealTimeToString(target))
+                    data: await db.get('meal', 'time', mealTimeToString(target))
                 })
                 return
             }
@@ -152,7 +153,10 @@ export default function getMeal(target: mealTime) {
                     kcal: kcal
                 })
                 if (allLoaded) {
-                    db.set('meal', mealTimeToString(target), res.data).catch()
+                    db.set('meal', {
+                        ...res.data,
+                        time: mealTimeToString(target)
+                    }).catch()
                 }
                 resolve(res)
                 return
@@ -165,3 +169,17 @@ export default function getMeal(target: mealTime) {
         resolve(createResponse(false, '급식 정보가 없어요.'))
     })
 }
+
+const router = express.Router()
+
+router.post('/', (req, res, next) => {
+    getMeal(req.body).then((mealData: MealResponse) => {
+        if (!mealData.success) res.status(404)
+        res.send(mealData)
+    }).catch((e) => {
+        res.status(500)
+        res.send(createResponse(false, "급식 정보를 불러올 수 없어요."))
+    })
+})
+
+export default router

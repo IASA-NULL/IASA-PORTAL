@@ -2,7 +2,7 @@ import express from 'express'
 
 import {Permission, token} from "../../scheme/api/auth"
 import createResponse from "../createResponse"
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"
 import getSecret from "../util/secret"
 
 const router = express.Router()

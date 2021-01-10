@@ -109,6 +109,7 @@ export interface Energy {
 
 export interface MealResponse extends commonApi {
     data: {
+        time: mealTime,
         menu: Menu[],
         image?: string,
         score?: number,

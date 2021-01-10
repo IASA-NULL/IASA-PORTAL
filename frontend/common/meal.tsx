@@ -184,7 +184,7 @@ class Meal extends React.Component<any, MearContainerState> {
         this.notify = qu.notify
 
         if (document.documentElement.offsetWidth < 700) this.elementPerPage = 1
-        else if (document.documentElement.offsetWidth < 1020) this.elementPerPage = 2
+        else if (document.documentElement.offsetWidth < 1090) this.elementPerPage = 2
         else if (document.documentElement.offsetWidth < 1440) this.elementPerPage = 3
         else this.elementPerPage = 4
 

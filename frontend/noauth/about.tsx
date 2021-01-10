@@ -120,7 +120,6 @@ function About(props: RouteComponentProps) {
                             </GridCell>
                         </GridRow>
                     </Grid>
-                    <div style={{height: '20px'}}/>
                 </footer>
             </div>
         </div>

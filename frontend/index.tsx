@@ -153,7 +153,7 @@ class App extends React.Component<any, IState> {
         } else if (this.state?.data?.permission === Permission.teacher) {
             mainView = <Switch>
                 <Route path="/meal">
-                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList}
+                    <MainView accountInfo={this.state.data} navList={DefaultTeacherNavList}
                               appCont={<Meal/>}/>
                 </Route>
 
@@ -171,7 +171,7 @@ class App extends React.Component<any, IState> {
                 </Route>
 
                 <Route path="/program/ip">
-                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList} appCont={<Program_Ip/>}/>
+                    <MainView accountInfo={this.state.data} navList={DefaultTeacherNavList} appCont={<Program_Ip/>}/>
                 </Route>
 
                 <Route>

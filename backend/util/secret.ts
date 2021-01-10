@@ -1,10 +1,10 @@
 import fs from "fs"
-import path from "path";
+import getPath from "./getPath"
 
-let secret: string
+let secret = Object()
 
-export default function getSecret() {
-    if (secret) return secret
-    secret = fs.readFileSync(path.join(__dirname, '..', '..', '..', 'secret')).toString()
-    return secret
+export default function getSecret(type: string) {
+    if (secret[type]) return secret[type]
+    secret[type] = fs.readFileSync(getPath('secret', type)).toString().trim()
+    return secret[type]
 }

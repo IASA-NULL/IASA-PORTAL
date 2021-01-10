@@ -1,35 +1,60 @@
 import * as MongoDB from 'mongodb'
+import getSecret from "./secret";
 
 let db: any
 
 function get_db() {
-    return new Promise<any>((resolve) => {
+    return new Promise<any>((resolve, reject) => {
         if (db) {
             resolve(db)
             return
         }
-        MongoDB.MongoClient.connect('mongodb://user:iasa2020!@localhost', (err, _db) => {
+        MongoDB.MongoClient.connect(`mongodb://portal:${getSecret('db')}@localhost:27017/?authSource=admin&readPreference=primary&appname=portal&ssl=false`, (err, _db) => {
+            if (err) {
+                reject()
+                return
+            }
             db = _db
             resolve(db)
         })
     })
 }
 
-async function get(collection: string, key: string) {
-    let db = await get_db()
-    return (await db.db('iasa_portal').collection(collection).findOne({id: key}))?.value
+async function get(collection: string, key: string, value: string) {
+    let db
+    try {
+        db = await get_db()
+        return (await db.db('iasa_portal').collection(collection).findOne({[key]: value}))
+    } catch (e) {
+        console.log(e)
+        return undefined
+    }
 }
 
-async function set(collection: string, key: string, value: any) {
-    let db = await get_db()
-    db.db('iasa_portal').collection(collection).insert({
-        id: key,
-        value: value
-    })
-    return true
+async function set(collection: string, data: any) {
+    let db
+    try {
+        db = await get_db()
+        db.db('iasa_portal').collection(collection).insert({data})
+        return true
+    } catch (e) {
+        return false
+    }
+}
+
+async function update(collection: string, key: string, value: string, data: any) {
+    let db
+    try {
+        db = await get_db()
+        db.db('iasa_portal').collection(collection).updateOne({[key]: value}, {$set: data}, {upsert: true})
+        return true
+    } catch (e) {
+        return false
+    }
 }
 
 export default {
     get: get,
-    set: set
+    set: set,
+    update: update
 }

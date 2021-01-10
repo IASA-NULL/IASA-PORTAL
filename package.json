@@ -9,6 +9,7 @@
     ]
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/compression": "^1.7.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.9",
@@ -40,6 +41,7 @@
   },
   "dependencies": {
     "assert": "^2.0.0",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
@@ -51,6 +53,7 @@
     "fetch-cookie": "^0.11.0",
     "form-data": "^3.0.0",
     "graphql": "^15.4.0",
+    "helmet": "^4.3.1",
     "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",

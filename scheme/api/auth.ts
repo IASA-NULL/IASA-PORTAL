@@ -11,6 +11,5 @@ export interface token {
     code: number,
     name: string,
     expire: number,
-    permission: Permission,
-    avatarSrc: string
+    permission: Permission
 }
