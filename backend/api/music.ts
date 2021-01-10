@@ -1,11 +1,13 @@
 import express from 'express'
 import fetch from 'node-fetch'
+import jwt from "jsonwebtoken"
+import _ from "lodash"
+
 
 import {Permission, token} from "../../scheme/api/auth"
 import createResponse from "../createResponse"
-import jwt from "jsonwebtoken"
 import getSecret from "../util/secret"
-import db from "../util/db";
+import db from "../util/db"
 
 
 function getMusicInfo(name: string, singer: string) {
@@ -42,7 +44,7 @@ router.post('/confirm', async (req, res, next) => {
 router.post('/register', async (req, res, next) => {
     const tomorrow = new Date()
     if (tomorrow.getHours() < 13) {
-        res.status(403)
+        res.status(412)
         res.send(createResponse(false, '아직 신청 시간이 되지 않았어요. 13시에 다시 시도하세요!'))
         return
     }
@@ -50,15 +52,21 @@ router.post('/register', async (req, res, next) => {
     let tomorrowStr = `${tomorrow.getFullYear()}_${tomorrow.getMonth() + 1}_${tomorrow.getDate()}`
     let musicList = (await db.get('music', 'date', tomorrowStr))?.musicList ?? []
     if (musicList.length >= 6) {
-        res.status(403)
+        res.status(412)
         res.send(createResponse(false, '아미 신청이 마감되었어요. 내일 다시 시도하세요!'))
+        return
+    }
+    if (_.find(musicList, {by: req.auth.id})) {
+        res.status(412)
+        res.send(createResponse(false, '하루에 한 곡만 신청할 수 있어요!'))
         return
     }
     musicList.push({
         name: req.body.name,
         singer: req.body.singer,
         yt: req.body.yt,
-        thumbnail: req.body.thumbnail
+        thumbnail: req.body.thumbnail,
+        by: req.auth.id
     })
     if (await db.update('music', 'date', tomorrowStr, {
         date: tomorrowStr,
@@ -78,9 +86,13 @@ router.get('/today', async (req, res, next) => {
         tomorrow.setDate(tomorrow.getDate() + 1)
         let todayStr = `${today.getFullYear()}_${today.getMonth() + 1}_${today.getDate()}`
         let tomorrowStr = `${tomorrow.getFullYear()}_${tomorrow.getMonth() + 1}_${tomorrow.getDate()}`
+        let todayList = ((await db.get('music', 'date', todayStr))?.musicList ?? []).map((el: any) => {
+            return _.filter(el, ['name', 'singer', 'yt', 'thumbnail'])
+        })
+        let tomorrowList = ((await db.get('music', 'date', tomorrowStr))?.musicList ?? [])
         res.send(createResponse({
-            today: (await db.get('music', 'date', todayStr))?.musicList ?? [],
-            tomorrow: (await db.get('music', 'date', tomorrowStr))?.musicList ?? []
+            today: todayList,
+            tomorrow: tomorrowList
         }))
     } catch (e) {
         res.status(500)
