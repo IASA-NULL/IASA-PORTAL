@@ -1,12 +1,16 @@
 import {teacher} from "../teacher/teacher";
 import commonApi from "./commonApi";
 
-export interface MyeonbulRequest {
-    request: {
-        type: string,
-        uid: number
-    }
+export enum MyeonbulRequestListType {
+    listByUser,
+    listByDate
 }
+
+export interface MyeonbulRequestList {
+    type: MyeonbulRequestListType
+}
+
+export type MyeonbulRequest = MyeonbulRequestList
 
 export interface MyeonbulResponseOne {
     timeRange: {

@@ -53,8 +53,18 @@ async function update(collection: string, key: string, value: string, data: any)
     }
 }
 
+async function directDB(collection: string) {
+    try {
+        db = await get_db()
+        return db.db('iasa_portal').collection(collection)
+    } catch (e) {
+        return false
+    }
+}
+
 export default {
     get: get,
     set: set,
-    update: update
+    update: update,
+    direct: directDB
 }

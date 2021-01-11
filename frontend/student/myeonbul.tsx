@@ -18,7 +18,7 @@ import {Menu, MenuSurfaceAnchor, MenuItem} from '@rmwc/menu'
 import {ListDivider} from '@rmwc/list'
 import {createSnackbarQueue, SnackbarQueue} from "@rmwc/snackbar"
 
-import {MyeonbulResponse, MyeonbulResponseOne} from "../../scheme/api/myeonbul"
+import {MyeonbulRequestListType, MyeonbulResponse, MyeonbulResponseOne} from "../../scheme/api/myeonbul"
 import {teacher, currentTeacherList} from '../../scheme/teacher/teacher'
 import teacherList from "../../scheme/teacher/2021/list"
 import {token} from "../../scheme/api/auth"
@@ -59,7 +59,9 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({})
+            body: JSON.stringify({
+                type: MyeonbulRequestListType.listByUser
+            })
         }).then(res => res.json()).then((res: MyeonbulResponse) => {
             if (res.success) {
                 this.setState({loaded: true, data: res})
