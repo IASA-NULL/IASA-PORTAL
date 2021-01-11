@@ -77,7 +77,7 @@ export const TermsNavList = (closeIfModal: any) => {
         <ListLink body="NULL의 책임" to="cont_response" onClick={closeIfModal} type={LinkType.js}/>
         <ListLink body="서비스의 변경" to="cont_change" onClick={closeIfModal} type={LinkType.js}/>
         <ListLink body="사용자의 의견" to="cont_hear" onClick={closeIfModal} type={LinkType.js}/>
-        <ListLink body="약관의 변경'" to="cont_alert" onClick={closeIfModal} type={LinkType.js}/>
+        <ListLink body="약관의 변경" to="cont_alert" onClick={closeIfModal} type={LinkType.js}/>
     </>
 }
 

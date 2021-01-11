@@ -53,4 +53,13 @@ router.get('/avatar', (req, res, next) => {
     res.sendFile(getPath('static', 'img', 'avatar.png'))
 })
 
+router.post('/signup/verify', (req, res, next) => {
+    if (req.body.code === '000000000000000000000000') {
+        res.send(createResponse({uid: 2019001}))
+    } else {
+        res.status(403)
+        res.send(createResponse(false, "코드가 올바르지 않아요."))
+    }
+})
+
 export default router

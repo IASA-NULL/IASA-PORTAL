@@ -2,6 +2,9 @@ import * as React from "react"
 import {TextField} from "@rmwc/textfield"
 import {Button} from "@rmwc/button"
 import {Icon} from '@rmwc/icon'
+import {Menu, MenuSurfaceAnchor, MenuItem} from "@rmwc/menu";
+import {LinkType, MenuLink} from "../util";
+import {Permission} from "../../scheme/api/auth";
 
 interface IProps {
     setState: any,
@@ -21,7 +24,8 @@ interface PasswordFormProps extends IProps {
 }
 
 interface IdFormState {
-    id: string
+    id: string,
+    showSignupMenu: boolean
 }
 
 interface PasswordFormState {
@@ -60,7 +64,7 @@ export class IdForm extends React.Component<IdFormProps, IdFormState> {
             <TextField style={{width: '100%'}} outlined label="아이디" disabled={!this.props.context.get('loaded')}
                        value={this.state?.id} onChange={this.handleChange.bind(this)} onKeyDown={(e) => {
                 if (e.key === 'Enter') this.props.next()
-            }}/>
+            }} invalid={!!errS}/>
             <br/>
             {errMessage}
             <div style={{clear: 'both', marginTop: '20px', marginBottom: '20px'}}>
@@ -69,9 +73,24 @@ export class IdForm extends React.Component<IdFormProps, IdFormState> {
             </div>
             <br/>
             <div style={{clear: 'both', marginTop: '30px', marginBottom: '30px'}}>
-                <Button style={{float: 'left'}} onClick={this.props.create}
-                        disabled={!this.props.context.get('loaded')}>계정
-                    만들기</Button>
+                <MenuSurfaceAnchor>
+                    <Menu open={this.state?.showSignupMenu}
+                          onClose={() => {
+                              this.setState({showSignupMenu: false})
+                          }}>
+                        <MenuItem onClick={() => {
+                            this.props.context.set('signupType', Permission.student)
+                            this.props.create()
+                        }}>학생</MenuItem>
+                        <MenuItem onClick={() => {
+                            this.props.context.set('signupType', Permission.teacher)
+                            this.props.create()
+                        }}>선생님</MenuItem>
+                    </Menu>
+                    <Button style={{float: 'left'}} onClick={() => {
+                        this.setState({showSignupMenu: !this.state?.showSignupMenu})
+                    }} disabled={!this.props.context.get('loaded')}>계정 만들기</Button>
+                </MenuSurfaceAnchor>
                 <Button style={{float: 'right'}} raised onClick={this.props.next}
                         disabled={!this.props.context.get('loaded')}>다음</Button>
             </div>
@@ -111,7 +130,7 @@ export class PasswordForm extends React.Component<PasswordFormProps, PasswordFor
             <TextField style={{width: '100%'}} outlined label="아이디" disabled={!this.props.context.get('loaded')}
                        value={this.state?.password} onChange={this.handleChange.bind(this)} onKeyDown={(e) => {
                 if (e.key === 'Enter') this.props.next()
-            }}/>
+            }} invalid={!!errS}/>
             <br/>
             {errMessage}
             <br/>

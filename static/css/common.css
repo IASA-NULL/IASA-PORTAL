@@ -237,3 +237,7 @@ a {
 .mdc-list--two-line .mdc-list-item__text {
     align-self: flex-start;
 }
+
+.mdc-list-item {
+    white-space: nowrap;
+}

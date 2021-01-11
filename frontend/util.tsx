@@ -79,3 +79,21 @@ export function BrIfMobile() {
     if (window.innerWidth <= 760) return <br/>
     return <></>
 }
+
+export function getCaretPosition(ctrl: any) {
+    return ctrl.selectionStart
+}
+
+
+export function setCaretPosition(ctrl: any, pos: number) {
+    if (ctrl.setSelectionRange) {
+        ctrl.focus()
+        ctrl.setSelectionRange(pos, pos)
+    } else if (ctrl.createTextRange) {
+        let range = ctrl.createTextRange()
+        range.collapse(true)
+        range.moveEnd('character', pos)
+        range.moveStart('character', pos)
+        range.select()
+    }
+}

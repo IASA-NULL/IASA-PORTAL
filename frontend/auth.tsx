@@ -17,10 +17,11 @@ import {LinkType, MenuLink} from "./util"
 
 import {IdForm, PasswordForm} from "./account/signin"
 import {FindID, FindPassword} from "./account/find"
-import {Signup} from "./account/signup"
-import {TextField} from "@rmwc/textfield";
-import createURL from "../scheme/url";
-import {main} from "ts-node/dist/bin";
+import {SignupCode, SignupFill} from "./account/signup"
+import {TextField} from "@rmwc/textfield"
+import createURL from "../scheme/url"
+import {main} from "ts-node/dist/bin"
+import {Permission} from "../scheme/api/auth"
 
 const lightTheme = {
     primary: '#5351db',
@@ -93,7 +94,10 @@ interface IState {
     }[],
 
     id: string,
-    password: string
+    password: string,
+
+    signupType: Permission,
+    signupCode: string
 }
 
 
@@ -119,8 +123,11 @@ class App extends React.Component<any, IState> {
                 this.next(<FindID setState={this.setState} isMobile={isMobile}
                                   context={context}/>, "아이디 찾기", "이메일을 입력하세요.")
             } create={
-                this.next(<Signup setState={this.setState} isMobile={isMobile}
-                                  context={context}/>, "가입하기", "계속하려면 NULL에 개인별로 부여되는 코드를 요청하세요.")
+                this.next(<SignupCode setState={this.setState} isMobile={isMobile}
+                                      context={context}
+                                      next={this.getCodeInfo(<SignupFill setState={this.setState} isMobile={isMobile}
+                                                                         context={context}/>)
+                                      }/>, "가입하기", "계속하려면 NULL에 개인별로 부여되는 코드를 요청하세요.")
             } context={context}/>]
         })
         this.setState({currentPage: 0, title: [{main: '로그인', sub: 'IASA PORTAL로 계속'}]})
@@ -142,7 +149,7 @@ class App extends React.Component<any, IState> {
 
     public next(form: JSX.Element, mainTitle: string, subTitle: string) {
         return () => {
-            this.setState({loaded: true})
+            this.setState({loaded: true, errMessage: ''})
             if (this.state.formList.length > this.state.currentPage + 1) {
                 this.setState({
                     formList: [...this.state.formList.slice(0, this.state.currentPage + 1), form],
@@ -187,6 +194,34 @@ class App extends React.Component<any, IState> {
                 })
             } else {
                 this.setState({errMessage: '아이디를 입력하세요.'})
+            }
+        }
+    }
+
+    public getCodeInfo(form: JSX.Element) {
+        return () => {
+            this.setState({errMessage: ''})
+            if (this.state?.signupCode) {
+                this.setState({loaded: false})
+                fetch(createURL('api', 'account', 'signup', 'verify'), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        code: this.state?.signupCode
+                    })
+                }).then(res => res.json()).then(res => {
+                    if (res.success) {
+                        this.next(form, "가입하기", "아래 내용을 채우세요.")()
+                    } else {
+                        this.setState({errMessage: res.message, loaded: true})
+                    }
+                }).catch(e => {
+                    this.setState({errMessage: '서버와 통신 중 오류가 발생했어요.'})
+                })
+            } else {
+                this.setState({errMessage: '코드를 입력하세요.'})
             }
         }
     }
