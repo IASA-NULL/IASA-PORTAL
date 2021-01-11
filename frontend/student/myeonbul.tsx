@@ -23,6 +23,7 @@ import {teacher, currentTeacherList} from '../../scheme/teacher/teacher'
 import teacherList from "../../scheme/teacher/2021/list"
 import {token} from "../../scheme/api/auth"
 import {BrIfMobile} from "../util";
+import createURL from "../../scheme/url";
 
 interface MyeonbulProps {
     data: token
@@ -34,7 +35,6 @@ interface MyeonbulState {
     teacherSelectOpened: boolean,
     selectedTeacher: teacher,
     teacherSearch: string,
-
 }
 
 class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
@@ -54,22 +54,17 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
 
     public refresh() {
         this.setState({loaded: false})
-
-        setTimeout(() => {
-            let tempData = {
-                success: true,
-                message: '',
-                //@ts-ignore
-                data: pdl
+        fetch(createURL('api', 'myeonbul', 'list'), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        }).then(res => res.json()).then((res: MyeonbulResponse) => {
+            if (res.success) {
+                this.setState({loaded: true, data: res})
             }
-            this.setState({loaded: true, data: tempData})
-        }, 500)
-
-        /*
-        fetch(CreateURL('api'))
-            .then(response => response.json())
-            .then(response => this.setState(response))
-        */
+        })
     }
 
     public register() {
