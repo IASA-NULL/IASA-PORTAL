@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
 html, body, #app {
     margin: 0;
     padding: 0;
@@ -242,4 +244,8 @@ a {
     box-shadow: none;
     border: #ddd 1px solid;
     overflow: hidden;
+}
+
+*:not(.rmwc-icon) {
+    font-family: 'Noto Sans KR' !important;
 }
