@@ -237,3 +237,9 @@ a {
 .mdc-list--two-line .mdc-list-item__text {
     align-self: flex-start;
 }
+
+.mdc-card {
+    box-shadow: none;
+    border: #ddd 1px solid;
+    overflow: hidden;
+}
