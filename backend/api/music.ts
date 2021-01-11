@@ -87,9 +87,11 @@ router.get('/today', async (req, res, next) => {
         let todayStr = `${today.getFullYear()}_${today.getMonth() + 1}_${today.getDate()}`
         let tomorrowStr = `${tomorrow.getFullYear()}_${tomorrow.getMonth() + 1}_${tomorrow.getDate()}`
         let todayList = ((await db.get('music', 'date', todayStr))?.musicList ?? []).map((el: any) => {
-            return _.filter(el, ['name', 'singer', 'yt', 'thumbnail'])
+            return _.pick(el, ['name', 'singer', 'yt', 'thumbnail'])
         })
-        let tomorrowList = ((await db.get('music', 'date', tomorrowStr))?.musicList ?? [])
+        let tomorrowList = ((await db.get('music', 'date', tomorrowStr))?.musicList ?? []).map((el: any) => {
+            return _.pick(el, ['name', 'singer', 'yt', 'thumbnail'])
+        })
         res.send(createResponse({
             today: todayList,
             tomorrow: tomorrowList
