@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "build/index.js",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/IASA-Null/IASA-PORTAL"
+  },
   "babel": {
     "presets": [
       "react"
@@ -61,9 +64,9 @@
     "morgan": "^1.10.0",
     "node-fetch": "^2.6.1",
     "node-sass": "^5.0.0",
-    "react": "^17.0.1",
+    "react": "^16.3.0",
     "react-anchor-link-smooth-scroll": "^1.0.12",
-    "react-dom": "^17.0.1",
+    "react-dom": "^16.3.0",
     "react-router-dom": "^5.2.0",
     "rmwc": "^6.1.4",
     "sass-loader": "^10.1.0",
