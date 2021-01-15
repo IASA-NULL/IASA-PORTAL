@@ -46,6 +46,7 @@ class NotFound extends React.Component<any, IState> {
                 icon: 'error_outline',
                 dismissIcon: true
             })
+            return
         }
         fetch(createURL('api', 'admin', 'update'), {
             method: 'POST',
