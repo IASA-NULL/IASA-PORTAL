@@ -1,5 +1,6 @@
 import express from 'express'
 import child_process from 'child_process'
+import fs from 'fs'
 
 import {Permission} from "../../scheme/api/auth"
 import createResponse from "../createResponse"
@@ -19,8 +20,15 @@ router.use((req, res, next) => {
 })
 
 router.post('/update', (req, res, next) => {
-    res.send(createResponse(true))
-    child_process.spawn('C:\\Util\\update_server', [req.body.branch], {detached: true, stdio: ['ignore', 'ignore', 'ignore']})
+    if (fs.existsSync('C:\\Server\\lock_build')) {
+        res.send(createResponse(false, '사이트가 이미 빌드 중이에요.'))
+    } else {
+        res.send(createResponse(true))
+        child_process.spawn('C:\\Util\\update_server', [req.body.branch], {
+            detached: true,
+            stdio: ['ignore', 'ignore', 'ignore']
+        })
+    }
 })
 
 export default router
