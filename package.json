@@ -29,6 +29,7 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/serve-favicon": "^2.5.2",
     "@types/siema": "^1.4.6",
+    "@types/uuid": "^8.3.0",
     "babel-register": "^6.26.0",
     "cross-env": "^7.0.3",
     "css-loader": "^5.0.1",
@@ -74,7 +75,8 @@
     "sass-loader": "^10.1.0",
     "serve-favicon": "^2.5.0",
     "siema": "^1.5.1",
-    "ts-graphql": "^7.0.0"
+    "ts-graphql": "^7.0.0",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "build": "tsc && webpack",

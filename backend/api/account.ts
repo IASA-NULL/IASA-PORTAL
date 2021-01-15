@@ -8,7 +8,8 @@ import jwt from "jsonwebtoken";
 import getSecret from "../util/secret"
 import bcrypt from 'bcrypt'
 import _ from 'lodash'
-import {userInfo} from "os";
+import {userInfo} from "os"
+import getServerToken from '../util/sid'
 
 const maxTime = 1000 * 60 * 60 * 24 * 7
 const router = express.Router()
@@ -36,7 +37,8 @@ router.post('/signin', async (req, res, next) => {
         if (result) {
             res.cookie('auth', jwt.sign({
                 ..._.pick(accountInfo, ['name', 'id', 'uid', 'code', 'permission']),
-                expire: Date.now() + maxTime
+                expire: Date.now() + maxTime,
+                sid: getServerToken()
             } as token, getSecret('token')), {maxAge: maxTime, httpOnly: true})
             res.send(createResponse(true))
         } else {

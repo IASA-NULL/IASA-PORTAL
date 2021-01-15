@@ -11,5 +11,6 @@ export interface token {
     code: number,
     name: string,
     expire: number,
-    permission: Permission
+    permission: Permission,
+    sid: string
 }

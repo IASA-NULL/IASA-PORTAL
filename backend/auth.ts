@@ -2,7 +2,8 @@ import express, {response} from 'express'
 import jwt from 'jsonwebtoken'
 import {Permission, token} from "../scheme/api/auth"
 import getSecret from "./util/secret"
-import path from "path";
+import path from "path"
+import getServerToken from './util/sid'
 
 const maxTime = 1000 * 60 * 60 * 24 * 7
 const reSignTime = 1000 * 60 * 60 * 24 * 3
@@ -18,9 +19,13 @@ declare global {
 const router = express.Router()
 
 router.use("*", (req, res, next) => {
+    let sid = getServerToken()
     try {
         req.auth = jwt.verify(req.cookies.auth, getSecret('token')) as token
-        if (req.auth.expire < Date.now() + reSignTime) {
+        if (req.auth.sid !== sid) {
+            req.auth = undefined
+            res.cookie('auth', '', {maxAge: -1, httpOnly: true})
+        } else if (req.auth.expire < Date.now() + reSignTime) {
             res.cookie('auth', jwt.sign({
                 ...req.auth,
                 expire: Date.now() + maxTime
