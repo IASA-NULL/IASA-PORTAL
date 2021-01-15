@@ -24,7 +24,7 @@ router.post('/update', (req, res, next) => {
         res.send(createResponse(false, '사이트가 이미 빌드 중이에요.'))
     } else {
         res.send(createResponse(true))
-        child_process.spawn('C:\\Util\\update_server', [req.body.branch], {
+        child_process.spawn('cmd', ['/c', 'C:\\Util\\update_server.bat', req.body.branch], {
             detached: true,
             stdio: ['ignore', 'ignore', 'ignore']
         })
