@@ -11,6 +11,6 @@ export function setServerState(key: string, value: any) {
 }
 
 export function getServerToken() {
-    if (!serverState) setServerState('sid', uuid())
+    if (!getServerState('sid')) setServerState('sid', uuid())
     return getServerState('sid')
 }
