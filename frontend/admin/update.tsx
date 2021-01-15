@@ -39,7 +39,7 @@ class NotFound extends React.Component<any, IState> {
     }
 
     public update() {
-        if(!this.state?.selectedBranch) {
+        if (!(this.state?.selectedBranch)) {
             this.notify({
                 title: <b>오류</b>,
                 body: '브랜치를 선택하세요.',
@@ -55,13 +55,15 @@ class NotFound extends React.Component<any, IState> {
             },
             body: JSON.stringify({branch: this.state?.selectedBranch})
         }).then(res => res.json()).then(res => {
-            if (res.success) this.notify({
-                title: <b>완료!</b>,
-                body: '곧 사이트가 새로 빌드될 거에요.',
-                icon: 'check',
-                dismissIcon: true
-            })
-            else this.notify({
+            if (res.success) {
+                this.notify({
+                    title: <b>완료!</b>,
+                    body: '곧 사이트가 새로 빌드될 거에요.',
+                    icon: 'check',
+                    dismissIcon: true
+                })
+                location.reload()
+            } else this.notify({
                 title: <b>오류</b>,
                 body: res.message,
                 icon: 'error_outline',

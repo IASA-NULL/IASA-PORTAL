@@ -8,7 +8,10 @@ import favicon from 'serve-favicon'
 
 import apiRouter from './api/index'
 import authRouter from './auth'
-import helmet from "helmet";
+
+import {getServerState} from "./util/serverState"
+
+import helmet from "helmet"
 
 
 const app = express()
@@ -23,9 +26,13 @@ app.use(favicon(path.join(__dirname, '..', '..', 'static', 'favicon.ico')))
 app.use((req, res, next) => {
     if (req.headers['user-agent'].indexOf("MSIE") > -1 || req.headers['user-agent'].indexOf("rv:") > -1)
         res.sendFile(path.join(__dirname, '..', '..', 'template', 'noIE.html'))
-    else
-        next()
+    else next()
 })
+
+app.use(((req, res, next) => {
+    if (getServerState('build')) res.sendFile(path.join(__dirname, '..', '..', 'template', 'building.html'))
+    else next()
+}))
 
 app.use(authRouter)
 
