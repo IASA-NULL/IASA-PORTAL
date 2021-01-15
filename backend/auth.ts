@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import {Permission, token} from "../scheme/api/auth"
 import getSecret from "./util/secret"
 import path from "path"
-import getServerToken from './util/sid'
+import {getServerToken} from './util/serverState'
 
 const maxTime = 1000 * 60 * 60 * 24 * 7
 const reSignTime = 1000 * 60 * 60 * 24 * 3

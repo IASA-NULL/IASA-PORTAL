@@ -9,7 +9,7 @@ import getSecret from "../util/secret"
 import bcrypt from 'bcrypt'
 import _ from 'lodash'
 import {userInfo} from "os"
-import getServerToken from '../util/sid'
+import {getServerToken} from '../util/serverState'
 
 const maxTime = 1000 * 60 * 60 * 24 * 7
 const router = express.Router()
