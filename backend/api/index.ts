@@ -5,6 +5,7 @@ import mealRouter from "./meal"
 import accountRouter from "./account"
 import myeonbulRouter from "./myeonbul"
 import musicRouter from "./music"
+import adminRouter from "./admin"
 
 import createResponse from "../createResponse"
 
@@ -17,6 +18,7 @@ router.use('/meal', mealRouter)
 router.use('/account', accountRouter)
 router.use('/myeonbul', myeonbulRouter)
 router.use('/music', musicRouter)
+router.use('/admin', adminRouter)
 
 router.use('*', (req, res, next) => {
     res.status(404)

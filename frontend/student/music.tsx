@@ -127,7 +127,6 @@ class Music extends React.Component<{}, MusicState> {
             perPage: this.elementPerPage,
             startIndex: 0,
             draggable: true,
-            multipleDrag: false,
             threshold: 50,
             loop: false,
         });
@@ -138,7 +137,6 @@ class Music extends React.Component<{}, MusicState> {
             perPage: this.elementPerPage,
             startIndex: 0,
             draggable: true,
-            multipleDrag: false,
             threshold: 50,
             loop: false,
         });

@@ -9,7 +9,7 @@ const router = express.Router()
 
 router.use((req, res, next) => {
     if (!req.auth) {
-        res.status(403)
+        res.status(401)
         res.send(createResponse(false, "먼저 로그인하세요."))
     } else {
         next()

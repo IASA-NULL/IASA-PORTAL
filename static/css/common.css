@@ -1,3 +1,5 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
 html, body, #app {
     margin: 0;
     padding: 0;
@@ -236,6 +238,16 @@ a {
 
 .mdc-list--two-line .mdc-list-item__text {
     align-self: flex-start;
+}
+
+.mdc-card {
+    box-shadow: none;
+    border: #ddd 1px solid;
+    overflow: hidden;
+}
+
+*:not(.rmwc-icon) {
+    font-family: 'Noto Sans KR' !important;
 }
 
 .mdc-list-item {
