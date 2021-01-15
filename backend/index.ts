@@ -31,7 +31,6 @@ app.use((req, res, next) => {
 
 app.use(((req, res, next) => {
     if (getServerState('build')) {
-        res.setHeader('Cache-Control', 'public, max-age=0')
         res.sendFile(path.join(__dirname, '..', '..', 'template', 'building.html'))
     }
     else next()
