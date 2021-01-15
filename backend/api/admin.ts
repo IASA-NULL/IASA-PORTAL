@@ -26,7 +26,7 @@ router.post('/update', (req, res, next) => {
     } else {
         setServerState('build', true)
         res.send(createResponse(true))
-        child_process.spawn('start', ['cmd', '/c', 'C:\\Util\\update_server.bat', req.body.branch], {
+        child_process.spawn('cmd', ['/c', 'start', 'cmd', '/c', 'C:\\Util\\update_server.bat', req.body.branch], {
             detached: true,
             stdio: ['ignore', 'ignore', 'ignore']
         })
