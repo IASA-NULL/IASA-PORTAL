@@ -197,9 +197,8 @@ class Meal extends React.Component<any, MearContainerState> {
             duration: this.animationDuration,
             easing: 'ease-out',
             perPage: this.elementPerPage,
-            startIndex: 1,
+            startIndex: 2,
             draggable: true,
-            multipleDrag: false,
             threshold: 50,
             loop: false,
             onChange: this.handleChange,
@@ -214,6 +213,19 @@ class Meal extends React.Component<any, MearContainerState> {
                 this.getMealInfo.bind(this)(time)
             }} target={time}/>))
         })(this.siema, this.beginTime);
+        this.beginTime = getPrevMealTime(this.beginTime);
+        ((time: mealTime) => {
+            this.elementList.unshift(<MealOne notify={this.notify} onClick={() => {
+                this.getMealInfo.bind(this)(time)
+            }} target={time}/>)
+        })(this.beginTime);
+        setTimeout(() => {
+            ((siema: Siema, time: mealTime) => {
+                siema.prepend(Meal.createCarouselItem(<MealOne notify={this.notify} onClick={() => {
+                    this.getMealInfo.bind(this)(time)
+                }} target={time}/>))
+            })(this.siema, this.beginTime)
+        }, this.animationDuration);
         ((time: mealTime) => {
             this.elementList.push(<MealOne notify={this.notify} onClick={() => {
                 this.getMealInfo.bind(this)(time)
@@ -224,7 +236,7 @@ class Meal extends React.Component<any, MearContainerState> {
                 this.getMealInfo.bind(this)(time)
             }} target={time}/>))
         })(this.siema, this.endTime);
-        for (let i = 0; i < this.elementPerPage; i++) {
+        for (let i = 0; i < this.elementPerPage + 2; i++) {
             this.endTime = getNextMealTime(this.endTime);
             ((time: mealTime) => {
                 this.elementList.push(<MealOne notify={this.notify} onClick={() => {
@@ -237,7 +249,7 @@ class Meal extends React.Component<any, MearContainerState> {
                 }} target={time}/>))
             })(this.siema, this.endTime);
         }
-        this.siema.goTo(1)
+        this.siema.goTo(2)
     }
 
     public componentWillUnmount() {
@@ -268,7 +280,7 @@ class Meal extends React.Component<any, MearContainerState> {
 
     private handleChange() {
         const curIndex = this.siema.currentSlide
-        if (curIndex === 0) {
+        for (let i = 0; i < 2 - curIndex; i++) {
             this.beginTime = getPrevMealTime(this.beginTime);
             ((time: mealTime) => {
                 this.elementList.unshift(<MealOne notify={this.notify} onClick={() => {
@@ -282,8 +294,8 @@ class Meal extends React.Component<any, MearContainerState> {
                     }} target={time}/>))
                 })(this.siema, this.beginTime)
             }, this.animationDuration);
-
-        } else if (curIndex >= this.elementList.length - this.elementPerPage) {
+        }
+        while (curIndex >= this.elementList.length - this.elementPerPage - 1) {
             this.endTime = getNextMealTime(this.endTime);
             ((time: mealTime) => {
                 this.elementList.push(<MealOne notify={this.notify} onClick={() => {
