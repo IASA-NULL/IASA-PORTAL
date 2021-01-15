@@ -39,6 +39,14 @@ class NotFound extends React.Component<any, IState> {
     }
 
     public update() {
+        if(!this.state?.selectedBranch) {
+            this.notify({
+                title: <b>오류</b>,
+                body: '브랜치를 선택하세요.',
+                icon: 'error_outline',
+                dismissIcon: true
+            })
+        }
         fetch(createURL('api', 'admin', 'update'), {
             method: 'POST',
             headers: {
