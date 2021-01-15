@@ -13,6 +13,7 @@ import {Permission, token} from '../scheme/api/auth'
 import {
     DefaultStudentNavList,
     DefaultTeacherNavList,
+    DefaultAdminNavList,
     MainView,
     OpensourceNavList,
     TermsNavList,
@@ -28,7 +29,8 @@ import Opensource from "./common/opensource"
 import NotFound from "./common/404"
 import About from "./noauth/about"
 import Music from './student/music'
-import {Program_Ip} from "./student/program/ip";
+import Update from './admin/update'
+import {Program_Ip} from "./student/program/ip"
 
 
 const lightTheme = {
@@ -191,12 +193,16 @@ class App extends React.Component<any, IState> {
                 </Route>
 
 
+                <Route path="/update">
+                    <MainView accountInfo={this.state.data} navList={DefaultAdminNavList} appCont={<Update/>}/>
+                </Route>
+
                 <Route path="/program/ip">
-                    <MainView accountInfo={this.state.data} appCont={<Program_Ip/>}/>
+                    <MainView accountInfo={this.state.data} navList={DefaultAdminNavList} appCont={<Program_Ip/>}/>
                 </Route>
 
                 <Route>
-                    <MainView accountInfo={this.state.data} navList={DefaultStudentNavList} appCont={<NotFound/>}/>
+                    <MainView accountInfo={this.state.data} navList={DefaultAdminNavList} appCont={<NotFound/>}/>
                 </Route>
             </Switch>
         } else if (this.state?.data?.permission === Permission.none) {

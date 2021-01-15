@@ -63,6 +63,24 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
     </>
 }
 
+export const DefaultAdminNavList = (closeIfModal: any) => {
+    return <>
+        <CollapsibleList defaultOpen={['/update'].includes(location.pathname)}
+                         handle={<SimpleListItem text="사이트 관리" graphic="settings" metaIcon="chevron_right"/>}>
+            <div style={{paddingLeft: '20px'}}>
+                <ListLink body="업데이트" to="/update" onClick={closeIfModal} type={LinkType.link}
+                          icon="system_update"/>
+            </div>
+        </CollapsibleList>
+        <CollapsibleList defaultOpen={[].includes(location.pathname)}
+                         handle={<SimpleListItem text="사용자 관리" graphic="account_circle" metaIcon="chevron_right"/>}>
+            <div style={{paddingLeft: '20px'}}>
+
+            </div>
+        </CollapsibleList>
+    </>
+}
+
 export const TermsNavList = (closeIfModal: any) => {
     return <>
         <ListLink body="약관" to="cont_index" onClick={closeIfModal} type={LinkType.js}/>
