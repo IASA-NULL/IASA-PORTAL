@@ -4,7 +4,7 @@ import fs from 'fs'
 
 import {Permission} from "../../scheme/api/auth"
 import createResponse from "../createResponse"
-import {getServerState, setServerState} from "../util/serverState";
+import {getServerFlag, setServerFlag} from "../util/serverState";
 
 const router = express.Router()
 
@@ -21,10 +21,10 @@ router.use((req, res, next) => {
 })
 
 router.post('/update', (req, res, next) => {
-    if (getServerState('build')) {
+    if (getServerFlag('build')) {
         res.send(createResponse(false, '사이트가 이미 빌드 중이에요.'))
     } else {
-        setServerState('build', true)
+        setServerFlag('build')
         res.send(createResponse(true))
         child_process.spawn('cmd', ['/c', 'start', 'cmd', '/c', 'C:\\Util\\update_server.bat', req.body.branch], {
             detached: true,

@@ -1,4 +1,5 @@
 import {v4 as uuid} from 'uuid'
+import fs from 'fs'
 
 let serverState = {} as any
 
@@ -13,4 +14,12 @@ export function setServerState(key: string, value: any) {
 export function getServerToken() {
     if (!getServerState('sid')) setServerState('sid', uuid())
     return getServerState('sid')
+}
+
+export function getServerFlag(key: string) {
+    return fs.existsSync("C:\\Server\\state\\" + key)
+}
+
+export function setServerFlag(key: string) {
+    fs.writeFileSync("C:\\Server\\state\\" + key, "1")
 }

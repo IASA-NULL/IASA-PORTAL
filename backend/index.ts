@@ -31,6 +31,7 @@ app.use((req, res, next) => {
 
 app.use(((req, res, next) => {
     if (getServerState('build')) {
+        res.set('Cache-Control', 'no-store')
         res.sendFile(path.join(__dirname, '..', '..', 'template', 'building.html'))
     }
     else next()
