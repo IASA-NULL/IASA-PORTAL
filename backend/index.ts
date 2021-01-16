@@ -9,7 +9,7 @@ import favicon from 'serve-favicon'
 import apiRouter from './api/index'
 import authRouter from './auth'
 
-import {getServerState} from "./util/serverState"
+import {getServerFlag} from "./util/serverState"
 
 import helmet from "helmet"
 
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 })
 
 app.use(((req, res, next) => {
-    if (getServerState('build')) {
+    if (getServerFlag('build')) {
         res.set('Cache-Control', 'no-store')
         res.sendFile(path.join(__dirname, '..', '..', 'template', 'building.html'))
     }

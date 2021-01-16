@@ -1,6 +1,5 @@
 import express from 'express'
 import child_process from 'child_process'
-import fs from 'fs'
 
 import {Permission} from "../../scheme/api/auth"
 import createResponse from "../createResponse"
