@@ -17,7 +17,7 @@ import {LinkType, MenuLink} from "./util"
 
 import {IdForm, PasswordForm} from "./account/signin"
 import {FindID, FindPassword} from "./account/find"
-import {SignupCode, SignupFill} from "./account/signup"
+import {SignupCode, SignupFill1, SignupFill2, SignupFin} from "./account/signup"
 import {TextField} from "@rmwc/textfield"
 import createURL from "../scheme/url"
 import {main} from "ts-node/dist/bin"
@@ -82,22 +82,28 @@ const loginStateUpdate = new Event('loginStateUpdate')
 
 
 interface IState {
-    loaded: boolean,
-    showLangOp: boolean,
-    showTerm: boolean,
-    formList: JSX.Element[],
-    currentPage: number,
-    errMessage: string,
+    loaded: boolean
+    showLangOp: boolean
+    showTerm: boolean
+    formList: JSX.Element[]
+    currentPage: number
+    errMessage: string
     title: {
-        main: string,
+        main: string
         sub: string
     }[],
 
-    id: string,
-    password: string,
+    id: string
+    password: string
 
-    signupType: Permission,
+    signupType: Permission
     signupCode: string
+
+    signup_name: string
+    signup_id: string
+    signup_password: string
+    signup_passwordConfirm: string
+    signup_email: string
 }
 
 
@@ -125,8 +131,14 @@ class App extends React.Component<any, IState> {
             } create={
                 this.next(<SignupCode setState={this.setState} isMobile={isMobile}
                                       context={context}
-                                      next={this.getCodeInfo(<SignupFill setState={this.setState} isMobile={isMobile}
-                                                                         context={context}/>)
+                                      next={this.getCodeInfo(<SignupFill1 setState={this.setState} isMobile={isMobile}
+                                                                          context={context} next={
+                                          this.validateSignup1(<SignupFill2 setState={this.setState} isMobile={isMobile}
+                                                                            context={context}
+                                                                            next={this.validateSignup2(<SignupFin
+                                                                                isMobile={isMobile}
+                                                                                next={this.finSignup()}/>)}/>)
+                                      }/>)
                                       }/>, "가입하기", "계속하려면 NULL에 개인별로 부여되는 코드를 요청하세요.")
             } context={context}/>]
         })
@@ -209,7 +221,8 @@ class App extends React.Component<any, IState> {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        code: this.state?.signupCode
+                        code: this.state?.signupCode,
+                        type: this.state?.signupType
                     })
                 }).then(res => res.json()).then(res => {
                     if (res.success) {
@@ -252,6 +265,89 @@ class App extends React.Component<any, IState> {
             } else {
                 this.setState({errMessage: '비밀번호를 입력하세요.'})
             }
+        }
+    }
+
+    public validateSignup1(form: JSX.Element) {
+        return () => {
+            this.setState({errMessage: ''})
+            if (!this.state?.signup_name || !this.state?.signup_id || !this.state?.signup_email) {
+                this.setState({errMessage: '내용을 모두 입력하세요.'})
+                return
+            }
+            const reMail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            const reId = /^[a-z0-9]{4,10}$/g
+
+            if (!reId.test(this.state?.signup_id)) {
+                this.setState({errMessage: '아이디는 4-10자 소문자/숫자여야 해요.'})
+                return
+            }
+
+            if (!reMail.test(String(this.state?.signup_email).toLowerCase())) {
+                this.setState({errMessage: '이메일이 올바르지 않아요.'})
+                return
+            }
+            this.next(form, "비밀번호 설정", "6자 이상의 숫자/영어/특수문자로 설정하세요.")()
+        }
+    }
+
+    public validateSignup2(form: JSX.Element) {
+        return () => {
+            this.setState({errMessage: ''})
+            if (!this.state?.signup_password || !this.state?.signup_passwordConfirm) {
+                this.setState({errMessage: '내용을 모두 입력하세요.'})
+                return
+            }
+            if (this.state?.signup_password !== this.state?.signup_passwordConfirm) {
+                this.setState({errMessage: '비밀번호가 같지 않아요.'})
+                return
+            }
+
+            const rePass = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
+            if (!rePass.test(this.state?.signup_password)) {
+                this.setState({errMessage: '비밀번호가 규칙에 맞지 않아요.'})
+                return
+            }
+            this.setState({loaded: false})
+
+            fetch(createURL('api', 'account', 'signup', 'mail'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    code: this.state?.signupCode,
+                    type: this.state?.signupType,
+                    id: this.state?.signup_id,
+                    password: this.state?.signup_password,
+                    email: this.state?.signup_email,
+                    name: this.state?.signup_name,
+                })
+            }).then(res => res.json()).then(res => {
+                this.setState({loaded: true})
+                if (res.success) {
+                    this.next(form, "메일함 확인", "메일으로 전송된 가입 링크를 클릭하세요.")()
+                } else {
+                    this.setState({errMessage: res.message})
+                }
+            }).catch(e => {
+                this.setState({errMessage: '서버와 통신 중 오류가 발생했어요.', loaded: true})
+            })
+        }
+    }
+
+    public finSignup() {
+        let isMobile = (window.matchMedia("(max-width: 550px)").matches || window.matchMedia("(max-height: 650px)").matches)
+        let context = {
+            get: this.getSt.bind(this),
+            set: this.setSt.bind(this)
+        }
+        return () => {
+            this.next(<IdForm context={context} setState={this.setState}
+                              isMobile={isMobile}/>, "로그인", "IASA PORTAL로 계속")()
+            setTimeout(() => {
+                this.setState({formList: [this.state?.formList[0]], currentPage: 0})
+            }, 300)
         }
     }
 
@@ -329,8 +425,8 @@ class App extends React.Component<any, IState> {
                                 <div style={{
                                     position: 'relative',
                                     transition: 'left .3s ease',
-                                    width: `${this.state?.formList?.length * 100}%`,
-                                    left: `-${(this.state?.currentPage) * 100}%`,
+                                    width: `${this.state?.formList?.length * 500}px`,
+                                    left: `-${(this.state?.currentPage) * 500}px`,
                                 }}>
                                     {this.state?.formList}
                                 </div>
@@ -342,7 +438,14 @@ class App extends React.Component<any, IState> {
                             position: 'absolute',
                             display: this.state?.currentPage ? '' : 'none'
                         }} onClick={() => {
-                            this.setState({currentPage: this.state.currentPage - 1})
+                            this.setState({
+                                errMessage: '',
+                                currentPage: this.state.currentPage - 1,
+                                formList: this.state?.formList
+                            })
+                            setTimeout(() => {
+                                this.setState({formList: this.state?.formList.reverse().slice(1).reverse()})
+                            }, 300)
                         }}/>
                     </div>
                     <br/>

@@ -1,18 +1,23 @@
 import express from 'express'
+import {base32Decode} from "@ctrl/ts-base32"
+import jwt from "jsonwebtoken"
+import bcrypt from 'bcrypt'
+import _ from 'lodash'
+
 import getPath from "../util/getPath"
 import db from '../util/db'
 
 import {Permission, token} from "../../scheme/api/auth"
 import createResponse from "../createResponse"
-import jwt from "jsonwebtoken";
 import getSecret from "../util/secret"
-import bcrypt from 'bcrypt'
-import _ from 'lodash'
-import {userInfo} from "os"
 import {getServerToken} from '../util/serverState'
+
+import signupRouter from './signup'
 
 const maxTime = 1000 * 60 * 60 * 24 * 7
 const router = express.Router()
+
+router.use('/signup', signupRouter)
 
 router.get('/info', (req, res, next) => {
     res.send(createResponse(_.pick(req.auth ?? {permission: Permission.none}, ['name', 'id', 'uid', 'code', 'permission'])))
@@ -53,15 +58,6 @@ router.post('/signin', async (req, res, next) => {
 
 router.get('/avatar', (req, res, next) => {
     res.sendFile(getPath('static', 'img', 'avatar.png'))
-})
-
-router.post('/signup/verify', (req, res, next) => {
-    if (req.body.code === '000000000000000000000000') {
-        res.send(createResponse({uid: 2019001}))
-    } else {
-        res.status(403)
-        res.send(createResponse(false, "코드가 올바르지 않아요."))
-    }
 })
 
 export default router

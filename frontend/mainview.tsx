@@ -75,7 +75,8 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
         <CollapsibleList defaultOpen={[].includes(location.pathname)}
                          handle={<SimpleListItem text="사용자 관리" graphic="account_circle" metaIcon="chevron_right"/>}>
             <div style={{paddingLeft: '20px'}}>
-
+                <ListLink body="가입 코드 발급" to="/user/code" onClick={closeIfModal} type={LinkType.link}
+                          icon="recent_actors"/>
             </div>
         </CollapsibleList>
     </>

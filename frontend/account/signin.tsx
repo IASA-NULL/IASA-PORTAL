@@ -13,9 +13,9 @@ interface IProps {
 }
 
 interface IdFormProps extends IProps {
-    next: any,
-    find: any,
-    create: any
+    next?: any,
+    find?: any,
+    create?: any
 }
 
 interface PasswordFormProps extends IProps {
@@ -64,7 +64,7 @@ export class IdForm extends React.Component<IdFormProps, IdFormState> {
             <TextField style={{width: '100%'}} outlined label="아이디" disabled={!this.props.context.get('loaded')}
                        value={this.state?.id} onChange={this.handleChange.bind(this)} onKeyDown={(e) => {
                 if (e.key === 'Enter') this.props.next()
-            }} invalid={!!errS}/>
+            }} invalid={!!errS} name="id"/>
             <br/>
             {errMessage}
             <div style={{clear: 'both', marginTop: '20px', marginBottom: '20px'}}>
@@ -130,7 +130,7 @@ export class PasswordForm extends React.Component<PasswordFormProps, PasswordFor
             <TextField style={{width: '100%'}} outlined label="아이디" disabled={!this.props.context.get('loaded')}
                        value={this.state?.password} onChange={this.handleChange.bind(this)} onKeyDown={(e) => {
                 if (e.key === 'Enter') this.props.next()
-            }} invalid={!!errS}/>
+            }} invalid={!!errS} name="pass"/>
             <br/>
             {errMessage}
             <br/>

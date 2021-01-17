@@ -268,8 +268,8 @@ class Music extends React.Component<{}, MusicState> {
                                    onChange={e => this.handleChange(e, 'requestSinger')} label="가수"/>
                     </GridCell>
                     <GridCell desktop={4} tablet={4} phone={4}>
-                        <TextField style={{width: '100%', height: '100%'}} outlined value={this.state?.requestName}
-                                   onChange={e => this.handleChange(e, 'requestName')} label="노래 이름"/>
+
+
                     </GridCell>
                     <GridCell desktop={4} tablet={8} phone={4}>
                         <Button style={{width: '100%', height: '100%', minHeight: '45.2px'}} outlined label="신청"

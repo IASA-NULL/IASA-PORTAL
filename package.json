@@ -44,7 +44,10 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
+    "@ctrl/ts-base32": "^1.2.5",
+    "@types/async": "^3.2.5",
     "assert": "^2.0.0",
+    "aws-sdk": "^2.828.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
