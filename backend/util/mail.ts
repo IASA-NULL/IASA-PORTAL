@@ -231,7 +231,6 @@ export async function sendMail(data: { html: string, text: string, subject: stri
 
     const params = {
         Destination: {
-            CcAddresses: [`${from}@iasa.kr`],
             ToAddresses: [to]
         },
         Message: {
