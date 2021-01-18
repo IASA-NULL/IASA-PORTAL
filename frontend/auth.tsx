@@ -444,7 +444,10 @@ class App extends React.Component<any, IState> {
                                 formList: this.state?.formList
                             })
                             setTimeout(() => {
-                                this.setState({formList: this.state?.formList.reverse().slice(1).reverse()})
+                                this.setState({
+                                    formList: this.state?.formList.reverse().slice(1).reverse(),
+                                    title: this.state?.title.reverse().slice(1).reverse()
+                                })
                             }, 300)
                         }}/>
                     </div>
