@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-import {ThemeProvider} from '@rmwc/Theme'
+import {ThemeProvider} from '@rmwc/theme'
 import {IconButton} from '@rmwc/icon-button'
 import {LinearProgress} from '@rmwc/linear-progress'
 import {Menu, MenuItem, MenuSurfaceAnchor} from '@rmwc/menu'

@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
 
-import {ThemeProvider} from '@rmwc/Theme'
+import {ThemeProvider} from '@rmwc/theme'
 
 import "rmwc/dist/styles"
 import {createSnackbarQueue} from "@rmwc/snackbar"
