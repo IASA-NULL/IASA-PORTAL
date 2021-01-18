@@ -346,7 +346,7 @@ class App extends React.Component<any, IState> {
             this.next(<IdForm context={context} setState={this.setState}
                               isMobile={isMobile}/>, "로그인", "IASA PORTAL로 계속")()
             setTimeout(() => {
-                this.setState({formList: [this.state?.formList[0]], currentPage: 0})
+                this.setState({formList: [this.state?.formList[0]], title: [this.state?.title[0]], currentPage: 0})
             }, 300)
         }
     }
