@@ -441,8 +441,8 @@ class App extends React.Component<any, IState> {
                                 <br/>
                                 <div className="signin-formlist signin-animate" style={{
                                     position: 'relative',
-                                    width: `${this.state?.formList?.length * 500}px`,
-                                    left: `-${(this.state?.currentPage) * 500}px`,
+                                    width: `30000px`,
+                                    left: `-${(this.state?.currentPage) * 100}%`,
                                 }}>
                                     {this.state?.formList}
                                 </div>
