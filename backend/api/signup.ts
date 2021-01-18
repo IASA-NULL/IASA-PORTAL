@@ -1,12 +1,15 @@
 import {base32Decode} from "@ctrl/ts-base32"
-import {Permission, token} from "../../scheme/api/auth"
+import {Permission, signupToken, token} from "../../scheme/api/auth"
 import createResponse from "../createResponse"
 import {getVerificationMailHTML, sendMail} from "../util/mail"
 import express from "express"
-import jwt from "jsonwebtoken";
-import {getServerToken} from "../util/serverState";
-import getSecret from "../util/secret";
+import jwt from "jsonwebtoken"
+import {getServerToken} from "../util/serverState"
+import getSecret from "../util/secret"
+import createURL from "../../scheme/url"
+import path from "path";
 
+const signupTokenExpire = 1000 * 60 * 60
 
 const router = express.Router()
 
@@ -68,19 +71,34 @@ router.post('/mail', async (req, res, next) => {
     let token = jwt.sign({
         type: req.body.type,
         uid: uid,
-        id: req.body.id,
+        id: req.body.id.toLowerCase(),
         password: req.body.password,
         email: req.body.email,
         name: req.body.name,
-    }, getSecret('token'))
+        expire: Date.now() + signupTokenExpire
+    } as signupToken, getSecret('token'))
 
 
-    let mailRes = await sendMail(getVerificationMailHTML('https://iasa.kr/signup/' + token), 'welcome', req.body.email)
+    let mailRes = await sendMail(getVerificationMailHTML(createURL('api', 'account', 'signup', 'finalize', token)), 'welcome', req.body.email)
     if (mailRes) res.send(createResponse(true))
     else {
         res.status(500)
         res.send(createResponse(false, '인증 메일을 보내지 못했어요.'))
     }
+})
+
+router.get('/finalize/:token', (req, res, next) => {
+    try {
+        let token = jwt.verify(req.params.token, getSecret('token')) as signupToken
+        if (token.expire < Date.now()) {
+            res.sendFile(path.join(__dirname, '..', '..', '..', 'template', 'signupfail.html'))
+            return
+        }
+    } catch (e) {
+        res.sendFile(path.join(__dirname, '..', '..', '..', 'template', 'signupfail.html'))
+        return
+    }
+    res.sendFile(path.join(__dirname, '..', '..', '..', 'template', 'signupsucc.html'))
 })
 
 export default router

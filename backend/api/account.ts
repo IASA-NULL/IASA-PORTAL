@@ -56,6 +56,10 @@ router.post('/signin', async (req, res, next) => {
     })
 })
 
+router.post('/find/id', async (req, res, next) => {
+
+})
+
 router.get('/avatar', (req, res, next) => {
     res.sendFile(getPath('static', 'img', 'avatar.png'))
 })
