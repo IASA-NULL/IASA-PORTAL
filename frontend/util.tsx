@@ -97,3 +97,21 @@ export function setCaretPosition(ctrl: any, pos: number) {
         range.select()
     }
 }
+
+export function focusNextInput() {
+    let focussableElements = 'a:not([disabled]), button:not([disabled]), input:not([disabled]), [tabindex]:not([disabled]):not([tabindex="-1"])'
+    let currentEl = document.activeElement
+    let first = true
+    while ((currentEl && !currentEl.matches(focussableElements)) || first) {
+        if (currentEl.firstElementChild) currentEl = currentEl.firstElementChild
+        else {
+            while (!currentEl.nextElementSibling && currentEl) currentEl = currentEl.parentElement
+            if (currentEl) currentEl = currentEl.nextElementSibling
+            else return
+        }
+        first = false
+    }
+    if (currentEl) { // @ts-ignore
+        currentEl.focus()
+    }
+}

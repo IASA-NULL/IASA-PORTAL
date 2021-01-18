@@ -91,6 +91,7 @@ interface IState {
     title: {
         main: string
         sub: string
+        id: string
     }[],
 
     id: string
@@ -123,11 +124,11 @@ class App extends React.Component<any, IState> {
             formList: [<IdForm setState={this.setState} isMobile={isMobile} next={
                 this.getIdInfo(<PasswordForm setState={this.setState} isMobile={isMobile} find={
                     this.next(<FindPassword setState={this.setState} isMobile={isMobile}
-                                            context={context}/>, "비밀번호 찾기", "이메일을 입력하세요.")
+                                            context={context}/>, "비밀번호 찾기", "이메일을 입력하세요.", "FindPassword")
                 } context={context} next={this.signin()}/>)
             } find={
                 this.next(<FindID setState={this.setState} isMobile={isMobile}
-                                  context={context}/>, "아이디 찾기", "이메일을 입력하세요.")
+                                  context={context}/>, "아이디 찾기", "이메일을 입력하세요.", "FindID")
             } create={
                 this.next(<SignupCode setState={this.setState} isMobile={isMobile}
                                       context={context}
@@ -139,13 +140,14 @@ class App extends React.Component<any, IState> {
                                                                                 isMobile={isMobile}
                                                                                 next={this.finSignup()}/>)}/>)
                                       }/>)
-                                      }/>, "가입하기", "계속하려면 NULL에 개인별로 부여되는 코드를 요청하세요.")
+                                      }/>, "가입하기", "계속하려면 NULL에 개인별로 부여되는 코드를 요청하세요.", "SignupCode")
             } context={context}/>]
         })
-        this.setState({currentPage: 0, title: [{main: '로그인', sub: 'IASA PORTAL로 계속'}]})
+        this.setState({currentPage: 0, title: [{main: '로그인', sub: 'IASA PORTAL로 계속', id: 'IdForm'}]})
         setTimeout(() => {
             this.setState({loaded: true})
-        }, 500)
+            window.dispatchEvent(new CustomEvent('focusFrame', {detail: {frame: 'IdForm'}}))
+        }, 300)
     }
 
     public getSt(key: string) {
@@ -159,7 +161,7 @@ class App extends React.Component<any, IState> {
         this.setState({[key]: value})
     }
 
-    public next(form: JSX.Element, mainTitle: string, subTitle: string) {
+    public next(form: JSX.Element, mainTitle: string, subTitle: string, formId: string) {
         return () => {
             this.setState({loaded: true, errMessage: ''})
             if (this.state.formList.length > this.state.currentPage + 1) {
@@ -167,18 +169,23 @@ class App extends React.Component<any, IState> {
                     formList: [...this.state.formList.slice(0, this.state.currentPage + 1), form],
                     title: [...this.state.title.slice(0, this.state.currentPage + 1), {
                         main: mainTitle,
-                        sub: subTitle
+                        sub: subTitle,
+                        id: formId
                     }]
                 })
             } else {
                 this.setState({
                     formList: [...this.state.formList, form], title: [...this.state.title, {
                         main: mainTitle,
-                        sub: subTitle
+                        sub: subTitle,
+                        id: formId
                     }]
                 })
             }
             this.setState({currentPage: this.state.currentPage + 1})
+            setTimeout(() => {
+                window.dispatchEvent(new CustomEvent('focusFrame', {detail: {frame: formId}}))
+            }, 300)
         }
     }
 
@@ -197,7 +204,7 @@ class App extends React.Component<any, IState> {
                     })
                 }).then(res => res.json()).then(res => {
                     if (res.success) {
-                        this.next(form, `${res.data}님, 안녕하세요.`, '비밀번호를 입력해서 로그인')()
+                        this.next(form, `${res.data}님, 안녕하세요.`, '비밀번호를 입력해서 로그인', 'PasswordForm')()
                     } else {
                         this.setState({errMessage: res.message, loaded: true})
                     }
@@ -226,7 +233,7 @@ class App extends React.Component<any, IState> {
                     })
                 }).then(res => res.json()).then(res => {
                     if (res.success) {
-                        this.next(form, "가입하기", "아래 내용을 채우세요.")()
+                        this.next(form, "가입하기", "아래 내용을 채우세요.", "SignupFill1")()
                     } else {
                         this.setState({errMessage: res.message, loaded: true})
                     }
@@ -287,7 +294,7 @@ class App extends React.Component<any, IState> {
                 this.setState({errMessage: '이메일이 올바르지 않아요.'})
                 return
             }
-            this.next(form, "비밀번호 설정", "6자 이상의 숫자/영어/특수문자로 설정하세요.")()
+            this.next(form, "비밀번호 설정", "6자 이상의 숫자/영어/특수문자로 설정하세요.", "SignupFill2")()
         }
     }
 
@@ -326,7 +333,7 @@ class App extends React.Component<any, IState> {
             }).then(res => res.json()).then(res => {
                 this.setState({loaded: true})
                 if (res.success) {
-                    this.next(form, "메일함 확인", "메일으로 전송된 가입 링크를 클릭하세요.")()
+                    this.next(form, "메일함 확인", "메일으로 전송된 가입 링크를 클릭하세요.", "SignupFin")()
                 } else {
                     this.setState({errMessage: res.message})
                 }
@@ -344,11 +351,21 @@ class App extends React.Component<any, IState> {
         }
         return () => {
             this.next(<IdForm context={context} setState={this.setState}
-                              isMobile={isMobile}/>, "로그인", "IASA PORTAL로 계속")()
+                              isMobile={isMobile}/>, "로그인", "IASA PORTAL로 계속", "IdForm")()
+            this.toFirst()
+        }
+    }
+
+    public toFirst() {
+        setTimeout(() => {
+            document.querySelector('.signin-formlist').classList.remove('signin-animate')
             setTimeout(() => {
                 this.setState({formList: [this.state?.formList[0]], title: [this.state?.title[0]], currentPage: 0})
-            }, 300)
-        }
+                setTimeout(() => {
+                    document.querySelector('.signin-formlist').classList.add('signin-animate')
+                }, 0)
+            }, 0)
+        }, 300)
     }
 
 
@@ -410,7 +427,7 @@ class App extends React.Component<any, IState> {
                             top: '0'
                         }}>
                             <div style={{textAlign: 'center', width: '100%'}}>
-                                <img src="/static/img/logo.jpg" style={{width: '80px'}}/>
+                                <img src="/static/img/logo.jpg" style={{width: '80px'}} alt="Logo"/>
                                 <br/>
                                 <br/>
                                 <Typography
@@ -422,9 +439,8 @@ class App extends React.Component<any, IState> {
                                 <br/>
                                 <br/>
                                 <br/>
-                                <div style={{
+                                <div className="signin-formlist signin-animate" style={{
                                     position: 'relative',
-                                    transition: 'left .3s ease',
                                     width: `${this.state?.formList?.length * 500}px`,
                                     left: `-${(this.state?.currentPage) * 500}px`,
                                 }}>
@@ -444,6 +460,9 @@ class App extends React.Component<any, IState> {
                                 formList: this.state?.formList
                             })
                             setTimeout(() => {
+                                setTimeout(() => {
+                                    window.dispatchEvent(new CustomEvent('focusFrame', {detail: {frame: this.state?.title[this.state?.currentPage].id}}))
+                                }, 300)
                                 this.setState({
                                     formList: this.state?.formList.reverse().slice(1).reverse(),
                                     title: this.state?.title.reverse().slice(1).reverse()

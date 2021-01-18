@@ -253,3 +253,7 @@ a {
 .mdc-list-item {
     white-space: nowrap;
 }
+
+.signin-animate {
+    transition: left 0.3s ease 0s;
+}

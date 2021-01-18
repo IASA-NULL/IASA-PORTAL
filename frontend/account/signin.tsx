@@ -33,6 +33,8 @@ interface PasswordFormState {
 }
 
 export class IdForm extends React.Component<IdFormProps, IdFormState> {
+    firstInput: any
+
     constructor(props: IdFormProps) {
         super(props)
     }
@@ -40,6 +42,9 @@ export class IdForm extends React.Component<IdFormProps, IdFormState> {
     public componentDidMount() {
         window.addEventListener('loginStateUpdate', () => {
             this.forceUpdate()
+        })
+        window.addEventListener('focusFrame', (e: CustomEvent) => {
+            if (e.detail.frame === 'IdForm') this.firstInput.focus()
         })
     }
 
@@ -64,7 +69,9 @@ export class IdForm extends React.Component<IdFormProps, IdFormState> {
             <TextField style={{width: '100%'}} outlined label="아이디" disabled={!this.props.context.get('loaded')}
                        value={this.state?.id} onChange={this.handleChange.bind(this)} onKeyDown={(e) => {
                 if (e.key === 'Enter') this.props.next()
-            }} invalid={!!errS} name="id"/>
+            }} invalid={!!errS} name="id" ref={(input) => {
+                this.firstInput = input
+            }}/>
             <br/>
             {errMessage}
             <div style={{clear: 'both', marginTop: '20px', marginBottom: '20px'}}>
@@ -99,6 +106,8 @@ export class IdForm extends React.Component<IdFormProps, IdFormState> {
 }
 
 export class PasswordForm extends React.Component<PasswordFormProps, PasswordFormState> {
+    firstInput: any
+
     constructor(props: PasswordFormProps) {
         super(props)
     }
@@ -106,6 +115,9 @@ export class PasswordForm extends React.Component<PasswordFormProps, PasswordFor
     public componentDidMount() {
         window.addEventListener('loginStateUpdate', () => {
             this.forceUpdate()
+        })
+        window.addEventListener('focusFrame', (e: CustomEvent) => {
+            if (e.detail.frame === 'PasswordForm') this.firstInput.focus()
         })
     }
 
@@ -127,10 +139,12 @@ export class PasswordForm extends React.Component<PasswordFormProps, PasswordFor
             padding: `5px ${this.props.isMobile ? 30 : 60}px`,
             float: 'left'
         }}>
-            <TextField style={{width: '100%'}} outlined label="아이디" disabled={!this.props.context.get('loaded')}
+            <TextField style={{width: '100%'}} outlined label="비밀번호" disabled={!this.props.context.get('loaded')}
                        value={this.state?.password} onChange={this.handleChange.bind(this)} onKeyDown={(e) => {
                 if (e.key === 'Enter') this.props.next()
-            }} invalid={!!errS} name="pass"/>
+            }} invalid={!!errS} name="pass" type="password" ref={(input) => {
+                this.firstInput = input
+            }}/>
             <br/>
             {errMessage}
             <br/>

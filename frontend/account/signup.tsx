@@ -5,7 +5,7 @@ import {Icon} from "@rmwc/icon"
 
 import Inko from 'inko'
 
-import {getCaretPosition, setCaretPosition} from "../util"
+import {focusNextInput, getCaretPosition, setCaretPosition} from "../util"
 
 interface SignupCodeFormProps {
     setState: any
@@ -41,6 +41,8 @@ interface SignupFinFormProps {
 }
 
 export class SignupCode extends React.Component<SignupCodeFormProps, SignupCodeFormState> {
+    firstInput: any
+
     constructor(props: SignupCodeFormProps) {
         super(props)
     }
@@ -48,6 +50,9 @@ export class SignupCode extends React.Component<SignupCodeFormProps, SignupCodeF
     public componentDidMount() {
         window.addEventListener('loginStateUpdate', () => {
             this.forceUpdate()
+        })
+        window.addEventListener('focusFrame', (e: CustomEvent) => {
+            if (e.detail.frame === 'SignupCode') this.firstInput.focus()
         })
     }
 
@@ -88,7 +93,9 @@ export class SignupCode extends React.Component<SignupCodeFormProps, SignupCodeF
             <TextField style={{width: '100%'}} outlined label="코드" disabled={!this.props.context.get('loaded')}
                        value={this.state?.code} onChange={this.handleChange.bind(this)} onKeyDown={(e) => {
                 if (e.key === 'Enter') this.props.next()
-            }} invalid={!!errS}/>
+            }} invalid={!!errS} ref={(input) => {
+                this.firstInput = input
+            }}/>
             <br/>
             {errMessage}
             <div style={{clear: 'both', marginTop: '20px', marginBottom: '20px'}}>
@@ -100,6 +107,8 @@ export class SignupCode extends React.Component<SignupCodeFormProps, SignupCodeF
 }
 
 export class SignupFill1 extends React.Component<SignupFillFormProps, SignupFillFormState> {
+    firstInput: any
+
     constructor(props: SignupFillFormProps) {
         super(props)
         this.handleChange = this.handleChange.bind(this)
@@ -108,6 +117,9 @@ export class SignupFill1 extends React.Component<SignupFillFormProps, SignupFill
     public componentDidMount() {
         window.addEventListener('loginStateUpdate', () => {
             this.forceUpdate()
+        })
+        window.addEventListener('focusFrame', (e: CustomEvent) => {
+            if (e.detail.frame === 'SignupFill1') this.firstInput.focus()
         })
     }
 
@@ -132,13 +144,21 @@ export class SignupFill1 extends React.Component<SignupFillFormProps, SignupFill
             float: 'left'
         }}>
             <TextField style={{width: '100%', height: '100%'}} outlined value={this.state?.name}
-                       onChange={e => this.handleChange(e, 'name')} label="이름"/>
+                       onChange={e => this.handleChange(e, 'name')} label="이름" onKeyDown={(e) => {
+                if (e.key === 'Enter') focusNextInput()
+            }} ref={(input) => {
+                this.firstInput = input
+            }}/>
             <div style={{width: '100%', height: '20px'}}/>
             <TextField style={{width: '100%', height: '100%'}} outlined value={this.state?.id}
-                       onChange={e => this.handleChange(e, 'id')} label="아이디"/>
+                       onChange={e => this.handleChange(e, 'id')} label="아이디" onKeyDown={(e) => {
+                if (e.key === 'Enter') focusNextInput()
+            }}/>
             <div style={{width: '100%', height: '20px'}}/>
             <TextField style={{width: '100%', height: '100%'}} outlined value={this.state?.email}
-                       onChange={e => this.handleChange(e, 'email')} label="이메일"/>
+                       onChange={e => this.handleChange(e, 'email')} label="이메일" onKeyDown={(e) => {
+                if (e.key === 'Enter') this.props.next()
+            }}/>
             {errMessage}
             <div style={{width: '100%', height: '20px'}}/>
             <div style={{clear: 'both', marginTop: '20px', marginBottom: '20px'}}>
@@ -150,6 +170,8 @@ export class SignupFill1 extends React.Component<SignupFillFormProps, SignupFill
 }
 
 export class SignupFill2 extends React.Component<SignupFillFormProps, SignupFillFormState> {
+    firstInput: any
+
     constructor(props: SignupFillFormProps) {
         super(props)
         this.handleChange = this.handleChange.bind(this)
@@ -158,6 +180,9 @@ export class SignupFill2 extends React.Component<SignupFillFormProps, SignupFill
     public componentDidMount() {
         window.addEventListener('loginStateUpdate', () => {
             this.forceUpdate()
+        })
+        window.addEventListener('focusFrame', (e: CustomEvent) => {
+            if (e.detail.frame === 'SignupFill2') this.firstInput.focus()
         })
     }
 
@@ -182,10 +207,17 @@ export class SignupFill2 extends React.Component<SignupFillFormProps, SignupFill
             float: 'left'
         }}>
             <TextField style={{width: '100%', height: '100%'}} outlined value={this.state?.password}
-                       onChange={e => this.handleChange(e, 'password')} label="비밀번호" type="password"/>
+                       onChange={e => this.handleChange(e, 'password')} label="비밀번호" type="password" onKeyDown={(e) => {
+                if (e.key === 'Enter') focusNextInput()
+            }} ref={(input) => {
+                this.firstInput = input
+            }}/>
             <div style={{width: '100%', height: '20px'}}/>
             <TextField style={{width: '100%', height: '100%'}} outlined value={this.state?.passwordConfirm}
-                       onChange={e => this.handleChange(e, 'passwordConfirm')} label="비밀번호 확인" type="password"/>
+                       onChange={e => this.handleChange(e, 'passwordConfirm')} label="비밀번호 확인" type="password"
+                       onKeyDown={(e) => {
+                           if (e.key === 'Enter') this.props.next()
+                       }}/>
             {errMessage}
             <div style={{width: '100%', height: '20px'}}/>
             <div style={{clear: 'both', marginTop: '20px', marginBottom: '20px'}}>
