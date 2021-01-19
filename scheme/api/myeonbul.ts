@@ -12,7 +12,16 @@ export interface MyeonbulRequestList {
 
 export type MyeonbulRequest = MyeonbulRequestList;
 
-export interface MyeonbulResponseOne {
+export enum MyeonbulResponseType {
+    ACCEPT,
+    DENY
+}
+
+export interface MyeonbulResponse {
+    type: MyeonbulResponseType
+}
+
+export interface MyeonbulQueryOne {
     timeRange: {
         begin: number;
         end: number;
@@ -23,6 +32,6 @@ export interface MyeonbulResponseOne {
     approved: boolean;
 }
 
-export interface MyeonbulResponse extends commonApi {
-    data: MyeonbulResponseOne[];
+export interface MyeonbulQuery extends commonApi {
+    data: MyeonbulQueryOne[];
 }

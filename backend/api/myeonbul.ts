@@ -2,7 +2,10 @@ import express from "express";
 
 import { Permission } from "../../scheme/api/auth";
 import createResponse from "../createResponse";
-import { MyeonbulRequestListType } from "../../scheme/api/myeonbul";
+import {
+    MyeonbulRequestListType,
+    MyeonbulResponseType,
+} from "../../scheme/api/myeonbul";
 import db from "../util/db";
 
 const router = express.Router();
@@ -26,20 +29,19 @@ router.post("/request", async (req, res, next) => {
     }
 });
 
-router.post("/accept", async (req, res, next) => {
-    if (req.auth.permission === Permission.student) {
-        res.status(501);
-        res.send(createResponse(false, "구현하지 않음 : 교사가 면불을 수락"));
-    } else {
-        res.status(403);
-        res.send(createResponse(false, "권한이 없어요."));
-    }
-});
-
-router.post("/deny", async (req, res, next) => {
-    if (req.auth.permission === Permission.student) {
-        res.status(501);
-        res.send(createResponse(false, "구현하지 않음 : 교사가 면불을 거절"));
+router.post("/reponse", async (req, res, next) => {
+    if (req.auth.permission === Permission.teacher) {
+        if (req.body.type === MyeonbulResponseType.ACCEPT) {
+            res.status(501);
+            res.send(createResponse(false, "구현하지 않음 : 교사가 면불을 수락"));
+        }
+        else if (req.body.type === MyeonbulResponseType.DENY) {
+            res.status(501);
+            res.send(createResponse(false, "구현하지 않음 : 교사가 면불을 거절"));
+        } else {
+            res.status(400);
+            res.send(createResponse(false, "잘못된 요청 : 응답은 수락 또는 거부만 존재합니다."));
+        }
     } else {
         res.status(403);
         res.send(createResponse(false, "권한이 없어요."));
