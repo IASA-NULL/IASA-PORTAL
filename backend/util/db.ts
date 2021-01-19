@@ -43,7 +43,7 @@ async function set(collection: string, data: any) {
     let db
     try {
         db = await get_db()
-        db.db('iasa_portal').collection(collection).insert({ data })
+        db.db('iasa_portal').collection(collection).insert(data)
         return true
     } catch (e) {
         return false
@@ -77,9 +77,11 @@ async function directDB(collection: string) {
     }
 }
 
-export default {
+const dbObject = {
     get: get,
     set: set,
     update: update,
     direct: directDB,
 }
+
+export default dbObject

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'

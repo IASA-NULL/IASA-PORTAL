@@ -234,6 +234,7 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                                             {teacher.name}
                                                         </MenuItem>
                                                     )
+                                                else return undefined
                                             })
                                             .filter((x) => x)
                                         if (teacherList.length > 0)
@@ -246,6 +247,7 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                                     {teacherList}
                                                 </>
                                             )
+                                        else return undefined
                                     })}
                                 </Menu>
 

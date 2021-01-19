@@ -172,6 +172,7 @@ class Music extends React.Component<{}, MusicState> {
                                 )
                             })(this.today)
                         }, this.animationDuration)
+                        return true
                     })
                     res.data.tomorrow.map((el: MusicResponseOne) => {
                         ;(() => {
@@ -186,6 +187,7 @@ class Music extends React.Component<{}, MusicState> {
                                 )
                             })(this.tomorrow)
                         }, this.animationDuration)
+                        return true
                     })
                 }
                 this.setState({ loaded: true })

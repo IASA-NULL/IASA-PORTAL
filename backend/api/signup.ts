@@ -1,10 +1,11 @@
 import { base32Decode } from '@ctrl/ts-base32'
-import { Permission, signupToken, token } from '../../scheme/api/auth'
+import bcrypt from 'bcrypt'
+import { Permission, signupToken } from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import { getVerificationMailHTML, sendMail } from '../util/mail'
 import express from 'express'
 import jwt from 'jsonwebtoken'
-import getSecret from '../util/secret'
+import getSecret, { saltRount } from '../util/secret'
 import createURL from '../../scheme/url'
 import path from 'path'
 import db from '../util/db'
@@ -151,6 +152,16 @@ router.get('/finalize/:token', async (req, res, next) => {
             | User
             | undefined
         if (user) throw new Error()
+
+        await db.set('account', {
+            permission: token.type,
+            uid: token.uid,
+            id: token.id,
+            pwHash: await bcrypt.hash(token.password, saltRount),
+            email: token.email,
+            name: token.name,
+            penalty: 0,
+        } as User)
 
         res.sendFile(
             path.join(

@@ -1,4 +1,4 @@
-export default function (body: any, message = '') {
+export default function createResponse(body: any, message = '') {
     if (body === false)
         return {
             success: false,

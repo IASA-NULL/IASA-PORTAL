@@ -259,6 +259,18 @@ class App extends React.Component<any, IState> {
         }
     }
 
+    public focusCurrentInput() {
+        setTimeout(() => {
+            window.dispatchEvent(
+                new CustomEvent('focusFrame', {
+                    detail: {
+                        frame: this.state?.title[this.state?.currentPage].id,
+                    },
+                })
+            )
+        }, 300)
+    }
+
     public getIdInfo(form: JSX.Element) {
         return () => {
             this.setState({ errMessage: '' })
@@ -287,15 +299,18 @@ class App extends React.Component<any, IState> {
                                 errMessage: res.message,
                                 loaded: true,
                             })
+                            this.focusCurrentInput()
                         }
                     })
                     .catch((e) => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
                         })
+                        this.focusCurrentInput()
                     })
             } else {
                 this.setState({ errMessage: '아이디를 입력하세요.' })
+                this.focusCurrentInput()
             }
         }
     }
@@ -329,15 +344,18 @@ class App extends React.Component<any, IState> {
                                 errMessage: res.message,
                                 loaded: true,
                             })
+                            this.focusCurrentInput()
                         }
                     })
                     .catch((e) => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
                         })
+                        this.focusCurrentInput()
                     })
             } else {
                 this.setState({ errMessage: '코드를 입력하세요.' })
+                this.focusCurrentInput()
             }
         }
     }
@@ -366,15 +384,18 @@ class App extends React.Component<any, IState> {
                                 errMessage: res.message,
                                 loaded: true,
                             })
+                            this.focusCurrentInput()
                         }
                     })
                     .catch((e) => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
                         })
+                        this.focusCurrentInput()
                     })
             } else {
                 this.setState({ errMessage: '비밀번호를 입력하세요.' })
+                this.focusCurrentInput()
             }
         }
     }
@@ -388,6 +409,7 @@ class App extends React.Component<any, IState> {
                 !this.state?.signup_email
             ) {
                 this.setState({ errMessage: '내용을 모두 입력하세요.' })
+                this.focusCurrentInput()
                 return
             }
             const reMail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -397,11 +419,13 @@ class App extends React.Component<any, IState> {
                 this.setState({
                     errMessage: '아이디는 4-10자 소문자/숫자여야 해요.',
                 })
+                this.focusCurrentInput()
                 return
             }
 
             if (!reMail.test(String(this.state?.signup_email).toLowerCase())) {
                 this.setState({ errMessage: '이메일이 올바르지 않아요.' })
+                this.focusCurrentInput()
                 return
             }
             this.next(
@@ -421,6 +445,7 @@ class App extends React.Component<any, IState> {
                 !this.state?.signup_passwordConfirm
             ) {
                 this.setState({ errMessage: '내용을 모두 입력하세요.' })
+                this.focusCurrentInput()
                 return
             }
             if (
@@ -428,12 +453,14 @@ class App extends React.Component<any, IState> {
                 this.state?.signup_passwordConfirm
             ) {
                 this.setState({ errMessage: '비밀번호가 같지 않아요.' })
+                this.focusCurrentInput()
                 return
             }
 
             const rePass = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
             if (!rePass.test(this.state?.signup_password)) {
                 this.setState({ errMessage: '비밀번호가 규칙에 맞지 않아요.' })
+                this.focusCurrentInput()
                 return
             }
             this.setState({ loaded: false })
@@ -464,6 +491,7 @@ class App extends React.Component<any, IState> {
                         )()
                     } else {
                         this.setState({ errMessage: res.message })
+                        this.focusCurrentInput()
                     }
                 })
                 .catch((e) => {
@@ -471,6 +499,7 @@ class App extends React.Component<any, IState> {
                         errMessage: '서버와 통신 중 오류가 발생했어요.',
                         loaded: true,
                     })
+                    this.focusCurrentInput()
                 })
         }
     }

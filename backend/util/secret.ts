@@ -8,3 +8,5 @@ export default function getSecret(type: string) {
     secret[type] = fs.readFileSync(getPath('secret', type)).toString().trim()
     return secret[type]
 }
+
+export const saltRount = 10

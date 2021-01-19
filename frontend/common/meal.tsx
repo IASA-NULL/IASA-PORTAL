@@ -44,7 +44,6 @@ import {
     AllergicInfo,
 } from '../../scheme/api/meal'
 import createURL from '../../scheme/url'
-import meal from '../../backend/api/meal'
 import { BrIfMobile } from '../util'
 
 interface MealProps {

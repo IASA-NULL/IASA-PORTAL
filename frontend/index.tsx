@@ -35,7 +35,7 @@ import NotFound from './common/404'
 import About from './noauth/about'
 import Update from './admin/update'
 import CreateCode from './admin/createcode'
-import { Program_Ip } from './student/program/ip'
+import PROGRAM_IP from './student/program/ip'
 
 const lightTheme = {
     primary: '#5351db',
@@ -183,7 +183,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
-                            appCont={<Program_Ip />}
+                            appCont={<PROGRAM_IP />}
                         />
                     </Route>
 
@@ -233,7 +233,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultTeacherNavList}
-                            appCont={<Program_Ip />}
+                            appCont={<PROGRAM_IP />}
                         />
                     </Route>
 
@@ -291,7 +291,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultAdminNavList}
-                            appCont={<Program_Ip />}
+                            appCont={<PROGRAM_IP />}
                         />
                     </Route>
 
@@ -336,7 +336,7 @@ class App extends React.Component<any, IState> {
                     <Route path='/program/ip'>
                         <MainView
                             accountInfo={this.state.data}
-                            appCont={<Program_Ip />}
+                            appCont={<PROGRAM_IP />}
                         />
                     </Route>
 

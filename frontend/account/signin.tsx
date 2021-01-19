@@ -180,7 +180,7 @@ export class PasswordForm extends React.Component<
 
     public handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ password: e.target.value })
-        this.props.context.set('password', e.target.value.trim().toLowerCase())
+        this.props.context.set('password', e.target.value.trim())
     }
 
     public render() {

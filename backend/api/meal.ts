@@ -138,7 +138,7 @@ function getMeal(target: mealTime) {
                             .split('<td')[1]
                             .split('>')[1]
                             .split('</td>')[0]
-                            .replace(/[^\d\.]/g, '')
+                            .replace(/[^\d.]/g, '')
                     )
                 } catch (e) {
                     kcal = 0
@@ -157,7 +157,9 @@ function getMeal(target: mealTime) {
                                     name: originStr.split(':')[0].trim(),
                                     origin: originStr.split(':')[1].trim(),
                                 }
-                            } catch (e) {}
+                            } catch (e) {
+                                return undefined
+                            }
                         })
                         .filter((x: any) => x)
                 } catch (e) {}
@@ -181,7 +183,9 @@ function getMeal(target: mealTime) {
                                         .split(')')[0]
                                         .trim(),
                                 }
-                            } catch (e) {}
+                            } catch (e) {
+                                return undefined
+                            }
                         })
                         .filter((x: any) => x)
                 } catch (e) {}

@@ -3,7 +3,7 @@ import { Typography } from '@rmwc/typography'
 import { BrIfMobile } from '../../util'
 import { Button } from '@rmwc/button'
 
-export function Program_Ip() {
+export default function PROGRAM_IP() {
     return (
         <>
             <Typography use='headline3'>IP</Typography>
