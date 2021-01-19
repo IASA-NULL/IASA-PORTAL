@@ -25,9 +25,19 @@ router.post("/request", async (req, res, next) => {
         res.send(createResponse(false, "구현하지 않음 : 학생이 면불을 요청"));
     } else {
         res.status(403);
-        res.send(createResponse(false, "권한이 없어요."));
+        res.send(createResponse(false, "학생만 면불 요청 가능"));
     }
 });
+
+router.post("/cancel", async (req, res, next) => {
+    if (req.auth.permission === Permission.student) {
+        res.status(501);
+        res.send(createResponse(false, "구현하지 않음 : 학생이 면불을 취소"));
+    } else {
+        res.status(403);
+        res.send(createResponse(false, "학생만 면불 취소 가능"));
+    }
+})
 
 router.post("/reponse", async (req, res, next) => {
     if (req.auth.permission === Permission.teacher) {
@@ -44,7 +54,7 @@ router.post("/reponse", async (req, res, next) => {
         }
     } else {
         res.status(403);
-        res.send(createResponse(false, "권한이 없어요."));
+        res.send(createResponse(false, "교사만 면불 요청 응답 가능"));
     }
 });
 
