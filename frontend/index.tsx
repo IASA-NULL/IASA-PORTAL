@@ -33,8 +33,8 @@ import Userdata from "./common/userdata";
 import Opensource from "./common/opensource";
 import NotFound from "./common/404";
 import About from "./noauth/about";
-import Music from "./student/music";
 import Update from "./admin/update";
+import CreateCode from './admin/createcode';
 import { Program_Ip } from "./student/program/ip";
 
 const lightTheme = {
@@ -271,13 +271,14 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
-                    <Route path="/update">
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<Update />}
-                        />
-                    </Route>
+
+                <Route path="/update">
+                    <MainView accountInfo={this.state.data} navList={DefaultAdminNavList} appCont={<Update/>}/>
+                </Route>
+
+                <Route path="/user/code">
+                    <MainView accountInfo={this.state.data} navList={DefaultAdminNavList} appCont={<CreateCode/>}/>
+                </Route>
 
                     <Route path="/program/ip">
                         <MainView

@@ -25,8 +25,8 @@ function get_db() {
     });
 }
 
-async function get(collection: string, key: string, value: string) {
-    let db;
+async function get(collection: string, key: string, value: any) {
+    let db
     try {
         db = await get_db();
         return await db

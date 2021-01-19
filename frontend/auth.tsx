@@ -89,6 +89,7 @@ interface IState {
     title: {
         main: string;
         sub: string;
+        id: string;
     }[];
 
     id: string;
@@ -96,6 +97,12 @@ interface IState {
 
     signupType: Permission;
     signupCode: string;
+
+    signup_name: string;
+    signup_id: string;
+    signup_password: string;
+    signup_passwordConfirm: string;
+    signup_email: string;
 }
 
 class App extends React.Component<any, IState> {
@@ -104,71 +111,39 @@ class App extends React.Component<any, IState> {
     }
 
     public componentDidMount() {
-        let isMobile =
-            window.matchMedia("(max-width: 550px)").matches ||
-            window.matchMedia("(max-height: 650px)").matches;
+        let isMobile = (window.matchMedia("(max-width: 550px)").matches || window.matchMedia("(max-height: 650px)").matches)
         let context = {
             get: this.getSt.bind(this),
             set: this.setSt.bind(this),
         };
         this.setState({
-            formList: [
-                <IdForm
-                    setState={this.setState}
-                    isMobile={isMobile}
-                    next={this.getIdInfo(
-                        <PasswordForm
-                            setState={this.setState}
-                            isMobile={isMobile}
-                            find={this.next(
-                                <FindPassword
-                                    setState={this.setState}
-                                    isMobile={isMobile}
-                                    context={context}
-                                />,
-                                "비밀번호 찾기",
-                                "이메일을 입력하세요."
-                            )}
-                            context={context}
-                            next={this.signin()}
-                        />
-                    )}
-                    find={this.next(
-                        <FindID
-                            setState={this.setState}
-                            isMobile={isMobile}
-                            context={context}
-                        />,
-                        "아이디 찾기",
-                        "이메일을 입력하세요."
-                    )}
-                    create={this.next(
-                        <SignupCode
-                            setState={this.setState}
-                            isMobile={isMobile}
-                            context={context}
-                            next={this.getCodeInfo(
-                                <SignupFill
-                                    setState={this.setState}
-                                    isMobile={isMobile}
-                                    context={context}
-                                />
-                            )}
-                        />,
-                        "가입하기",
-                        "계속하려면 NULL에 개인별로 부여되는 코드를 요청하세요."
-                    )}
-                    context={context}
-                />,
-            ],
-        });
-        this.setState({
-            currentPage: 0,
-            title: [{ main: "로그인", sub: "IASA PORTAL로 계속" }],
-        });
+            formList: [<IdForm setState={this.setState} isMobile={isMobile} next={
+                this.getIdInfo(<PasswordForm setState={this.setState} isMobile={isMobile} find={
+                    this.next(<FindPassword setState={this.setState} isMobile={isMobile}
+                                            context={context}/>, "비밀번호 찾기", "이메일을 입력하세요.", "FindPassword")
+                } context={context} next={this.signin()}/>)
+            } find={
+                this.next(<FindID setState={this.setState} isMobile={isMobile}
+                                  context={context}/>, "아이디 찾기", "이메일을 입력하세요.", "FindID")
+            } create={
+                this.next(<SignupCode setState={this.setState} isMobile={isMobile}
+                                      context={context}
+                                      next={this.getCodeInfo(<SignupFill1 setState={this.setState} isMobile={isMobile}
+                                                                          context={context} next={
+                                          this.validateSignup1(<SignupFill2 setState={this.setState} isMobile={isMobile}
+                                                                            context={context}
+                                                                            next={this.validateSignup2(<SignupFin
+                                                                                isMobile={isMobile}
+                                                                                next={this.finSignup()}/>)}/>)
+                                      }/>)
+                                      }/>, "가입하기", "계속하려면 NULL에 개인별로 부여되는 코드를 요청하세요.", "SignupCode")
+            } context={context}/>]
+        })
+        this.setState({currentPage: 0, title: [{main: '로그인', sub: 'IASA PORTAL로 계속', id: 'IdForm'}]})
         setTimeout(() => {
-            this.setState({ loaded: true });
-        }, 500);
+            this.setState({loaded: true});
+            window.dispatchEvent(new CustomEvent('focusFrame', {detail: {frame: 'IdForm'}}));
+        }, 300);
     }
 
     public getSt(key: string) {
@@ -182,43 +157,32 @@ class App extends React.Component<any, IState> {
         this.setState({ [key]: value });
     }
 
-    public next(form: JSX.Element, mainTitle: string, subTitle: string) {
+    public next(form: JSX.Element, mainTitle: string, subTitle: string, formId: string) {
         return () => {
             this.setState({ loaded: true, errMessage: "" });
             if (this.state.formList.length > this.state.currentPage + 1) {
                 this.setState({
-                    formList: [
-                        ...this.state.formList.slice(
-                            0,
-                            this.state.currentPage + 1
-                        ),
-                        form,
-                    ],
-                    title: [
-                        ...this.state.title.slice(
-                            0,
-                            this.state.currentPage + 1
-                        ),
-                        {
-                            main: mainTitle,
-                            sub: subTitle,
-                        },
-                    ],
-                });
+                    formList: [...this.state.formList.slice(0, this.state.currentPage + 1), form],
+                    title: [...this.state.title.slice(0, this.state.currentPage + 1), {
+                        main: mainTitle,
+                        sub: subTitle,
+                        id: formId
+                    }]
+                })
             } else {
                 this.setState({
-                    formList: [...this.state.formList, form],
-                    title: [
-                        ...this.state.title,
-                        {
-                            main: mainTitle,
-                            sub: subTitle,
-                        },
-                    ],
-                });
+                    formList: [...this.state.formList, form], title: [...this.state.title, {
+                        main: mainTitle,
+                        sub: subTitle,
+                        id: formId
+                    }]
+                })
             }
-            this.setState({ currentPage: this.state.currentPage + 1 });
-        };
+            this.setState({currentPage: this.state.currentPage + 1})
+            setTimeout(() => {
+                window.dispatchEvent(new CustomEvent('focusFrame', {detail: {frame: formId}}))
+            }, 300)
+        }
     }
 
     public getIdInfo(form: JSX.Element) {
@@ -232,29 +196,17 @@ class App extends React.Component<any, IState> {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        id: this.state?.id,
-                    }),
-                })
-                    .then((res) => res.json())
-                    .then((res) => {
-                        if (res.success) {
-                            this.next(
-                                form,
-                                `${res.data}님, 안녕하세요.`,
-                                "비밀번호를 입력해서 로그인"
-                            )();
-                        } else {
-                            this.setState({
-                                errMessage: res.message,
-                                loaded: true,
-                            });
-                        }
+                        id: this.state?.id
                     })
-                    .catch((e) => {
-                        this.setState({
-                            errMessage: "서버와 통신 중 오류가 발생했어요.",
-                        });
-                    });
+                }).then(res => res.json()).then(res => {
+                    if (res.success) {
+                        this.next(form, `${res.data}님, 안녕하세요.`, '비밀번호를 입력해서 로그인', 'PasswordForm')()
+                    } else {
+                        this.setState({errMessage: res.message, loaded: true})
+                    }
+                }).catch(e => {
+                    this.setState({errMessage: '서버와 통신 중 오류가 발생했어요.'})
+                })
             } else {
                 this.setState({ errMessage: "아이디를 입력하세요." });
             }
@@ -273,28 +225,17 @@ class App extends React.Component<any, IState> {
                     },
                     body: JSON.stringify({
                         code: this.state?.signupCode,
-                    }),
-                })
-                    .then((res) => res.json())
-                    .then((res) => {
-                        if (res.success) {
-                            this.next(
-                                form,
-                                "가입하기",
-                                "아래 내용을 채우세요."
-                            )();
-                        } else {
-                            this.setState({
-                                errMessage: res.message,
-                                loaded: true,
-                            });
-                        }
+                        type: this.state?.signupType
                     })
-                    .catch((e) => {
-                        this.setState({
-                            errMessage: "서버와 통신 중 오류가 발생했어요.",
-                        });
-                    });
+                }).then(res => res.json()).then(res => {
+                    if (res.success) {
+                        this.next(form, "가입하기", "아래 내용을 채우세요.", "SignupFill1")()
+                    } else {
+                        this.setState({errMessage: res.message, loaded: true})
+                    }
+                }).catch(e => {
+                    this.setState({errMessage: '서버와 통신 중 오류가 발생했어요.'})
+                })
             } else {
                 this.setState({ errMessage: "코드를 입력하세요." });
             }
@@ -338,6 +279,100 @@ class App extends React.Component<any, IState> {
         };
     }
 
+    public validateSignup1(form: JSX.Element) {
+        return () => {
+            this.setState({errMessage: ''})
+            if (!this.state?.signup_name || !this.state?.signup_id || !this.state?.signup_email) {
+                this.setState({errMessage: '내용을 모두 입력하세요.'})
+                return
+            }
+            const reMail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            const reId = /^[a-z0-9]{4,10}$/g
+
+            if (!reId.test(this.state?.signup_id)) {
+                this.setState({errMessage: '아이디는 4-10자 소문자/숫자여야 해요.'})
+                return
+            }
+
+            if (!reMail.test(String(this.state?.signup_email).toLowerCase())) {
+                this.setState({errMessage: '이메일이 올바르지 않아요.'})
+                return
+            }
+            this.next(form, "비밀번호 설정", "6자 이상의 숫자/영어/특수문자로 설정하세요.", "SignupFill2")()
+        }
+    }
+
+    public validateSignup2(form: JSX.Element) {
+        return () => {
+            this.setState({errMessage: ''})
+            if (!this.state?.signup_password || !this.state?.signup_passwordConfirm) {
+                this.setState({errMessage: '내용을 모두 입력하세요.'})
+                return
+            }
+            if (this.state?.signup_password !== this.state?.signup_passwordConfirm) {
+                this.setState({errMessage: '비밀번호가 같지 않아요.'})
+                return
+            }
+
+            const rePass = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
+            if (!rePass.test(this.state?.signup_password)) {
+                this.setState({errMessage: '비밀번호가 규칙에 맞지 않아요.'})
+                return
+            }
+            this.setState({loaded: false})
+
+            fetch(createURL('api', 'account', 'signup', 'mail'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    code: this.state?.signupCode,
+                    type: this.state?.signupType,
+                    id: this.state?.signup_id,
+                    password: this.state?.signup_password,
+                    email: this.state?.signup_email,
+                    name: this.state?.signup_name,
+                })
+            }).then(res => res.json()).then(res => {
+                this.setState({loaded: true})
+                if (res.success) {
+                    this.next(form, "메일함 확인", "메일으로 전송된 가입 링크를 클릭하세요.", "SignupFin")()
+                } else {
+                    this.setState({errMessage: res.message})
+                }
+            }).catch(e => {
+                this.setState({errMessage: '서버와 통신 중 오류가 발생했어요.', loaded: true})
+            })
+        }
+    }
+
+    public finSignup() {
+        let isMobile = (window.matchMedia("(max-width: 550px)").matches || window.matchMedia("(max-height: 650px)").matches)
+        let context = {
+            get: this.getSt.bind(this),
+            set: this.setSt.bind(this)
+        }
+        return () => {
+            this.next(<IdForm context={context} setState={this.setState}
+                              isMobile={isMobile}/>, "로그인", "IASA PORTAL로 계속", "IdForm")()
+            this.toFirst()
+        }
+    }
+
+    public toFirst() {
+        setTimeout(() => {
+            document.querySelector('.signin-formlist').classList.remove('signin-animate')
+            setTimeout(() => {
+                this.setState({formList: [this.state?.formList[0]], title: [this.state?.title[0]], currentPage: 0})
+                setTimeout(() => {
+                    document.querySelector('.signin-formlist').classList.add('signin-animate')
+                }, 0)
+            }, 0)
+        }, 300)
+    }
+
+
     public render() {
         let theme = lightTheme;
         //if (localStorage.theme === "1" || (localStorage.theme === "2" && window.matchMedia('(prefers-color-scheme: dark)').matches)) theme = darkTheme
@@ -349,211 +384,127 @@ class App extends React.Component<any, IState> {
             position: "relative",
         };
         let mobileCont = {
-                ...commonStyle,
-                ...{
-                    width: "100%",
-                    height: "calc(100% - 84px)",
-                },
-            },
-            desktopCont = {
-                ...commonStyle,
-                ...{
-                    width: "500px",
-                    height: "600px",
-                    border: "1px solid #bbbbbb",
-                    borderRadius: "5px",
-                },
-            };
+            ...commonStyle, ...{
+                width: '100%',
+                height: 'calc(100% - 84px)'
+            }
+        }, desktopCont = {
+            ...commonStyle, ...{
+                width: '500px',
+                height: '600px',
+                border: '1px solid #bbbbbb',
+                borderRadius: '5px'
+            }
+        }
 
-        let isMobile =
-            window.matchMedia("(max-width: 550px)").matches ||
-            window.matchMedia("(max-height: 650px)").matches;
+        let isMobile = (window.matchMedia("(max-width: 550px)").matches || window.matchMedia("(max-height: 650px)").matches)
 
-        window.dispatchEvent(loginStateUpdate);
+        window.dispatchEvent(loginStateUpdate)
 
-        return (
-            <ThemeProvider options={theme}>
-                <div
-                    style={{
-                        display: "flex",
-                        width: "100vw",
-                        height: "100vh",
-                        padding: "0",
-                        margin: "0",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
+        return <ThemeProvider options={theme}>
+            <div style={{
+                display: 'flex',
+                width: '100vw',
+                height: '100vh',
+                padding: '0',
+                margin: '0',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+                <div style={isMobile ? {
+                    width: '100%',
+                    height: '100%'
+                } : {
+                    width: '500px',
+                    height: '600px',
+                }}>
                     <div
-                        style={
-                            isMobile
-                                ? {
-                                      width: "100%",
-                                      height: "100%",
-                                  }
-                                : {
-                                      width: "500px",
-                                      height: "600px",
-                                  }
-                        }
-                    >
-                        <div
-                            style={
-                                isMobile
-                                    ? (mobileCont as React.CSSProperties)
-                                    : (desktopCont as React.CSSProperties)
-                            }
-                        >
-                            <LinearProgress
-                                style={{
-                                    opacity: this.state?.loaded ? "0" : "1",
-                                    transition: "opacity 0.5s",
-                                }}
-                            />
-                            <div
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    width: "100%",
-                                    height: "100%",
-                                    position: "absolute",
-                                    top: "0",
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        textAlign: "center",
-                                        width: "100%",
-                                    }}
-                                >
-                                    <img
-                                        src="/static/img/logo.jpg"
-                                        style={{ width: "80px" }}
-                                    />
-                                    <br />
-                                    <br />
-                                    <Typography use="headline4">
-                                        {
-                                            (this.state?.title ?? [])[
-                                                this.state?.currentPage ?? 0
-                                            ]?.main
-                                        }
-                                    </Typography>
-                                    <br />
-                                    <br />
-                                    <Typography use="subtitle1">
-                                        {
-                                            (this.state?.title ?? [])[
-                                                this.state?.currentPage ?? 0
-                                            ]?.sub
-                                        }
-                                    </Typography>
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <div
-                                        style={{
-                                            position: "relative",
-                                            transition: "left .3s ease",
-                                            width: `${
-                                                this.state?.formList?.length *
-                                                100
-                                            }%`,
-                                            left: `-${
-                                                this.state?.currentPage * 100
-                                            }%`,
-                                        }}
-                                    >
-                                        {this.state?.formList}
-                                    </div>
+                        style={isMobile ? mobileCont as React.CSSProperties : desktopCont as React.CSSProperties}>
+                        <LinearProgress style={{opacity: this.state?.loaded ? '0' : '1', transition: 'opacity 0.5s'}}/>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '100%',
+                            height: '100%',
+                            position: 'absolute',
+                            top: '0'
+                        }}>
+                            <div style={{textAlign: 'center', width: '100%'}}>
+                                <img src="/static/img/logo.jpg" style={{width: '80px'}} alt="Logo"/>
+                                <br/>
+                                <br/>
+                                <Typography
+                                    use="headline4">{(this.state?.title ?? [])[this.state?.currentPage ?? 0]?.main}</Typography>
+                                <br/>
+                                <br/>
+                                <Typography
+                                    use="subtitle1">{(this.state?.title ?? [])[this.state?.currentPage ?? 0]?.sub}</Typography>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <div className="signin-formlist signin-animate" style={{
+                                    position: 'relative',
+                                    width: `30000px`,
+                                    left: `-${(this.state?.currentPage) * 100}%`,
+                                }}>
+                                    {this.state?.formList}
                                 </div>
                             </div>
-                            <IconButton
-                                icon="arrow_back"
-                                style={{
-                                    margin: "10px",
-                                    top: "0",
-                                    position: "absolute",
-                                    display: this.state?.currentPage
-                                        ? ""
-                                        : "none",
-                                }}
-                                onClick={() => {
-                                    this.setState({
-                                        currentPage: this.state.currentPage - 1,
-                                    });
-                                }}
-                            />
                         </div>
-                        <br />
-                        <div
-                            style={{
-                                width: "100%",
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            <MenuSurfaceAnchor>
-                                <Menu
-                                    open={this.state?.showLangOp}
-                                    onClose={() => {
-                                        this.setState({ showLangOp: false });
-                                    }}
-                                >
-                                    <MenuItem>한국어</MenuItem>
-                                </Menu>
-                                <Button
-                                    trailingIcon="keyboard_arrow_down"
-                                    onClick={() => {
-                                        this.setState({
-                                            showLangOp: !this.state?.showLangOp,
-                                        });
-                                    }}
-                                >
-                                    한국어
-                                </Button>
-                            </MenuSurfaceAnchor>
-                            <MenuSurfaceAnchor>
-                                <Menu
-                                    open={this.state?.showTerm}
-                                    onClose={() => {
-                                        this.setState({ showTerm: false });
-                                    }}
-                                >
-                                    <MenuLink
-                                        body="약관"
-                                        to="/terms"
-                                        type={LinkType.a}
-                                    />
-                                    <MenuLink
-                                        body="개인정보 처리방침"
-                                        to="/userdata"
-                                        type={LinkType.a}
-                                    />
-                                    <MenuLink
-                                        body="오픈소스"
-                                        to="/opensource"
-                                        type={LinkType.a}
-                                    />
-                                </Menu>
-                                <Button
-                                    trailingIcon="keyboard_arrow_down"
-                                    onClick={() => {
-                                        this.setState({
-                                            showTerm: !this.state?.showTerm,
-                                        });
-                                    }}
-                                >
-                                    약관
-                                </Button>
-                            </MenuSurfaceAnchor>
-                        </div>
+                        <IconButton icon="arrow_back" style={{
+                            margin: '10px',
+                            top: '0',
+                            position: 'absolute',
+                            display: this.state?.currentPage ? '' : 'none'
+                        }} onClick={() => {
+                            this.setState({
+                                errMessage: '',
+                                currentPage: this.state.currentPage - 1,
+                                formList: this.state?.formList
+                            })
+                            setTimeout(() => {
+                                setTimeout(() => {
+                                    window.dispatchEvent(new CustomEvent('focusFrame', {detail: {frame: this.state?.title[this.state?.currentPage].id}}))
+                                }, 300)
+                                this.setState({
+                                    formList: this.state?.formList.reverse().slice(1).reverse(),
+                                    title: this.state?.title.reverse().slice(1).reverse()
+                                })
+                            }, 300)
+                        }}/>
+                    </div>
+                    <br/>
+                    <div
+                        style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <MenuSurfaceAnchor>
+                            <Menu open={this.state?.showLangOp}
+                                  onClose={() => {
+                                      this.setState({showLangOp: false})
+                                  }}>
+                                <MenuItem>한국어</MenuItem>
+                            </Menu>
+                            <Button trailingIcon="keyboard_arrow_down" onClick={() => {
+                                this.setState({showLangOp: !this.state?.showLangOp})
+                            }}>한국어</Button>
+                        </MenuSurfaceAnchor>
+                        <MenuSurfaceAnchor>
+                            <Menu open={this.state?.showTerm}
+                                  onClose={() => {
+                                      this.setState({showTerm: false})
+                                  }}>
+                                <MenuLink body="약관" to="/terms" type={LinkType.a}/>
+                                <MenuLink body="개인정보 처리방침" to="/userdata" type={LinkType.a}/>
+                                <MenuLink body="오픈소스" to="/opensource" type={LinkType.a}/>
+                            </Menu>
+                            <Button trailingIcon="keyboard_arrow_down" onClick={() => {
+                                this.setState({showTerm: !this.state?.showTerm})
+                            }}>약관</Button>
+                        </MenuSurfaceAnchor>
                     </div>
                 </div>
-            </ThemeProvider>
-        );
+            </div>
+        </ThemeProvider>
     }
 }
 

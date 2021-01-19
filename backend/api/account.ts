@@ -1,7 +1,7 @@
 import express from "express";
 import getPath from "../util/getPath";
 import db from "../util/db";
-
+import { base32Decode } from "@ctrl/ts-base32";
 import { Permission, token } from "../../scheme/api/auth";
 import createResponse from "../createResponse";
 import jwt from "jsonwebtoken";
@@ -9,9 +9,11 @@ import getSecret from "../util/secret";
 import bcrypt from "bcrypt";
 import _ from "lodash";
 import { getServerToken } from "../util/serverState";
+import signupRouter from "./signup";
 
 const maxTime = 1000 * 60 * 60 * 24 * 7;
 const router = express.Router();
+
 
 router.get("/info", (req, res) => {
     res.send(
@@ -26,6 +28,12 @@ router.get("/info", (req, res) => {
         )
     );
 });
+
+router.use('/signup', signupRouter);
+
+router.get('/info', (req, res, next) => {
+    res.send(createResponse(_.pick(req.auth ?? {permission: Permission.none}, ['name', 'id', 'uid', 'code', 'permission'])))
+})
 
 router.post("/username", async (req, res) => {
     let accountInfo = await db.get("account", "id", req.body.id);
@@ -74,6 +82,10 @@ router.post("/signin", async (req, res) => {
             res.status(500);
             res.send(createResponse(false, "알 수 없는 오류가 발생했어요."));
         });
+});
+
+router.post('/find/id', async (req, res, next) => {
+
 });
 
 router.get("/avatar", (req, res) => {
