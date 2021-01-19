@@ -3,7 +3,6 @@ import { TextField } from '@rmwc/textfield'
 import { Button } from '@rmwc/button'
 import { Icon } from '@rmwc/icon'
 import { Menu, MenuSurfaceAnchor, MenuItem } from '@rmwc/menu'
-import { LinkType, MenuLink } from '../util'
 import { Permission } from '../../scheme/api/auth'
 
 interface IProps {
@@ -34,10 +33,6 @@ interface PasswordFormState {
 
 export class IdForm extends React.Component<IdFormProps, IdFormState> {
     firstInput: any
-
-    constructor(props: IdFormProps) {
-        super(props)
-    }
 
     public componentDidMount() {
         window.addEventListener('loginStateUpdate', () => {
@@ -173,10 +168,6 @@ export class PasswordForm extends React.Component<
     PasswordFormState
 > {
     firstInput: any
-
-    constructor(props: PasswordFormProps) {
-        super(props)
-    }
 
     public componentDidMount() {
         window.addEventListener('loginStateUpdate', () => {

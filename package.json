@@ -7,7 +7,7 @@
     "url": "https://github.com/IASA-Null/IASA-PORTAL"
   },
   "scripts": {
-    "build": "npm run build-backend && npm run build-frontend",
+    "build": "npm run format && npm run lint && npm run build-backend && npm run build-frontend",
     "build-backend": "tsc",
     "build-frontend": "webpack",
     "start": "nodemon build/backend/index.js",

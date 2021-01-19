@@ -2,10 +2,6 @@ import * as React from 'react'
 import { Typography } from '@rmwc/typography'
 
 class Terms extends React.Component<any, {}> {
-    constructor(props: {}) {
-        super(props)
-    }
-
     public render() {
         return (
             <div>
