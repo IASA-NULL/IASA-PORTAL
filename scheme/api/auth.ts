@@ -2,15 +2,15 @@ export enum Permission {
     none = 1,
     student,
     teacher,
-    admin
+    admin,
 }
 
 export interface token {
-    id: string,
-    uid: number,
-    code: number,
-    name: string,
-    expire: number,
-    permission: Permission,
-    sid: string
+    id: string;
+    uid: number;
+    code: number;
+    name: string;
+    expire: number;
+    permission: Permission;
+    sid: string;
 }

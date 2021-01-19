@@ -6,6 +6,24 @@
   "repository": {
     "url": "https://github.com/IASA-Null/IASA-PORTAL"
   },
+  "scripts": {
+    "build": "tsc && webpack",
+    "build-backend": "tsc",
+    "build-frontend": "webpack",
+    "start": "nodemon build/backend/index.js",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "babel": {
     "presets": [
       "react"
@@ -33,9 +51,12 @@
     "babel-register": "^6.26.0",
     "cross-env": "^7.0.3",
     "css-loader": "^5.0.1",
+    "husky": "^4.3.8",
     "indexof": "^0.0.1",
+    "lint-staged": "^10.5.3",
     "mini-css-extract-plugin": "^1.3.3",
     "nodemon": "^2.0.6",
+    "prettier": "^2.2.1",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.12",
     "ts-node": "^9.1.1",
@@ -77,11 +98,5 @@
     "siema": "^1.5.1",
     "ts-graphql": "^7.0.0",
     "uuid": "^8.3.2"
-  },
-  "scripts": {
-    "build": "tsc && webpack",
-    "build-backend": "tsc",
-    "build-frontend": "webpack",
-    "start": "nodemon build/backend/index.js"
   }
 }

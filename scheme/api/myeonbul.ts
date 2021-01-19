@@ -1,28 +1,37 @@
-import {teacher} from "../teacher/teacher";
+import { teacher } from "../teacher/teacher";
 import commonApi from "./commonApi";
 
 export enum MyeonbulRequestListType {
     listByUser,
-    listByDate
+    listByDate,
 }
 
 export interface MyeonbulRequestList {
-    type: MyeonbulRequestListType
+    type: MyeonbulRequestListType;
 }
 
-export type MyeonbulRequest = MyeonbulRequestList
+export type MyeonbulRequest = MyeonbulRequestList;
 
-export interface MyeonbulResponseOne {
+export enum MyeonbulResponseType {
+    ACCEPT,
+    DENY
+}
+
+export interface MyeonbulResponse {
+    type: MyeonbulResponseType
+}
+
+export interface MyeonbulQueryOne {
     timeRange: {
-        begin: number,
-        end: number,
-        nickname?: string
-    }
-    place: string,
-    teacher: teacher,
-    approved: boolean
+        begin: number;
+        end: number;
+        nickname?: string;
+    };
+    place: string;
+    teacher: teacher;
+    approved: boolean;
 }
 
-export interface MyeonbulResponse extends commonApi {
-    data: MyeonbulResponseOne[]
+export interface MyeonbulQuery extends commonApi {
+    data: MyeonbulQueryOne[];
 }
