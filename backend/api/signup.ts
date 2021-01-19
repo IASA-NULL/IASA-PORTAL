@@ -8,12 +8,14 @@ import {getServerToken} from "../util/serverState"
 import getSecret from "../util/secret"
 import createURL from "../../scheme/url"
 import path from "path";
+import db from "../util/db";
+import {User} from "../../scheme/user"
 
 const signupTokenExpire = 1000 * 60 * 60
 
 const router = express.Router()
 
-router.post('/verify', (req, res, next) => {
+router.post('/verify', async (req, res, next) => {
     let errRes = false, uid: number
     if (req.body.code.length !== 24) errRes = true
     let orgCode
@@ -27,6 +29,10 @@ router.post('/verify', (req, res, next) => {
         if (req.body.type === Permission.student && orgCode[0] !== 'S') errRes = true
         if (req.body.type === Permission.teacher && orgCode[0] !== 'T') errRes = true
         uid = parseInt(orgCode.substr(1).replace(/\D+/g, ''))
+
+
+        let user = await db.get('account', 'uid', uid) as User | undefined
+        if (user) errRes = true
     } catch (e) {
         errRes = true
     }
@@ -68,6 +74,12 @@ router.post('/mail', async (req, res, next) => {
         return
     }
 
+    let user = await db.get('account', 'id', req.body.id.toLowerCase()) as User | undefined
+    if (user) throw new Error()
+
+    user = await db.get('account', 'email', req.body.email) as User | undefined
+    if (user) throw new Error()
+
     let token = jwt.sign({
         type: req.body.type,
         uid: uid,
@@ -87,18 +99,22 @@ router.post('/mail', async (req, res, next) => {
     }
 })
 
-router.get('/finalize/:token', (req, res, next) => {
+router.get('/finalize/:token', async (req, res, next) => {
     try {
         let token = jwt.verify(req.params.token, getSecret('token')) as signupToken
         if (token.expire < Date.now()) {
             res.sendFile(path.join(__dirname, '..', '..', '..', 'template', 'signupfail.html'))
             return
         }
+
+        let user = await db.get('account', 'uid', token.uid) as User | undefined
+        if (user) throw new Error()
+
+        res.sendFile(path.join(__dirname, '..', '..', '..', 'template', 'signupsucc.html'))
     } catch (e) {
         res.sendFile(path.join(__dirname, '..', '..', '..', 'template', 'signupfail.html'))
         return
     }
-    res.sendFile(path.join(__dirname, '..', '..', '..', 'template', 'signupsucc.html'))
 })
 
 export default router
