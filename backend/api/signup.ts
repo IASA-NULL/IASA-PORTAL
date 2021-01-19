@@ -91,15 +91,28 @@ router.post('/mail', async (req, res, next) => {
         return
     }
 
-    let user = (await db.get('account', 'id', req.body.id.toLowerCase())) as
-        | User
-        | undefined
-    if (user) throw new Error()
+    try {
+        let user = (await db.get(
+            'account',
+            'id',
+            req.body.id.toLowerCase()
+        )) as User | undefined
+        if (user) {
+            res.status(409)
+            res.send(createResponse(false, '아이디가 같은 계정이 있어요.'))
+        }
 
-    user = (await db.get('account', 'email', req.body.email)) as
-        | User
-        | undefined
-    if (user) throw new Error()
+        user = (await db.get('account', 'email', req.body.email)) as
+            | User
+            | undefined
+        if (user) {
+            res.status(409)
+            res.send(createResponse(false, '이메일이 같은 계정이 있어요.'))
+        }
+    } catch (e) {
+        res.status(500)
+        res.send(createResponse(false, 'DB 연결에 실패했어요.'))
+    }
 
     let token = jwt.sign(
         {

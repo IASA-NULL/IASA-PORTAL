@@ -15,7 +15,7 @@ import '@material/list/dist/mdc.list.css'
 import { LinkType, MenuLink } from './util'
 
 import { IdForm, PasswordForm } from './account/signin'
-import { FindID, FindPassword } from './account/find'
+import { FindID, FindPassword, FoundId, FoundPassword } from './account/find'
 import {
     SignupCode,
     SignupFill1,
@@ -105,6 +105,11 @@ interface IState {
     signup_password: string
     signup_passwordConfirm: string
     signup_email: string
+
+    findid_email: string
+    findid_name: string
+
+    findpass_email: string
 }
 
 class App extends React.Component<any, IState> {
@@ -130,6 +135,14 @@ class App extends React.Component<any, IState> {
                                     setState={this.setState}
                                     isMobile={isMobile}
                                     context={context}
+                                    next={this.findPass(
+                                        <FoundPassword
+                                            setState={this.setState}
+                                            isMobile={isMobile}
+                                            context={context}
+                                            next={this.resetForm()}
+                                        />
+                                    )}
                                 />,
                                 '비밀번호 찾기',
                                 '이메일을 입력하세요.',
@@ -144,6 +157,14 @@ class App extends React.Component<any, IState> {
                             setState={this.setState}
                             isMobile={isMobile}
                             context={context}
+                            next={this.findId(
+                                <FoundId
+                                    setState={this.setState}
+                                    isMobile={isMobile}
+                                    context={context}
+                                    next={this.resetForm()}
+                                />
+                            )}
                         />,
                         '아이디 찾기',
                         '이메일을 입력하세요.',
@@ -167,7 +188,7 @@ class App extends React.Component<any, IState> {
                                             next={this.validateSignup2(
                                                 <SignupFin
                                                     isMobile={isMobile}
-                                                    next={this.finSignup()}
+                                                    next={this.resetForm()}
                                                 />
                                             )}
                                         />
@@ -504,7 +525,7 @@ class App extends React.Component<any, IState> {
         }
     }
 
-    public finSignup() {
+    public resetForm() {
         let isMobile =
             window.matchMedia('(max-width: 550px)').matches ||
             window.matchMedia('(max-height: 650px)').matches
@@ -527,6 +548,96 @@ class App extends React.Component<any, IState> {
         }
     }
 
+    public findId(form: JSX.Element) {
+        return () => {
+            this.setState({ errMessage: '' })
+            if (this.state?.findid_email && this.state?.findid_name) {
+                this.setState({ loaded: false })
+                fetch(createURL('api', 'account', 'find', 'id'), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: this.state?.findid_email,
+                        name: this.state?.findid_name,
+                    }),
+                })
+                    .then((res) => res.json())
+                    .then((res) => {
+                        if (res.success) {
+                            this.next(
+                                form,
+                                '아이디 찾기',
+                                `회원님의 아이디는 ${res.data.id} 에요.`,
+                                'FindID'
+                            )()
+                        } else {
+                            this.setState({
+                                errMessage: res.message,
+                                loaded: true,
+                            })
+                            this.focusCurrentInput()
+                        }
+                    })
+                    .catch((e) => {
+                        this.setState({
+                            errMessage: '서버와 통신 중 오류가 발생했어요.',
+                        })
+                        this.focusCurrentInput()
+                    })
+            } else {
+                this.setState({ errMessage: '내용을 모두 입력하세요.' })
+                this.focusCurrentInput()
+            }
+        }
+    }
+
+    public findPass(form: JSX.Element) {
+        return () => {
+            this.setState({ errMessage: '' })
+            if (this.state?.findpass_email) {
+                this.setState({ loaded: false })
+                fetch(createURL('api', 'account', 'find', 'password'), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: this.state?.findpass_email,
+                        id: this.state?.id,
+                    }),
+                })
+                    .then((res) => res.json())
+                    .then((res) => {
+                        if (res.success) {
+                            this.next(
+                                form,
+                                '비밀번호 찾기',
+                                `메일이 맞다면 비밀번호 초기화 메일을 받을거에요.`,
+                                'FindPassword'
+                            )()
+                        } else {
+                            this.setState({
+                                errMessage: res.message,
+                                loaded: true,
+                            })
+                            this.focusCurrentInput()
+                        }
+                    })
+                    .catch((e) => {
+                        this.setState({
+                            errMessage: '서버와 통신 중 오류가 발생했어요.',
+                        })
+                        this.focusCurrentInput()
+                    })
+            } else {
+                this.setState({ errMessage: '이메일을 입력하세요.' })
+                this.focusCurrentInput()
+            }
+        }
+    }
+
     public toFirst() {
         setTimeout(() => {
             document
@@ -542,6 +653,12 @@ class App extends React.Component<any, IState> {
                     document
                         .querySelector('.signin-formlist')
                         .classList.add('signin-animate')
+
+                    window.dispatchEvent(
+                        new CustomEvent('focusFrame', {
+                            detail: { frame: 'IdForm' },
+                        })
+                    )
                 }, 0)
             }, 0)
         }, 300)

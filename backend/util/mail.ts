@@ -192,7 +192,7 @@ export function getMailHTML(title: string, preview: string, body: string) {
 export function getVerificationMailHTML(verificationLink: string) {
     return getMailHTML(
         '인증하기 - IASA PORTAL',
-        '링크를 클릭해서 회원가입을 완료하세요. 링크는 1시간 동안만 유효합니다',
+        '링크를 클릭해서 회원가입을 완료하세요. 링크는 1시간 동안만 유효합니다.',
         `
         <tr>
             <td align="left" bgcolor="#ffffff"
@@ -219,6 +219,47 @@ export function getVerificationMailHTML(verificationLink: string) {
                                                                        style="text-transform:uppercase;background:#5351db;font-size: 13px; font-weight: 700; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none !important; padding: 20px 25px; border-radius: 4px; border: 1px solid #5351db; display: block;-webkit-font-smoothing:antialiased;"><span
                                             style="color: #ffffff;text-decoration: none;"
                                             target="_blank">인증하기</span></a></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr> 
+    `
+    )
+}
+
+export function getChangePasswordMailHTML(passwordChangeLink: string) {
+    return getMailHTML(
+        '비밀번호 변경 - IASA PORTAL',
+        '링크를 클릭해서 비밀번호를 변경하세요. 링크는 1시간 동안만 유효합니다.',
+        `
+        <tr>
+            <td align="left" bgcolor="#ffffff"
+                style="padding:0; color: #666666; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400;-webkit-font-smoothing:antialiased;">
+                <p style="margin:0;color:#585858;font-size:14px;font-weight:400;line-height:170%;">
+                    비밀번호를 잊었어도 걱정하지 마세요!</p>
+                <p style="margin:0;margin-top:20px;line-height:0;"></p>
+                <p style="margin:0;color:#585858;font-size:14px;font-weight:400;line-height:170%;">
+                    아래의 버튼을 눌르면 비밀번호를 바꿀 수 있습니다.</p>
+                <p style="margin:0;margin-top:20px;line-height:0;"></p>
+                <p style="margin:0;color:#585858;font-size:14px;font-weight:400;line-height:170%;">
+                    링크는 1시간 동안만 유효합니다.</p>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td align="center" style="padding: 33px 0 33px 0;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" bgcolor="#00bc87"
+                                        style="border-radius: 4px;"><a href="${passwordChangeLink}"
+                                                                       style="text-transform:uppercase;background:#5351db;font-size: 13px; font-weight: 700; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none !important; padding: 20px 25px; border-radius: 4px; border: 1px solid #5351db; display: block;-webkit-font-smoothing:antialiased;"><span
+                                            style="color: #ffffff;text-decoration: none;"
+                                            target="_blank">비밀번호 변경</span></a></td>
                                 </tr>
                             </table>
                         </td>

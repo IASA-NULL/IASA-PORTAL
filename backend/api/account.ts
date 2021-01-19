@@ -9,6 +9,8 @@ import bcrypt from 'bcrypt'
 import _ from 'lodash'
 import { getServerToken } from '../util/serverState'
 import signupRouter from './signup'
+import { User } from '../../scheme/user'
+import { getChangePasswordMailHTML, sendMail } from '../util/mail'
 
 const maxTime = 1000 * 60 * 60 * 24 * 7
 const router = express.Router()
@@ -92,7 +94,34 @@ router.post('/signin', async (req, res) => {
         })
 })
 
-router.post('/find/id', async (req, res, next) => {})
+router.post('/find/id', async (req, res, next) => {
+    try {
+        let account = (await db.get('account', 'email', req.body.email)) as User
+        if (account.name === req.body.name) {
+            res.send(
+                createResponse({
+                    id: account.id,
+                })
+            )
+        } else throw new Error()
+    } catch (e) {
+        res.status(404)
+        res.send(createResponse(false, '일치하는 계정이 존재하지 않아요.'))
+    }
+})
+
+router.post('/find/password', async (req, res, next) => {
+    try {
+        let account = (await db.get('account', 'id', req.body.id)) as User
+        if (account.email === req.body.email) {
+            sendMail(getChangePasswordMailHTML(''), 'noreply', account.email)
+        }
+        res.send(createResponse(true))
+    } catch (e) {
+        res.status(404)
+        res.send(createResponse(false, '일치하는 계정이 존재하지 않아요.'))
+    }
+})
 
 router.get('/avatar', (req, res) => {
     res.sendFile(getPath('static', 'img', 'avatar.png'))
