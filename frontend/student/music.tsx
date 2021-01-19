@@ -20,7 +20,7 @@ import {
 import { CircularProgress } from '@rmwc/circular-progress'
 import { MusicResponse, MusicResponseOne } from '../../scheme/api/music'
 import * as ReactDOM from 'react-dom'
-import { BrIfMobile } from '../util'
+import { BrIfMobile, focusNextInput } from '../util'
 import {
     Dialog,
     DialogActions,
@@ -301,6 +301,9 @@ class Music extends React.Component<{}, MusicState> {
                                 onChange={(e) =>
                                     this.handleChange(e, 'requestSinger')
                                 }
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') focusNextInput()
+                                }}
                                 label='가수'
                             />
                         </GridCell>
@@ -312,6 +315,9 @@ class Music extends React.Component<{}, MusicState> {
                                 onChange={(e) =>
                                     this.handleChange(e, 'requestName')
                                 }
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') this.confirm()
+                                }}
                                 label='노래 이름'
                             />
                         </GridCell>

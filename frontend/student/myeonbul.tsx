@@ -26,7 +26,7 @@ import {
 import { teacher, currentTeacherList } from '../../scheme/teacher/teacher'
 import teacherList from '../../scheme/teacher/2021/list'
 import { token } from '../../scheme/api/auth'
-import { BrIfMobile } from '../util'
+import { BrIfMobile, focusNextInput } from '../util'
 import createURL from '../../scheme/url'
 
 interface MyeonbulProps {
@@ -44,6 +44,7 @@ interface MyeonbulState {
 class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
     messages: any
     notify: any
+    lastInput: any
 
     constructor(props: MyeonbulProps) {
         super(props)
@@ -82,6 +83,7 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
             icon: 'check',
             dismissIcon: true,
         })
+        this.refresh()
     }
 
     public render() {
@@ -180,6 +182,9 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                 style={{ width: '100%', height: '100%' }}
                                 outlined
                                 label='면불 시간'
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') focusNextInput()
+                                }}
                             />
                         </GridCell>
                         <GridCell desktop={4} tablet={4} phone={4}>
@@ -187,6 +192,9 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                 style={{ width: '100%', height: '100%' }}
                                 outlined
                                 label='면불 장소'
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') focusNextInput()
+                                }}
                             />
                         </GridCell>
                         <GridCell desktop={4} tablet={4} phone={4}>
@@ -230,6 +238,12 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                                                 this.setState({
                                                                     selectedTeacher: teacher,
                                                                 })
+                                                                setTimeout(
+                                                                    () => {
+                                                                        this.lastInput.focus()
+                                                                    },
+                                                                    0
+                                                                )
                                                             }}>
                                                             {teacher.name}
                                                         </MenuItem>
@@ -255,7 +269,7 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                     style={{ width: '100%', height: '100%' }}
                                     outlined
                                     label='면불 담당 선생님'
-                                    onClick={(e) => {
+                                    onFocus={() => {
                                         this.setState({
                                             teacherSelectOpened: true,
                                         })
@@ -269,6 +283,12 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                 style={{ width: '100%', height: '100%' }}
                                 outlined
                                 label='면불 사유'
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') this.register()
+                                }}
+                                ref={(input) => {
+                                    this.lastInput = input
+                                }}
                             />
                         </GridCell>
                         <GridCell desktop={4} tablet={8} phone={4}>
