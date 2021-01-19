@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import { ListItem, ListItemText, ListItemGraphic } from "@rmwc/list";
-import * as React from "react";
-import { useState } from "react";
-import { MenuItem } from "@rmwc/menu";
+import { Link } from 'react-router-dom'
+import { ListItem, ListItemText, ListItemGraphic } from '@rmwc/list'
+import * as React from 'react'
+import { useState } from 'react'
+import { MenuItem } from '@rmwc/menu'
 
 export enum LinkType {
     a = 1,
@@ -11,29 +11,28 @@ export enum LinkType {
 }
 
 export function ListLink(props: {
-    body: string;
-    to: string;
-    onClick?: any;
-    type?: LinkType;
-    icon?: string;
+    body: string
+    to: string
+    onClick?: any
+    type?: LinkType
+    icon?: string
 }) {
     if (props.type === LinkType.a)
         return (
             <a
                 style={{
-                    textDecoration: "none",
-                    color: "black",
-                    whiteSpace: "nowrap",
+                    textDecoration: 'none',
+                    color: 'black',
+                    whiteSpace: 'nowrap',
                 }}
                 href={props.to}
-                onClick={props.onClick}
-            >
+                onClick={props.onClick}>
                 <ListItem activated={props.to === location.pathname}>
                     {props.icon ? <ListItemGraphic icon={props.icon} /> : <></>}
                     <ListItemText>{props.body}</ListItemText>
                 </ListItem>
             </a>
-        );
+        )
     else if (props.type === LinkType.js) {
         return (
             <ListItem
@@ -42,56 +41,53 @@ export function ListLink(props: {
                     scrollObj.scroll(
                         { el: document.getElementById(props.to), margin: 80 },
                         500
-                    );
-                    props.onClick();
+                    )
+                    props.onClick()
                 }}
-                activated={props.to === location.pathname}
-            >
+                activated={props.to === location.pathname}>
                 {props.icon ? <ListItemGraphic icon={props.icon} /> : <></>}
                 <ListItemText>{props.body}</ListItemText>
             </ListItem>
-        );
+        )
     } else
         return (
             <Link
                 style={{
-                    textDecoration: "none",
-                    color: "black",
-                    whiteSpace: "nowrap",
+                    textDecoration: 'none',
+                    color: 'black',
+                    whiteSpace: 'nowrap',
                 }}
                 to={props.to}
-                onClick={props.onClick}
-            >
+                onClick={props.onClick}>
                 <ListItem activated={props.to === location.pathname}>
                     {props.icon ? <ListItemGraphic icon={props.icon} /> : <></>}
                     <ListItemText>{props.body}</ListItemText>
                 </ListItem>
             </Link>
-        );
+        )
 }
 
 export function MenuLink(props: {
-    body: string;
-    to: string;
-    onClick?: any;
-    type?: LinkType;
+    body: string
+    to: string
+    onClick?: any
+    type?: LinkType
 }) {
     if (props.type === LinkType.a)
         return (
             <a
                 style={{
-                    textDecoration: "none",
-                    color: "black",
-                    whiteSpace: "nowrap",
+                    textDecoration: 'none',
+                    color: 'black',
+                    whiteSpace: 'nowrap',
                 }}
                 href={props.to}
-                onClick={props.onClick}
-            >
+                onClick={props.onClick}>
                 <MenuItem activated={props.to === location.pathname}>
                     {props.body}
                 </MenuItem>
             </a>
-        );
+        )
     else if (props.type === LinkType.js) {
         return (
             <MenuItem
@@ -100,30 +96,28 @@ export function MenuLink(props: {
                     scrollObj.scroll(
                         { el: document.getElementById(props.to), margin: 80 },
                         500
-                    );
-                    props.onClick();
+                    )
+                    props.onClick()
                 }}
-                activated={props.to === location.pathname}
-            >
+                activated={props.to === location.pathname}>
                 {props.body}
             </MenuItem>
-        );
+        )
     } else
         return (
             <Link
                 style={{
-                    textDecoration: "none",
-                    color: "black",
-                    whiteSpace: "nowrap",
+                    textDecoration: 'none',
+                    color: 'black',
+                    whiteSpace: 'nowrap',
                 }}
                 to={props.to}
-                onClick={props.onClick}
-            >
+                onClick={props.onClick}>
                 <MenuItem activated={props.to === location.pathname}>
                     {props.body}
                 </MenuItem>
             </Link>
-        );
+        )
 }
 
 export function LoremIpsum(props: { count: number }) {
@@ -140,50 +134,53 @@ export function LoremIpsum(props: { count: number }) {
                 </p>
             )}
         </>
-    );
+    )
 }
 
 export function useForceUpdate() {
-    const [value, setValue] = useState(0);
-    return () => setValue((value) => ++value);
+    const [value, setValue] = useState(0)
+    return () => setValue((value) => ++value)
 }
 
 export function BrIfMobile() {
-    if (window.innerWidth <= 760) return <br />;
-    return <></>;
+    if (window.innerWidth <= 760) return <br />
+    return <></>
 }
 
 export function getCaretPosition(ctrl: any) {
-    return ctrl.selectionStart;
+    return ctrl.selectionStart
 }
 
 export function setCaretPosition(ctrl: any, pos: number) {
     if (ctrl.setSelectionRange) {
-        ctrl.focus();
-        ctrl.setSelectionRange(pos, pos);
+        ctrl.focus()
+        ctrl.setSelectionRange(pos, pos)
     } else if (ctrl.createTextRange) {
-        let range = ctrl.createTextRange();
-        range.collapse(true);
-        range.moveEnd("character", pos);
-        range.moveStart("character", pos);
-        range.select();
+        let range = ctrl.createTextRange()
+        range.collapse(true)
+        range.moveEnd('character', pos)
+        range.moveStart('character', pos)
+        range.select()
     }
 }
 
 export function focusNextInput() {
-    let focussableElements = 'a:not([disabled]), button:not([disabled]), input:not([disabled]), [tabindex]:not([disabled]):not([tabindex="-1"])'
+    let focussableElements =
+        'a:not([disabled]), button:not([disabled]), input:not([disabled]), [tabindex]:not([disabled]):not([tabindex="-1"])'
     let currentEl = document.activeElement
     let first = true
     while ((currentEl && !currentEl.matches(focussableElements)) || first) {
         if (currentEl.firstElementChild) currentEl = currentEl.firstElementChild
         else {
-            while (!currentEl.nextElementSibling && currentEl) currentEl = currentEl.parentElement
+            while (!currentEl.nextElementSibling && currentEl)
+                currentEl = currentEl.parentElement
             if (currentEl) currentEl = currentEl.nextElementSibling
             else return
         }
         first = false
     }
-    if (currentEl) { // @ts-ignore
+    if (currentEl) {
+        // @ts-ignore
         currentEl.focus()
     }
 }

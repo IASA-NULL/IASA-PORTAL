@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react'
 
-import { Button } from "@rmwc/button";
-import { Typography } from "@rmwc/typography";
+import { Button } from '@rmwc/button'
+import { Typography } from '@rmwc/typography'
 import {
     DataTable,
     DataTableContent,
@@ -10,58 +10,58 @@ import {
     DataTableHeadCell,
     DataTableBody,
     DataTableCell,
-} from "@rmwc/data-table";
-import { createSnackbarQueue, SnackbarQueue } from "@rmwc/snackbar";
+} from '@rmwc/data-table'
+import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 import {
     PenaltyRequest,
     PenaltyResponse,
     PenaltyResponseOne,
-} from "../../scheme/api/penalty";
-import { teacher, currentTeacherList } from "../../scheme/teacher/teacher";
-import teacherList from "../../scheme/teacher/2021/list";
-import { token } from "../../scheme/api/auth";
-import { BrIfMobile } from "../util";
+} from '../../scheme/api/penalty'
+import { teacher, currentTeacherList } from '../../scheme/teacher/teacher'
+import teacherList from '../../scheme/teacher/2021/list'
+import { token } from '../../scheme/api/auth'
+import { BrIfMobile } from '../util'
 
 interface PenaltyProps {
-    data: token;
+    data: token
 }
 
 interface PenaltyState {
-    data?: PenaltyResponse;
-    loaded: boolean;
-    teacherSelectOpened: boolean;
-    selectedTeacher: teacher;
-    teacherSearch: string;
+    data?: PenaltyResponse
+    loaded: boolean
+    teacherSelectOpened: boolean
+    selectedTeacher: teacher
+    teacherSearch: string
 }
 
 class Penalty extends React.Component<PenaltyProps, PenaltyState> {
-    messages: any;
-    notify: any;
+    messages: any
+    notify: any
 
     constructor(props: PenaltyProps) {
-        super(props);
-        let qu = createSnackbarQueue();
-        this.messages = qu.messages;
-        this.notify = qu.notify;
+        super(props)
+        let qu = createSnackbarQueue()
+        this.messages = qu.messages
+        this.notify = qu.notify
     }
 
     public componentDidMount() {
-        this.refresh();
+        this.refresh()
     }
 
     public refresh() {
-        this.setState({ loaded: false });
+        this.setState({ loaded: false })
 
         setTimeout(() => {
             let tempData = {
                 success: true,
-                message: "",
+                message: '',
                 //@ts-ignore
                 data: pdl,
-            };
-            this.setState({ loaded: true, data: tempData });
-        }, 500);
+            }
+            this.setState({ loaded: true, data: tempData })
+        }, 500)
 
         /*
         fetch(CreateURL('api'))
@@ -71,13 +71,13 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
     }
 
     public render() {
-        let tableBody;
+        let tableBody
         if (this.state?.loaded) {
             try {
                 tableBody = this.state.data.data.history
                     .map((el: PenaltyResponseOne) => {
                         try {
-                            let time = new Date(el.time);
+                            let time = new Date(el.time)
                             return (
                                 <DataTableRow>
                                     <DataTableCell alignEnd>
@@ -93,19 +93,19 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                                         {el.teacher.name}
                                     </DataTableCell>
                                 </DataTableRow>
-                            );
+                            )
                         } catch (e) {
-                            return null;
+                            return null
                         }
                     })
-                    .filter((x) => x);
+                    .filter((x) => x)
             } catch (e) {}
             if (!tableBody || tableBody.length === 0) {
-                let message;
+                let message
                 try {
-                    message = this.state.data.message;
+                    message = this.state.data.message
                 } catch (e) {}
-                if (!message) message = "상벌점 내역이 없어요!";
+                if (!message) message = '상벌점 내역이 없어요!'
                 tableBody = (
                     <DataTableRow>
                         <DataTableCell>
@@ -115,7 +115,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                         <DataTableCell />
                         <DataTableCell />
                     </DataTableRow>
-                );
+                )
             }
         } else
             tableBody = (
@@ -127,28 +127,27 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                     <DataTableCell />
                     <DataTableCell />
                 </DataTableRow>
-            );
+            )
         return (
             <div>
-                <Typography use="headline3">벌점</Typography>
+                <Typography use='headline3'>벌점</Typography>
                 <BrIfMobile />
-                <Typography use="subtitle1" style={{ marginLeft: "10px" }}>
+                <Typography use='subtitle1' style={{ marginLeft: '10px' }}>
                     받은 상벌점을 확인할 수 있어요.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline5">상벌점 내역</Typography>
+                <Typography use='headline5'>상벌점 내역</Typography>
                 <br />
                 <br />
                 <DataTable
                     stickyRows={1}
                     stickyColumns={0}
                     style={{
-                        width: "calc(100% - 40px)",
-                        margin: "20px",
-                        maxHeight: "calc(100vh - 300px)",
-                    }}
-                >
+                        width: 'calc(100% - 40px)',
+                        margin: '20px',
+                        maxHeight: 'calc(100vh - 300px)',
+                    }}>
                     <DataTableContent>
                         <DataTableHead>
                             <DataTableRow>
@@ -170,14 +169,13 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                 <Button
                     outlined
                     onClick={this.refresh.bind(this)}
-                    style={{ marginLeft: "20px" }}
-                >
+                    style={{ marginLeft: '20px' }}>
                     새로고침
                 </Button>
                 <SnackbarQueue messages={this.messages} />
             </div>
-        );
+        )
     }
 }
 
-export default Penalty;
+export default Penalty

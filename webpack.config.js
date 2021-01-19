@@ -1,51 +1,51 @@
-const path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
     entry: {
-        main: "./frontend/index.tsx",
-        auth: "./frontend/auth.tsx",
+        main: './frontend/index.tsx',
+        auth: './frontend/auth.tsx',
     },
-    devtool: "source-map",
-    target: "es6",
+    devtool: 'source-map',
+    target: 'es6',
     output: {
-        path: path.resolve(__dirname, "static", "js"),
-        filename: "[name].js",
+        path: path.resolve(__dirname, 'static', 'js'),
+        filename: '[name].js',
     },
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".jsx"],
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
     },
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
-                loader: "ts-loader",
+                loader: 'ts-loader',
             },
             {
                 test: /\.scss$/,
-                use: ["style-loader", "css-loader?modules=true", "sass-loader"],
+                use: ['style-loader', 'css-loader?modules=true', 'sass-loader'],
                 exclude: [
-                    path.resolve("./node_modules/material-components-web"),
-                    path.resolve("./node_modules/@material"),
+                    path.resolve('./node_modules/material-components-web'),
+                    path.resolve('./node_modules/@material'),
                 ],
             },
             {
                 test: /\.css$/,
-                use: ["style-loader", "css-loader?modules=true"],
+                use: ['style-loader', 'css-loader?modules=true'],
                 exclude: [
-                    path.resolve("./node_modules/material-components-web"),
-                    path.resolve("./node_modules/@material"),
+                    path.resolve('./node_modules/material-components-web'),
+                    path.resolve('./node_modules/@material'),
                 ],
             },
             {
                 test: /\.css$/,
-                use: ["style-loader", "css-loader"],
+                use: ['style-loader', 'css-loader'],
                 include: [
-                    path.resolve("./node_modules/material-components-web"),
-                    path.resolve("./node_modules/@material"),
+                    path.resolve('./node_modules/material-components-web'),
+                    path.resolve('./node_modules/@material'),
                 ],
             },
         ],
     },
-    plugins: [new MiniCssExtractPlugin({ filename: "app.css" })],
-};
+    plugins: [new MiniCssExtractPlugin({ filename: 'app.css' })],
+}

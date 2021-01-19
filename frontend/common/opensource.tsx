@@ -1,46 +1,45 @@
-import * as React from "react";
-import { Typography } from "@rmwc/typography";
+import * as React from 'react'
+import { Typography } from '@rmwc/typography'
 
 class Opensource extends React.Component<any, {}> {
     constructor(props: {}) {
-        super(props);
+        super(props)
     }
 
     public render() {
         return (
             <div>
-                <Typography use="headline3" id="cont_index">
+                <Typography use='headline3' id='cont_index'>
                     IASA Portal 오픈소스 사용고지
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     이 페이지에서는 IASA Portal을 제작/운영하는데에 있어서
                     사용된 소프트웨어의 정보에 대해 알립니다.
                 </Typography>
                 <br />
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_mdc">
-                    Material Components for the web{" "}
+                <Typography use='headline4' id='cont_mdc'>
+                    Material Components for the web{' '}
                     <a
-                        target="_blank"
-                        href="https://github.com/material-components/material-components-web"
-                    >
+                        target='_blank'
+                        href='https://github.com/material-components/material-components-web'>
                         (프로젝트 사이트)
                     </a>
                 </Typography>
                 <br />
-                <Typography use="subtitle1">웹사이트 디자인 목적</Typography>
+                <Typography use='subtitle1'>웹사이트 디자인 목적</Typography>
                 <br />
                 <br />
-                <Typography use="body1">The MIT License</Typography>
+                <Typography use='body1'>The MIT License</Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     Copyright (c) 2014-2019 Google, Inc.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     Permission is hereby granted, free of charge, to any person
                     obtaining a copy of this software and associated
                     documentation files (the "Software"), to deal in the
@@ -51,13 +50,13 @@ class Opensource extends React.Component<any, {}> {
                     subject to the following conditions:
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     The above copyright notice and this permission notice shall
                     be included in all copies or substantial portions of the
                     Software.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
                     KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
                     WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
@@ -69,23 +68,23 @@ class Opensource extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_react">
-                    React{" "}
-                    <a target="_blank" href="https://reactjs.org/">
+                <Typography use='headline4' id='cont_react'>
+                    React{' '}
+                    <a target='_blank' href='https://reactjs.org/'>
                         (프로젝트 사이트)
                     </a>
                 </Typography>
                 <br />
-                <Typography use="subtitle1">프론트엔드 코딩 목적</Typography>
+                <Typography use='subtitle1'>프론트엔드 코딩 목적</Typography>
                 <br />
                 <br />
-                <Typography use="body1">The MIT License</Typography>
+                <Typography use='body1'>The MIT License</Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     Copyright (c) Facebook, Inc. and its affiliates.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     Permission is hereby granted, free of charge, to any person
                     obtaining a copy of this software and associated
                     documentation files (the "Software"), to deal in the
@@ -96,13 +95,13 @@ class Opensource extends React.Component<any, {}> {
                     subject to the following conditions:
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     The above copyright notice and this permission notice shall
                     be included in all copies or substantial portions of the
                     Software.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
                     KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
                     WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
@@ -114,26 +113,25 @@ class Opensource extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_quaggaJS">
-                    quaggaJS{" "}
+                <Typography use='headline4' id='cont_quaggaJS'>
+                    quaggaJS{' '}
                     <a
-                        target="_blank"
-                        href="https://github.com/serratus/quaggaJS"
-                    >
+                        target='_blank'
+                        href='https://github.com/serratus/quaggaJS'>
                         (프로젝트 사이트)
                     </a>
                 </Typography>
                 <br />
-                <Typography use="subtitle1">QR코드 인식 라이브러리</Typography>
+                <Typography use='subtitle1'>QR코드 인식 라이브러리</Typography>
                 <br />
                 <br />
-                <Typography use="body1">The MIT License (MIT)</Typography>
+                <Typography use='body1'>The MIT License (MIT)</Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     Copyright (c) 2014 Christoph Oberhofer
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     Permission is hereby granted, free of charge, to any person
                     obtaining a copy of this software and associated
                     documentation files (the "Software"), to deal in the
@@ -144,13 +142,13 @@ class Opensource extends React.Component<any, {}> {
                     subject to the following conditions:
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     The above copyright notice and this permission notice shall
                     be included in all copies or substantial portions of the
                     Software.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
                     KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
                     WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
@@ -162,50 +160,49 @@ class Opensource extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_icons">
-                    Google Material Design Icons{" "}
+                <Typography use='headline4' id='cont_icons'>
+                    Google Material Design Icons{' '}
                     <a
-                        target="_blank"
-                        href="https://material.io/resources/icons/?style=baseline"
-                    >
+                        target='_blank'
+                        href='https://material.io/resources/icons/?style=baseline'>
                         (프로젝트 사이트)
                     </a>
                 </Typography>
                 <br />
-                <Typography use="subtitle1">기타 아이콘용</Typography>
+                <Typography use='subtitle1'>기타 아이콘용</Typography>
                 <br />
                 <br />
-                <Typography use="body1">Apache License</Typography>
+                <Typography use='body1'>Apache License</Typography>
                 <br />
-                <Typography use="body1">Version 2.0, January 2004</Typography>
+                <Typography use='body1'>Version 2.0, January 2004</Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     http://www.apache.org/licenses/
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
                 </Typography>
                 <br />
                 <ol>
                     <li>
-                        <Typography use="subtitle2">Definitions.</Typography>
+                        <Typography use='subtitle2'>Definitions.</Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             "License" shall mean the terms and conditions for
                             use, reproduction, and distribution as defined by
                             Sections 1 through 9 of this document.
                         </Typography>
                         <br />
-                        <Typography use="body1">
-                            {" "}
+                        <Typography use='body1'>
+                            {' '}
                             "Licensor" shall mean the copyright owner or entity
                             authorized by the copyright owner that is granting
                             the License.
                         </Typography>
                         <br />
-                        <Typography use="body1">
-                            {" "}
+                        <Typography use='body1'>
+                            {' '}
                             "Legal Entity" shall mean the union of the acting
                             entity and all other entities that control, are
                             controlled by, or are under common control with that
@@ -218,21 +215,21 @@ class Opensource extends React.Component<any, {}> {
                             entity.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             "You" (or "Your") shall mean an individual or Legal
                             Entity exercising permissions granted by this
                             License.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             "Source" form shall mean the preferred form for
                             making modifications, including but not limited to
                             software source code, documentation source, and
                             configuration files.
                         </Typography>
                         <br />
-                        <Typography use="body1">
-                            {" "}
+                        <Typography use='body1'>
+                            {' '}
                             "Object" form shall mean any form resulting from
                             mechanical transformation or translation of a Source
                             form, including but not limited to compiled object
@@ -240,8 +237,8 @@ class Opensource extends React.Component<any, {}> {
                             other media types.
                         </Typography>
                         <br />
-                        <Typography use="body1">
-                            {" "}
+                        <Typography use='body1'>
+                            {' '}
                             "Work" shall mean the work of authorship, whether in
                             Source or Object form, made available under the
                             License, as indicated by a copyright notice that is
@@ -249,7 +246,7 @@ class Opensource extends React.Component<any, {}> {
                             provided in the Appendix below).
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             "Derivative Works" shall mean any work, whether in
                             Source or Object form, that is based on (or derived
                             from) the Work and for which the editorial
@@ -262,7 +259,7 @@ class Opensource extends React.Component<any, {}> {
                             Derivative Works thereof.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             "Contribution" shall mean any work of authorship,
                             including the original version of the Work and any
                             modifications or additions to that Work or
@@ -284,7 +281,7 @@ class Opensource extends React.Component<any, {}> {
                             Contribution."
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             "Contributor" shall mean Licensor and any individual
                             or Legal Entity on behalf of whom a Contribution has
                             been received by Licensor and subsequently
@@ -293,11 +290,11 @@ class Opensource extends React.Component<any, {}> {
                         <br />
                     </li>
                     <li>
-                        <Typography use="subtitle2">
+                        <Typography use='subtitle2'>
                             Grant of Copyright License.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             Subject to the terms and conditions of this License,
                             each Contributor hereby grants to You a perpetual,
                             worldwide, non-exclusive, no-charge, royalty-free,
@@ -309,11 +306,11 @@ class Opensource extends React.Component<any, {}> {
                         <br />
                     </li>
                     <li>
-                        <Typography use="subtitle2">
+                        <Typography use='subtitle2'>
                             Grant of Patent License.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             Subject to the terms and conditions of this License,
                             each Contributor hereby grants to You a perpetual,
                             worldwide, non-exclusive, no-charge, royalty-free,
@@ -327,7 +324,7 @@ class Opensource extends React.Component<any, {}> {
                             Work to which such Contribution(s) was submitted.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             If You institute patent litigation against any
                             entity (including a cross-claim or counterclaim in a
                             lawsuit) alleging that the Work or a Contribution
@@ -340,9 +337,9 @@ class Opensource extends React.Component<any, {}> {
                         <br />
                     </li>
                     <li>
-                        <Typography use="subtitle2">Redistribution</Typography>
+                        <Typography use='subtitle2'>Redistribution</Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             You may reproduce and distribute copies of the Work
                             or Derivative Works thereof in any medium, with or
                             without modifications, and in Source or Object form,
@@ -391,7 +388,7 @@ class Opensource extends React.Component<any, {}> {
                                 construed as modifying the License.
                             </li>
                         </ol>
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             You may add Your own copyright statement to Your
                             modifications and may provide additional or
                             different license terms and conditions for use,
@@ -404,11 +401,11 @@ class Opensource extends React.Component<any, {}> {
                         <br />
                     </li>
                     <li>
-                        <Typography use="subtitle2">
+                        <Typography use='subtitle2'>
                             Submission of Contributions.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             Unless You explicitly state otherwise, any
                             Contribution intentionally submitted for inclusion
                             in the Work by You to the Licensor shall be under
@@ -416,7 +413,7 @@ class Opensource extends React.Component<any, {}> {
                             any additional terms or conditions.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             Notwithstanding the above, nothing herein shall
                             supersede or modify the terms of any separate
                             license agreement you may have executed with
@@ -425,9 +422,9 @@ class Opensource extends React.Component<any, {}> {
                         <br />
                     </li>
                     <li>
-                        <Typography use="subtitle2">Trademarks</Typography>
+                        <Typography use='subtitle2'>Trademarks</Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             This License does not grant permission to use the
                             trade names, trademarks, service marks, or product
                             names of the Licensor, except as required for
@@ -438,11 +435,11 @@ class Opensource extends React.Component<any, {}> {
                         <br />
                     </li>
                     <li>
-                        <Typography use="subtitle2">
+                        <Typography use='subtitle2'>
                             Disclaimer of Warranty.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             Unless required by applicable law or agreed to in
                             writing, Licensor provides the Work (and each
                             Contributor provides its Contributions) on an "AS
@@ -453,7 +450,7 @@ class Opensource extends React.Component<any, {}> {
                             PARTICULAR PURPOSE.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             You are solely responsible for determining the
                             appropriateness of using or redistributing the Work
                             and assume any risks associated with Your exercise
@@ -462,11 +459,11 @@ class Opensource extends React.Component<any, {}> {
                         <br />
                     </li>
                     <li>
-                        <Typography use="subtitle2">
+                        <Typography use='subtitle2'>
                             Limitation of Liability.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             In no event and under no legal theory, whether in
                             tort (including negligence), contract, or otherwise,
                             unless required by applicable law (such as
@@ -485,11 +482,11 @@ class Opensource extends React.Component<any, {}> {
                         <br />
                     </li>
                     <li>
-                        <Typography use="subtitle2">
+                        <Typography use='subtitle2'>
                             Accepting Warranty or Additional Liability.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             While redistributing the Work or Derivative Works
                             thereof, You may choose to offer, and charge a fee
                             for, acceptance of support, warranty, indemnity, or
@@ -497,7 +494,7 @@ class Opensource extends React.Component<any, {}> {
                             with this License.
                         </Typography>
                         <br />
-                        <Typography use="body1">
+                        <Typography use='body1'>
                             However, in accepting such obligations, You may act
                             only on Your own behalf and on Your sole
                             responsibility, not on behalf of any other
@@ -510,64 +507,64 @@ class Opensource extends React.Component<any, {}> {
                         <br />
                     </li>
                 </ol>
-                <Typography use="body1">END OF TERMS AND CONDITIONS</Typography>
+                <Typography use='body1'>END OF TERMS AND CONDITIONS</Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     APPENDIX: How to apply the Apache License to your work.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     To apply the Apache License to your work, attach the
                     following boilerplate notice, with the fields enclosed by
                     brackets "[]" replaced with your own identifying
                     information.
                 </Typography>
                 <br />
-                <Typography use="body1">
-                    {" "}
+                <Typography use='body1'>
+                    {' '}
                     (Don't include the brackets!) The text should be enclosed in
                     the appropriate comment syntax for the file format.
                 </Typography>
                 <br />
-                <Typography use="body1">
-                    {" "}
+                <Typography use='body1'>
+                    {' '}
                     We also recommend that a file or class name and description
                     of purpose be included on the same "printed page" as the
                     copyright notice for easier identification within
                     third-party archives.
                 </Typography>
                 <br />
-                <Typography use="body1">Copyright [2020] [NULL]</Typography>
+                <Typography use='body1'>Copyright [2020] [NULL]</Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     Licensed under the Apache License, Version 2.0 (the
                     "License"); you may not use this file except in compliance
                     with the License.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     You may obtain a copy of the License at
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     http://www.apache.org/licenses/LICENSE-2.0
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     Unless required by applicable law or agreed to in writing,
                     software distributed under the License is distributed on an
                     "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
                     either express or implied.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     See the License for the specific language governing
                     permissions and limitations under the License.
                 </Typography>
                 <br />
             </div>
-        );
+        )
     }
 }
 
-export default Opensource;
+export default Opensource

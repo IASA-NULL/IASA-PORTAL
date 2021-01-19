@@ -1,10 +1,10 @@
-import fs from "fs";
-import getPath from "./getPath";
+import fs from 'fs'
+import getPath from './getPath'
 
-let secret = Object();
+let secret = Object()
 
 export default function getSecret(type: string) {
-    if (secret[type]) return secret[type];
-    secret[type] = fs.readFileSync(getPath("secret", type)).toString().trim();
-    return secret[type];
+    if (secret[type]) return secret[type]
+    secret[type] = fs.readFileSync(getPath('secret', type)).toString().trim()
+    return secret[type]
 }

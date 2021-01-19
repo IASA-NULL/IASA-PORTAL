@@ -1,38 +1,38 @@
-import * as React from "react";
-import { Button } from "@rmwc/button";
-import { Typography } from "@rmwc/typography";
+import * as React from 'react'
+import { Button } from '@rmwc/button'
+import { Typography } from '@rmwc/typography'
 
 class Userdata extends React.Component<any, {}> {
     constructor(props: {}) {
-        super(props);
+        super(props)
     }
 
     public render() {
         return (
             <div>
-                <Typography use="headline3" id="cont_index">
+                <Typography use='headline3' id='cont_index'>
                     개인정보 처리방침
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     NULL은 서비스 기획부터 종료까지 정보통신망 이용촉진 및
                     정보보호 등에 관한 법률(이하 '정보통신망법'), 개인정보보호법
                     등 국내의 개인정보 보호 법령을 철저히 준수합니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     또한 OECD의 개인정보 보호 가이드라인 등 국제기준을 준수하여
                     서비스를 제공합니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline5" id="cont_why">
+                <Typography use='headline5' id='cont_why'>
                     개인정보처리방침의 의의
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     NULL는 본 개인정보처리방침을 정보통신망법을 기준으로
                     작성하되, NULL 내에서의 이용자 개인정보 처리 현황을 최대한
                     알기 쉽고 상세하게 설명하기 위해 노력하였습니다. 이는 쉬운
@@ -41,7 +41,7 @@ class Userdata extends React.Component<any, {}> {
                     도입한 것입니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     개인정보처리방침은 다음과 같은 중요한 의미를 가지고
                     있습니다.
                 </Typography>
@@ -73,12 +73,12 @@ class Userdata extends React.Component<any, {}> {
                     </li>
                 </ul>
                 <br />
-                <Typography use="headline5" id="cont_collect">
+                <Typography use='headline5' id='cont_collect'>
                     수집하는 개인정보
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     회원가입 시점에 NULL이 이용자로부터 수집하는 개인정보는
                     아래와 같습니다.
                 </Typography>
@@ -90,12 +90,12 @@ class Userdata extends React.Component<any, {}> {
                         그리고 선택항목으로 프로필 정보를 수집합니다.
                     </li>
                 </ul>
-                <Typography use="subtitle1">
+                <Typography use='subtitle1'>
                     서비스 이용 과정에서 이용자로부터 수집하는 개인정보는 아래와
                     같습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     또한 이미지 및 음성을 이용한 검색 서비스 등에서 이미지나
                     음성이 수집될 수 있습니다. IASA PORTAL 내의 개별 서비스 이용
                     과정에서 해당 서비스의 이용자에 한해 추가 개인정보 수집이
@@ -105,17 +105,17 @@ class Userdata extends React.Component<any, {}> {
                     안내 드리고 동의를 받습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     서비스 이용 과정에서 IP 주소, 쿠키, 서비스 이용 기록,
                     기기정보가 생성되어 수집될 수 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     또한 이미지 및 음성을 이용한 검색 서비스 등에서 이미지나
                     음성이 수집될 수 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     구체적으로 1) 서비스 이용 과정에서 이용자에 관한 정보를
                     자동화된 방법으로 생성하여 이를 저장(수집)하거나, 2) 이용자
                     기기의 고유한 정보를 원래의 값을 확인하지 못 하도록 안전하게
@@ -124,7 +124,7 @@ class Userdata extends React.Component<any, {}> {
                     해당하지 않을 수도 있습니다.
                 </Typography>
                 <br />
-                <Typography use="subtitle1">
+                <Typography use='subtitle1'>
                     NULL은 아래의 방법을 통해 개인정보를 수집합니다.
                 </Typography>
                 <br />
@@ -150,12 +150,12 @@ class Userdata extends React.Component<any, {}> {
                     </li>
                 </ul>
                 <br />
-                <Typography use="headline5" id="cont_usage">
+                <Typography use='headline5' id='cont_usage'>
                     수집한 개인정보의 이용
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA PORTAL 및 IASA PORTAL 관련 제반 서비스(모바일 웹/앱
                     포함)의 회원관리, 서비스 개발·제공 및 향상, 안전한 인터넷
                     이용환경 구축 등 아래의 목적으로만 개인정보를 이용합니다.
@@ -188,17 +188,17 @@ class Userdata extends React.Component<any, {}> {
                     </li>
                 </ul>
                 <br />
-                <Typography use="headline5" id="cont_give">
+                <Typography use='headline5' id='cont_give'>
                     개인정보의 제공 및 위탁
                 </Typography>
                 <br />
                 <br />
-                <Typography use="subtitle1">
+                <Typography use='subtitle1'>
                     NULL은 원칙적으로 이용자 동의 없이 개인정보를 외부에
                     제공하지 않습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     NULL은 이용자의 사전 동의 없이 개인정보를 외부에 제공하지
                     않습니다. 단, 이용자가 외부 제휴사의 서비스를 이용하기
                     위하여 개인정보 제공에 직접 동의를 한 경우, 그리고 관련
@@ -207,12 +207,12 @@ class Userdata extends React.Component<any, {}> {
                     해소하기 위한 경우에 한하여 개인정보를 제공하고 있습니다.
                 </Typography>
                 <br />
-                <Typography use="subtitle1">
+                <Typography use='subtitle1'>
                     NULL은 편리하고 더 나은 서비스를 제공하기 위해 업무 중
                     일부를 외부에 위탁하고 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     NULL은 서비스 제공을 위하여 필요한 업무 중 일부를 외부
                     업체에 위탁하고 있으며, 위탁받은 업체가 정보통신망법에 따라
                     개인정보를 안전하게 처리 하도록 필요한 사항을 규정하고
@@ -221,51 +221,51 @@ class Userdata extends React.Component<any, {}> {
                     수탁업체에 제공되지 않습니다.
                 </Typography>
                 <br />
-                <table className="mdc-data-table__content" id="myeonbulList">
+                <table className='mdc-data-table__content' id='myeonbulList'>
                     <thead>
-                        <tr className="mdc-data-table__header-row">
-                            <th className="mdc-data-table__header-cell">
+                        <tr className='mdc-data-table__header-row'>
+                            <th className='mdc-data-table__header-cell'>
                                 수탁업체
                             </th>
-                            <th className="mdc-data-table__header-cell">
+                            <th className='mdc-data-table__header-cell'>
                                 위탁업무
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="mdc-data-table__header-row">
-                            <td className="mdc-data-table__cell">
+                        <tr className='mdc-data-table__header-row'>
+                            <td className='mdc-data-table__cell'>
                                 Amazon Web Service
                             </td>
-                            <td className="mdc-data-table__cell">
+                            <td className='mdc-data-table__cell'>
                                 사이트 호스팅
                             </td>
                         </tr>
-                        <tr className="mdc-data-table__header-row">
-                            <td className="mdc-data-table__cell">CloudFlare</td>
-                            <td className="mdc-data-table__cell">
+                        <tr className='mdc-data-table__header-row'>
+                            <td className='mdc-data-table__cell'>CloudFlare</td>
+                            <td className='mdc-data-table__cell'>
                                 리소스 최적화, DDoS 방어
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <Typography use="body1">
+                <Typography use='body1'>
                     개인정보는 회원 탈퇴시 혹은 위탁 계약 종료시까지 보유 및
                     이용합니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline5" id="cont_destroy">
+                <Typography use='headline5' id='cont_destroy'>
                     개인정보의 파기
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     회사는 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지체없이
                     파기하고 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     단, 이용자에게 개인정보 보관기간에 대해 별도의 동의를 얻은
                     경우, 또는 법령에서 일정 기간 정보보관 의무를 부과하는
                     경우에는 해당 기간 동안 개인정보를 안전하게 보관합니다.
@@ -275,11 +275,11 @@ class Userdata extends React.Component<any, {}> {
                     이용하지 않습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">통신비밀보호법</Typography>
+                <Typography use='body1'>통신비밀보호법</Typography>
                 <br />
-                <Typography use="body1"> - 로그인 기록: 3개월</Typography>
+                <Typography use='body1'> - 로그인 기록: 3개월</Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     회원탈퇴, 서비스 종료, 이용자에게 동의받은 개인정보
                     보유기간의 도래와 같이 개인정보의 수집 및 이용목적이 달성된
                     개인정보는 재생이 불가능한 방법으로 파기하고 있습니다.
@@ -287,20 +287,20 @@ class Userdata extends React.Component<any, {}> {
                     지체없이 재생이 불가능한 방법으로 파기합니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     전자적 파일 형태의 경우 복구 및 재생이 되지 않도록 기술적인
                     방법을 이용하여 안전하게 삭제하며, 출력물 등은 분쇄하거나
                     소각하는 방식 등으로 파기합니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     참고로 NULL은 ‘개인정보 유효기간제’에 따라 1년간 서비스를
                     이용하지 않은 회원의 개인정보를 별도로 분리 보관하여
                     관리하고 있습니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline5" id="cont_right">
+                <Typography use='headline5' id='cont_right'>
                     이용자 및 법정대리인의 권리와 행사 방법
                 </Typography>
                 <br />
@@ -324,32 +324,32 @@ class Userdata extends React.Component<any, {}> {
                     </li>
                 </ul>
                 <br />
-                <Typography use="headline5" id="cont_effort">
+                <Typography use='headline5' id='cont_effort'>
                     개인정보보호를 위한 NULL의 노력
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     NULL은 이용자의 개인정보를 안전하게 관리하기 위하여 최선을
                     다하며, 정보통신망법 및 개인정보보호법에서 요구하는 수준
                     이상으로 개인정보를 보호하고 있습니다.
                 </Typography>
                 <br />
-                <Typography use="subtitle1">
+                <Typography use='subtitle1'>
                     개인정보를 암호화하고 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     법령에서 암호화를 요구하고 있는 비밀번호, 고유식별정보,
                     계좌번호 및 카드번호 외에 이메일 주소와 휴대폰 번호 등을
                     추가로 암호화 하여 보관하고 있습니다.
                 </Typography>
                 <br />
-                <Typography use="subtitle1">
+                <Typography use='subtitle1'>
                     대내외의 보안 위협으로부터 개인정보를 안전하게 관리합니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     NULL은 개인정보의 훼손에 대비해서 자료를 수시로 백업하고
                     있고, 최신 백신프로그램을 이용하여 이용자들의 개인정보나
                     자료가 유출되거나 손상되지 않도록 방지하고 있습니다. 암호화
@@ -358,80 +358,78 @@ class Userdata extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline5" id="cont_who">
+                <Typography use='headline5' id='cont_who'>
                     개인정보 보호책임자 및 담당자 안내
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA PORTAL 이용자의 개인정보 관련 문의사항 및 불만 처리
                     등을 위하여 아래와 같이 개인정보 보호 책임자 및 담당자를
                     지정하고 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">개인정보 보호책임자</Typography>
+                <Typography use='body1'>개인정보 보호책임자</Typography>
                 <br />
-                <Typography use="body1">이름: 김준서</Typography>
+                <Typography use='body1'>이름: 김준서</Typography>
                 <br />
-                <Typography use="body1">소속 : NULL</Typography>
+                <Typography use='body1'>소속 : NULL</Typography>
                 <br />
-                <Typography use="body1">직위 : 부장</Typography>
+                <Typography use='body1'>직위 : 부장</Typography>
                 <br />
-                <Typography use="body1">
-                    메일주소 :{" "}
+                <Typography use='body1'>
+                    메일주소 :{' '}
                     <a
-                        href="/cdn-cgi/l/email-protection"
-                        className="__cf_email__"
-                        data-cfemail="bfd5ccd48b868e8f8c86ffd8d2ded6d391dcd0d2"
-                    >
+                        href='/cdn-cgi/l/email-protection'
+                        className='__cf_email__'
+                        data-cfemail='bfd5ccd48b868e8f8c86ffd8d2ded6d391dcd0d2'>
                         [email&#160;protected]
                     </a>
                 </Typography>
                 <br />
-                <Typography use="body1">개인정보 보호담당자</Typography>
+                <Typography use='body1'>개인정보 보호담당자</Typography>
                 <br />
-                <Typography use="body1">이름: 이서현</Typography>
+                <Typography use='body1'>이름: 이서현</Typography>
                 <br />
-                <Typography use="body1">소속 : NULL</Typography>
+                <Typography use='body1'>소속 : NULL</Typography>
                 <br />
-                <Typography use="body1">직위 : 차장</Typography>
+                <Typography use='body1'>직위 : 차장</Typography>
                 <br />
-                <Typography use="body1">
-                    메일주소 :{" "}
+                <Typography use='body1'>
+                    메일주소 :{' '}
                     <a
-                        href="/cdn-cgi/l/email-protection"
-                        className="__cf_email__"
-                        data-cfemail="2e1e1a5d4b4146575b406e49434f4742004d4143"
-                    >
+                        href='/cdn-cgi/l/email-protection'
+                        className='__cf_email__'
+                        data-cfemail='2e1e1a5d4b4146575b406e49434f4742004d4143'>
                         [email&#160;protected]
                     </a>
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     기타 개인정보 침해에 대한 신고나 상담이 필요한 경우에 아래
                     기관에 문의 가능합니다.
                 </Typography>
                 <br />
                 <ul>
                     <li>
-                        <a href="https://privacy.kisa.or.kr">
+                        <a href='https://privacy.kisa.or.kr'>
                             개인정보침해신고센터
-                        </a>{" "}
+                        </a>{' '}
                         (국번없이 118)
                     </li>
                     <li>
-                        <a href="https://www.spo.go.kr">
+                        <a href='https://www.spo.go.kr'>
                             대검찰청 사이버수사과
-                        </a>{" "}
+                        </a>{' '}
                         (국번없이 1301)
                     </li>
                     <li>
-                        <a href="https://police.go.kr">경찰청 사이버안전국</a>{" "}
+                        <a href='https://police.go.kr'>경찰청 사이버안전국</a>{' '}
                         (국번없이 182)
                     </li>
                 </ul>
                 <br />
-                <Typography use="headline5" id="cont_where">
+                <Typography use='headline5' id='cont_where'>
                     본 개인정보처리방침의 적용 범위
                 </Typography>
                 <br />
@@ -439,7 +437,7 @@ class Userdata extends React.Component<any, {}> {
                 <ul>
                     <li>
                         본 개인정보처리방침은 동아리의 브랜드 중 하나인 ‘
-                        <a href="https://www.iasa.kr">IASA PORTAL</a>’ 및 관련
+                        <a href='https://www.iasa.kr'>IASA PORTAL</a>’ 및 관련
                         제반 서비스(모바일 웹/앱 포함)에 적용되며, 다른 브랜드로
                         제공되는 서비스에 대해서는 별개의 개인정보처리방침이
                         적용될 수 있습니다
@@ -451,12 +449,12 @@ class Userdata extends React.Component<any, {}> {
                     </li>
                 </ul>
                 <br />
-                <Typography use="headline5" id="cont_alert">
+                <Typography use='headline5' id='cont_alert'>
                     개정 전 고지 의무
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     본 개인정보처리방침의 내용 추가, 삭제 및 수정이 있을 경우
                     개정 최소 7일 전에 ‘공지사항’을 통해 사전 공지를 할
                     것입니다. 다만, 수집하는 개인정보의 항목, 이용목적의 변경
@@ -470,8 +468,8 @@ class Userdata extends React.Component<any, {}> {
                     <li>시행일자: 2020년 02월 28일</li>
                 </ul>
             </div>
-        );
+        )
     }
 }
 
-export default Userdata;
+export default Userdata

@@ -1,24 +1,24 @@
-import { teacher } from "../teacher/teacher";
-import commonApi from "./commonApi";
+import { teacher } from '../teacher/teacher'
+import commonApi from './commonApi'
 
 export interface PenaltyRequest {
-    token: string;
+    token: string
     request: {
-        type: string;
-        uid: number;
-    };
+        type: string
+        uid: number
+    }
 }
 
 export interface PenaltyResponseOne {
-    score: number;
-    teacher: teacher;
-    info: string;
-    time: number;
+    score: number
+    teacher: teacher
+    info: string
+    time: number
 }
 
 export interface PenaltyResponse extends commonApi {
     data: {
-        score: number;
-        history: PenaltyResponseOne[];
-    };
+        score: number
+        history: PenaltyResponseOne[]
+    }
 }

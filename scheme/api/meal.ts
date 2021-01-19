@@ -1,5 +1,5 @@
-import commonApi from "./commonApi";
-import { ObjectType, Field, TSGraphQLInt, TSGraphQLString } from "ts-graphql";
+import commonApi from './commonApi'
+import { ObjectType, Field, TSGraphQLInt, TSGraphQLString } from 'ts-graphql'
 
 export enum AllergicInfo {
     난류 = 1,
@@ -24,108 +24,108 @@ export enum AllergicInfo {
 }
 
 export interface mealTime {
-    type: number;
-    year: number;
-    month: number;
-    day: number;
+    type: number
+    year: number
+    month: number
+    day: number
 }
 
 export function getMealTime(date = new Date()) {
-    let type, year, month, day;
+    let type, year, month, day
     if (
         date.getHours() < 8 ||
         (date.getHours() === 8 && date.getMinutes() <= 20)
     )
-        type = 0;
+        type = 0
     else if (
         date.getHours() < 13 ||
         (date.getHours() === 13 && date.getMinutes() <= 20)
     )
-        type = 1;
+        type = 1
     else if (
         date.getHours() < 19 ||
         (date.getHours() === 19 && date.getMinutes() <= 20)
     )
-        type = 2;
+        type = 2
     else {
-        date = new Date(date.getTime() + 1000 * 3600 * 24);
-        type = 0;
+        date = new Date(date.getTime() + 1000 * 3600 * 24)
+        type = 0
     }
-    year = date.getFullYear();
-    month = date.getMonth() + 1;
-    day = date.getDate();
+    year = date.getFullYear()
+    month = date.getMonth() + 1
+    day = date.getDate()
     return {
         year: year,
         month: month,
         day: day,
         type: type,
-    };
+    }
 }
 
 export function getPrevMealTime(target: mealTime) {
-    let { type, year, month, day } = target;
-    type -= 1;
+    let { type, year, month, day } = target
+    type -= 1
     if (type < 0) {
-        type = 2;
-        let nextDay = new Date(year, month - 1, day - 1);
-        year = nextDay.getFullYear();
-        month = nextDay.getMonth() + 1;
-        day = nextDay.getDate();
+        type = 2
+        let nextDay = new Date(year, month - 1, day - 1)
+        year = nextDay.getFullYear()
+        month = nextDay.getMonth() + 1
+        day = nextDay.getDate()
     }
     return {
         year: year,
         month: month,
         day: day,
         type: type,
-    };
+    }
 }
 
 export function getNextMealTime(target: mealTime) {
-    let { type, year, month, day } = target;
-    type += 1;
+    let { type, year, month, day } = target
+    type += 1
     if (type > 2) {
-        type = 0;
-        let nextDay = new Date(year, month - 1, day + 1);
-        year = nextDay.getFullYear();
-        month = nextDay.getMonth() + 1;
-        day = nextDay.getDate();
+        type = 0
+        let nextDay = new Date(year, month - 1, day + 1)
+        year = nextDay.getFullYear()
+        month = nextDay.getMonth() + 1
+        day = nextDay.getDate()
     }
     return {
         year: year,
         month: month,
         day: day,
         type: type,
-    };
+    }
 }
 
 export interface Menu {
-    allergicInfo?: AllergicInfo[];
-    name: string;
+    allergicInfo?: AllergicInfo[]
+    name: string
 }
 
 export interface Origin {
-    name: string;
-    origin: string;
+    name: string
+    origin: string
 }
 
 export interface Energy {
-    name: string;
-    value: number;
-    unit: string;
+    name: string
+    value: number
+    unit: string
 }
 
 export interface MealResponse extends commonApi {
     data: {
-        time: mealTime;
-        menu: Menu[];
-        image?: string;
-        score?: number;
-        kcal?: number;
-        origin?: Origin[];
-        energy?: Energy[];
-    };
+        time: mealTime
+        menu: Menu[]
+        image?: string
+        score?: number
+        kcal?: number
+        origin?: Origin[]
+        energy?: Energy[]
+    }
 }
 
 export function mealTimeToString(target: mealTime) {
-    return `${target.year}_${target.month}_${target.day}_${target.type}`;
+    return `${target.year}_${target.month}_${target.day}_${target.type}`
 }

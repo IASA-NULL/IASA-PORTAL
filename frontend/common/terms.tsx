@@ -1,29 +1,28 @@
-import * as React from "react";
-import { Typography } from "@rmwc/typography";
+import * as React from 'react'
+import { Typography } from '@rmwc/typography'
 
 class Terms extends React.Component<any, {}> {
     constructor(props: {}) {
-        super(props);
+        super(props)
     }
 
     public render() {
         return (
             <div>
                 <Typography
-                    use="headline3"
-                    id="cont_index"
-                    style={{ marginTop: "0" }}
-                >
+                    use='headline3'
+                    id='cont_index'
+                    style={{ marginTop: '0' }}>
                     IASA Portal 약관
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_welcome">
+                <Typography use='headline4' id='cont_welcome'>
                     여러분을 환영합니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal 및 제품(이하 ‘서비스’)을 이용해 주셔서
                     감사합니다. 본 약관은 다양한 IASA Portal의 서비스의 이용과
                     관련하여 IASA Portal 서비스를 제공하는 IASA 정보동아리
@@ -33,20 +32,20 @@ class Terms extends React.Component<any, {}> {
                     있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     서비스를 이용하시거나 서비스 회원으로 가입하실 경우 여러분은
                     본 약관 및 관련 운영 정책을 확인하거나 동의하게 되므로, 잠시
                     시간을 내시여 주의 깊게 살펴봐 주시기 바랍니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_services">
+                <Typography use='headline4' id='cont_services'>
                     다양한 IASA Portal의 서비스를 즐겨보세요.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
-                    {" "}
+                <Typography use='body1'>
+                    {' '}
                     IASA Portal은 www.iasa.kr을 비롯한 IASA Portal 도메인의
                     웹사이트 및 응용프로그램(어플리케이션, 앱)을 통해 다른
                     이용자와의 커뮤니케이션, 콘텐츠 제공, 학교 관련 전산 처리 등
@@ -58,26 +57,26 @@ class Terms extends React.Component<any, {}> {
                     확인하실 수 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal는 회원이 학생/학부모/교사인 경우에 따라 각각
                     다른 서비스를 제공할 수도 있습니다. 자세한 내용은 역시 각
                     서비스 상의 안내, 공지사항, 도움말 등에서 확인하실 수
                     있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     서비스에는 기본적으로 본 약관이 적용됩니다만 IASA Portal이
                     다양한 서비스를 제공하는 과정에서 부득이 본 약관 외 별도의
                     약관, 운영정책 등을 적용하는 경우가 있습니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_account">
+                <Typography use='headline4' id='cont_account'>
                     계정을 사용해서 IASA Portal의 모든 기능을 즐겨보세요.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     여러분은 본 약관을 읽고 동의하신 후 회원 가입을 신청하실 수
                     있으며, IASA Portal은 이에 대한 승낙을 통해 회원 가입 절차를
                     완료하고 여러분께 서비스 이용 계정(이하 ‘계정’)을
@@ -86,7 +85,7 @@ class Terms extends React.Component<any, {}> {
                     식별 단위를 말합니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     아쉽게도, 대부분의 IASA Portal의 기능을 사용하기 위해서는
                     계정이 필요합니다. 이와 관련한 상세한 내용은 계정 운영정책
                     및 고객센터 내 IASA Portal 회원가입 방법 등에서 확인해
@@ -94,12 +93,12 @@ class Terms extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_contents">
+                <Typography use='headline4' id='cont_contents'>
                     여러분이 제공한 콘텐츠를 소중히 다룰 것입니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal은 여러분이 게재한 게시물이 서비스를 통해 다른
                     이용자들에게 전달되어 우리 모두의 삶을 더욱 풍요롭게 해줄
                     것을 기대합니다. 게시물은 여러분이 타인 또는 자신이 보게 할
@@ -108,13 +107,13 @@ class Terms extends React.Component<any, {}> {
                     파일을 말합니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal은 여러분의 생각과 감정이 표현된 콘텐츠를 소중히
                     보호할 것을 약속 드립니다. 여러분이 제작하여 게재한 게시물에
                     대한 지식재산권 등의 권리는 당연히 여러분에게 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal은 여러분이 부여해 주신 콘텐츠 이용 권한을
                     저작권법 등 관련 법령에서 정하는 바에 따라 IASA Portal
                     서비스 내 노출, 서비스 홍보를 위한 활용, 서비스 운영, 개선
@@ -126,12 +125,12 @@ class Terms extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_userdata">
+                <Typography use='headline4' id='cont_userdata'>
                     여러분의 개인정보를 소중히 보호합니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal은 서비스의 원활한 제공을 위하여 회원이 동의한
                     목적과 범위 내에서만 개인정보를 수집.이용하며, 개인정보 보호
                     관련 법령에 따라 안전하게 관리합니다. IASA Portal이 이용자
@@ -140,7 +139,7 @@ class Terms extends React.Component<any, {}> {
                     확인하실 수 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal은 여러분이 서비스를 이용하기 위해 일정 기간 동안
                     로그인 혹은 접속한 기록이 없는 경우, 전자메일, 서비스 내
                     알림 또는 기타 적절한 전자적 수단을 통해 사전에 안내해 드린
@@ -150,12 +149,12 @@ class Terms extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_otherright">
+                <Typography use='headline4' id='cont_otherright'>
                     타인의 권리를 존중해 주세요.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     여러분이 무심코 게재한 게시물로 인해 타인의 저작권이
                     침해되거나 명예훼손 등 권리 침해가 발생할 수 있습니다. IASA
                     Portal은 이에 대한 문제 해결을 위해 ‘정보통신망 이용촉진 및
@@ -166,7 +165,7 @@ class Terms extends React.Component<any, {}> {
                     절차는 고객센터 내 게시중단요청서비스 소개를 참고해 주세요.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     한편, IASA Portal 서비스를 통해 타인의 콘텐츠를 이용한다고
                     하여 여러분이 해당 콘텐츠에 대한 지식재산권을 보유하게 되는
                     것은 아닙니다. 여러분이 해당 콘텐츠를 자유롭게 이용하기
@@ -175,7 +174,7 @@ class Terms extends React.Component<any, {}> {
                     이용 허락을 받아야 하므로 각별한 주의가 필요합니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal은 여러분이 IASA Portal 서비스를 마음껏 이용할 수
                     있도록 여러분께 IASA Portal 서비스에 수반되는 관련
                     소프트웨어 사용에 관한 이용 권한을 부여합니다. 이 경우
@@ -186,13 +185,13 @@ class Terms extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_caution">
+                <Typography use='headline4' id='cont_caution'>
                     IASA Portal 서비스 이용과 관련하여 몇 가지 주의사항이
                     있습니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal은 여러분이 IASA Portal 서비스를 자유롭고
                     편리하게 이용할 수 있도록 최선을 다하고 있습니다. 다만,
                     여러분이 IASA Portal 서비스를 보다 안전하게 이용하고 IASA
@@ -272,8 +271,8 @@ class Terms extends React.Component<any, {}> {
                         안 됩니다.
                     </li>
                 </ul>
-                <Typography use="body1">
-                    {" "}
+                <Typography use='body1'>
+                    {' '}
                     IASA Portal은 본 약관의 범위 내에서 게시물 운영정책, 각 개별
                     서비스에서의 약관 또는 운영정책, 각 서비스 상의 안내,
                     공지사항, 고객센터 도움말 등을 두어, 여러분에게 안정적이고
@@ -284,13 +283,13 @@ class Terms extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_stop">
+                <Typography use='headline4' id='cont_stop'>
                     부득이 서비스 이용을 제한할 경우 합리적인 절차를 준수합니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
-                    {" "}
+                <Typography use='body1'>
+                    {' '}
                     IASA Portal은 다양한 정보와 의견이 담긴 여러분의 콘텐츠를
                     소중히 다룰 것을 약속드립니다만, 여러분이 게재한 게시물이
                     관련 법령, 본 약관, 게시물 운영정책, 각 개별 서비스에서의
@@ -300,7 +299,7 @@ class Terms extends React.Component<any, {}> {
                     않습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     또한 여러분이 관련 법령, 본 약관, 계정 및 게시물 운영정책,
                     각 개별 서비스에서의 약관, 운영정책 등을 준수하지 않을 경우,
                     IASA Portal은 여러분의 관련 행위 내용을 확인할 수 있으며, 그
@@ -312,7 +311,7 @@ class Terms extends React.Component<any, {}> {
                     부득이 여러분과의 이용계약을 해지할 수 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     부득이 여러분의 서비스 이용을 제한해야 할 경우 명백한 법령
                     위반이나 타인의 권리침해로서 긴급한 위험 또는 피해 차단이
                     요구되는 사안 외에는 위와 같은 단계적 서비스 이용제한 원칙을
@@ -325,12 +324,12 @@ class Terms extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_response">
+                <Typography use='headline4' id='cont_response'>
                     IASA Portal의 잘못은 NULL이 책임집니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal은 여러분이 IASA Portal 서비스를 이용함에 있어
                     IASA Portal의 고의 또는 과실로 인하여 손해를 입게 될 경우
                     관련 법령에 따라 여러분의 피해를 책임집니다. 다만, 천재지변
@@ -340,14 +339,14 @@ class Terms extends React.Component<any, {}> {
                     부담하지 않습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     그리고 IASA Portal이 손해배상책임을 부담하는 경우에도
                     통상적으로 예견이 불가능하거나 특별한 사정으로 인한 특별
                     손해 또는 간접 손해, 기타 징벌적 손해에 대해서는 관련 법령에
                     특별한 규정이 없는 한 책임을 부담하지 않습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     한편, IASA Portal 서비스를 매개로 한 여러분과 다른 회원 간
                     또는 여러분과 비회원 간의 의견 교환, 거래 등에서 발생한
                     손해나 여러분이 서비스 상에 게재된 타인의 게시물 등의
@@ -356,13 +355,13 @@ class Terms extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_change">
+                <Typography use='headline4' id='cont_change'>
                     서비스 중단 또는 변경 시 꼭 알려드리겠습니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
-                    {" "}
+                <Typography use='body1'>
+                    {' '}
                     IASA Portal은 연중 무휴, 1일 24시간 안정적으로 서비스를
                     제공하기 위해 최선을 다하고 있습니다만, 컴퓨터, 서버 등
                     정보통신설비의 보수점검, 교체 또는 고장, 통신두절 등 운영상
@@ -370,7 +369,7 @@ class Terms extends React.Component<any, {}> {
                     중단할 수 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     한편, IASA Portal은 서비스 운영 또는 개선을 위해 상당한
                     필요성이 있는 경우 서비스의 전부 또는 일부를 수정, 변경 또는
                     종료할 수 있습니다. 무료로 제공되는 서비스의 전부 또는
@@ -378,7 +377,7 @@ class Terms extends React.Component<any, {}> {
                     규정이 없는 한 별도의 보상을 하지 않습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     이 경우 IASA Portal은 예측 가능한 경우 상당기간 전에 이를
                     안내하며, 만약 예측 불가능한 경우라면 사후 지체 없이 상세히
                     설명하고 안내 드리겠습니다. 또한 서비스 중단의 경우에는
@@ -387,14 +386,14 @@ class Terms extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_hear">
+                <Typography use='headline4' id='cont_hear'>
                     주요 사항을 잘 안내하고 여러분의 소중한 의견에 귀
                     기울이겠습니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
-                    {" "}
+                <Typography use='body1'>
+                    {' '}
                     IASA Portal은 서비스 이용에 필요한 주요사항을 적시에 잘
                     안내해 드릴 수 있도록 힘쓰겠습니다. 회원에게 통지를 하는
                     경우 전자메일, 서비스 내 알림 또는 기타 적절한 전자적 수단을
@@ -405,8 +404,8 @@ class Terms extends React.Component<any, {}> {
                     하겠습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
-                    {" "}
+                <Typography use='body1'>
+                    {' '}
                     IASA Portal은 여러분의 소중한 의견에 귀 기울이겠습니다.
                     여러분은 언제든지 고객센터를 통해 서비스 이용과 관련된
                     의견이나 개선사항을 전달할 수 있으며, IASA Portal은 합리적
@@ -415,19 +414,19 @@ class Terms extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
-                <Typography use="headline4" id="cont_alert">
+                <Typography use='headline4' id='cont_alert'>
                     여러분이 쉽게 알 수 있도록 약관 및 운영정책을 게시하며 사전
                     공지 후 개정합니다.
                 </Typography>
                 <br />
                 <br />
-                <Typography use="body1">
-                    {" "}
+                <Typography use='body1'>
+                    {' '}
                     IASA Portal은 본 약관의 내용을 여러분이 쉽게 확인할 수
                     있도록 서비스 초기 화면에 게시하고 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal은 수시로 본 약관, 계정 및 게시물 운영정책을
                     개정할 수 있습니다만, 관련 법령을 위배하지 않는 범위 내에서
                     개정할 것이며, 사전에 그 개정 이유와 적용 일자를 서비스 내에
@@ -437,8 +436,8 @@ class Terms extends React.Component<any, {}> {
                     통해 개별적으로 알릴 것입니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
-                    {" "}
+                <Typography use='body1'>
+                    {' '}
                     IASA Portal은 변경된 약관을 게시한 날로부터 효력이 발생되는
                     날까지 약관 변경에 대한 여러분의 의견을 기다립니다. 위
                     기간이 지나도록 여러분의 의견이 IASA Portal에 접수되지
@@ -449,7 +448,7 @@ class Terms extends React.Component<any, {}> {
                     불가능하게 될 수 있습니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal의 서비스에는 기본적으로 본 약관이 적용됩니다만,
                     부득이 각 개별 서비스의 고유한 특성을 반영하기 위해 본 약관
                     외 별도의 약관, 운영정책이 추가로 적용될 때가 있습니다.
@@ -460,7 +459,7 @@ class Terms extends React.Component<any, {}> {
                     바랍니다.
                 </Typography>
                 <br />
-                <Typography use="body1">
+                <Typography use='body1'>
                     본 약관은 한국어를 정본으로 합니다. 본 약관 또는 서비스와
                     관련된 여러분과 IASA Portal와의 관계에는 대한민국의 법령이
                     적용됩니다. 그리고 본 약관 또는 IASA Portal 서비스와
@@ -473,14 +472,14 @@ class Terms extends React.Component<any, {}> {
                     <li>공지 일자: 2020년 2월 26일</li>
                     <li>적용 일자: 2020년 3월 1일</li>
                 </ul>
-                <Typography use="body1">
+                <Typography use='body1'>
                     IASA Portal의 서비스와 관련하여 궁금하신 사항이 있으시면
                     NULL로 문의 주시기 바랍니다.
                 </Typography>
                 <br />
             </div>
-        );
+        )
     }
 }
 
-export default Terms;
+export default Terms

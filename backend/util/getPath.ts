@@ -1,5 +1,5 @@
-import path from "path";
+import path from 'path'
 
 export default function getPath(...fileName: string[]) {
-    return path.join(__dirname, "..", "..", "..", ...fileName);
+    return path.join(__dirname, '..', '..', '..', ...fileName)
 }

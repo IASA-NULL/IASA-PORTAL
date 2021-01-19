@@ -6,21 +6,21 @@ export enum Permission {
 }
 
 export interface token {
-    id: string;
-    uid: number;
-    code: number;
-    name: string;
-    expire: number;
-    permission: Permission;
-    sid: string;
+    id: string
+    uid: number
+    code: number
+    name: string
+    expire: number
+    permission: Permission
+    sid: string
 }
 
 export interface signupToken {
-    type: Permission,
-    uid: number,
-    id: string,
-    password: string,
-    email: string,
-    name: string,
+    type: Permission
+    uid: number
+    id: string
+    password: string
+    email: string
+    name: string
     expire: number
 }

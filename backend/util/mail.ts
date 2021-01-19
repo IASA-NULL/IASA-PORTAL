@@ -185,12 +185,15 @@ export function getMailHTML(title: string, preview: string, body: string) {
             </body>
             </html>`,
         text: preview,
-        subject: title
+        subject: title,
     }
 }
 
 export function getVerificationMailHTML(verificationLink: string) {
-    return getMailHTML('인증하기 - IASA PORTAL', '링크를 클릭해서 회원가입을 완료하세요. 링크는 1시간 동안만 유효합니다', `
+    return getMailHTML(
+        '인증하기 - IASA PORTAL',
+        '링크를 클릭해서 회원가입을 완료하세요. 링크는 1시간 동안만 유효합니다',
+        `
         <tr>
             <td align="left" bgcolor="#ffffff"
                 style="padding:0; color: #666666; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400;-webkit-font-smoothing:antialiased;">
@@ -223,38 +226,45 @@ export function getVerificationMailHTML(verificationLink: string) {
                 </table>
             </td>
         </tr> 
-    `)
+    `
+    )
 }
 
-export async function sendMail(data: { html: string, text: string, subject: string }, from: string, to: string) {
-    AWS.config.update({region: 'us-east-1'})
+export async function sendMail(
+    data: { html: string; text: string; subject: string },
+    from: string,
+    to: string
+) {
+    AWS.config.update({ region: 'us-east-1' })
 
     const params = {
         Destination: {
-            ToAddresses: [to]
+            ToAddresses: [to],
         },
         Message: {
             Body: {
                 Html: {
-                    Charset: "UTF-8",
-                    Data: data.html
+                    Charset: 'UTF-8',
+                    Data: data.html,
                 },
                 Text: {
-                    Charset: "UTF-8",
-                    Data: data.text
-                }
+                    Charset: 'UTF-8',
+                    Data: data.text,
+                },
             },
             Subject: {
                 Charset: 'UTF-8',
-                Data: data.subject
-            }
+                Data: data.subject,
+            },
         },
         Source: `${from}@iasa.kr`,
         ReplyToAddresses: [to],
-    };
+    }
 
     try {
-        await new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise()
+        await new AWS.SES({ apiVersion: '2010-12-01' })
+            .sendEmail(params)
+            .promise()
         return true
     } catch (e) {
         return false
