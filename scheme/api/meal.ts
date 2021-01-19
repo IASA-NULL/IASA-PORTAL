@@ -1,5 +1,4 @@
 import commonApi from './commonApi'
-import { ObjectType, Field, TSGraphQLInt, TSGraphQLString } from 'ts-graphql'
 
 export enum AllergicInfo {
     난류 = 1,

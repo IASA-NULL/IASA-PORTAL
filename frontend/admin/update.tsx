@@ -65,7 +65,7 @@ class NotFound extends React.Component<any, IState> {
                         icon: 'check',
                         dismissIcon: true,
                     })
-                    location.reload()
+                    window.location.reload()
                 } else
                     this.notify({
                         title: <b>오류</b>,

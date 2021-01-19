@@ -48,14 +48,11 @@ interface MusicOneState {
 }
 
 class MusicOne extends React.Component<MusicOneProps, MusicOneState> {
-    constructor(props: MusicOneProps) {
-        super(props)
-    }
-
     public render() {
         return (
             <Card style={{ margin: '20px' }}>
                 <a
+                    rel='noreferrer'
                     href={`https://www.youtube.com/watch?v=${this.props.data.yt}`}
                     target='_blank'>
                     <CardPrimaryAction>
@@ -85,7 +82,8 @@ class MusicOne extends React.Component<MusicOneProps, MusicOneState> {
                     <CardActionButtons>
                         <a
                             href={`https://www.youtube.com/watch?v=${this.props.data.yt}`}
-                            target='_blank'>
+                            target='_blank'
+                            rel='noreferrer'>
                             <CardActionButton>Youtube</CardActionButton>
                         </a>
                     </CardActionButtons>
@@ -153,7 +151,7 @@ class Music extends React.Component<{}, MusicState> {
         this.setState({ loaded: false })
         fetch(createURL('api', 'music', 'today'))
             .then((res) => res.json())
-            .then((res) => {
+            .then((res: MusicResponse) => {
                 for (let i = 0; i < this.todayList.length; i++)
                     this.today.remove(0)
                 for (let i = 0; i < this.tomorrowList.length; i++)
@@ -428,6 +426,7 @@ class Music extends React.Component<{}, MusicState> {
                     <DialogContent>
                         {this.state?.confirm && this.state?.findLoaded ? (
                             <iframe
+                                title='유튜브 미리보기'
                                 width='400'
                                 height='225'
                                 src={`https://www.youtube.com/embed/${this.state?.find?.yt}`}

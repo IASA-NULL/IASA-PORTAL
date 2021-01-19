@@ -1,6 +1,6 @@
-import express, { response } from 'express'
+import express from 'express'
 import jwt from 'jsonwebtoken'
-import { Permission, token } from '../scheme/api/auth'
+import { token } from '../scheme/api/auth'
 import getSecret from './util/secret'
 import path from 'path'
 import { getServerToken } from './util/serverState'

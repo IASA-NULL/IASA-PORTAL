@@ -22,9 +22,7 @@ import {
     SignupFill2,
     SignupFin,
 } from './account/signup'
-import { TextField } from '@rmwc/textfield'
 import createURL from '../scheme/url'
-import { main } from 'ts-node/dist/bin'
 import { Permission } from '../scheme/api/auth'
 
 const lightTheme = {
@@ -110,10 +108,6 @@ interface IState {
 }
 
 class App extends React.Component<any, IState> {
-    constructor(props: IState) {
-        super(props)
-    }
-
     public componentDidMount() {
         let isMobile =
             window.matchMedia('(max-width: 550px)').matches ||
@@ -366,7 +360,7 @@ class App extends React.Component<any, IState> {
                     .then((res) => res.json())
                     .then((res) => {
                         if (res.success) {
-                            location.replace('/')
+                            window.location.replace('/')
                         } else {
                             this.setState({
                                 errMessage: res.message,

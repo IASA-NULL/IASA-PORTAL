@@ -19,10 +19,6 @@ interface findIdState {
 export class FindID extends React.Component<IProps, findIdState> {
     firstInput: any
 
-    constructor(props: IProps) {
-        super(props)
-    }
-
     public componentDidMount() {
         window.addEventListener('loginStateUpdate', () => {
             this.forceUpdate()
@@ -112,10 +108,6 @@ export class FindID extends React.Component<IProps, findIdState> {
 
 export class FindPassword extends React.Component<any, IProps> {
     firstInput: any
-
-    constructor(props: IProps) {
-        super(props)
-    }
 
     public componentDidMount() {
         window.addEventListener('loginStateUpdate', () => {

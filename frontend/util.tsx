@@ -27,7 +27,7 @@ export function ListLink(props: {
                 }}
                 href={props.to}
                 onClick={props.onClick}>
-                <ListItem activated={props.to === location.pathname}>
+                <ListItem activated={props.to === window.location.pathname}>
                     {props.icon ? <ListItemGraphic icon={props.icon} /> : <></>}
                     <ListItemText>{props.body}</ListItemText>
                 </ListItem>
@@ -44,7 +44,7 @@ export function ListLink(props: {
                     )
                     props.onClick()
                 }}
-                activated={props.to === location.pathname}>
+                activated={props.to === window.location.pathname}>
                 {props.icon ? <ListItemGraphic icon={props.icon} /> : <></>}
                 <ListItemText>{props.body}</ListItemText>
             </ListItem>
@@ -59,7 +59,7 @@ export function ListLink(props: {
                 }}
                 to={props.to}
                 onClick={props.onClick}>
-                <ListItem activated={props.to === location.pathname}>
+                <ListItem activated={props.to === window.location.pathname}>
                     {props.icon ? <ListItemGraphic icon={props.icon} /> : <></>}
                     <ListItemText>{props.body}</ListItemText>
                 </ListItem>
@@ -83,7 +83,7 @@ export function MenuLink(props: {
                 }}
                 href={props.to}
                 onClick={props.onClick}>
-                <MenuItem activated={props.to === location.pathname}>
+                <MenuItem activated={props.to === window.location.pathname}>
                     {props.body}
                 </MenuItem>
             </a>
@@ -99,7 +99,7 @@ export function MenuLink(props: {
                     )
                     props.onClick()
                 }}
-                activated={props.to === location.pathname}>
+                activated={props.to === window.location.pathname}>
                 {props.body}
             </MenuItem>
         )
@@ -113,7 +113,7 @@ export function MenuLink(props: {
                 }}
                 to={props.to}
                 onClick={props.onClick}>
-                <MenuItem activated={props.to === location.pathname}>
+                <MenuItem activated={props.to === window.location.pathname}>
                     {props.body}
                 </MenuItem>
             </Link>

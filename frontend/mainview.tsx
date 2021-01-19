@@ -48,7 +48,7 @@ export const DefaultStudentNavList = (closeIfModal: any) => {
             />
             <CollapsibleList
                 defaultOpen={['/myeonbul', '/music'].includes(
-                    location.pathname
+                    window.location.pathname
                 )}
                 handle={
                     <SimpleListItem
@@ -75,7 +75,9 @@ export const DefaultStudentNavList = (closeIfModal: any) => {
                 </div>
             </CollapsibleList>
             <CollapsibleList
-                defaultOpen={['/penalty', '/meal'].includes(location.pathname)}
+                defaultOpen={['/penalty', '/meal'].includes(
+                    window.location.pathname
+                )}
                 handle={
                     <SimpleListItem
                         text='생활'
@@ -105,7 +107,7 @@ export const DefaultStudentNavList = (closeIfModal: any) => {
                     '/program/nac',
                     '/program/ip',
                     '/program/client',
-                ].includes(location.pathname)}
+                ].includes(window.location.pathname)}
                 handle={
                     <SimpleListItem
                         text='프로그램'
@@ -180,7 +182,7 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
     return (
         <>
             <CollapsibleList
-                defaultOpen={['/update'].includes(location.pathname)}
+                defaultOpen={['/update'].includes(window.location.pathname)}
                 handle={
                     <SimpleListItem
                         text='사이트 관리'
@@ -199,7 +201,7 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                 </div>
             </CollapsibleList>
             <CollapsibleList
-                defaultOpen={[].includes(location.pathname)}
+                defaultOpen={[].includes(window.location.pathname)}
                 handle={
                     <SimpleListItem
                         text='사용자 관리'
@@ -463,7 +465,9 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                                         </Link>
                                         <MenuItem
                                             onClick={() => {
-                                                location.replace('/signout')
+                                                window.location.replace(
+                                                    '/signout'
+                                                )
                                             }}>
                                             로그아웃
                                         </MenuItem>
@@ -471,7 +475,7 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                                 ) : (
                                     <MenuItem
                                         onClick={() => {
-                                            location.replace('/signin')
+                                            window.location.replace('/signin')
                                         }}>
                                         로그인
                                     </MenuItem>

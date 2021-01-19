@@ -46,10 +46,6 @@ export class SignupCode extends React.Component<
 > {
     firstInput: any
 
-    constructor(props: SignupCodeFormProps) {
-        super(props)
-    }
-
     public componentDidMount() {
         window.addEventListener('loginStateUpdate', () => {
             this.forceUpdate()
@@ -352,10 +348,6 @@ export class SignupFill2 extends React.Component<
 }
 
 export class SignupFin extends React.Component<SignupFinFormProps, null> {
-    constructor(props: SignupFinFormProps) {
-        super(props)
-    }
-
     public componentDidMount() {
         window.addEventListener('loginStateUpdate', () => {
             this.forceUpdate()

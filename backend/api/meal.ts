@@ -97,9 +97,9 @@ function getMeal(target: mealTime) {
                             }
                         }
                         if (
-                            menuStr[end + 1] == ')' ||
-                            menuStr[end + 1] == ']' ||
-                            menuStr[end + 1] == '>'
+                            menuStr[end + 1] === ')' ||
+                            menuStr[end + 1] === ']' ||
+                            menuStr[end + 1] === '>'
                         )
                             end++
                         let menuName = menuStr.substring(start, end + 1)

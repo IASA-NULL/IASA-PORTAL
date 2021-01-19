@@ -2,10 +2,6 @@ import * as React from 'react'
 import { Typography } from '@rmwc/typography'
 
 class Opensource extends React.Component<any, {}> {
-    constructor(props: {}) {
-        super(props)
-    }
-
     public render() {
         return (
             <div>
@@ -25,6 +21,7 @@ class Opensource extends React.Component<any, {}> {
                     Material Components for the web{' '}
                     <a
                         target='_blank'
+                        rel='noreferrer'
                         href='https://github.com/material-components/material-components-web'>
                         (프로젝트 사이트)
                     </a>
@@ -70,7 +67,10 @@ class Opensource extends React.Component<any, {}> {
                 <br />
                 <Typography use='headline4' id='cont_react'>
                     React{' '}
-                    <a target='_blank' href='https://reactjs.org/'>
+                    <a
+                        target='_blank'
+                        rel='noreferrer'
+                        href='https://reactjs.org/'>
                         (프로젝트 사이트)
                     </a>
                 </Typography>
@@ -117,6 +117,7 @@ class Opensource extends React.Component<any, {}> {
                     quaggaJS{' '}
                     <a
                         target='_blank'
+                        rel='noreferrer'
                         href='https://github.com/serratus/quaggaJS'>
                         (프로젝트 사이트)
                     </a>
@@ -164,6 +165,7 @@ class Opensource extends React.Component<any, {}> {
                     Google Material Design Icons{' '}
                     <a
                         target='_blank'
+                        rel='noreferrer'
                         href='https://material.io/resources/icons/?style=baseline'>
                         (프로젝트 사이트)
                     </a>

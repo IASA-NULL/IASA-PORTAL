@@ -1,12 +1,7 @@
 import * as React from 'react'
-import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
 
 class Userdata extends React.Component<any, {}> {
-    constructor(props: {}) {
-        super(props)
-    }
-
     public render() {
         return (
             <div>

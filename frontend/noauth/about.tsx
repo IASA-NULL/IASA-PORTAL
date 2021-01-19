@@ -2,16 +2,10 @@ import * as React from 'react'
 import { Typography } from '@rmwc/typography'
 import { Grid, GridCell, GridRow } from '@rmwc/grid'
 import { IconButton } from '@rmwc/icon-button'
-import {
-    Link,
-    RouteComponentProps,
-    useHistory,
-    withRouter,
-} from 'react-router-dom'
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 import {
     TopAppBar,
     TopAppBarActionItem,
-    TopAppBarNavigationIcon,
     TopAppBarRow,
     TopAppBarSection,
     TopAppBarTitle,
@@ -44,7 +38,7 @@ function About(props: RouteComponentProps) {
                                 onClose={(evt) => setAccountMenuOpen(false)}>
                                 <MenuItem
                                     onClick={() => {
-                                        location.replace('/signin')
+                                        window.location.replace('/signin')
                                     }}>
                                     로그인
                                 </MenuItem>
@@ -109,7 +103,7 @@ function About(props: RouteComponentProps) {
                             } as React.CSSProperties
                         }
                         onClick={() => {
-                            location.replace('/signin')
+                            window.location.replace('/signin')
                         }}>
                         로그인
                     </Button>

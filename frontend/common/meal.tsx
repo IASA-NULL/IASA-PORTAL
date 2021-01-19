@@ -69,10 +69,6 @@ interface MearContainerState {
 }
 
 class MealOne extends React.Component<MealProps, MealState> {
-    constructor(props: MealProps) {
-        super(props)
-    }
-
     public componentDidMount() {
         this.refresh()
     }

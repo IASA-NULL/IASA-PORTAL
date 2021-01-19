@@ -1,7 +1,6 @@
 import express from 'express'
 import getPath from '../util/getPath'
 import db from '../util/db'
-import { base32Decode } from '@ctrl/ts-base32'
 import { Permission, token } from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import jwt from 'jsonwebtoken'

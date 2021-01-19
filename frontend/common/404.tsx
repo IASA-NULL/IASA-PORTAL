@@ -6,10 +6,6 @@ import { Typography } from '@rmwc/typography'
 import { BrIfMobile } from '../util'
 
 class NotFound extends React.Component<any, {}> {
-    constructor(props: RouteComponentProps) {
-        super(props)
-    }
-
     public toMain() {
         this.props.history.push('/')
     }
