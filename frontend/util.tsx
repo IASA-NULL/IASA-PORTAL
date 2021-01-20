@@ -3,6 +3,7 @@ import { ListItem, ListItemText, ListItemGraphic } from '@rmwc/list'
 import * as React from 'react'
 import { useState } from 'react'
 import { MenuItem } from '@rmwc/menu'
+import { TextField } from '@rmwc/textfield'
 
 export enum LinkType {
     a = 1,
@@ -137,6 +138,54 @@ export function LoremIpsum(props: { count: number }) {
     )
 }
 
+export function FileInput(props: any) {
+    const [value, setValue] = useState('')
+    let orgClickHandler: any
+    if (props.onClick) orgClickHandler = props.onFocus
+    let fileInput: HTMLInputElement
+
+    return (
+        <>
+            <TextField
+                {...props}
+                value={value}
+                onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    fileInput.click()
+                    if (orgClickHandler) orgClickHandler()
+                    return false
+                }}
+                trailingIcon={{
+                    icon: 'close',
+                    tabIndex: 0,
+                    onClick: (e: Event) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        fileInput.value = ''
+                        setValue('')
+                        if (props.onFileSelect)
+                            props.onFileSelect(fileInput.files)
+                    },
+                }}
+            />
+            <input
+                style={{ display: 'none' }}
+                type='file'
+                onChange={(e) => {
+                    setValue(fileInput.value)
+                    if (props.onFileSelect) props.onFileSelect(fileInput.files)
+                }}
+                ref={(input) => {
+                    fileInput = input
+                }}
+                accept={props?.accept}
+                multiple={props?.multiple}
+            />
+        </>
+    )
+}
+
 export function useForceUpdate() {
     const [value, setValue] = useState(0)
     return () => setValue((value) => ++value)
@@ -191,5 +240,7 @@ export function focusNextInput() {
     if (currentEl) {
         // @ts-ignore
         currentEl.focus()
+        return true
     }
+    return false
 }

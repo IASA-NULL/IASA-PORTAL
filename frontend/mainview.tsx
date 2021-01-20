@@ -201,7 +201,7 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                 </div>
             </CollapsibleList>
             <CollapsibleList
-                defaultOpen={[].includes(window.location.pathname)}
+                defaultOpen={['/user/code'].includes(window.location.pathname)}
                 handle={
                     <SimpleListItem
                         text='사용자 관리'
