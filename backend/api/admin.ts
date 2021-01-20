@@ -8,6 +8,7 @@ import db from '../util/db'
 import { User } from '../../scheme/user'
 import { getRandomInt } from '../util/random'
 import { base32Encode } from '@ctrl/ts-base32'
+import {DB_CONNECT_ERROR} from "../../string/error";
 
 const router = express.Router()
 
@@ -24,6 +25,10 @@ router.use((req, res, next) => {
 })
 
 router.post('/update', (req, res, next) => {
+    if (!req.auth.sudo) {
+        res.status(403)
+        res.send(createResponse(false, 'sudo 모드로 실행해야 해요.'))
+    }
     if (getServerFlag('build')) {
         res.send(createResponse(false, '사이트가 이미 빌드 중이에요.'))
     } else {
@@ -96,7 +101,7 @@ router.get('/code', async (req, res, next) => {
         codeDB.find({}).toArray((err: any, result: any[]) => {
             if (err) {
                 res.status(500)
-                res.send(createResponse(false, 'DB에 연결할 수 없어요.'))
+                res.send(createResponse(false, DB_CONNECT_ERROR))
             } else {
                 res.send(
                     createResponse({
@@ -107,7 +112,7 @@ router.get('/code', async (req, res, next) => {
         })
     } catch (e) {
         res.status(500)
-        res.send(createResponse(false, 'DB에 연결할 수 없어요.'))
+        res.send(createResponse(false, DB_CONNECT_ERROR))
     }
 })
 

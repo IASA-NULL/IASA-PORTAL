@@ -9,6 +9,7 @@ import createURL from '../../scheme/url'
 import path from 'path'
 import db from '../util/db'
 import { User } from '../../scheme/user'
+import {DB_CONNECT_ERROR} from "../../string/error";
 
 const signupTokenExpire = 1000 * 60 * 60
 
@@ -118,7 +119,7 @@ router.post('/mail', async (req, res, next) => {
         })
     } catch (e) {
         res.status(500)
-        res.send(createResponse(false, 'DB 연결에 실패했어요.'))
+        res.send(createResponse(false, DB_CONNECT_ERROR))
         return
     }
 

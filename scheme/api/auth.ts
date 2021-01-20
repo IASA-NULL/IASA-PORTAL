@@ -13,6 +13,7 @@ export interface token {
     expire: number
     permission: Permission
     sid: string
+    sudo?: boolean
 }
 
 export interface signupToken {

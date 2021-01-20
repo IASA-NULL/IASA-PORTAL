@@ -23,6 +23,8 @@ import {
     SignupFin,
 } from './account/signup'
 import { Permission } from '../scheme/api/auth'
+import ChangeSecret from './account/changesecret'
+import createURL from '../scheme/url'
 
 const lightTheme = {
     primary: '#5351db',
@@ -80,6 +82,8 @@ const darkTheme = {
 
 const loginStateUpdate = new Event('loginStateUpdate')
 
+let accountInfo: any
+
 interface IState {
     loaded: boolean
     showLangOp: boolean
@@ -111,7 +115,7 @@ interface IState {
 }
 
 class App extends React.Component<any, IState> {
-    public componentDidMount() {
+    public async componentDidMount() {
         let isMobile =
             window.matchMedia('(max-width: 550px)').matches ||
             window.matchMedia('(max-height: 650px)').matches
@@ -119,99 +123,157 @@ class App extends React.Component<any, IState> {
             get: this.getSt.bind(this),
             set: this.setSt.bind(this),
         }
-        this.setState({
-            formList: [
-                <IdForm
-                    setState={this.setState}
-                    isMobile={isMobile}
-                    next={this.getIdInfo(
-                        <PasswordForm
-                            setState={this.setState}
-                            isMobile={isMobile}
-                            find={this.next(
-                                <FindPassword
-                                    setState={this.setState}
-                                    isMobile={isMobile}
-                                    context={context}
-                                    next={this.findPass(
-                                        <FoundPassword
-                                            setState={this.setState}
-                                            isMobile={isMobile}
-                                            context={context}
-                                            next={this.resetForm()}
-                                        />
-                                    )}
-                                />,
-                                '비밀번호 찾기',
-                                '이메일을 입력하세요.',
-                                'FindPassword'
-                            )}
-                            context={context}
-                            next={this.signin()}
-                        />
-                    )}
-                    find={this.next(
-                        <FindID
-                            setState={this.setState}
-                            isMobile={isMobile}
-                            context={context}
-                            next={this.findId(
-                                <FoundId
-                                    setState={this.setState}
-                                    isMobile={isMobile}
-                                    context={context}
-                                    next={this.resetForm()}
-                                />
-                            )}
-                        />,
-                        '아이디 찾기',
-                        '이메일을 입력하세요.',
-                        'FindID'
-                    )}
-                    create={this.next(
-                        <SignupCode
-                            setState={this.setState}
-                            isMobile={isMobile}
-                            context={context}
-                            next={this.getCodeInfo(
-                                <SignupFill1
-                                    setState={this.setState}
-                                    isMobile={isMobile}
-                                    context={context}
-                                    next={this.validateSignup1(
-                                        <SignupFill2
-                                            setState={this.setState}
-                                            isMobile={isMobile}
-                                            context={context}
-                                            next={this.validateSignup2(
-                                                <SignupFin
-                                                    isMobile={isMobile}
-                                                    next={this.resetForm()}
-                                                />
-                                            )}
-                                        />
-                                    )}
-                                />
-                            )}
-                        />,
-                        '가입하기',
-                        '계속하려면 NULL에 개인별로 부여되는 코드를 요청하세요.',
-                        'SignupCode'
-                    )}
-                    context={context}
-                />,
-            ],
-        })
-        this.setState({
-            currentPage: 0,
-            title: [
-                { main: '로그인', sub: 'IASA PORTAL로 계속', id: 'IdForm' },
-            ],
-        })
+        if (window.location.pathname.split('/').pop() === 'signin')
+            this.setState({
+                formList: [
+                    <IdForm
+                        setState={this.setState}
+                        isMobile={isMobile}
+                        next={this.getIdInfo(
+                            <PasswordForm
+                                setState={this.setState}
+                                isMobile={isMobile}
+                                find={this.next(
+                                    <FindPassword
+                                        setState={this.setState}
+                                        isMobile={isMobile}
+                                        context={context}
+                                        next={this.findPass(
+                                            <FoundPassword
+                                                setState={this.setState}
+                                                isMobile={isMobile}
+                                                context={context}
+                                                next={this.resetForm()}
+                                            />
+                                        )}
+                                    />,
+                                    '비밀번호 찾기',
+                                    '이메일을 입력하세요.',
+                                    'FindPassword'
+                                )}
+                                context={context}
+                                next={this.signin()}
+                            />
+                        )}
+                        find={this.next(
+                            <FindID
+                                setState={this.setState}
+                                isMobile={isMobile}
+                                context={context}
+                                next={this.findId(
+                                    <FoundId
+                                        setState={this.setState}
+                                        isMobile={isMobile}
+                                        context={context}
+                                        next={this.resetForm()}
+                                    />
+                                )}
+                            />,
+                            '아이디 찾기',
+                            '이메일을 입력하세요.',
+                            'FindID'
+                        )}
+                        create={this.next(
+                            <SignupCode
+                                setState={this.setState}
+                                isMobile={isMobile}
+                                context={context}
+                                next={this.getCodeInfo(
+                                    <SignupFill1
+                                        setState={this.setState}
+                                        isMobile={isMobile}
+                                        context={context}
+                                        next={this.validateSignup1(
+                                            <SignupFill2
+                                                setState={this.setState}
+                                                isMobile={isMobile}
+                                                context={context}
+                                                next={this.validateSignup2(
+                                                    <SignupFin
+                                                        isMobile={isMobile}
+                                                        next={this.resetForm()}
+                                                    />
+                                                )}
+                                            />
+                                        )}
+                                    />
+                                )}
+                            />,
+                            '가입하기',
+                            '계속하려면 NULL에 개인별로 부여되는 코드를 요청하세요.',
+                            'SignupCode'
+                        )}
+                        context={context}
+                    />,
+                ],
+                currentPage: 0,
+                title: [
+                    { main: '로그인', sub: 'IASA PORTAL로 계속', id: 'IdForm' },
+                ],
+            })
+        else if (window.location.pathname.split('/').pop() === 'changesecret')
+            this.setState({
+                formList: [
+                    <ChangeSecret
+                        setState={this.setState}
+                        isMobile={isMobile}
+                        context={context}
+                    />,
+                ],
+                currentPage: 0,
+                title: [
+                    {
+                        main: '비밀번호 변경',
+                        sub: '변경할 비밀번호를 입력하세요.',
+                        id: 'ChangeSecret',
+                    },
+                ],
+            })
+        else if (window.location.pathname.split('/').pop() === 'challenge') {
+            this.setState({
+                formList: [
+                    <PasswordForm
+                        setState={this.setState}
+                        isMobile={isMobile}
+                        find={this.next(
+                            <FindPassword
+                                setState={this.setState}
+                                isMobile={isMobile}
+                                context={context}
+                                next={this.findPass(
+                                    <FoundPassword
+                                        setState={this.setState}
+                                        isMobile={isMobile}
+                                        context={context}
+                                        next={this.resetForm()}
+                                    />
+                                )}
+                            />,
+                            '비밀번호 찾기',
+                            '이메일을 입력하세요.',
+                            'FindPassword'
+                        )}
+                        context={context}
+                        next={this.sudo()}
+                    />,
+                ],
+                currentPage: 0,
+                title: [
+                    {
+                        main: `안녕하세요, ${accountInfo.data.name}님.`,
+                        sub: '계속하려면 비밀번호를 입력하세요.',
+                        id: 'ChangeSecret',
+                    },
+                ],
+                id: accountInfo.data.id,
+            })
+        }
         setTimeout(() => {
             this.setState({ loaded: true })
             window.dispatchEvent(
-                new CustomEvent('focusFrame', { detail: { frame: 'IdForm' } })
+                new CustomEvent('focusFrame', {
+                    detail: { frame: this.state?.title[0].id },
+                })
             )
         }, 300)
     }
@@ -414,6 +476,54 @@ class App extends React.Component<any, IState> {
         }
     }
 
+    public sudo() {
+        return () => {
+            this.setState({ errMessage: '' })
+            if (this.state?.password) {
+                this.setState({ loaded: false })
+                fetchAPI(
+                    'POST',
+                    {
+                        id: this.state?.id,
+                        password: this.state?.password,
+                    },
+                    'account',
+                    'sudo'
+                )
+                    .then((res) => {
+                        if (res.success) {
+                            const searchParams = new URLSearchParams(
+                                window.location.search
+                            )
+                            try {
+                                const next = searchParams.get('next')
+                                if (next) {
+                                    window.location.replace(atob(next))
+                                } else throw new Error()
+                            } catch (e) {
+                                window.location.replace('/')
+                            }
+                        } else {
+                            this.setState({
+                                errMessage: res.message,
+                                loaded: true,
+                            })
+                            this.focusCurrentInput()
+                        }
+                    })
+                    .catch((e) => {
+                        this.setState({
+                            errMessage: '서버와 통신 중 오류가 발생했어요.',
+                        })
+                        this.focusCurrentInput()
+                    })
+            } else {
+                this.setState({ errMessage: '비밀번호를 입력하세요.' })
+                this.focusCurrentInput()
+            }
+        }
+    }
+
     public validateSignup1(form: JSX.Element) {
         return () => {
             this.setState({ errMessage: '' })
@@ -513,23 +623,12 @@ class App extends React.Component<any, IState> {
     }
 
     public resetForm() {
-        let isMobile =
-            window.matchMedia('(max-width: 550px)').matches ||
-            window.matchMedia('(max-height: 650px)').matches
-        let context = {
-            get: this.getSt.bind(this),
-            set: this.setSt.bind(this),
-        }
         return () => {
             this.next(
-                <IdForm
-                    context={context}
-                    setState={this.setState}
-                    isMobile={isMobile}
-                />,
-                '로그인',
-                'IASA PORTAL로 계속',
-                'IdForm'
+                this.state?.formList[0],
+                this.state?.title[0].main,
+                this.state?.title[0].sub,
+                this.state?.title[0].id
             )()
             this.toFirst()
         }
@@ -882,7 +981,7 @@ class App extends React.Component<any, IState> {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     console.log(
         '%cIASA Portal\n%cCopyright 2019-2021 NULL®. All right reserved.\n%c경고!\n%c이곳에서 뭔가를 복사하거나 수정할 때는 꼭 무엇을 의미하는지 알아야 합니다. 신뢰할 수 없는 행위를 하는 경우 계정 해킹, 도용, 삭제 등의 심각한 상황이 일어날 수 있습니다. NULL은 이 문제에 관해 책임을 지지 않습니다.',
         'font-size:50px;',
@@ -890,6 +989,11 @@ document.addEventListener('DOMContentLoaded', () => {
         'font-size:30px;color:red;',
         'font-size:15px;color:red;'
     )
+    accountInfo = await fetchAPI('GET', {}, 'account', 'info')
+    if (accountInfo.data.permission === Permission.none) {
+        if (window.location.pathname.split('/').pop() !== 'signin')
+            window.location.replace(createURL('account', 'signin'))
+    }
     ReactDOM.render(<App />, document.getElementById('app') as HTMLElement)
 })
 

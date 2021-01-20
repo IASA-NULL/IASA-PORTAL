@@ -7,6 +7,7 @@ import {
     MyeonbulResponseType,
 } from '../../scheme/api/myeonbul'
 import db from '../util/db'
+import {DB_CONNECT_ERROR} from "../../string/error";
 
 const router = express.Router()
 
@@ -70,7 +71,7 @@ router.get('/', async (req, res, next) => {
     let myeonbulDB = await db.direct('myeonbul')
     if (!myeonbulDB) {
         res.status(500)
-        res.send(createResponse(false, 'DB 오류'))
+        res.send(createResponse(false, DB_CONNECT_ERROR))
     }
 
     if (req.auth.permission === Permission.admin) {
@@ -92,7 +93,7 @@ router.post('/', async (req, res, next) => {
     let myeonbulDB = await db.direct('myeonbul')
     if (!myeonbulDB) {
         res.status(500)
-        res.send(createResponse(false, 'DB 오류'))
+        res.send(createResponse(false, DB_CONNECT_ERROR))
     }
 
     if (req.auth.permission === Permission.admin) {
@@ -111,7 +112,7 @@ router.delete('/', async (req, res, next) => {
     let myeonbulDB = await db.direct('myeonbul')
     if (!myeonbulDB) {
         res.status(500)
-        res.send(createResponse(false, 'DB 오류'))
+        res.send(createResponse(false, DB_CONNECT_ERROR))
     }
     if (req.auth.permission === Permission.admin) {
         res.status(501)
@@ -134,7 +135,7 @@ router.post('/list', async (req, res, next) => {
             let myeonbulDB = await db.direct('myeonbul')
             if (!myeonbulDB) {
                 res.status(500)
-                res.send(createResponse(false, 'DB 오류'))
+                res.send(createResponse(false, DB_CONNECT_ERROR))
             }
             res.send(
                 createResponse([

@@ -21,7 +21,7 @@ import {
 import { teacher, currentTeacherList } from '../../scheme/teacher/teacher'
 import teacherList from '../../scheme/teacher/2021/list'
 import { token } from '../../scheme/api/auth'
-import { BrIfMobile } from '../util'
+import { BrIfMobile, requireSudo } from '../util'
 
 interface PenaltyProps {
     data: token

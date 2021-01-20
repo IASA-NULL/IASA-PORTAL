@@ -255,3 +255,19 @@ export function fetchAPI(method: string, body: any, ...props: string[]) {
         ...(method !== 'GET' && { body: JSON.stringify(body) }),
     }).then((res) => res.json())
 }
+
+export function requireSudo() {
+    setTimeout(async () => {
+        const accountInfo = await fetchAPI('GET', {}, 'account', 'info')
+        if (!accountInfo.data.sudo) {
+            const searchParams = new URLSearchParams(window.location.search)
+            searchParams.set('next', btoa(window.location.href))
+
+            window.location.replace(
+                createURL('account', 'challenge') +
+                    '?' +
+                    searchParams.toString()
+            )
+        }
+    }, 0)
+}

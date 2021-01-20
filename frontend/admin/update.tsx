@@ -5,7 +5,7 @@ import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
 import { Select } from '@rmwc/select'
 
-import { BrIfMobile, fetchAPI } from '../util'
+import { BrIfMobile, fetchAPI, requireSudo } from '../util'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 interface IState {
@@ -18,6 +18,7 @@ class NotFound extends React.Component<any, IState> {
     notify: any
 
     constructor(props: RouteComponentProps) {
+        requireSudo()
         super(props)
         let qu = createSnackbarQueue()
         this.messages = qu.messages

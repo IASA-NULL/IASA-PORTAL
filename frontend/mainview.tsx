@@ -466,7 +466,10 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                                         <MenuItem
                                             onClick={() => {
                                                 window.location.replace(
-                                                    '/signout'
+                                                    createURL(
+                                                        'account',
+                                                        'signout'
+                                                    )
                                                 )
                                             }}>
                                             로그아웃
@@ -475,7 +478,9 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                                 ) : (
                                     <MenuItem
                                         onClick={() => {
-                                            window.location.replace('/signin')
+                                            window.location.replace(
+                                                createURL('account', 'signin')
+                                            )
                                         }}>
                                         로그인
                                     </MenuItem>

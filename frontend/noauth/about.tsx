@@ -12,6 +12,7 @@ import {
 } from '@rmwc/top-app-bar'
 import { Button } from '@rmwc/button'
 import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
+import createURL from '../../scheme/url'
 
 function About(props: RouteComponentProps) {
     const [accountMenuOpen, setAccountMenuOpen] = React.useState(false)
@@ -38,7 +39,9 @@ function About(props: RouteComponentProps) {
                                 onClose={(evt) => setAccountMenuOpen(false)}>
                                 <MenuItem
                                     onClick={() => {
-                                        window.location.replace('/signin')
+                                        window.location.replace(
+                                            createURL('account', 'signin')
+                                        )
                                     }}>
                                     로그인
                                 </MenuItem>
@@ -103,7 +106,9 @@ function About(props: RouteComponentProps) {
                             } as React.CSSProperties
                         }
                         onClick={() => {
-                            window.location.replace('/signin')
+                            window.location.replace(
+                                createURL('account', 'signin')
+                            )
                         }}>
                         로그인
                     </Button>

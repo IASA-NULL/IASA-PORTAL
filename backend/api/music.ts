@@ -5,6 +5,7 @@ import _ from 'lodash'
 import createResponse from '../createResponse'
 import getSecret from '../util/secret'
 import db from '../util/db'
+import { DB_CONNECT_ERROR } from '../../string/error'
 
 function getMusicInfo(name: string, singer: string) {
     return new Promise(async (resolve, reject) => {
@@ -98,12 +99,7 @@ router.post('/register', async (req, res) => {
         res.send(createResponse(true))
     } else {
         res.status(500)
-        res.send(
-            createResponse(
-                false,
-                'DB에 연결할 수 없어요. 관리자에게 문의하세요.'
-            )
-        )
+        res.send(createResponse(false, DB_CONNECT_ERROR))
     }
 })
 

@@ -22,6 +22,7 @@ router.use('*', (req, res, next) => {
     let sid = getServerToken()
     try {
         req.auth = jwt.verify(req.cookies.auth, getSecret('token')) as token
+
         if (req.auth.sid !== sid) {
             req.auth = undefined
             res.cookie('auth', '', { maxAge: -1, httpOnly: true })
@@ -41,15 +42,41 @@ router.use('*', (req, res, next) => {
             req.auth = undefined
             res.cookie('auth', '', { maxAge: -1, httpOnly: true })
         }
-    } catch (e) {}
+    } catch (e) {
+        req.auth = undefined
+        res.cookie('auth', '', { maxAge: -1, httpOnly: true })
+    }
+    try {
+        const sudoToken = jwt.verify(
+            req.cookies.sudo,
+            getSecret('token')
+        ) as token
+        if (sudoToken.sid !== sid || sudoToken.expire < Date.now() || !req.auth)
+            throw new Error()
+        req.auth.sudo = true
+    } catch (e) {
+        res.cookie('sudo', '', { maxAge: -1, httpOnly: true })
+    }
     next()
 })
 
-router.get('/signin', (req, res, next) => {
+const authRouter = express.Router()
+
+router.use('/account', authRouter)
+
+authRouter.get('/signin', (req, res, next) => {
     res.sendFile(path.join(__dirname, '..', '..', 'template', 'auth.html'))
 })
 
-router.get('/signout', (req, res, next) => {
+authRouter.get('/changesecret', (req, res, next) => {
+    res.sendFile(path.join(__dirname, '..', '..', 'template', 'auth.html'))
+})
+
+authRouter.get('/challenge', (req, res, next) => {
+    res.sendFile(path.join(__dirname, '..', '..', 'template', 'auth.html'))
+})
+
+authRouter.get('/signout', (req, res, next) => {
     res.cookie('auth', '', { maxAge: -1, httpOnly: true })
     res.redirect('/')
 })
