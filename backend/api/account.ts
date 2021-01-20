@@ -1,10 +1,15 @@
 import express from 'express'
 import getPath from '../util/getPath'
 import db from '../util/db'
-import { Permission, token } from '../../scheme/api/auth'
+import {
+    changePasswordToken,
+    Permission,
+    signupToken,
+    token,
+} from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import jwt from 'jsonwebtoken'
-import getSecret from '../util/secret'
+import getSecret, { saltRound } from '../util/secret'
 import bcrypt from 'bcrypt'
 import _ from 'lodash'
 import { getServerToken } from '../util/serverState'
@@ -12,9 +17,12 @@ import signupRouter from './signup'
 import { User } from '../../scheme/user'
 import { getChangePasswordMailHTML, sendMail } from '../util/mail'
 import { download } from '../util/s3'
+import createURL from '../../scheme/url'
+import { TOKEN_EXPIRE_ERROR } from '../../string/error'
 
 const maxTime = 1000 * 60 * 60 * 24 * 7
 const sudoTime = 1000 * 30
+const changePasswordTokenExpire = 1000 * 60 * 60
 const router = express.Router()
 
 router.use('/signup', signupRouter)
@@ -147,7 +155,20 @@ router.post('/find/password', async (req, res, next) => {
     try {
         let account = (await db.get('account', 'id', req.body.id)) as User
         if (account.email === req.body.email) {
-            sendMail(getChangePasswordMailHTML(''), 'noreply', account.email)
+            let token = jwt.sign(
+                {
+                    id: req.body.id,
+                    expire: Date.now() + changePasswordTokenExpire,
+                } as changePasswordToken,
+                getSecret('token')
+            )
+            sendMail(
+                getChangePasswordMailHTML(
+                    createURL('account', 'changesecret', token)
+                ),
+                'noreply',
+                account.email
+            )
         }
         res.send(createResponse(true))
     } catch (e) {
@@ -174,12 +195,26 @@ router.get('/avatar', async (req, res) => {
     }
 })
 
-router.post('/signup/verify', (req, res) => {
-    if (req.body.code === '000000000000000000000000') {
-        res.send(createResponse({ uid: 2019001 }))
-    } else {
-        res.status(403)
-        res.send(createResponse(false, '코드가 올바르지 않아요.'))
+router.post('/changesecret', async (req, res, next) => {
+    try {
+        let token = jwt.verify(
+            req.body.token,
+            getSecret('token')
+        ) as changePasswordToken
+
+        if (token.expire < Date.now()) {
+            res.status(408)
+            res.send(createResponse(false, TOKEN_EXPIRE_ERROR))
+        }
+        let account = (await db.get('account', 'id', token.id)) as User
+        await db.update('account', 'id', token.id, {
+            ...account,
+            pwHash: await bcrypt.hash(req.body.password, saltRound),
+        })
+        res.send(createResponse(true))
+    } catch (e) {
+        res.status(404)
+        res.send(createResponse(false, '일치하는 계정이 존재하지 않아요.'))
     }
 })
 

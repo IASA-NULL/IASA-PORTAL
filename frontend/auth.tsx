@@ -112,6 +112,9 @@ interface IState {
     findid_name: string
 
     findpass_email: string
+
+    changepass_password: string
+    changepass_passwordConfirm: string
 }
 
 class App extends React.Component<any, IState> {
@@ -211,20 +214,23 @@ class App extends React.Component<any, IState> {
                     { main: '로그인', sub: 'IASA PORTAL로 계속', id: 'IdForm' },
                 ],
             })
-        else if (window.location.pathname.split('/').pop() === 'changesecret')
+        else if (
+            window.location.pathname.split('/').reverse()[1] === 'changesecret'
+        )
             this.setState({
                 formList: [
                     <ChangeSecret
                         setState={this.setState}
                         isMobile={isMobile}
                         context={context}
+                        next={this.changePass()}
                     />,
                 ],
                 currentPage: 0,
                 title: [
                     {
                         main: '비밀번호 변경',
-                        sub: '변경할 비밀번호를 입력하세요.',
+                        sub: '6자 이상의 숫자/영어/특수문자로 설정하세요.',
                         id: 'ChangeSecret',
                     },
                 ],
@@ -489,6 +495,75 @@ class App extends React.Component<any, IState> {
                     },
                     'account',
                     'sudo'
+                )
+                    .then((res) => {
+                        if (res.success) {
+                            const searchParams = new URLSearchParams(
+                                window.location.search
+                            )
+                            try {
+                                const next = searchParams.get('next')
+                                if (next) {
+                                    window.location.replace(atob(next))
+                                } else throw new Error()
+                            } catch (e) {
+                                window.location.replace('/')
+                            }
+                        } else {
+                            this.setState({
+                                errMessage: res.message,
+                                loaded: true,
+                            })
+                            this.focusCurrentInput()
+                        }
+                    })
+                    .catch((e) => {
+                        this.setState({
+                            errMessage: '서버와 통신 중 오류가 발생했어요.',
+                        })
+                        this.focusCurrentInput()
+                    })
+            } else {
+                this.setState({ errMessage: '비밀번호를 입력하세요.' })
+                this.focusCurrentInput()
+            }
+        }
+    }
+
+    public changePass() {
+        return () => {
+            this.setState({ errMessage: '' })
+            if (
+                this.state?.changepass_password &&
+                this.state?.changepass_passwordConfirm
+            ) {
+                if (
+                    this.state?.changepass_password !==
+                    this.state?.changepass_passwordConfirm
+                ) {
+                    this.setState({ errMessage: '비밀번호가 같지 않아요.' })
+                    this.focusCurrentInput()
+                    return
+                }
+
+                const rePass = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
+                if (!rePass.test(this.state?.changepass_password)) {
+                    this.setState({
+                        errMessage: '비밀번호가 규칙에 맞지 않아요.',
+                    })
+                    this.focusCurrentInput()
+                    return
+                }
+
+                this.setState({ loaded: false })
+                fetchAPI(
+                    'POST',
+                    {
+                        token: window.location.pathname.split('/').reverse()[0],
+                        password: this.state?.changepass_password,
+                    },
+                    'account',
+                    'changesecret'
                 )
                     .then((res) => {
                         if (res.success) {
@@ -991,7 +1066,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     )
     accountInfo = await fetchAPI('GET', {}, 'account', 'info')
     if (accountInfo.data.permission === Permission.none) {
-        if (window.location.pathname.split('/').pop() !== 'signin')
+        if (window.location.pathname.split('/').pop() === 'challenge')
             window.location.replace(createURL('account', 'signin'))
     }
     ReactDOM.render(<App />, document.getElementById('app') as HTMLElement)

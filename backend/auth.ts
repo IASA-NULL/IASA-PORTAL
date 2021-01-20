@@ -1,9 +1,11 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
-import { token } from '../scheme/api/auth'
+import { changePasswordToken, token } from '../scheme/api/auth'
 import getSecret from './util/secret'
 import path from 'path'
 import { getServerToken } from './util/serverState'
+import createResponse from './createResponse'
+import { TOKEN_EXPIRE_ERROR } from '../string/error'
 
 const maxTime = 1000 * 60 * 60 * 24 * 7
 const reSignTime = 1000 * 60 * 60 * 24 * 3
@@ -68,8 +70,25 @@ authRouter.get('/signin', (req, res, next) => {
     res.sendFile(path.join(__dirname, '..', '..', 'template', 'auth.html'))
 })
 
-authRouter.get('/changesecret', (req, res, next) => {
-    res.sendFile(path.join(__dirname, '..', '..', 'template', 'auth.html'))
+authRouter.get('/changesecret/:token', (req, res, next) => {
+    try {
+        let token = jwt.verify(
+            req.params.token,
+            getSecret('token')
+        ) as changePasswordToken
+        if (token.expire < Date.now()) throw new Error()
+        res.sendFile(path.join(__dirname, '..', '..', 'template', 'auth.html'))
+    } catch (e) {
+        res.sendFile(
+            path.join(
+                __dirname,
+                '..',
+                '..',
+                'template',
+                'changesecretfail.html'
+            )
+        )
+    }
 })
 
 authRouter.get('/challenge', (req, res, next) => {

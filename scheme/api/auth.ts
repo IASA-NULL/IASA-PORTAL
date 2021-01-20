@@ -26,3 +26,8 @@ export interface signupToken {
     expire: number
     avatar: string
 }
+
+export interface changePasswordToken {
+    id: string
+    expire: number
+}

@@ -40,7 +40,7 @@ export default class ChangeSecret extends React.Component<
         // @ts-ignore
         this.setState({ [target]: e.target.value })
         // @ts-ignore
-        this.props.context.set('signup_' + target, e.target.value)
+        this.props.context.set('changepass_' + target, e.target.value)
     }
 
     public render() {

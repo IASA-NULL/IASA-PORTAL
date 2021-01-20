@@ -7,7 +7,11 @@ import {
     MyeonbulResponseType,
 } from '../../scheme/api/myeonbul'
 import db from '../util/db'
-import {DB_CONNECT_ERROR, REQUIRE_PERMISSION_ERROR, REQUIRE_SIGNIN_ERROR} from '../../string/error'
+import {
+    DB_CONNECT_ERROR,
+    REQUIRE_PERMISSION_ERROR,
+    REQUIRE_SIGNIN_ERROR,
+} from '../../string/error'
 
 const router = express.Router()
 

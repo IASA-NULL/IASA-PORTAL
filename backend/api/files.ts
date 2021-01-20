@@ -7,7 +7,8 @@ import { upload, download } from '../util/s3'
 import db from '../util/db'
 import {
     FAIL_UPLOAD_ERROR,
-    NO_FILE_ERROR, NO_FOUND_FILE_ERROR,
+    NO_FILE_ERROR,
+    NO_FOUND_FILE_ERROR,
     REQUIRE_SIGNIN_ERROR,
 } from '../../string/error'
 

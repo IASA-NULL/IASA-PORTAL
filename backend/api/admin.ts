@@ -13,7 +13,7 @@ import {
     DB_CONNECT_ERROR,
     REQUIRE_PERMISSION_ERROR,
     REQUIRE_SIGNIN_ERROR,
-    REQUIRE_SUDO_ERROR
+    REQUIRE_SUDO_ERROR,
 } from '../../string/error'
 
 const router = express.Router()

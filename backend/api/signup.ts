@@ -135,7 +135,7 @@ router.post('/mail', async (req, res, next) => {
         getVerificationMailHTML(
             createURL('api', 'account', 'signup', 'finalize', token)
         ),
-        'welcome',
+        'noreply',
         req.body.email
     )
     if (mailRes) res.send(createResponse(true))
@@ -160,7 +160,8 @@ router.get('/finalize/:token', async (req, res, next) => {
                     '..',
                     '..',
                     'template',
-                    'signupfail.html'
+                    'signup',
+                    'fail.html'
                 )
             )
             return
@@ -178,7 +179,8 @@ router.get('/finalize/:token', async (req, res, next) => {
                     '..',
                     '..',
                     'template',
-                    'signupalready.html'
+                    'signup',
+                    'already.html'
                 )
             )
             return
@@ -206,7 +208,8 @@ router.get('/finalize/:token', async (req, res, next) => {
                 '..',
                 '..',
                 'template',
-                'signupsucc.html'
+                'signup',
+                'success.html'
             )
         )
         return
@@ -219,7 +222,8 @@ router.get('/finalize/:token', async (req, res, next) => {
                 '..',
                 '..',
                 'template',
-                'signupfail.html'
+                'signup',
+                'fail.html'
             )
         )
         return
