@@ -5,6 +5,11 @@ import createResponse from '../createResponse'
 
 import { upload, download } from '../util/s3'
 import db from '../util/db'
+import {
+    FAIL_UPLOAD_ERROR,
+    NO_FILE_ERROR, NO_FOUND_FILE_ERROR,
+    REQUIRE_SIGNIN_ERROR,
+} from '../../string/error'
 
 const storage = multer.memoryStorage()
 const uploadReq = multer({ storage: storage })
@@ -14,7 +19,7 @@ const router = express.Router()
 router.use((req, res, next) => {
     if (!req.auth) {
         res.status(401)
-        res.send(createResponse(false, '먼저 로그인하세요.'))
+        res.send(createResponse(false, REQUIRE_SIGNIN_ERROR))
     } else {
         next()
     }
@@ -24,7 +29,7 @@ router.post('/upload', uploadReq.any(), async (req, res, next) => {
     try {
         if (!req.files || !req.files.length) {
             res.status(400)
-            res.send(createResponse(false, '첨부된 파일이 없어요.'))
+            res.send(createResponse(false, NO_FILE_ERROR))
             return
         }
         let fileList = [] as string[]
@@ -47,7 +52,7 @@ router.post('/upload', uploadReq.any(), async (req, res, next) => {
         )
     } catch (e) {
         res.status(500)
-        res.send(createResponse(false, '파일 업로드에 실패했어요.'))
+        res.send(createResponse(false, FAIL_UPLOAD_ERROR))
     }
 })
 
@@ -64,7 +69,7 @@ router.get('/download/:id', async (req, res, next) => {
         fileBody.pipe(res)
     } catch (e) {
         res.status(404)
-        res.send(createResponse(false, '파일이 존재하지 않아요.'))
+        res.send(createResponse(false, NO_FOUND_FILE_ERROR))
     }
 })
 

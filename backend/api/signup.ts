@@ -9,7 +9,7 @@ import createURL from '../../scheme/url'
 import path from 'path'
 import db from '../util/db'
 import { User } from '../../scheme/user'
-import {DB_CONNECT_ERROR} from "../../string/error";
+import { DB_CONNECT_ERROR } from '../../string/error'
 
 const signupTokenExpire = 1000 * 60 * 60
 

@@ -8,17 +8,23 @@ import db from '../util/db'
 import { User } from '../../scheme/user'
 import { getRandomInt } from '../util/random'
 import { base32Encode } from '@ctrl/ts-base32'
-import {DB_CONNECT_ERROR} from "../../string/error";
+import {
+    ALREADY_BUILDING_ERROR,
+    DB_CONNECT_ERROR,
+    REQUIRE_PERMISSION_ERROR,
+    REQUIRE_SIGNIN_ERROR,
+    REQUIRE_SUDO_ERROR
+} from '../../string/error'
 
 const router = express.Router()
 
 router.use((req, res, next) => {
     if (!req.auth) {
         res.status(401)
-        res.send(createResponse(false, '먼저 로그인하세요.'))
+        res.send(createResponse(false, REQUIRE_SIGNIN_ERROR))
     } else if (req.auth.permission !== Permission.admin) {
         res.status(403)
-        res.send(createResponse(false, '권한이 없어요.'))
+        res.send(createResponse(false, REQUIRE_PERMISSION_ERROR))
     } else {
         next()
     }
@@ -27,10 +33,10 @@ router.use((req, res, next) => {
 router.post('/update', (req, res, next) => {
     if (!req.auth.sudo) {
         res.status(403)
-        res.send(createResponse(false, 'sudo 모드로 실행해야 해요.'))
+        res.send(createResponse(false, REQUIRE_SUDO_ERROR))
     }
     if (getServerFlag('build')) {
-        res.send(createResponse(false, '사이트가 이미 빌드 중이에요.'))
+        res.send(createResponse(false, ALREADY_BUILDING_ERROR))
     } else {
         setServerFlag('build')
         res.send(createResponse(true))

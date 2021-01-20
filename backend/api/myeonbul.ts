@@ -7,14 +7,14 @@ import {
     MyeonbulResponseType,
 } from '../../scheme/api/myeonbul'
 import db from '../util/db'
-import {DB_CONNECT_ERROR} from "../../string/error";
+import {DB_CONNECT_ERROR, REQUIRE_PERMISSION_ERROR, REQUIRE_SIGNIN_ERROR} from '../../string/error'
 
 const router = express.Router()
 
 router.use((req, res, next) => {
     if (!req.auth) {
         res.status(401)
-        res.send(createResponse(false, '먼저 로그인하세요.'))
+        res.send(createResponse(false, REQUIRE_SIGNIN_ERROR))
     } else {
         next()
     }
@@ -130,7 +130,7 @@ router.post('/list', async (req, res, next) => {
     if (req.auth.permission === Permission.student) {
         if (req.body.type === MyeonbulRequestListType.listByDate) {
             res.status(403)
-            res.send(createResponse(false, '권한이 없어요.'))
+            res.send(createResponse(false, REQUIRE_PERMISSION_ERROR))
         } else if (req.body.type === MyeonbulRequestListType.listByUser) {
             let myeonbulDB = await db.direct('myeonbul')
             if (!myeonbulDB) {

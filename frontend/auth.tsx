@@ -262,7 +262,7 @@ class App extends React.Component<any, IState> {
                     {
                         main: `안녕하세요, ${accountInfo.data.name}님.`,
                         sub: '계속하려면 비밀번호를 입력하세요.',
-                        id: 'ChangeSecret',
+                        id: 'PasswordForm',
                     },
                 ],
                 id: accountInfo.data.id,
