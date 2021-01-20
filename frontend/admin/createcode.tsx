@@ -18,8 +18,6 @@ import {
     DialogContent,
     DialogTitle,
 } from '@rmwc/dialog'
-import { CircularProgress } from '@rmwc/circular-progress'
-import { PenaltyResponseOne } from '../../scheme/api/penalty'
 import {
     DataTable,
     DataTableBody,

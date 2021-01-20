@@ -43,7 +43,6 @@ import {
     mealTimeToString,
     AllergicInfo,
 } from '../../scheme/api/meal'
-import createURL from '../../scheme/url'
 import { BrIfMobile, fetchAPI } from '../util'
 
 interface MealProps {

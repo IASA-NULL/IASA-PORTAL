@@ -22,7 +22,6 @@ import {
     SignupFill2,
     SignupFin,
 } from './account/signup'
-import createURL from '../scheme/url'
 import { Permission } from '../scheme/api/auth'
 
 const lightTheme = {
@@ -100,7 +99,6 @@ interface IState {
     signupType: Permission
     signupCode: string
 
-    signup_name: string
     signup_id: string
     signup_password: string
     signup_passwordConfirm: string
@@ -419,21 +417,17 @@ class App extends React.Component<any, IState> {
     public validateSignup1(form: JSX.Element) {
         return () => {
             this.setState({ errMessage: '' })
-            if (
-                !this.state?.signup_name ||
-                !this.state?.signup_id ||
-                !this.state?.signup_email
-            ) {
+            if (!this.state?.signup_id || !this.state?.signup_email) {
                 this.setState({ errMessage: '내용을 모두 입력하세요.' })
                 this.focusCurrentInput()
                 return
             }
             const reMail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            const reId = /^[a-z0-9]{4,10}$/g
+            const reId = /^[a-z0-9]{4,20}$/g
 
             if (!reId.test(this.state?.signup_id)) {
                 this.setState({
-                    errMessage: '아이디는 4-10자 소문자/숫자여야 해요.',
+                    errMessage: '아이디는 4-20자 소문자/숫자여야 해요.',
                 })
                 this.focusCurrentInput()
                 return
@@ -489,7 +483,6 @@ class App extends React.Component<any, IState> {
                     id: this.state?.signup_id,
                     password: this.state?.signup_password,
                     email: this.state?.signup_email,
-                    name: this.state?.signup_name,
                 },
                 'account',
                 'signup',

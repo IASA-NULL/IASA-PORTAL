@@ -30,7 +30,6 @@ interface SignupFillFormState {
     id: string
     password: string
     passwordConfirm: string
-    name: string
     email: string
     showSignupMenu: boolean
 }
@@ -191,19 +190,6 @@ export class SignupFill1 extends React.Component<
                     padding: `5px ${this.props.isMobile ? 30 : 60}px`,
                     float: 'left',
                 }}>
-                <TextField
-                    style={{ width: '100%', height: '100%' }}
-                    outlined
-                    value={this.state?.name}
-                    onChange={(e) => this.handleChange(e, 'name')}
-                    label='이름'
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') focusNextInput()
-                    }}
-                    ref={(input) => {
-                        this.firstInput = input
-                    }}
-                />
                 <div style={{ width: '100%', height: '20px' }} />
                 <TextField
                     style={{ width: '100%', height: '100%' }}
@@ -213,6 +199,9 @@ export class SignupFill1 extends React.Component<
                     label='아이디'
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') focusNextInput()
+                    }}
+                    ref={(input) => {
+                        this.firstInput = input
                     }}
                 />
                 <div style={{ width: '100%', height: '20px' }} />

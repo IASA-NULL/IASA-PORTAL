@@ -9,4 +9,4 @@ export default function getSecret(type: string) {
     return secret[type]
 }
 
-export const saltRount = 10
+export const saltRound = 10

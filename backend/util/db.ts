@@ -39,6 +39,20 @@ async function get(collection: string, key: string, value: any) {
     }
 }
 
+async function del(collection: string, key: string, value: any) {
+    let db
+    try {
+        db = await get_db()
+        return await db
+            .db('iasa_portal')
+            .collection(collection)
+            .deleteOne({ [key]: value })
+    } catch (e) {
+        console.log(e)
+        return undefined
+    }
+}
+
 async function set(collection: string, data: any) {
     let db
     try {
@@ -80,6 +94,7 @@ async function directDB(collection: string) {
 const dbObject = {
     get: get,
     set: set,
+    del: del,
     update: update,
     direct: directDB,
 }

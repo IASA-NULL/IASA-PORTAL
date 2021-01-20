@@ -7,7 +7,6 @@ import { Grid, GridCell, GridRow } from '@rmwc/grid'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 import Siema from 'siema'
-import createURL from '../../scheme/url'
 import {
     Card,
     CardActionButton,

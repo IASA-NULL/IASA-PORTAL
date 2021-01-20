@@ -23,4 +23,5 @@ export interface signupToken {
     email: string
     name: string
     expire: number
+    avatar: string
 }

@@ -1,11 +1,10 @@
-import { base32Decode } from '@ctrl/ts-base32'
 import bcrypt from 'bcrypt'
 import { Permission, signupToken } from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import { getVerificationMailHTML, sendMail } from '../util/mail'
 import express from 'express'
 import jwt from 'jsonwebtoken'
-import getSecret, { saltRount } from '../util/secret'
+import getSecret, { saltRound } from '../util/secret'
 import createURL from '../../scheme/url'
 import path from 'path'
 import db from '../util/db'
@@ -16,30 +15,30 @@ const signupTokenExpire = 1000 * 60 * 60
 const router = express.Router()
 
 router.post('/verify', async (req, res, next) => {
-    let errRes = false,
-        uid: number
-    if (req.body.code.length !== 24) errRes = true
-    let orgCode
+    let errRes = false
+
+    let tmpUser
+
     try {
-        orgCode = Buffer.from(base32Decode(req.body.code)).toString()
-        if (orgCode.length !== 15 || orgCode[0] !== 'C') errRes = true
-        orgCode = orgCode.replace(/C|O|D|E/g, '')
-        if (orgCode.length !== 8 || (orgCode[0] !== 'S' && orgCode[0] !== 'T'))
-            errRes = true
-        if (orgCode.substr(1).replace(/\D+/g, '').length !== 7) errRes = true
+        tmpUser = await db.get('code', 'code', req.body.code)
+        if (!tmpUser) {
+            res.status(409)
+            res.send(createResponse(false, '코드가 올바르지 않아요.'))
+            return
+        }
+    } catch (e) {
+        res.status(500)
+        res.send(createResponse(false, '코드가 올바르지 않아요.'))
+        return
+    }
+
+    try {
         if (
             req.body.type !== Permission.student &&
             req.body.type !== Permission.teacher
         )
             errRes = true
-        if (req.body.type === Permission.student && orgCode[0] !== 'S')
-            errRes = true
-        if (req.body.type === Permission.teacher && orgCode[0] !== 'T')
-            errRes = true
-        uid = parseInt(orgCode.substr(1).replace(/\D+/g, ''))
-
-        let user = (await db.get('account', 'uid', uid)) as User | undefined
-        if (user) errRes = true
+        if (req.body.type !== tmpUser.type) errRes = true
     } catch (e) {
         errRes = true
     }
@@ -52,7 +51,7 @@ router.post('/verify', async (req, res, next) => {
         res.send(
             createResponse({
                 type: req.body.type,
-                uid: uid,
+                uid: tmpUser.uid,
             })
         )
         return
@@ -60,27 +59,30 @@ router.post('/verify', async (req, res, next) => {
 })
 
 router.post('/mail', async (req, res, next) => {
-    let errRes = false,
-        uid: number
-    if (req.body.code.length !== 24) errRes = true
-    let orgCode
+    let errRes = false
+
+    let tmpUser
+
     try {
-        orgCode = Buffer.from(base32Decode(req.body.code)).toString()
-        if (orgCode.length !== 15 || orgCode[0] !== 'C') errRes = true
-        orgCode = orgCode.replace(/C|O|D|E/g, '')
-        if (orgCode.length !== 8 || (orgCode[0] !== 'S' && orgCode[0] !== 'T'))
-            errRes = true
-        if (orgCode.substr(1).replace(/\D+/g, '').length !== 7) errRes = true
+        tmpUser = await db.get('code', 'code', req.body.code)
+        if (!tmpUser) {
+            res.status(409)
+            res.send(createResponse(false, '코드가 올바르지 않아요.'))
+            return
+        }
+    } catch (e) {
+        res.status(500)
+        res.send(createResponse(false, '코드가 올바르지 않아요.'))
+        return
+    }
+
+    try {
         if (
             req.body.type !== Permission.student &&
             req.body.type !== Permission.teacher
         )
             errRes = true
-        if (req.body.type === Permission.student && orgCode[0] !== 'S')
-            errRes = true
-        if (req.body.type === Permission.teacher && orgCode[0] !== 'T')
-            errRes = true
-        uid = parseInt(orgCode.substr(1).replace(/\D+/g, ''))
+        if (req.body.type !== tmpUser.type) errRes = true
     } catch (e) {
         errRes = true
     }
@@ -92,14 +94,11 @@ router.post('/mail', async (req, res, next) => {
     }
 
     try {
-        let user = (await db.get(
-            'account',
-            'id',
-            req.body.id.toLowerCase()
-        )) as User | undefined
+        let user = await db.get('account', 'id', req.body.id.toLowerCase())
         if (user) {
             res.status(409)
             res.send(createResponse(false, '아이디가 같은 계정이 있어요.'))
+            return
         }
 
         user = (await db.get('account', 'email', req.body.email)) as
@@ -108,20 +107,24 @@ router.post('/mail', async (req, res, next) => {
         if (user) {
             res.status(409)
             res.send(createResponse(false, '이메일이 같은 계정이 있어요.'))
+            return
         }
+
+        await db.update('code', 'code', req.body.code, {
+            ...tmpUser,
+            id: req.body.id.toLowerCase(),
+            pwHash: await bcrypt.hash(req.body.password, saltRound),
+            email: req.body.email,
+        })
     } catch (e) {
         res.status(500)
         res.send(createResponse(false, 'DB 연결에 실패했어요.'))
+        return
     }
 
     let token = jwt.sign(
         {
-            type: req.body.type,
-            uid: uid,
-            id: req.body.id.toLowerCase(),
-            password: req.body.password,
-            email: req.body.email,
-            name: req.body.name,
+            uid: tmpUser.uid,
             expire: Date.now() + signupTokenExpire,
         } as signupToken,
         getSecret('token')
@@ -138,6 +141,7 @@ router.post('/mail', async (req, res, next) => {
     else {
         res.status(500)
         res.send(createResponse(false, '인증 메일을 보내지 못했어요.'))
+        return
     }
 })
 
@@ -164,15 +168,33 @@ router.get('/finalize/:token', async (req, res, next) => {
         let user = (await db.get('account', 'uid', token.uid)) as
             | User
             | undefined
-        if (user) throw new Error()
+        if (user) {
+            res.status(412)
+            res.sendFile(
+                path.join(
+                    __dirname,
+                    '..',
+                    '..',
+                    '..',
+                    'template',
+                    'signupalready.html'
+                )
+            )
+            return
+        }
 
+        let tmpUser = await db.get('code', 'uid', token.uid)
+
+        if (!tmpUser) throw new Error()
+        await db.del('code', 'uid', token.uid)
         await db.set('account', {
-            permission: token.type,
-            uid: token.uid,
-            id: token.id,
-            pwHash: await bcrypt.hash(token.password, saltRount),
-            email: token.email,
-            name: token.name,
+            permission: tmpUser.type,
+            uid: tmpUser.uid,
+            id: tmpUser.id,
+            pwHash: tmpUser.pwHash,
+            email: tmpUser.email,
+            name: tmpUser.name,
+            avatar: tmpUser.avatar,
             penalty: 0,
         } as User)
 
@@ -186,7 +208,9 @@ router.get('/finalize/:token', async (req, res, next) => {
                 'signupsucc.html'
             )
         )
+        return
     } catch (e) {
+        res.status(400)
         res.sendFile(
             path.join(
                 __dirname,

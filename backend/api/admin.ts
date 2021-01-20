@@ -52,7 +52,7 @@ router.put('/code', async (req, res, next) => {
     if (req.body.type === 'S') cid = 0
     else cid = 700
     for (; ; ++cid) {
-        const uid = req.body.year + ('000' + cid).substr(-3)
+        const uid = req.body.year + ('0000' + cid).substr(-4)
         try {
             let user = (await db.get('account', 'uid', uid)) as User | undefined
             if (user) continue
