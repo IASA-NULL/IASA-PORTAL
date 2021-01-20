@@ -52,3 +52,7 @@ app.get('*', (req, res) => {
 app.listen(80, () => {
     console.log('Server is up on port 80.')
 })
+
+process.on('uncaughtException', function (err) {
+    console.log('Caught exception: ' + err)
+})

@@ -8,4 +8,5 @@ export interface User {
     email: string
     name: string
     penalty?: number
+    avatar?: string
 }

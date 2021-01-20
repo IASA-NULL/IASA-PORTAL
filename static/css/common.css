@@ -243,3 +243,9 @@ a {
 .mdc-select__anchor {
     width: 100%;
 }
+
+.rmwc-avatar__icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}

@@ -26,7 +26,7 @@ import {
 import { teacher, currentTeacherList } from '../../scheme/teacher/teacher'
 import teacherList from '../../scheme/teacher/2021/list'
 import { token } from '../../scheme/api/auth'
-import { BrIfMobile, focusNextInput } from '../util'
+import { BrIfMobile, fetchAPI, focusNextInput } from '../util'
 import createURL from '../../scheme/url'
 
 interface MyeonbulProps {
@@ -59,21 +59,18 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
 
     public refresh() {
         this.setState({ loaded: false })
-        fetch(createURL('api', 'myeonbul', 'list'), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+        fetchAPI(
+            'POST',
+            {
                 type: MyeonbulRequestListType.listByUser,
-            }),
+            },
+            'myeonbul',
+            'list'
+        ).then((res: MyeonbulQuery) => {
+            if (res.success) {
+                this.setState({ loaded: true, data: res })
+            }
         })
-            .then((res) => res.json())
-            .then((res: MyeonbulQuery) => {
-                if (res.success) {
-                    this.setState({ loaded: true, data: res })
-                }
-            })
     }
 
     public register() {

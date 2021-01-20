@@ -12,7 +12,7 @@ import 'rmwc/dist/styles'
 import '@rmwc/list/collapsible-list.css'
 import '@material/list/dist/mdc.list.css'
 
-import { LinkType, MenuLink } from './util'
+import { fetchAPI, LinkType, MenuLink } from './util'
 
 import { IdForm, PasswordForm } from './account/signin'
 import { FindID, FindPassword, FoundId, FoundPassword } from './account/find'
@@ -297,16 +297,14 @@ class App extends React.Component<any, IState> {
             this.setState({ errMessage: '' })
             if (this.state?.id) {
                 this.setState({ loaded: false })
-                fetch(createURL('api', 'account', 'username'), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
+                fetchAPI(
+                    'POST',
+                    {
                         id: this.state?.id,
-                    }),
-                })
-                    .then((res) => res.json())
+                    },
+                    'account',
+                    'username'
+                )
                     .then((res) => {
                         if (res.success) {
                             this.next(
@@ -341,17 +339,16 @@ class App extends React.Component<any, IState> {
             this.setState({ errMessage: '' })
             if (this.state?.signupCode) {
                 this.setState({ loaded: false })
-                fetch(createURL('api', 'account', 'signup', 'verify'), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
+                fetchAPI(
+                    'POST',
+                    {
                         code: this.state?.signupCode,
                         type: this.state?.signupType,
-                    }),
-                })
-                    .then((res) => res.json())
+                    },
+                    'account',
+                    'signup',
+                    'verify'
+                )
                     .then((res) => {
                         if (res.success) {
                             this.next(
@@ -386,17 +383,15 @@ class App extends React.Component<any, IState> {
             this.setState({ errMessage: '' })
             if (this.state?.password) {
                 this.setState({ loaded: false })
-                fetch(createURL('api', 'account', 'signin'), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
+                fetchAPI(
+                    'POST',
+                    {
                         id: this.state?.id,
                         password: this.state?.password,
-                    }),
-                })
-                    .then((res) => res.json())
+                    },
+                    'account',
+                    'signin'
+                )
                     .then((res) => {
                         if (res.success) {
                             window.location.replace('/')
@@ -486,21 +481,20 @@ class App extends React.Component<any, IState> {
             }
             this.setState({ loaded: false })
 
-            fetch(createURL('api', 'account', 'signup', 'mail'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
+            fetchAPI(
+                'POST',
+                {
                     code: this.state?.signupCode,
                     type: this.state?.signupType,
                     id: this.state?.signup_id,
                     password: this.state?.signup_password,
                     email: this.state?.signup_email,
                     name: this.state?.signup_name,
-                }),
-            })
-                .then((res) => res.json())
+                },
+                'account',
+                'signup',
+                'mail'
+            )
                 .then((res) => {
                     this.setState({ loaded: true })
                     if (res.success) {
@@ -553,17 +547,16 @@ class App extends React.Component<any, IState> {
             this.setState({ errMessage: '' })
             if (this.state?.findid_email && this.state?.findid_name) {
                 this.setState({ loaded: false })
-                fetch(createURL('api', 'account', 'find', 'id'), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
+                fetchAPI(
+                    'POST',
+                    {
                         email: this.state?.findid_email,
                         name: this.state?.findid_name,
-                    }),
-                })
-                    .then((res) => res.json())
+                    },
+                    'account',
+                    'find',
+                    'id'
+                )
                     .then((res) => {
                         if (res.success) {
                             this.next(
@@ -598,17 +591,16 @@ class App extends React.Component<any, IState> {
             this.setState({ errMessage: '' })
             if (this.state?.findpass_email) {
                 this.setState({ loaded: false })
-                fetch(createURL('api', 'account', 'find', 'password'), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
+                fetchAPI(
+                    'POST',
+                    {
                         email: this.state?.findpass_email,
                         id: this.state?.id,
-                    }),
-                })
-                    .then((res) => res.json())
+                    },
+                    'account',
+                    'find',
+                    'password'
+                )
                     .then((res) => {
                         if (res.success) {
                             this.next(

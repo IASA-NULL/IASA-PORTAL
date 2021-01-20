@@ -44,7 +44,7 @@ import {
     AllergicInfo,
 } from '../../scheme/api/meal'
 import createURL from '../../scheme/url'
-import { BrIfMobile } from '../util'
+import { BrIfMobile, fetchAPI } from '../util'
 
 interface MealProps {
     onClick: any
@@ -74,20 +74,11 @@ class MealOne extends React.Component<MealProps, MealState> {
 
     public refresh() {
         this.setState({ loaded: false })
-        fetch(createURL('api', 'meal'), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(this.props.target),
+        fetchAPI('POST', this.props.target, 'meal').then((data) => {
+            this.setState({ loaded: true, data: data })
+            if (!this.state.data.data.image) this.setState({ imageUrl: 'none' })
+            else this.setState({ imageUrl: this.state.data.data.image })
         })
-            .then((res) => res.json())
-            .then((data) => {
-                this.setState({ loaded: true, data: data })
-                if (!this.state.data.data.image)
-                    this.setState({ imageUrl: 'none' })
-                else this.setState({ imageUrl: this.state.data.data.image })
-            })
     }
 
     public render() {
@@ -372,20 +363,11 @@ class Meal extends React.Component<any, MearContainerState> {
             detailLoaded: false,
             imageUrl: '',
         })
-        fetch(createURL('api', 'meal'), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(time),
+        fetchAPI('POST', time, 'api', 'meal').then((data) => {
+            this.setState({ detailLoaded: true, data: data })
+            if (!this.state.data.data.image) this.setState({ imageUrl: 'none' })
+            else this.setState({ imageUrl: this.state.data.data.image })
         })
-            .then((res) => res.json())
-            .then((data) => {
-                this.setState({ detailLoaded: true, data: data })
-                if (!this.state.data.data.image)
-                    this.setState({ imageUrl: 'none' })
-                else this.setState({ imageUrl: this.state.data.data.image })
-            })
     }
 
     private handleChange() {

@@ -23,7 +23,7 @@ import {
     TermsNavList,
     UserDataNavList,
 } from './mainview'
-import { LoremIpsum } from './util'
+import { fetchAPI, LoremIpsum } from './util'
 import MyeonbulStudent from './student/myeonbul'
 import PenaltyStudent from './student/penalty'
 import Meal from './common/meal'
@@ -103,11 +103,9 @@ class App extends React.Component<any, IState> {
 
     public refresh() {
         this.setState({ loaded: false })
-        fetch(createURL('api', 'account', 'info'))
-            .then((res) => res.json())
-            .then((data) => {
-                this.setState({ loaded: true, data: data.data })
-            })
+        fetchAPI('GET', {}, 'account', 'info').then((data) => {
+            this.setState({ loaded: true, data: data.data })
+        })
     }
 
     public render() {

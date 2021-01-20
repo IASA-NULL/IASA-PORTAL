@@ -20,7 +20,7 @@ import {
 import { CircularProgress } from '@rmwc/circular-progress'
 import { MusicResponse, MusicResponseOne } from '../../scheme/api/music'
 import * as ReactDOM from 'react-dom'
-import { BrIfMobile, focusNextInput } from '../util'
+import { BrIfMobile, fetchAPI, focusNextInput } from '../util'
 import {
     Dialog,
     DialogActions,
@@ -149,49 +149,42 @@ class Music extends React.Component<{}, MusicState> {
 
     public refresh() {
         this.setState({ loaded: false })
-        fetch(createURL('api', 'music', 'today'))
-            .then((res) => res.json())
-            .then((res: MusicResponse) => {
-                for (let i = 0; i < this.todayList.length; i++)
-                    this.today.remove(0)
-                for (let i = 0; i < this.tomorrowList.length; i++)
-                    this.tomorrow.remove(0)
-                this.todayList = []
-                this.tomorrowList = []
-                if (res.success) {
-                    res.data.today.map((el: MusicResponseOne) => {
-                        ;(() => {
-                            this.todayList.push(<MusicOne data={el} />)
-                        })()
-                        setTimeout(() => {
-                            ;((siema: Siema) => {
-                                siema.append(
-                                    Music.createCarouselItem(
-                                        <MusicOne data={el} />
-                                    )
-                                )
-                            })(this.today)
-                        }, this.animationDuration)
-                        return true
-                    })
-                    res.data.tomorrow.map((el: MusicResponseOne) => {
-                        ;(() => {
-                            this.tomorrowList.push(<MusicOne data={el} />)
-                        })()
-                        setTimeout(() => {
-                            ;((siema: Siema) => {
-                                siema.append(
-                                    Music.createCarouselItem(
-                                        <MusicOne data={el} />
-                                    )
-                                )
-                            })(this.tomorrow)
-                        }, this.animationDuration)
-                        return true
-                    })
-                }
-                this.setState({ loaded: true })
-            })
+        fetchAPI('GET', {}, 'music', 'today').then((res: MusicResponse) => {
+            for (let i = 0; i < this.todayList.length; i++) this.today.remove(0)
+            for (let i = 0; i < this.tomorrowList.length; i++)
+                this.tomorrow.remove(0)
+            this.todayList = []
+            this.tomorrowList = []
+            if (res.success) {
+                res.data.today.map((el: MusicResponseOne) => {
+                    ;(() => {
+                        this.todayList.push(<MusicOne data={el} />)
+                    })()
+                    setTimeout(() => {
+                        ;((siema: Siema) => {
+                            siema.append(
+                                Music.createCarouselItem(<MusicOne data={el} />)
+                            )
+                        })(this.today)
+                    }, this.animationDuration)
+                    return true
+                })
+                res.data.tomorrow.map((el: MusicResponseOne) => {
+                    ;(() => {
+                        this.tomorrowList.push(<MusicOne data={el} />)
+                    })()
+                    setTimeout(() => {
+                        ;((siema: Siema) => {
+                            siema.append(
+                                Music.createCarouselItem(<MusicOne data={el} />)
+                            )
+                        })(this.tomorrow)
+                    }, this.animationDuration)
+                    return true
+                })
+            }
+            this.setState({ loaded: true })
+        })
     }
 
     private static createCarouselItem(el: JSX.Element) {
@@ -207,67 +200,61 @@ class Music extends React.Component<{}, MusicState> {
 
     public confirm() {
         this.setState({ confirm: true, findLoaded: false })
-        fetch(createURL('api', 'music', 'confirm'), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+        fetchAPI(
+            'POST',
+            {
                 name: this.state?.requestName,
                 singer: this.state?.requestSinger,
-            }),
+            },
+            'music',
+            'confirm'
+        ).then((res) => {
+            this.setState({ findLoaded: true })
+            if (res.success) {
+                this.setState({ find: res.data, findLoaded: true })
+            } else {
+                this.setState({ confirm: false })
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '정보를 불러올 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            }
         })
-            .then((res) => res.json())
-            .then((res) => {
-                this.setState({ findLoaded: true })
-                if (res.success) {
-                    this.setState({ find: res.data, findLoaded: true })
-                } else {
-                    this.setState({ confirm: false })
-                    this.notify({
-                        title: <b>오류</b>,
-                        body: '정보를 불러올 수 없어요.',
-                        icon: 'error_outline',
-                        dismissIcon: true,
-                    })
-                }
-            })
     }
 
     public register() {
         this.setState({ confirm: false })
-        fetch(createURL('api', 'music', 'register'), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+        fetchAPI(
+            'POST',
+            {
                 name: this.state?.find?.name,
                 singer: this.state?.find?.singer,
                 yt: this.state?.find?.yt,
                 thumbnail: this.state?.find?.thumbnail,
-            }),
+            },
+            'music',
+            'register'
+        ).then((res) => {
+            this.setState({ requestName: '', requestSinger: '' })
+            if (res.success) {
+                this.notify({
+                    title: <b>성공!</b>,
+                    body: '기상곡 신청에 성공했어요.',
+                    icon: 'check',
+                    dismissIcon: true,
+                })
+                this.refresh()
+            } else {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: res.message,
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            }
         })
-            .then((res) => res.json())
-            .then((res) => {
-                this.setState({ requestName: '', requestSinger: '' })
-                if (res.success) {
-                    this.notify({
-                        title: <b>성공!</b>,
-                        body: '기상곡 신청에 성공했어요.',
-                        icon: 'check',
-                        dismissIcon: true,
-                    })
-                    this.refresh()
-                } else {
-                    this.notify({
-                        title: <b>오류</b>,
-                        body: res.message,
-                        icon: 'error_outline',
-                        dismissIcon: true,
-                    })
-                }
-            })
     }
 
     public handleChange(e: React.FormEvent<HTMLInputElement>, target: string) {

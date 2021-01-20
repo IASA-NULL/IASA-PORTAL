@@ -4,6 +4,7 @@ import * as React from 'react'
 import { useState } from 'react'
 import { MenuItem } from '@rmwc/menu'
 import { TextField } from '@rmwc/textfield'
+import createURL from '../scheme/url'
 
 export enum LinkType {
     a = 1,
@@ -243,4 +244,14 @@ export function focusNextInput() {
         return true
     }
     return false
+}
+
+export function fetchAPI(method: string, body: any, ...props: string[]) {
+    return fetch(createURL('api', ...props), {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        ...(method !== 'GET' && { body: JSON.stringify(body) }),
+    }).then((res) => res.json())
 }

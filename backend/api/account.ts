@@ -11,6 +11,7 @@ import { getServerToken } from '../util/serverState'
 import signupRouter from './signup'
 import { User } from '../../scheme/user'
 import { getChangePasswordMailHTML, sendMail } from '../util/mail'
+import { download } from '../util/s3'
 
 const maxTime = 1000 * 60 * 60 * 24 * 7
 const router = express.Router()
@@ -123,8 +124,22 @@ router.post('/find/password', async (req, res, next) => {
     }
 })
 
-router.get('/avatar', (req, res) => {
-    res.sendFile(getPath('static', 'img', 'avatar.png'))
+router.get('/avatar', async (req, res) => {
+    try {
+        const user = (await db.get('account', 'uid', req.auth.uid)) as User
+        if (!user) throw new Error()
+        const fileInfo = await db.get('upload', 'id', user.avatar)
+        const fileBody = download(fileInfo.id)
+        res.setHeader(
+            'Content-disposition',
+            'attachment; filename=' + fileInfo.name
+        )
+        res.set('Content-Type', fileInfo.mime)
+        res.set('Content-Length', fileInfo.size)
+        fileBody.pipe(res)
+    } catch (e) {
+        res.sendFile(getPath('static', 'img', 'avatar.png'))
+    }
 })
 
 router.post('/signup/verify', (req, res) => {

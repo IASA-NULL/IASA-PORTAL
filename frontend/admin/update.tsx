@@ -5,7 +5,7 @@ import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
 import { Select } from '@rmwc/select'
 
-import { BrIfMobile } from '../util'
+import { BrIfMobile, fetchAPI } from '../util'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 import createURL from '../../scheme/url'
 
@@ -49,31 +49,28 @@ class NotFound extends React.Component<any, IState> {
             })
             return
         }
-        fetch(createURL('api', 'admin', 'update'), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ branch: this.state?.selectedBranch }),
+        fetchAPI(
+            'POST',
+            { branch: this.state?.selectedBranch },
+            'admin',
+            'update'
+        ).then((res) => {
+            if (res.success) {
+                this.notify({
+                    title: <b>완료!</b>,
+                    body: '곧 사이트가 새로 빌드될 거에요.',
+                    icon: 'check',
+                    dismissIcon: true,
+                })
+                window.location.reload()
+            } else
+                this.notify({
+                    title: <b>오류</b>,
+                    body: res.message,
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
         })
-            .then((res) => res.json())
-            .then((res) => {
-                if (res.success) {
-                    this.notify({
-                        title: <b>완료!</b>,
-                        body: '곧 사이트가 새로 빌드될 거에요.',
-                        icon: 'check',
-                        dismissIcon: true,
-                    })
-                    window.location.reload()
-                } else
-                    this.notify({
-                        title: <b>오류</b>,
-                        body: res.message,
-                        icon: 'error_outline',
-                        dismissIcon: true,
-                    })
-            })
     }
 
     public render() {
