@@ -21,7 +21,7 @@ import createURL from '../../scheme/url'
 import { TOKEN_EXPIRE_ERROR } from '../../string/error'
 
 const maxTime = 1000 * 60 * 60 * 24 * 7
-const sudoTime = 1000 * 30
+const sudoTime = 1000 * 60 * 60
 const changePasswordTokenExpire = 1000 * 60 * 60
 const router = express.Router()
 
@@ -179,7 +179,7 @@ router.post('/find/password', async (req, res, next) => {
 
 router.get('/avatar', async (req, res) => {
     try {
-        const user = (await db.get('account', 'uid', req.auth.uid)) as User
+        const user = (await db.get('account', 'id', req.auth.id)) as User
         if (!user) throw new Error()
         const fileInfo = await db.get('upload', 'id', user.avatar)
         const fileBody = download(fileInfo.id)
@@ -193,6 +193,51 @@ router.get('/avatar', async (req, res) => {
     } catch (e) {
         res.sendFile(getPath('static', 'img', 'avatar.png'))
     }
+})
+
+router.get('/avatar/:id', async (req, res) => {
+    try {
+        const user = (await db.get('account', 'id', req.params.id)) as User
+        if (!user) throw new Error()
+        const fileInfo = await db.get('upload', 'id', user.avatar)
+        const fileBody = download(fileInfo.id)
+        res.setHeader(
+            'Content-disposition',
+            'attachment; filename=' + fileInfo.name
+        )
+        res.set('Content-Type', fileInfo.mime)
+        res.set('Content-Length', fileInfo.size)
+        fileBody.pipe(res)
+    } catch (e) {
+        res.sendFile(getPath('static', 'img', 'avatar.png'))
+    }
+})
+
+router.get('/reqchangesecret', async (req, res, next) => {
+    if (!req.auth.sudo) {
+        res.redirect(
+            createURL(
+                'account',
+                'challenge?next=' +
+                    Buffer.from(
+                        createURL('api', 'account', 'reqchangesecret')
+                    ).toString('base64')
+            )
+        )
+    }
+    res.redirect(
+        createURL(
+            'account',
+            'changesecret',
+            jwt.sign(
+                {
+                    id: req.body.id,
+                    expire: Date.now() + changePasswordTokenExpire,
+                } as changePasswordToken,
+                getSecret('token')
+            )
+        )
+    )
 })
 
 router.post('/changesecret', async (req, res, next) => {

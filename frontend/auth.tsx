@@ -126,7 +126,9 @@ class App extends React.Component<any, IState> {
             get: this.getSt.bind(this),
             set: this.setSt.bind(this),
         }
-        if (window.location.pathname.split('/').pop() === 'signin')
+        if (window.location.pathname.split('/').pop() === 'signin') {
+            if (accountInfo.data.permission !== Permission.none)
+                this.moveToLink()
             this.setState({
                 formList: [
                     <IdForm
@@ -214,9 +216,9 @@ class App extends React.Component<any, IState> {
                     { main: '로그인', sub: 'IASA PORTAL로 계속', id: 'IdForm' },
                 ],
             })
-        else if (
+        } else if (
             window.location.pathname.split('/').reverse()[1] === 'changesecret'
-        )
+        ) {
             this.setState({
                 formList: [
                     <ChangeSecret
@@ -235,7 +237,8 @@ class App extends React.Component<any, IState> {
                     },
                 ],
             })
-        else if (window.location.pathname.split('/').pop() === 'challenge') {
+        } else if (window.location.pathname.split('/').pop() === 'challenge') {
+            if (accountInfo.data.sudo) this.moveToLink()
             this.setState({
                 formList: [
                     <PasswordForm
@@ -460,7 +463,7 @@ class App extends React.Component<any, IState> {
                 )
                     .then((res) => {
                         if (res.success) {
-                            window.location.replace('/')
+                            this.moveToLink()
                         } else {
                             this.setState({
                                 errMessage: res.message,
@@ -498,17 +501,7 @@ class App extends React.Component<any, IState> {
                 )
                     .then((res) => {
                         if (res.success) {
-                            const searchParams = new URLSearchParams(
-                                window.location.search
-                            )
-                            try {
-                                const next = searchParams.get('next')
-                                if (next) {
-                                    window.location.replace(atob(next))
-                                } else throw new Error()
-                            } catch (e) {
-                                window.location.replace('/')
-                            }
+                            this.moveToLink()
                         } else {
                             this.setState({
                                 errMessage: res.message,
@@ -567,17 +560,7 @@ class App extends React.Component<any, IState> {
                 )
                     .then((res) => {
                         if (res.success) {
-                            const searchParams = new URLSearchParams(
-                                window.location.search
-                            )
-                            try {
-                                const next = searchParams.get('next')
-                                if (next) {
-                                    window.location.replace(atob(next))
-                                } else throw new Error()
-                            } catch (e) {
-                                window.location.replace('/')
-                            }
+                            this.moveToLink()
                         } else {
                             this.setState({
                                 errMessage: res.message,
@@ -596,6 +579,18 @@ class App extends React.Component<any, IState> {
                 this.setState({ errMessage: '비밀번호를 입력하세요.' })
                 this.focusCurrentInput()
             }
+        }
+    }
+
+    public moveToLink() {
+        const searchParams = new URLSearchParams(window.location.search)
+        try {
+            const next = searchParams.get('next')
+            if (next) {
+                window.location.replace(atob(next))
+            } else throw new Error()
+        } catch (e) {
+            window.location.replace('/')
         }
     }
 
