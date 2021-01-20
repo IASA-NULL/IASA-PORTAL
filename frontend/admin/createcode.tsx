@@ -56,59 +56,99 @@ class CreateCode extends React.Component<any, IState> {
     }
 
     public create() {
-        const data = new FormData()
+        if (this.fileList && this.fileList.length) {
+            const data = new FormData()
 
-        for (const file of this.fileList) {
-            data.append('files[]', file, file.name)
-        }
+            for (const file of this.fileList) {
+                data.append('files[]', file, file.name)
+            }
 
-        fetch(createURL('api', 'files', 'upload'), {
-            method: 'POST',
-            body: data,
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                if (res.success) {
-                    fetchAPI(
-                        'PUT',
-                        {
-                            avatar: res.data.fileList[0],
-                            name: this.state?.name,
-                            type: this.state?.selectedType[0],
-                            year:
-                                new Date().getFullYear() -
-                                parseInt(this.state?.selectedType[1]) +
-                                1,
-                        },
-                        'admin',
-                        'code'
-                    )
-                        .then((res) => {
-                            if (res.success) {
-                                this.setState({
-                                    showDialog: true,
-                                    code: res.data.code,
-                                })
-                                this.refresh()
-                            } else {
+            fetch(createURL('api', 'files', 'upload'), {
+                method: 'POST',
+                body: data,
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    if (res.success) {
+                        fetchAPI(
+                            'PUT',
+                            {
+                                avatar: res.data.fileList[0],
+                                name: this.state?.name,
+                                type: this.state?.selectedType[0],
+                                year:
+                                    new Date().getFullYear() -
+                                    parseInt(this.state?.selectedType[1]) +
+                                    1,
+                            },
+                            'admin',
+                            'code'
+                        )
+                            .then((res) => {
+                                if (res.success) {
+                                    this.setState({
+                                        showDialog: true,
+                                        code: res.data.code,
+                                    })
+                                    this.refresh()
+                                } else {
+                                    this.notify({
+                                        title: <b>오류</b>,
+                                        body: res.message,
+                                        icon: 'error_outline',
+                                        dismissIcon: true,
+                                    })
+                                }
+                            })
+                            .catch(() => {
                                 this.notify({
                                     title: <b>오류</b>,
-                                    body: res.message,
+                                    body: '서버와 연결할 수 없어요.',
                                     icon: 'error_outline',
                                     dismissIcon: true,
                                 })
-                            }
-                        })
-                        .catch(() => {
-                            this.notify({
-                                title: <b>오류</b>,
-                                body: res.message,
-                                icon: 'error_outline',
-                                dismissIcon: true,
                             })
+                    }
+                })
+        } else {
+            fetchAPI(
+                'PUT',
+                {
+                    name: this.state?.name,
+                    type: this.state?.selectedType[0],
+                    year:
+                        new Date().getFullYear() -
+                        parseInt(this.state?.selectedType[1]) +
+                        1,
+                },
+                'admin',
+                'code'
+            )
+                .then((res) => {
+                    if (res.success) {
+                        this.setState({
+                            showDialog: true,
+                            code: res.data.code,
                         })
-                }
-            })
+                        this.refresh()
+                    } else {
+                        this.notify({
+                            title: <b>오류</b>,
+                            body: res.message,
+                            icon: 'error_outline',
+                            dismissIcon: true,
+                        })
+                    }
+                })
+                .catch(() => {
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: '서버와 연결할 수 없어요.',
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                })
+        }
     }
 
     public handleChange(e: React.FormEvent<HTMLInputElement>, target: string) {

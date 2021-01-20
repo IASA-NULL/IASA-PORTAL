@@ -83,15 +83,19 @@ class NotFound extends React.Component<any, IState> {
                 <br />
                 <br />
                 <br />
-                <Select
-                    label='브랜치 선택'
-                    outlined
-                    enhanced
-                    options={this.state?.branches || ['로드 중...']}
-                    onChange={(e) =>
-                        this.setState({ selectedBranch: e.currentTarget.value })
-                    }
-                />
+                <div style={{ width: '200px' }}>
+                    <Select
+                        label='브랜치 선택'
+                        outlined
+                        enhanced
+                        options={this.state?.branches || ['로드 중...']}
+                        onChange={(e) =>
+                            this.setState({
+                                selectedBranch: e.currentTarget.value,
+                            })
+                        }
+                    />
+                </div>
                 <br />
                 <Button onClick={this.update} outlined>
                     업데이트
