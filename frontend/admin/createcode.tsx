@@ -27,7 +27,24 @@ class CreateCode extends React.Component<any, IState> {
         this.notify = qu.notify
     }
 
-    public create() {}
+    public create() {
+        const data = new FormData()
+
+        for (const file of this.fileList) {
+            data.append('files[]', file, file.name)
+        }
+
+        fetch(createURL('api', 'files', 'upload'), {
+            method: 'POST',
+            body: data,
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                if (res.success) {
+                    console.log(res.data)
+                }
+            })
+    }
 
     public handleChange(e: React.FormEvent<HTMLInputElement>, target: string) {
         // @ts-ignore
@@ -98,7 +115,6 @@ class CreateCode extends React.Component<any, IState> {
                                 }}
                                 onFileSelect={(files: FileList) => {
                                     this.fileList = files
-                                    console.log(files)
                                 }}
                             />
                         </GridCell>

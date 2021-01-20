@@ -6,6 +6,7 @@ import accountRouter from './account'
 import myeonbulRouter from './myeonbul'
 import musicRouter from './music'
 import adminRouter from './admin'
+import filesRouter from './files'
 
 import createResponse from '../createResponse'
 
@@ -18,6 +19,7 @@ router.use('/account', accountRouter)
 router.use('/myeonbul', myeonbulRouter)
 router.use('/music', musicRouter)
 router.use('/admin', adminRouter)
+router.use('/files', filesRouter)
 
 router.use('*', (req, res, next) => {
     res.status(404)
