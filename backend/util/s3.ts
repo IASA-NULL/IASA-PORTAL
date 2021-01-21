@@ -5,7 +5,7 @@ const s3Client = new AWS.S3({
     region: 'ap-northeast-2',
 })
 
-export function upload(body: any) {
+export function upload(body: any, bucket = 'upload') {
     const fileName = uuid()
     return new Promise<string>((resolve, reject) => {
         s3Client.upload(
@@ -24,7 +24,7 @@ export function upload(body: any) {
     })
 }
 
-export function download(id: string) {
+export function download(id: string, bucket = 'upload') {
     return s3Client
         .getObject({
             Bucket: 'upload.iasa.kr',

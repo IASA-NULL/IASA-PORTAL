@@ -36,6 +36,7 @@ import About from './noauth/about'
 import Update from './admin/update'
 import CreateCode from './admin/createcode'
 import PROGRAM_IP from './student/program/ip'
+import MyPage from './common/mypage'
 
 const lightTheme = {
     primary: '#5351db',
@@ -155,6 +156,14 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/mypage'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultStudentNavList}
+                            appCont={<MyPage />}
+                        />
+                    </Route>
+
                     <Route path='/terms'>
                         <MainView
                             accountInfo={this.state.data}
@@ -202,6 +211,14 @@ class App extends React.Component<any, IState> {
                             accountInfo={this.state.data}
                             navList={DefaultTeacherNavList}
                             appCont={<Meal />}
+                        />
+                    </Route>
+
+                    <Route path='/mypage'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultTeacherNavList}
+                            appCont={<MyPage />}
                         />
                     </Route>
 
@@ -282,6 +299,14 @@ class App extends React.Component<any, IState> {
                             accountInfo={this.state.data}
                             navList={DefaultAdminNavList}
                             appCont={<CreateCode />}
+                        />
+                    </Route>
+
+                    <Route path='/mypage'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultAdminNavList}
+                            appCont={<MyPage />}
                         />
                     </Route>
 
