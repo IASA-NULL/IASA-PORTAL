@@ -114,7 +114,7 @@
   },
   "scripts": {
     "build": "npm run format && npm run lint && webpack --mode=production",
-    "dev": "webpack --mode=development --watch",
+    "dev": "webpack --mode=production --watch",
     "start": "nodemon build/index.js",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"

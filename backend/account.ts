@@ -3,6 +3,7 @@ import path from 'path'
 import jwt from 'jsonwebtoken'
 import getSecret from './util/secret'
 import { changePasswordToken } from '../scheme/api/auth'
+import createURL from '../scheme/url'
 
 const authRouter = express.Router()
 
@@ -38,6 +39,10 @@ authRouter.get('/challenge', (req, res, next) => {
 authRouter.get('/signout', (req, res, next) => {
     res.cookie('auth', '', { maxAge: -1, httpOnly: true })
     res.redirect('/')
+})
+
+authRouter.use('*', (req, res) => {
+    res.redirect(createURL(''))
 })
 
 export default authRouter

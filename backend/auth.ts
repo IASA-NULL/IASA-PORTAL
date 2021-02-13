@@ -27,7 +27,11 @@ router.use('*', (req, res, next) => {
 
         if (req.auth.sid !== sid) {
             req.auth = undefined
-            res.cookie('auth', '', { maxAge: -1, httpOnly: true })
+            res.cookie('auth', '', {
+                maxAge: -1,
+                httpOnly: true,
+                domain: '.iasa.kr',
+            })
         } else if (req.auth.expire < Date.now() + reSignTime) {
             res.cookie(
                 'auth',
@@ -38,15 +42,23 @@ router.use('*', (req, res, next) => {
                     },
                     getSecret('token')
                 ),
-                { maxAge: maxTime, httpOnly: true }
+                { maxAge: maxTime, httpOnly: true, domain: '.iasa.kr' }
             )
         } else if (req.auth.expire < Date.now()) {
             req.auth = undefined
-            res.cookie('auth', '', { maxAge: -1, httpOnly: true })
+            res.cookie('auth', '', {
+                maxAge: -1,
+                httpOnly: true,
+                domain: '.iasa.kr',
+            })
         }
     } catch (e) {
-        req.auth = undefined
-        res.cookie('auth', '', { maxAge: -1, httpOnly: true })
+        req.auth = undefined/*
+        res.cookie('auth', '', {
+            maxAge: -1,
+            httpOnly: true,
+            domain: '.iasa.kr',
+        })*/
     }
     try {
         const sudoToken = jwt.verify(
@@ -57,7 +69,11 @@ router.use('*', (req, res, next) => {
             throw new Error()
         req.auth.sudo = true
     } catch (e) {
-        res.cookie('sudo', '', { maxAge: -1, httpOnly: true })
+        res.cookie('sudo', '', {
+            maxAge: -1,
+            httpOnly: true,
+            domain: '.iasa.kr',
+        })
     }
     next()
 })

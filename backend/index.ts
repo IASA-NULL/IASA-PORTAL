@@ -19,9 +19,22 @@ declare const DEV_MODE: boolean
 
 const app = express()
 
+const corsOptions = {
+    credentials: true,
+    origin: (origin: string, callback: any) => {
+        console.log(origin)
+        if (!origin || origin.includes('iasa.kr')) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    },
+}
+
+app.use(cors(corsOptions))
+
 //app.use(helmet())
 app.use(cookieParser())
-app.use(cors())
 
 app.use(compression())
 app.use(logger('dev'))
@@ -46,7 +59,6 @@ app.use((req, res, next) => {
 app.use(authRouter)
 app.use('/static', express.static(path.join(__dirname, '..', 'static')))
 
-console.log(DEV_MODE)
 if (DEV_MODE) {
     app.use('/api', apiRouter)
     app.use('/account', accountRouter)

@@ -249,6 +249,7 @@ export function focusNextInput() {
 export function fetchAPI(method: string, body: any, ...props: string[]) {
     return fetch(createURL('api', ...props), {
         method: method,
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },

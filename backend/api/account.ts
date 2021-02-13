@@ -72,23 +72,23 @@ router.post('/signin', async (req, res) => {
                                 'code',
                                 'permission',
                             ]),
-                            expire: Date.now() + maxTime,
+                            expire: new Date().getTime() + maxTime,
                             sid: getServerToken(),
                         } as token,
                         getSecret('token')
                     ),
-                    { maxAge: maxTime, httpOnly: true }
+                    { maxAge: maxTime, httpOnly: true, domain: '.iasa.kr' }
                 )
                 res.cookie(
                     'sudo',
                     jwt.sign(
                         {
-                            expire: Date.now() + sudoTime,
+                            expire: new Date().getTime() + sudoTime,
                             sid: getServerToken(),
                         } as token,
                         getSecret('token')
                     ),
-                    { maxAge: sudoTime, httpOnly: true }
+                    { maxAge: sudoTime, httpOnly: true, domain: '.iasa.kr' }
                 )
                 res.send(createResponse(true))
             } else {
@@ -116,12 +116,12 @@ router.post('/sudo', async (req, res) => {
                     'sudo',
                     jwt.sign(
                         {
-                            expire: Date.now() + sudoTime,
+                            expire: new Date().getTime() + sudoTime,
                             sid: getServerToken(),
                         } as token,
                         getSecret('token')
                     ),
-                    { maxAge: sudoTime, httpOnly: true }
+                    { maxAge: sudoTime, httpOnly: true, domain: '.iasa.kr' }
                 )
                 res.send(createResponse(true))
             } else {
