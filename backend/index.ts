@@ -52,8 +52,8 @@ if (DEV_MODE) {
     app.use('/api', apiRouter)
     app.use('/account', accountRouter)
 } else {
-    app.use(vhost('/api', apiRouter))
-    app.use(vhost('/account', accountRouter))
+    app.use(vhost('api', apiRouter))
+    app.use(vhost('account', accountRouter))
 }
 
 app.get('*', (req, res) => {
