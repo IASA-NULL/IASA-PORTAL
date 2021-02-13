@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
-declare const DEV_MODE: boolean
 
 import {
     Drawer,
@@ -29,6 +28,7 @@ import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
 import { ListLink, useForceUpdate, LinkType } from './util'
 import { token } from '../scheme/api/auth'
 import createURL from '../scheme/url'
+declare const DEV_MODE: boolean
 
 export const DefaultStudentNavList = (closeIfModal: any) => {
     return (

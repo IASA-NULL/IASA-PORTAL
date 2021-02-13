@@ -25,29 +25,28 @@ app.use(cors())
 
 app.use(compression())
 app.use(logger('dev'))
-app.use(favicon(path.join(__dirname, '..', '..', 'static', 'favicon.ico')))
+app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')))
 
 app.use((req, res, next) => {
     if (
         req.headers['user-agent'].indexOf('MSIE') > -1 ||
         req.headers['user-agent'].indexOf('rv:') > -1
     )
-        res.sendFile(path.join(__dirname, '..', '..', 'template', 'noIE.html'))
+        res.sendFile(path.join(__dirname, '..', 'template', 'noIE.html'))
     else next()
 })
 
 app.use((req, res, next) => {
     if (getServerFlag('build')) {
         res.set('Cache-Control', 'no-store')
-        res.sendFile(
-            path.join(__dirname, '..', '..', 'template', 'building.html')
-        )
+        res.sendFile(path.join(__dirname, '..', 'template', 'building.html'))
     } else next()
 })
 
 app.use(authRouter)
-app.use('/static', express.static(path.join(__dirname, '..', '..', 'static')))
+app.use('/static', express.static(path.join(__dirname, '..', 'static')))
 
+console.log(DEV_MODE)
 if (DEV_MODE) {
     app.use('/api', apiRouter)
     app.use('/account', accountRouter)
@@ -57,7 +56,7 @@ if (DEV_MODE) {
 }
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', '..', 'template', 'main.html'))
+    res.sendFile(path.join(__dirname, '..', 'template', 'main.html'))
 })
 
 app.listen(80, () => {

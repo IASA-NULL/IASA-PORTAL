@@ -7,7 +7,7 @@ import { changePasswordToken } from '../scheme/api/auth'
 const authRouter = express.Router()
 
 authRouter.get('/signin', (req, res, next) => {
-    res.sendFile(path.join(__dirname, '..', '..', 'template', 'auth.html'))
+    res.sendFile(path.join(__dirname, '..', 'template', 'auth.html'))
 })
 
 authRouter.get('/changesecret/:token', (req, res, next) => {
@@ -17,7 +17,7 @@ authRouter.get('/changesecret/:token', (req, res, next) => {
             getSecret('token')
         ) as changePasswordToken
         if (token.expire < Date.now()) throw new Error()
-        res.sendFile(path.join(__dirname, '..', '..', 'template', 'auth.html'))
+        res.sendFile(path.join(__dirname, '..', 'template', 'auth.html'))
     } catch (e) {
         res.sendFile(
             path.join(
@@ -32,7 +32,7 @@ authRouter.get('/changesecret/:token', (req, res, next) => {
 })
 
 authRouter.get('/challenge', (req, res, next) => {
-    res.sendFile(path.join(__dirname, '..', '..', 'template', 'auth.html'))
+    res.sendFile(path.join(__dirname, '..', 'template', 'auth.html'))
 })
 
 authRouter.get('/signout', (req, res, next) => {
