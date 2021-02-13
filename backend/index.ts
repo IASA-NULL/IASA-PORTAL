@@ -4,13 +4,17 @@ import logger from 'morgan'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import favicon from 'serve-favicon'
+import vhost from 'vhost'
 
 import apiRouter from './api/index'
 import authRouter from './auth'
+import accountRouter from './account'
 
 import { getServerFlag } from './util/serverState'
 
 import helmet from 'helmet'
+
+declare const DEV_MODE: boolean
 
 const app = express()
 
@@ -40,10 +44,15 @@ app.use((req, res, next) => {
 })
 
 app.use(authRouter)
-
 app.use('/static', express.static(path.join(__dirname, '..', '..', 'static')))
 
-app.use('/api', apiRouter)
+if (DEV_MODE) {
+    app.use(vhost('/api', apiRouter))
+    app.use(vhost('/account', accountRouter))
+} else {
+    app.use('/api', apiRouter)
+    app.use('/account', accountRouter)
+}
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '..', '..', 'template', 'main.html'))
