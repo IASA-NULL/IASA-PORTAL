@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
+declare const DEV_MODE: boolean
 
 import {
     Drawer,
@@ -561,6 +562,11 @@ function Footer() {
                 <br />
                 <br />
                 <Typography use='headline4'>IASA PORTAL</Typography>
+                {DEV_MODE ? (
+                    <Typography use='headline4'>(DEV MODE)</Typography>
+                ) : (
+                    <></>
+                )}
                 <br />
                 <Typography use='subtitle1'>
                     Made with ♥ by 2019-2021 club NULL;

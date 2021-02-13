@@ -1,4 +1,7 @@
+declare const DEV_MODE: boolean
+
 export default function createURL(root: string, ...props: any[]) {
-    return `//iasa.kr/${root ? root + '/' : ''}${props.join('/')}`
-    return `//${root ? root + '.' : ''}iasa.kr/${props.join('/')}`
+    return DEV_MODE
+        ? `/${root ? root + '/' : ''}${props.join('/')}`
+        : `//${root ? root + '.' : ''}iasa.kr/${props.join('/')}`
 }
