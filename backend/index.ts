@@ -5,6 +5,7 @@ import path from 'path'
 import cookieParser from 'cookie-parser'
 import favicon from 'serve-favicon'
 import vhost from 'vhost'
+import cors from 'cors'
 
 import apiRouter from './api/index'
 import authRouter from './auth'
@@ -20,6 +21,7 @@ const app = express()
 
 //app.use(helmet())
 app.use(cookieParser())
+app.use(cors())
 
 app.use(compression())
 app.use(logger('dev'))
@@ -47,11 +49,11 @@ app.use(authRouter)
 app.use('/static', express.static(path.join(__dirname, '..', '..', 'static')))
 
 if (DEV_MODE) {
-    app.use(vhost('/api', apiRouter))
-    app.use(vhost('/account', accountRouter))
-} else {
     app.use('/api', apiRouter)
     app.use('/account', accountRouter)
+} else {
+    app.use(vhost('/api', apiRouter))
+    app.use(vhost('/account', accountRouter))
 }
 
 app.get('*', (req, res) => {
