@@ -6,6 +6,8 @@ import { MenuItem } from '@rmwc/menu'
 import { TextField } from '@rmwc/textfield'
 import createURL from '../scheme/url'
 
+declare const DEV_MODE: boolean
+
 export enum LinkType {
     a = 1,
     js,
@@ -249,7 +251,7 @@ export function focusNextInput() {
 export function fetchAPI(method: string, body: any, ...props: string[]) {
     return fetch(createURL('api', ...props), {
         method: method,
-        credentials: 'include',
+        ...(!DEV_MODE && { credentials: 'include' }),
         headers: {
             'Content-Type': 'application/json',
         },

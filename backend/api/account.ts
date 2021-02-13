@@ -24,6 +24,7 @@ const maxTime = 1000 * 60 * 60 * 24 * 7
 const sudoTime = 1000 * 60 * 60
 const changePasswordTokenExpire = 1000 * 60 * 60
 const router = express.Router()
+declare const DEV_MODE: boolean
 
 router.use('/signup', signupRouter)
 
@@ -77,7 +78,11 @@ router.post('/signin', async (req, res) => {
                         } as token,
                         getSecret('token')
                     ),
-                    { maxAge: maxTime, httpOnly: true, domain: '.iasa.kr' }
+                    {
+                        maxAge: maxTime,
+                        httpOnly: true,
+                        ...(!DEV_MODE && { domain: '.iasa.kr' }),
+                    }
                 )
                 res.cookie(
                     'sudo',
@@ -88,7 +93,11 @@ router.post('/signin', async (req, res) => {
                         } as token,
                         getSecret('token')
                     ),
-                    { maxAge: sudoTime, httpOnly: true, domain: '.iasa.kr' }
+                    {
+                        maxAge: sudoTime,
+                        httpOnly: true,
+                        ...(!DEV_MODE && { domain: '.iasa.kr' }),
+                    }
                 )
                 res.send(createResponse(true))
             } else {
@@ -121,7 +130,11 @@ router.post('/sudo', async (req, res) => {
                         } as token,
                         getSecret('token')
                     ),
-                    { maxAge: sudoTime, httpOnly: true, domain: '.iasa.kr' }
+                    {
+                        maxAge: sudoTime,
+                        httpOnly: true,
+                        ...(!DEV_MODE && { domain: '.iasa.kr' }),
+                    }
                 )
                 res.send(createResponse(true))
             } else {

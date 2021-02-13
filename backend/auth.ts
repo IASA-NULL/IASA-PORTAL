@@ -9,6 +9,7 @@ import { TOKEN_EXPIRE_ERROR } from '../string/error'
 
 const maxTime = 1000 * 60 * 60 * 24 * 7
 const reSignTime = 1000 * 60 * 60 * 24 * 3
+declare const DEV_MODE: boolean
 
 declare global {
     namespace Express {
@@ -30,7 +31,7 @@ router.use('*', (req, res, next) => {
             res.cookie('auth', '', {
                 maxAge: -1,
                 httpOnly: true,
-                domain: '.iasa.kr',
+                ...(!DEV_MODE && { domain: '.iasa.kr' }),
             })
         } else if (req.auth.expire < Date.now() + reSignTime) {
             res.cookie(
@@ -49,16 +50,16 @@ router.use('*', (req, res, next) => {
             res.cookie('auth', '', {
                 maxAge: -1,
                 httpOnly: true,
-                domain: '.iasa.kr',
+                ...(!DEV_MODE && { domain: '.iasa.kr' }),
             })
         }
     } catch (e) {
-        req.auth = undefined/*
+        req.auth = undefined
         res.cookie('auth', '', {
             maxAge: -1,
             httpOnly: true,
-            domain: '.iasa.kr',
-        })*/
+            ...(!DEV_MODE && { domain: '.iasa.kr' }),
+        })
     }
     try {
         const sudoToken = jwt.verify(
@@ -72,7 +73,7 @@ router.use('*', (req, res, next) => {
         res.cookie('sudo', '', {
             maxAge: -1,
             httpOnly: true,
-            domain: '.iasa.kr',
+            ...(!DEV_MODE && { domain: '.iasa.kr' }),
         })
     }
     next()

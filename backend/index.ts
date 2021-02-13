@@ -31,7 +31,7 @@ const corsOptions = {
     },
 }
 
-app.use(cors(corsOptions))
+if (!DEV_MODE) app.use(cors(corsOptions))
 
 //app.use(helmet())
 app.use(cookieParser())
