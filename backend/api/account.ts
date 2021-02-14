@@ -1,12 +1,7 @@
 import express from 'express'
 import getPath from '../util/getPath'
 import db from '../util/db'
-import {
-    changePasswordToken,
-    Permission,
-    signupToken,
-    token,
-} from '../../scheme/api/auth'
+import { changePasswordToken, Permission, token } from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import jwt from 'jsonwebtoken'
 import getSecret, { saltRound } from '../util/secret'
@@ -19,10 +14,8 @@ import { getChangePasswordMailHTML, sendMail } from '../util/mail'
 import { download } from '../util/s3'
 import createURL from '../../scheme/url'
 import { TOKEN_EXPIRE_ERROR } from '../../string/error'
+import { maxTime, sudoTime, changePasswordTokenExpire } from '../util/tokenTime'
 
-const maxTime = 1000 * 60 * 60 * 24 * 7
-const sudoTime = 1000 * 60 * 60
-const changePasswordTokenExpire = 1000 * 60 * 60
 const router = express.Router()
 declare const DEV_MODE: boolean
 

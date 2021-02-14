@@ -1,14 +1,11 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
-import { changePasswordToken, token } from '../scheme/api/auth'
+import { token } from '../scheme/api/auth'
 import getSecret from './util/secret'
-import path from 'path'
 import { getServerToken } from './util/serverState'
-import createResponse from './createResponse'
-import { TOKEN_EXPIRE_ERROR } from '../string/error'
+import { reSignTime, maxTime } from './util/tokenTime'
+import createURL from '../scheme/url'
 
-const maxTime = 1000 * 60 * 60 * 24 * 7
-const reSignTime = 1000 * 60 * 60 * 24 * 3
 declare const DEV_MODE: boolean
 
 declare global {
@@ -47,11 +44,14 @@ router.use('*', (req, res, next) => {
             )
         } else if (req.auth.expire < Date.now()) {
             req.auth = undefined
-            res.cookie('auth', '', {
-                maxAge: -1,
-                httpOnly: true,
-                ...(!DEV_MODE && { domain: '.iasa.kr' }),
-            })
+            res.redirect(
+                createURL('account', 'challenge') +
+                    '?next=' +
+                    Buffer.from(
+                        req.protocol + '://' + req.get('host') + req.originalUrl
+                    ).toString('base64')
+            )
+            return
         }
     } catch (e) {
         req.auth = undefined
