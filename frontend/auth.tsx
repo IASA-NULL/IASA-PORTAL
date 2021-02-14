@@ -238,7 +238,6 @@ class App extends React.Component<any, IState> {
                 ],
             })
         } else if (window.location.pathname.split('/').pop() === 'challenge') {
-            if (accountInfo.data.sudo) this.moveToLink()
             this.setState({
                 formList: [
                     <PasswordForm

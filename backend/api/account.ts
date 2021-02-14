@@ -1,20 +1,20 @@
 import express from 'express'
 import getPath from '../util/getPath'
 import db from '../util/db'
-import { changePasswordToken, Permission, token } from '../../scheme/api/auth'
+import {changePasswordToken, Permission, token} from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import jwt from 'jsonwebtoken'
-import getSecret, { saltRound } from '../util/secret'
+import getSecret, {saltRound} from '../util/secret'
 import bcrypt from 'bcrypt'
 import _ from 'lodash'
-import { getServerToken } from '../util/serverState'
+import {getServerToken} from '../util/serverState'
 import signupRouter from './signup'
-import { User } from '../../scheme/user'
-import { getChangePasswordMailHTML, sendMail } from '../util/mail'
-import { download } from '../util/s3'
+import {User} from '../../scheme/user'
+import {getChangePasswordMailHTML, sendMail} from '../util/mail'
+import {download} from '../util/s3'
 import createURL from '../../scheme/url'
-import { TOKEN_EXPIRE_ERROR } from '../../string/error'
-import { maxTime, sudoTime, changePasswordTokenExpire } from '../util/tokenTime'
+import {TOKEN_EXPIRE_ERROR} from '../../string/error'
+import {maxTime, sudoTime, changePasswordTokenExpire, leftTokenTime} from '../util/tokenTime'
 
 const router = express.Router()
 declare const DEV_MODE: boolean
@@ -24,7 +24,7 @@ router.use('/signup', signupRouter)
 router.get('/info', (req, res, next) => {
     res.send(
         createResponse(
-            _.pick(req.auth ?? { permission: Permission.none }, [
+            _.pick(req.auth ?? {permission: Permission.none}, [
                 'name',
                 'id',
                 'uid',
@@ -66,22 +66,22 @@ router.post('/signin', async (req, res) => {
                                 'code',
                                 'permission',
                             ]),
-                            expire: new Date().getTime() + maxTime,
+                            expire: Date.now() + maxTime,
                             sid: getServerToken(),
                         } as token,
                         getSecret('token')
                     ),
                     {
-                        maxAge: maxTime,
+                        maxAge: leftTokenTime,
                         httpOnly: true,
-                        ...(!DEV_MODE && { domain: '.iasa.kr' }),
+                        ...(!DEV_MODE && {domain: '.iasa.kr'}),
                     }
                 )
                 res.cookie(
                     'sudo',
                     jwt.sign(
                         {
-                            expire: new Date().getTime() + sudoTime,
+                            expire: Date.now() + sudoTime,
                             sid: getServerToken(),
                         } as token,
                         getSecret('token')
@@ -89,7 +89,7 @@ router.post('/signin', async (req, res) => {
                     {
                         maxAge: sudoTime,
                         httpOnly: true,
-                        ...(!DEV_MODE && { domain: '.iasa.kr' }),
+                        ...(!DEV_MODE && {domain: '.iasa.kr'}),
                     }
                 )
                 res.send(createResponse(true))
@@ -115,10 +115,23 @@ router.post('/sudo', async (req, res) => {
         .then((result) => {
             if (result) {
                 res.cookie(
+                    'auth',
+                    jwt.sign(
+                        {
+                            ...req.auth,
+                            expire: Date.now() + maxTime,
+                            expired: false,
+                            sid: getServerToken()
+                        },
+                        getSecret('token')
+                    ),
+                    {maxAge: leftTokenTime, httpOnly: true, ...(!DEV_MODE && {domain: '.iasa.kr'})}
+                )
+                res.cookie(
                     'sudo',
                     jwt.sign(
                         {
-                            expire: new Date().getTime() + sudoTime,
+                            expire: Date.now() + sudoTime,
                             sid: getServerToken(),
                         } as token,
                         getSecret('token')
@@ -126,7 +139,7 @@ router.post('/sudo', async (req, res) => {
                     {
                         maxAge: sudoTime,
                         httpOnly: true,
-                        ...(!DEV_MODE && { domain: '.iasa.kr' }),
+                        ...(!DEV_MODE && {domain: '.iasa.kr'}),
                     }
                 )
                 res.send(createResponse(true))
@@ -225,9 +238,9 @@ router.get('/reqchangesecret', async (req, res, next) => {
             createURL(
                 'account',
                 'challenge?next=' +
-                    Buffer.from(
-                        createURL('api', 'account', 'reqchangesecret')
-                    ).toString('base64')
+                Buffer.from(
+                    createURL('api', 'account', 'reqchangesecret')
+                ).toString('base64')
             )
         )
     }

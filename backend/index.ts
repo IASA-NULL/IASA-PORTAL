@@ -56,8 +56,8 @@ app.use((req, res, next) => {
     } else next()
 })
 
-app.use(authRouter)
 app.use('/static', express.static(path.join(__dirname, '..', 'static')))
+app.use(authRouter)
 
 if (DEV_MODE) {
     app.use('/api', apiRouter)

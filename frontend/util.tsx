@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom'
-import { ListItem, ListItemText, ListItemGraphic } from '@rmwc/list'
+import {Link} from 'react-router-dom'
+import {ListItem, ListItemText, ListItemGraphic} from '@rmwc/list'
 import * as React from 'react'
-import { useState } from 'react'
-import { MenuItem } from '@rmwc/menu'
-import { TextField } from '@rmwc/textfield'
+import {useState} from 'react'
+import {MenuItem} from '@rmwc/menu'
+import {TextField} from '@rmwc/textfield'
 import createURL from '../scheme/url'
 
 declare const DEV_MODE: boolean
@@ -32,7 +32,7 @@ export function ListLink(props: {
                 href={props.to}
                 onClick={props.onClick}>
                 <ListItem activated={props.to === window.location.pathname}>
-                    {props.icon ? <ListItemGraphic icon={props.icon} /> : <></>}
+                    {props.icon ? <ListItemGraphic icon={props.icon}/> : <></>}
                     <ListItemText>{props.body}</ListItemText>
                 </ListItem>
             </a>
@@ -43,13 +43,13 @@ export function ListLink(props: {
                 onClick={() => {
                     // @ts-ignore
                     scrollObj.scroll(
-                        { el: document.getElementById(props.to), margin: 80 },
+                        {el: document.getElementById(props.to), margin: 80},
                         500
                     )
                     props.onClick()
                 }}
                 activated={props.to === window.location.pathname}>
-                {props.icon ? <ListItemGraphic icon={props.icon} /> : <></>}
+                {props.icon ? <ListItemGraphic icon={props.icon}/> : <></>}
                 <ListItemText>{props.body}</ListItemText>
             </ListItem>
         )
@@ -64,7 +64,7 @@ export function ListLink(props: {
                 to={props.to}
                 onClick={props.onClick}>
                 <ListItem activated={props.to === window.location.pathname}>
-                    {props.icon ? <ListItemGraphic icon={props.icon} /> : <></>}
+                    {props.icon ? <ListItemGraphic icon={props.icon}/> : <></>}
                     <ListItemText>{props.body}</ListItemText>
                 </ListItem>
             </Link>
@@ -98,7 +98,7 @@ export function MenuLink(props: {
                 onClick={() => {
                     // @ts-ignore
                     scrollObj.scroll(
-                        { el: document.getElementById(props.to), margin: 80 },
+                        {el: document.getElementById(props.to), margin: 80},
                         500
                     )
                     props.onClick()
@@ -173,7 +173,7 @@ export function FileInput(props: any) {
                 }}
             />
             <input
-                style={{ display: 'none' }}
+                style={{display: 'none'}}
                 type='file'
                 onChange={(e) => {
                     setValue(fileInput.value)
@@ -195,7 +195,7 @@ export function useForceUpdate() {
 }
 
 export function BrIfMobile() {
-    if (window.innerWidth <= 760) return <br />
+    if (window.innerWidth <= 760) return <br/>
     return <></>
 }
 
@@ -230,7 +230,7 @@ export function focusNextInput() {
         (currentEl &&
             (!currentEl.matches(focussableElements) || isHidden(currentEl))) ||
         first
-    ) {
+        ) {
         if (currentEl.firstElementChild) currentEl = currentEl.firstElementChild
         else {
             while (!currentEl.nextElementSibling && currentEl)
@@ -251,11 +251,11 @@ export function focusNextInput() {
 export function fetchAPI(method: string, body: any, ...props: string[]) {
     return fetch(createURL('api', ...props), {
         method: method,
-        ...(!DEV_MODE && { credentials: 'include' }),
+        ...(!DEV_MODE && {credentials: 'include'}),
         headers: {
             'Content-Type': 'application/json',
         },
-        ...(method !== 'GET' && { body: JSON.stringify(body) }),
+        ...(method !== 'GET' && {body: JSON.stringify(body)}),
     }).then((res) => res.json())
 }
 
@@ -263,13 +263,9 @@ export function requireSudo() {
     setTimeout(async () => {
         const accountInfo = await fetchAPI('GET', {}, 'account', 'info')
         if (!accountInfo.data.sudo) {
-            const searchParams = new URLSearchParams(window.location.search)
-            searchParams.set('next', btoa(window.location.href))
-
             window.location.replace(
                 createURL('account', 'challenge') +
-                    '?' +
-                    searchParams.toString()
+                '?next=' + btoa(window.location.href)
             )
         }
     }, 0)
