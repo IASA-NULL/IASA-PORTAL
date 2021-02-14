@@ -38,7 +38,7 @@ authRouter.get('/challenge', (req, res, next) => {
 })
 
 authRouter.get('/signout', (req, res, next) => {
-    res.cookie('auth', '', {maxAge: -1, httpOnly: true, ...(!DEV_MODE && {domain: '.iasa.kr'}})
+    res.cookie('auth', '', {maxAge: -1, httpOnly: true, ...(!DEV_MODE && {domain: '.iasa.kr'})})
     res.redirect('/')
 })
 
