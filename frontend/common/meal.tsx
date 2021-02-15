@@ -234,7 +234,7 @@ class Meal extends React.Component<any, MearContainerState> {
             duration: this.animationDuration,
             easing: 'ease-out',
             perPage: this.elementPerPage,
-            startIndex: 2,
+            startIndex: 1,
             draggable: true,
             threshold: 50,
             loop: false,
@@ -342,7 +342,7 @@ class Meal extends React.Component<any, MearContainerState> {
                 )
             })(this.siema, this.endTime)
         }
-        this.siema.goTo(2)
+        this.siema.goTo(1)
     }
 
     public componentWillUnmount() {
@@ -362,7 +362,7 @@ class Meal extends React.Component<any, MearContainerState> {
             detailLoaded: false,
             imageUrl: '',
         })
-        fetchAPI('POST', time, 'api', 'meal').then((data) => {
+        fetchAPI('POST', time, 'meal').then((data) => {
             this.setState({ detailLoaded: true, data: data })
             if (!this.state.data.data.image) this.setState({ imageUrl: 'none' })
             else this.setState({ imageUrl: this.state.data.data.image })
