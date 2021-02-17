@@ -12,7 +12,6 @@ import {ThemeProvider} from '@rmwc/theme'
 import 'rmwc/dist/styles'
 import '@rmwc/list/collapsible-list.css'
 import '@material/list/dist/mdc.list.css'
-import createURL from '../scheme/url'
 import {Permission, token} from '../scheme/api/auth'
 import {
     DefaultStudentNavList,
@@ -24,18 +23,27 @@ import {
     UserDataNavList,
 } from './mainview'
 import {fetchAPI, LoremIpsum} from './util'
+
 import MyeonbulStudent from './student/myeonbul'
 import PenaltyStudent from './student/penalty'
+import MainStudent from './student/main'
+import MusicStudent from './student/music'
+
 import PenaltyTeacher from './teacher/penalty'
+import MainTeacher from './teacher/main'
+import MusicTeacher from './teacher/music'
+
+import MainAdmin from './admin/main'
+import Update from './admin/update'
+import CreateCode from './admin/createcode'
+
 import Meal from './common/meal'
-import Music from './student/music'
+import Share from './common/share'
 import Terms from './common/terms'
 import Userdata from './common/userdata'
 import Opensource from './common/opensource'
 import NotFound from './common/404'
 import About from './noauth/about'
-import Update from './admin/update'
-import CreateCode from './admin/createcode'
 import PROGRAM_IP from './student/program/ip'
 import MyPage from './common/mypage'
 
@@ -121,7 +129,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
-                            appCont={<LoremIpsum count={50}/>}
+                            appCont={<MainStudent/>}
                         />
                     </Route>
 
@@ -138,7 +146,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
-                            appCont={<Music/>}
+                            appCont={<MusicStudent/>}
                         />
                     </Route>
 
@@ -154,6 +162,14 @@ class App extends React.Component<any, IState> {
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
                             appCont={<PenaltyStudent data={this.state?.data}/>}
+                        />
+                    </Route>
+
+                    <Route path='/share'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultStudentNavList}
+                            appCont={<Share/>}
                         />
                     </Route>
 
@@ -207,11 +223,27 @@ class App extends React.Component<any, IState> {
         } else if (this.state?.data?.permission === Permission.teacher) {
             mainView = (
                 <Switch>
+                    <Route exact path='/'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultTeacherNavList}
+                            appCont={<MainTeacher/>}
+                        />
+                    </Route>
+
                     <Route path='/penalty'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultTeacherNavList}
                             appCont={<PenaltyTeacher data={this.state?.data}/>}
+                        />
+                    </Route>
+
+                    <Route path='/music'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultTeacherNavList}
+                            appCont={<MusicTeacher/>}
                         />
                     </Route>
 
@@ -261,6 +293,14 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/share'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultTeacherNavList}
+                            appCont={<Share/>}
+                        />
+                    </Route>
+
                     <Route>
                         <MainView
                             accountInfo={this.state.data}
@@ -273,25 +313,11 @@ class App extends React.Component<any, IState> {
         } else if (this.state?.data?.permission === Permission.admin) {
             mainView = (
                 <Switch>
-                    <Route path='/terms'>
+                    <Route exact path='/'>
                         <MainView
                             accountInfo={this.state.data}
-                            navList={TermsNavList}
-                            appCont={<Terms/>}
-                        />
-                    </Route>
-                    <Route path='/userdata'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={UserDataNavList}
-                            appCont={<Userdata/>}
-                        />
-                    </Route>
-                    <Route path='/opensource'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpensourceNavList}
-                            appCont={<Opensource/>}
+                            navList={DefaultAdminNavList}
+                            appCont={<MainAdmin/>}
                         />
                     </Route>
 
@@ -332,6 +358,28 @@ class App extends React.Component<any, IState> {
                             accountInfo={this.state.data}
                             navList={DefaultAdminNavList}
                             appCont={<NotFound/>}
+                        />
+                    </Route>
+
+                    <Route path='/terms'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={TermsNavList}
+                            appCont={<Terms/>}
+                        />
+                    </Route>
+                    <Route path='/userdata'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={UserDataNavList}
+                            appCont={<Userdata/>}
+                        />
+                    </Route>
+                    <Route path='/opensource'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpensourceNavList}
+                            appCont={<Opensource/>}
                         />
                     </Route>
                 </Switch>

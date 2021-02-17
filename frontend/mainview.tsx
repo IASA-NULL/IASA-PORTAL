@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 import {
     Drawer,
@@ -9,7 +9,7 @@ import {
     DrawerContent,
     DrawerAppContent,
 } from '@rmwc/drawer'
-import { List, CollapsibleList, SimpleListItem } from '@rmwc/list'
+import {List, CollapsibleList, SimpleListItem} from '@rmwc/list'
 import {
     TopAppBar,
     TopAppBarRow,
@@ -19,15 +19,16 @@ import {
     TopAppBarFixedAdjust,
     TopAppBarActionItem,
 } from '@rmwc/top-app-bar'
-import { Grid, GridRow, GridCell } from '@rmwc/grid'
-import { Theme } from '@rmwc/theme'
-import { Typography } from '@rmwc/typography'
-import { IconButton } from '@rmwc/icon-button'
-import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
+import {Grid, GridRow, GridCell} from '@rmwc/grid'
+import {Theme} from '@rmwc/theme'
+import {Typography} from '@rmwc/typography'
+import {IconButton} from '@rmwc/icon-button'
+import {Menu, MenuItem, MenuSurfaceAnchor} from '@rmwc/menu'
 
-import { ListLink, useForceUpdate, LinkType } from './util'
-import { token } from '../scheme/api/auth'
+import {ListLink, useForceUpdate, LinkType} from './util'
+import {token} from '../scheme/api/auth'
 import createURL from '../scheme/url'
+
 declare const DEV_MODE: boolean
 
 export const DefaultStudentNavList = (closeIfModal: any) => {
@@ -58,14 +59,14 @@ export const DefaultStudentNavList = (closeIfModal: any) => {
                         metaIcon='chevron_right'
                     />
                 }>
-                <div style={{ paddingLeft: '20px' }}>
-                    <ListLink
+                <div style={{paddingLeft: '20px'}}>
+                    {/*<ListLink
                         body='면불'
                         to='/myeonbul'
                         onClick={closeIfModal}
                         type={LinkType.link}
                         icon='pan_tool'
-                    />
+                    />*/}
                     <ListLink
                         body='기상곡'
                         to='/music'
@@ -86,7 +87,7 @@ export const DefaultStudentNavList = (closeIfModal: any) => {
                         metaIcon='chevron_right'
                     />
                 }>
-                <div style={{ paddingLeft: '20px' }}>
+                <div style={{paddingLeft: '20px'}}>
                     <ListLink
                         body='벌점'
                         to='/penalty'
@@ -116,7 +117,7 @@ export const DefaultStudentNavList = (closeIfModal: any) => {
                         metaIcon='chevron_right'
                     />
                 }>
-                <div style={{ paddingLeft: '20px' }}>
+                <div style={{paddingLeft: '20px'}}>
                     <ListLink
                         body='인터넷 연결 도구'
                         to='/program/nac'
@@ -154,6 +155,13 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
                 type={LinkType.link}
                 icon='home'
             />
+            <ListLink
+                body='빠른 공유'
+                to='/share'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='share'
+            />
             <CollapsibleList
                 defaultOpen={['/penalty', '/myeonbul'].includes(
                     window.location.pathname
@@ -165,7 +173,7 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
                         metaIcon='chevron_right'
                     />
                 }>
-                <div style={{ paddingLeft: '20px' }}>
+                <div style={{paddingLeft: '20px'}}>
                     <ListLink
                         body='벌점'
                         to='/penalty'
@@ -173,21 +181,21 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
                         type={LinkType.link}
                         icon='assignment_late'
                     />
-                    <ListLink
+                    {/*<ListLink
                         body='면불'
                         to='/myeonbul'
                         onClick={closeIfModal}
                         type={LinkType.link}
                         icon='pan_tool'
-                    />
+                    />*/}
                 </div>
             </CollapsibleList>
             <ListLink
-                body='빠른 공유'
-                to='/share'
+                body='기상곡'
+                to='/music'
                 onClick={closeIfModal}
                 type={LinkType.link}
-                icon='share'
+                icon='music_note'
             />
             <ListLink
                 body='급식'
@@ -212,7 +220,7 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                         metaIcon='chevron_right'
                     />
                 }>
-                <div style={{ paddingLeft: '20px' }}>
+                <div style={{paddingLeft: '20px'}}>
                     <ListLink
                         body='업데이트'
                         to='/update'
@@ -231,7 +239,7 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                         metaIcon='chevron_right'
                     />
                 }>
-                <div style={{ paddingLeft: '20px' }}>
+                <div style={{paddingLeft: '20px'}}>
                     <ListLink
                         body='가입 코드 발급'
                         to='/user/code'
@@ -477,12 +485,12 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                                 onClose={(evt) => setAccountMenuOpen(false)}>
                                 {props?.accountInfo?.id ? (
                                     <>
-                                        <p style={{ margin: '10px' }}>
+                                        <p style={{margin: '10px'}}>
                                             {props?.accountInfo?.id}
                                         </p>
                                         <Link
                                             to='/mypage'
-                                            style={{ color: 'black' }}>
+                                            style={{color: 'black'}}>
                                             <MenuItem>마이페이지</MenuItem>
                                         </Link>
                                         <MenuItem
@@ -518,14 +526,14 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                     </TopAppBarSection>
                 </TopAppBarRow>
             </TopAppBar>
-            <TopAppBarFixedAdjust />
+            <TopAppBarFixedAdjust/>
             <Theme use={['background', 'textPrimaryOnDark']} wrap>
                 <Drawer
                     dismissible={window.innerWidth > 760}
                     modal={window.innerWidth <= 760}
                     open={drawerOpen && props.list}
                     onClose={() => setDrawerOpen(false)}
-                    style={{ position: 'fixed' }}>
+                    style={{position: 'fixed'}}>
                     {props?.accountInfo?.id ? (
                         <DrawerHeader>
                             <DrawerTitle>
@@ -549,7 +557,7 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                                         }}
                                     />
                                 </span>
-                                <br />
+                                <br/>
                                 {props?.accountInfo?.name}
                             </DrawerTitle>
                             <DrawerSubtitle>
@@ -580,23 +588,23 @@ function Footer() {
                     zIndex: 7,
                     textAlign: 'center',
                 }}>
-                <br />
-                <br />
+                <br/>
+                <br/>
                 <Typography use='headline4'>IASA PORTAL</Typography>
                 {DEV_MODE ? (
                     <Typography use='headline4'>(DEV MODE)</Typography>
                 ) : (
                     <></>
                 )}
-                <br />
+                <br/>
                 <Typography use='subtitle1'>
                     Made with ♥ by 2019-2021 club NULL;
                 </Typography>
-                <br />
-                <br />
+                <br/>
+                <br/>
                 <Grid>
                     <GridRow>
-                        <GridCell desktop={3} tablet={1} phone={0} />
+                        <GridCell desktop={3} tablet={1} phone={0}/>
                         <GridCell desktop={6} tablet={6} phone={4}>
                             <Grid>
                                 <GridRow>
@@ -623,8 +631,8 @@ function Footer() {
                                         />
                                     </GridCell>
                                 </GridRow>
-                                <br />
-                                <br />
+                                <br/>
+                                <br/>
                                 <GridRow>
                                     <GridCell desktop={3} tablet={2} phone={2}>
                                         <Link
@@ -671,7 +679,7 @@ function Footer() {
                         </GridCell>
                     </GridRow>
                 </Grid>
-                <div style={{ height: '20px' }} />
+                <div style={{height: '20px'}}/>
             </footer>
         </Theme>
     )
@@ -698,7 +706,7 @@ class AppContentWrapper extends React.Component<any, {}> {
         return (
             <div
                 className='fadein'
-                style={{ padding: '20px' }}
+                style={{padding: '20px'}}
                 ref={this.myRef}>
                 {this.props.appCont}
             </div>
@@ -711,7 +719,7 @@ export function MainView(props: {
     navList?: any
     accountInfo: token
 }) {
-    let appCont = <AppContentWrapper appCont={props.appCont} />
+    let appCont = <AppContentWrapper appCont={props.appCont}/>
     let headerHeight = 48,
         footerHeight = 100
     if (document.querySelector('header'))
@@ -729,7 +737,7 @@ export function MainView(props: {
     })
     return (
         <>
-            <Navbar list={props.navList} accountInfo={props.accountInfo} />
+            <Navbar list={props.navList} accountInfo={props.accountInfo}/>
             <DrawerAppContent
                 style={{
                     transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -743,7 +751,7 @@ export function MainView(props: {
                     }}>
                     {appCont}
                 </div>
-                <Footer />
+                <Footer/>
             </DrawerAppContent>
         </>
     )
