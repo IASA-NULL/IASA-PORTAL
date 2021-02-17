@@ -1,6 +1,5 @@
-import {teacher} from '../teacher/teacher'
 import commonApi from './commonApi'
-import exp from "constants";
+import {UserInfo} from "../user"
 
 export interface PenaltyRequest {
     token: string
@@ -12,7 +11,7 @@ export interface PenaltyRequest {
 
 export interface PenaltyResponseOne {
     score: number
-    teacher: teacher
+    teacher: UserInfo
     info: string
     time: number
 }

@@ -1,4 +1,4 @@
-import { Permission } from './api/auth'
+import {Permission} from './api/auth'
 import {Penalty} from "./api/penalty";
 
 export interface User {
@@ -10,4 +10,9 @@ export interface User {
     name: string
     penalty?: Penalty
     avatar?: string
+}
+
+export interface UserInfo {
+    name: string,
+    uid: number
 }

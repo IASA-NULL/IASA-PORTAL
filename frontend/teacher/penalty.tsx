@@ -26,6 +26,7 @@ import {BrIfMobile, fetchAPI, focusNextInput, requireSudo, SearchUser} from '../
 import {MyeonbulQuery, MyeonbulRequestListType} from "../../scheme/api/myeonbul";
 import {Grid, GridCell, GridRow} from "@rmwc/grid";
 import {TextField} from "@rmwc/textfield";
+import {Select} from "@rmwc/select";
 
 interface PenaltyProps {
     data: token
@@ -34,7 +35,10 @@ interface PenaltyProps {
 interface PenaltyState {
     data?: PenaltyResponse
     loaded: boolean
-    uid: number
+    uid?: number
+    type?: string
+    score?: string
+    reason?: string
 }
 
 class Penalty extends React.Component<PenaltyProps, PenaltyState> {
@@ -46,6 +50,11 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
         let qu = createSnackbarQueue()
         this.messages = qu.messages
         this.notify = qu.notify
+
+        this.state = {
+            type: 'm',
+            loaded: false
+        }
         this.handleChange = this.handleChange.bind(this)
     }
 
@@ -82,6 +91,51 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
         })
     }
 
+    public give() {
+        if (!this.state?.type || !this.state?.score || !this.state?.reason) {
+            this.notify({
+                title: <b>오류</b>,
+                body: '내용을 모두 입력하세요.',
+                icon: 'error_outline',
+                dismissIcon: true,
+            })
+            return
+        }
+        fetchAPI(
+            'POST',
+            {
+                uid: this.state.uid,
+                score: parseInt(this.state.score) * (this.state.type === 'a' ? 1 : -1),
+                reason: this.state.reason
+            },
+            'penalty'
+        ).then((res: PenaltyResponse) => {
+            if (res.success) this.notify({
+                title: <b>성공!</b>,
+                body: '상벌점 부여에 성공했어요.',
+                icon: 'check',
+                dismissIcon: true,
+            })
+            else this.notify({
+                title: <b>오류</b>,
+                body: res.message,
+                icon: 'error_outline',
+                dismissIcon: true,
+            })
+            this.setState({score: '', reason: ''})
+            setTimeout(() => {
+                this.refresh()
+            }, 0)
+        }).catch(() => {
+            this.notify({
+                title: <b>오류</b>,
+                body: '서버와 연결할 수 없어요.',
+                icon: 'error_outline',
+                dismissIcon: true,
+            })
+        })
+    }
+
     public render() {
         let tableBody
         if (this.state?.loaded) {
@@ -99,10 +153,10 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                                         time.getMonth() + 1
                                     }/${time.getDate()} ${time.getHours()}:${time.getMinutes()}`}</DataTableCell>
                                     <DataTableCell alignEnd>
-                                        {el.info}
+                                        {el.teacher.name}
                                     </DataTableCell>
                                     <DataTableCell alignEnd>
-                                        {el.teacher.name}
+                                        {el.info}
                                     </DataTableCell>
                                 </DataTableRow>
                             )
@@ -184,8 +238,71 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                         </GridCell>
                     </GridRow>
                 </Grid>
-                <br/>
                 {this.state?.data ? <>
+                    <Grid style={{marginTop: '-30px'}}>
+                        <GridRow>
+                            <GridCell desktop={2} tablet={4} phone={4}>
+                                <Select label="상/벌점"
+                                        enhanced
+                                        outlined
+                                        options={[{
+                                            label: '상점',
+                                            value: 'a'
+                                        }, {
+                                            label: '벌점',
+                                            value: 'm'
+                                        }]}
+                                        value={this.state.type}
+                                        onChange={(e) => this.setState({type: e.currentTarget.value})}
+                                />
+                            </GridCell>
+                            <GridCell desktop={2} tablet={4} phone={4}>
+                                <TextField
+                                    style={{width: '100%', height: '100%'}}
+                                    outlined
+                                    label='점수'
+                                    value={this.state?.score}
+                                    onChange={(e) =>
+                                        this.handleChange(e, 'score')
+                                    }
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') focusNextInput()
+                                    }}
+                                />
+                            </GridCell>
+                            <GridCell desktop={6} tablet={5} phone={4}>
+                                <TextField
+                                    style={{width: '100%', height: '100%'}}
+                                    outlined
+                                    label='사유'
+                                    value={this.state?.reason}
+                                    onChange={(e) =>
+                                        this.handleChange(e, 'reason')
+                                    }
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') focusNextInput()
+                                    }}
+                                />
+                            </GridCell>
+                            <GridCell desktop={2} tablet={3} phone={4}>
+                                <Button
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        minHeight: '45.2px',
+                                    }}
+                                    outlined
+                                    label='부여'
+                                    trailingIcon='send'
+                                    onClick={() => {
+                                        setTimeout(() => {
+                                            this.give()
+                                        }, 0)
+                                    }}
+                                />
+                            </GridCell>
+                        </GridRow>
+                    </Grid>
                     <LinearProgress progress={-this.state?.data?.data?.score / 21.0} buffer={1}/>
                     <br/>
                     <Typography
@@ -231,6 +348,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
             </div>
         )
     }
+
 }
 
 export default Penalty
