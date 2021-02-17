@@ -1,13 +1,13 @@
 import express from 'express'
 import child_process from 'child_process'
 
-import { Permission } from '../../scheme/api/auth'
+import {Permission} from '../../scheme/api/auth'
 import createResponse from '../createResponse'
-import { getServerFlag, setServerFlag } from '../util/serverState'
+import {getServerFlag, setServerFlag} from '../util/serverState'
 import db from '../util/db'
-import { User } from '../../scheme/user'
-import { getRandomInt } from '../util/random'
-import { base32Encode } from '@ctrl/ts-base32'
+import {User} from '../../scheme/user'
+import {getRandomInt} from '../util/random'
+import {base32Encode} from '@ctrl/ts-base32'
 import {
     ALREADY_BUILDING_ERROR,
     DB_CONNECT_ERROR,
@@ -63,7 +63,7 @@ router.put('/code', async (req, res, next) => {
     if (req.body.type === 'S') cid = 0
     else cid = 700
     for (; ; ++cid) {
-        const uid = req.body.year + ('0000' + cid).substr(-4)
+        const uid = parseInt(req.body.year + ('0000' + cid).substr(-4))
         try {
             let user = (await db.get('account', 'uid', uid)) as User | undefined
             if (user) continue
