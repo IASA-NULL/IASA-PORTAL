@@ -154,12 +154,40 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
                 type={LinkType.link}
                 icon='home'
             />
+            <CollapsibleList
+                defaultOpen={['/penalty', '/myeonbul'].includes(
+                    window.location.pathname
+                )}
+                handle={
+                    <SimpleListItem
+                        text='학생지도'
+                        graphic='auto_fix_normal'
+                        metaIcon='chevron_right'
+                    />
+                }>
+                <div style={{ paddingLeft: '20px' }}>
+                    <ListLink
+                        body='벌점'
+                        to='/penalty'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='assignment_late'
+                    />
+                    <ListLink
+                        body='면불'
+                        to='/myeonbul'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='pan_tool'
+                    />
+                </div>
+            </CollapsibleList>
             <ListLink
-                body='면불'
-                to='/myeonbul'
+                body='빠른 공유'
+                to='/share'
                 onClick={closeIfModal}
                 type={LinkType.link}
-                icon='pan_tool'
+                icon='share'
             />
             <ListLink
                 body='급식'
@@ -167,13 +195,6 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
                 onClick={closeIfModal}
                 type={LinkType.link}
                 icon='fastfood'
-            />
-            <ListLink
-                body='빠른 공유'
-                to='/share'
-                onClick={closeIfModal}
-                type={LinkType.link}
-                icon='share'
             />
         </>
     )

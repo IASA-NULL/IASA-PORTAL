@@ -7,13 +7,13 @@ import {
     Redirect,
 } from 'react-router-dom'
 
-import { ThemeProvider } from '@rmwc/theme'
+import {ThemeProvider} from '@rmwc/theme'
 
 import 'rmwc/dist/styles'
 import '@rmwc/list/collapsible-list.css'
 import '@material/list/dist/mdc.list.css'
 import createURL from '../scheme/url'
-import { Permission, token } from '../scheme/api/auth'
+import {Permission, token} from '../scheme/api/auth'
 import {
     DefaultStudentNavList,
     DefaultTeacherNavList,
@@ -23,9 +23,10 @@ import {
     TermsNavList,
     UserDataNavList,
 } from './mainview'
-import { fetchAPI, LoremIpsum } from './util'
+import {fetchAPI, LoremIpsum} from './util'
 import MyeonbulStudent from './student/myeonbul'
 import PenaltyStudent from './student/penalty'
+import PenaltyTeacher from './teacher/penalty'
 import Meal from './common/meal'
 import Music from './student/music'
 import Terms from './common/terms'
@@ -103,9 +104,9 @@ class App extends React.Component<any, IState> {
     }
 
     public refresh() {
-        this.setState({ loaded: false })
+        this.setState({loaded: false})
         fetchAPI('GET', {}, 'account', 'info').then((data) => {
-            this.setState({ loaded: true, data: data.data })
+            this.setState({loaded: true, data: data.data})
         })
     }
 
@@ -120,7 +121,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
-                            appCont={<LoremIpsum count={50} />}
+                            appCont={<LoremIpsum count={50}/>}
                         />
                     </Route>
 
@@ -129,7 +130,7 @@ class App extends React.Component<any, IState> {
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
                             appCont={
-                                <MyeonbulStudent data={this.state?.data} />
+                                <MyeonbulStudent data={this.state?.data}/>
                             }
                         />
                     </Route>
@@ -137,7 +138,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
-                            appCont={<Music />}
+                            appCont={<Music/>}
                         />
                     </Route>
 
@@ -145,14 +146,14 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
-                            appCont={<Meal />}
+                            appCont={<Meal/>}
                         />
                     </Route>
                     <Route path='/penalty'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
-                            appCont={<PenaltyStudent data={this.state?.data} />}
+                            appCont={<PenaltyStudent data={this.state?.data}/>}
                         />
                     </Route>
 
@@ -160,7 +161,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
-                            appCont={<MyPage />}
+                            appCont={<MyPage/>}
                         />
                     </Route>
 
@@ -168,21 +169,21 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={TermsNavList}
-                            appCont={<Terms />}
+                            appCont={<Terms/>}
                         />
                     </Route>
                     <Route path='/userdata'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={UserDataNavList}
-                            appCont={<Userdata />}
+                            appCont={<Userdata/>}
                         />
                     </Route>
                     <Route path='/opensource'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={OpensourceNavList}
-                            appCont={<Opensource />}
+                            appCont={<Opensource/>}
                         />
                     </Route>
 
@@ -190,7 +191,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
-                            appCont={<PROGRAM_IP />}
+                            appCont={<PROGRAM_IP/>}
                         />
                     </Route>
 
@@ -198,7 +199,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
-                            appCont={<NotFound />}
+                            appCont={<NotFound/>}
                         />
                     </Route>
                 </Switch>
@@ -206,11 +207,19 @@ class App extends React.Component<any, IState> {
         } else if (this.state?.data?.permission === Permission.teacher) {
             mainView = (
                 <Switch>
+                    <Route path='/penalty'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultTeacherNavList}
+                            appCont={<PenaltyTeacher data={this.state?.data}/>}
+                        />
+                    </Route>
+
                     <Route path='/meal'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultTeacherNavList}
-                            appCont={<Meal />}
+                            appCont={<Meal/>}
                         />
                     </Route>
 
@@ -218,7 +227,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultTeacherNavList}
-                            appCont={<MyPage />}
+                            appCont={<MyPage/>}
                         />
                     </Route>
 
@@ -226,21 +235,21 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={TermsNavList}
-                            appCont={<Terms />}
+                            appCont={<Terms/>}
                         />
                     </Route>
                     <Route path='/userdata'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={UserDataNavList}
-                            appCont={<Userdata />}
+                            appCont={<Userdata/>}
                         />
                     </Route>
                     <Route path='/opensource'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={OpensourceNavList}
-                            appCont={<Opensource />}
+                            appCont={<Opensource/>}
                         />
                     </Route>
 
@@ -248,7 +257,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultTeacherNavList}
-                            appCont={<PROGRAM_IP />}
+                            appCont={<PROGRAM_IP/>}
                         />
                     </Route>
 
@@ -256,7 +265,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultTeacherNavList}
-                            appCont={<NotFound />}
+                            appCont={<NotFound/>}
                         />
                     </Route>
                 </Switch>
@@ -268,21 +277,21 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={TermsNavList}
-                            appCont={<Terms />}
+                            appCont={<Terms/>}
                         />
                     </Route>
                     <Route path='/userdata'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={UserDataNavList}
-                            appCont={<Userdata />}
+                            appCont={<Userdata/>}
                         />
                     </Route>
                     <Route path='/opensource'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={OpensourceNavList}
-                            appCont={<Opensource />}
+                            appCont={<Opensource/>}
                         />
                     </Route>
 
@@ -290,7 +299,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultAdminNavList}
-                            appCont={<Update />}
+                            appCont={<Update/>}
                         />
                     </Route>
 
@@ -298,7 +307,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultAdminNavList}
-                            appCont={<CreateCode />}
+                            appCont={<CreateCode/>}
                         />
                     </Route>
 
@@ -306,7 +315,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultAdminNavList}
-                            appCont={<MyPage />}
+                            appCont={<MyPage/>}
                         />
                     </Route>
 
@@ -314,7 +323,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultAdminNavList}
-                            appCont={<PROGRAM_IP />}
+                            appCont={<PROGRAM_IP/>}
                         />
                     </Route>
 
@@ -322,7 +331,7 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             navList={DefaultAdminNavList}
-                            appCont={<NotFound />}
+                            appCont={<NotFound/>}
                         />
                     </Route>
                 </Switch>
@@ -331,40 +340,40 @@ class App extends React.Component<any, IState> {
             mainView = (
                 <Switch>
                     <Route exact path='/about'>
-                        <About />
+                        <About/>
                     </Route>
 
                     <Route path='/terms'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={TermsNavList}
-                            appCont={<Terms />}
+                            appCont={<Terms/>}
                         />
                     </Route>
                     <Route path='/userdata'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={UserDataNavList}
-                            appCont={<Userdata />}
+                            appCont={<Userdata/>}
                         />
                     </Route>
                     <Route path='/opensource'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={OpensourceNavList}
-                            appCont={<Opensource />}
+                            appCont={<Opensource/>}
                         />
                     </Route>
 
                     <Route path='/program/ip'>
                         <MainView
                             accountInfo={this.state.data}
-                            appCont={<PROGRAM_IP />}
+                            appCont={<PROGRAM_IP/>}
                         />
                     </Route>
 
                     <Route>
-                        <Redirect to='/about' />
+                        <Redirect to='/about'/>
                     </Route>
                 </Switch>
             )
@@ -385,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'font-size:30px;color:red;',
         'font-size:15px;color:red;'
     )
-    ReactDOM.render(<App />, document.getElementById('app') as HTMLElement)
+    ReactDOM.render(<App/>, document.getElementById('app') as HTMLElement)
 })
 
 export default App

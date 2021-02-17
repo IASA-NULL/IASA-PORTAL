@@ -1,4 +1,5 @@
 import { Permission } from './api/auth'
+import {Penalty} from "./api/penalty";
 
 export interface User {
     permission: Permission
@@ -7,6 +8,6 @@ export interface User {
     pwHash: string
     email: string
     name: string
-    penalty?: number
+    penalty?: Penalty
     avatar?: string
 }

@@ -197,7 +197,6 @@ router.get('/finalize/:token', async (req, res, next) => {
             email: tmpUser.email,
             name: tmpUser.name,
             avatar: tmpUser.avatar,
-            penalty: 0,
         } as User)
 
         res.sendFile(

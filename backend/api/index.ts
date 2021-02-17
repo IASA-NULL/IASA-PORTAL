@@ -7,6 +7,7 @@ import myeonbulRouter from './myeonbul'
 import musicRouter from './music'
 import adminRouter from './admin'
 import filesRouter from './files'
+import penaltyRouter from './penalty'
 
 import createResponse from '../createResponse'
 
@@ -20,6 +21,7 @@ router.use('/myeonbul', myeonbulRouter)
 router.use('/music', musicRouter)
 router.use('/admin', adminRouter)
 router.use('/files', filesRouter)
+router.use('/penalty', penaltyRouter)
 
 router.use('*', (req, res, next) => {
     res.status(404)

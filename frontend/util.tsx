@@ -1,10 +1,15 @@
 import {Link} from 'react-router-dom'
-import {ListItem, ListItemText, ListItemGraphic} from '@rmwc/list'
+import {ListItem, ListItemText, ListItemGraphic, ListDivider} from '@rmwc/list'
 import * as React from 'react'
-import {useState} from 'react'
-import {MenuItem} from '@rmwc/menu'
+import {LegacyRef, useState} from 'react'
+import {Menu, MenuItem, MenuSurfaceAnchor} from '@rmwc/menu'
 import {TextField} from '@rmwc/textfield'
 import createURL from '../scheme/url'
+import {Typography} from "@rmwc/typography";
+import {Button} from "@rmwc/button";
+import {currentTeacherList} from "../scheme/teacher/teacher";
+import set = Reflect.set;
+import {Permission} from "../scheme/api/auth";
 
 declare const DEV_MODE: boolean
 
@@ -269,4 +274,79 @@ export function requireSudo() {
             )
         }
     }, 0)
+}
+
+export function SearchUser<T extends { label?: string, onKeyDown?: any, onSelect?: any, type?: [Permission] }>(props: T) {
+    const [query, setQuery] = useState("")
+    const [menu, setMenu] = useState(false)
+    const [data, setData] = useState([])
+    const [sel, setSel] = useState({name: "", uid: 0})
+    const searchTextbox = React.useRef(null) as React.RefObject<HTMLInputElement>
+
+    const {label, onKeyDown, onSelect, type, ...others} = {
+        label: "검색",
+        onKeyDown: () => {
+        },
+        onSelect: () => {
+        },
+        type: [Permission.student, Permission.teacher],
+        ...props
+    }
+
+    const refreshData = (q: string) => {
+        fetchAPI('POST', {name: q, type: type}, 'account', 'search').then((res) => {
+            if (res.data && res.data.length) setData(res.data)
+        })
+    }
+
+    return <MenuSurfaceAnchor>
+        <Menu
+            open={menu}
+            onClose={(e) => {
+                setMenu(false)
+            }}>
+            <TextField
+                label='검색'
+                ref={searchTextbox}
+                style={{
+                    width: '100%',
+                    marginTop: '-8px',
+                    marginBottom: '8px',
+                }}
+                value={query}
+                onChange={(e) => {
+                    setQuery((e.target as HTMLInputElement).value)
+                    refreshData((e.target as HTMLInputElement).value)
+                }}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') focusNextInput()
+                    onKeyDown(e)
+                }}
+            />
+            {query ? (data.length > 0 ? data.map((user) => {
+                    return <MenuItem
+                        onClick={() => {
+                            onSelect({name: user.name, uid: user.uid})
+                            setSel({name: user.name, uid: user.uid})
+                            setMenu(false)
+                        }}>
+                        {user.name}
+                    </MenuItem>
+                }) : <Typography use='subtitle1'
+                                 style={{margin: '10px'}}>검색 결과가 없어요!</Typography>) :
+                <Typography use='subtitle1' style={{margin: '10px'}}>검색할 사람의 이름/학번을 입력하세요.</Typography>}
+        </Menu>
+        <TextField
+            style={{width: '100%', height: '100%'}}
+            outlined
+            label={label}
+            value={sel.name}
+            onFocus={() => {
+                setMenu(true)
+                setTimeout(() => {
+                    searchTextbox.current.focus()
+                }, 300)
+            }}
+        />
+    </MenuSurfaceAnchor>
 }
