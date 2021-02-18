@@ -1,9 +1,7 @@
 import * as React from 'react'
 import { withRouter } from 'react-router-dom'
 
-import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
-import { BrIfMobile } from '../util'
 
 class Main extends React.Component<any, {}> {
     public toMain() {

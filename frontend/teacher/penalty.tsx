@@ -14,17 +14,9 @@ import {
 } from '@rmwc/data-table'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
-import {
-    PenaltyResponse,
-    PenaltyResponseOne,
-} from '../../scheme/api/penalty'
+import { PenaltyResponse, PenaltyResponseOne } from '../../scheme/api/penalty'
 import { Permission, token } from '../../scheme/api/auth'
-import {
-    BrIfMobile,
-    fetchAPI,
-    focusNextInput,
-    SearchUser,
-} from '../util'
+import { BrIfMobile, fetchAPI, focusNextInput, SearchUser } from '../util'
 import { Grid, GridCell, GridRow } from '@rmwc/grid'
 import { TextField } from '@rmwc/textfield'
 import { Select } from '@rmwc/select'

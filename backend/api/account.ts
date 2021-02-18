@@ -316,6 +316,7 @@ router.post('/search', async (req, res) => {
                     name: user.name,
                     uid: user.uid,
                 }
+            else return undefined
         })
         .filter((x: any) => x)
     res.send(createResponse(respList))
@@ -335,6 +336,7 @@ router.post('/list', async (req, res) => {
                     name: user.name,
                     uid: user.uid,
                 }
+            else return undefined
         })
         .filter((x: any) => x)
     res.send(createResponse(respList))

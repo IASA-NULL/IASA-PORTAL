@@ -27,10 +27,7 @@ import {
     DataTableHeadCell,
     DataTableRow,
 } from '@rmwc/data-table'
-import {
-    MyeonbulQuery,
-    MyeonbulRequestListType,
-} from '../../scheme/api/myeonbul'
+import { MyeonbulQuery } from '../../scheme/api/myeonbul'
 import { Permission } from '../../scheme/api/auth'
 
 interface IState {

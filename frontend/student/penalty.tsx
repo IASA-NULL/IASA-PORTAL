@@ -14,19 +14,9 @@ import {
 } from '@rmwc/data-table'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
-import {
-    PenaltyRequest,
-    PenaltyResponse,
-    PenaltyResponseOne,
-} from '../../scheme/api/penalty'
-import { teacher, currentTeacherList } from '../../scheme/teacher/teacher'
-import teacherList from '../../scheme/teacher/2021/list'
+import { PenaltyResponse, PenaltyResponseOne } from '../../scheme/api/penalty'
 import { token } from '../../scheme/api/auth'
-import { BrIfMobile, fetchAPI, requireSudo } from '../util'
-import {
-    MyeonbulQuery,
-    MyeonbulRequestListType,
-} from '../../scheme/api/myeonbul'
+import { BrIfMobile, fetchAPI } from '../util'
 
 interface PenaltyProps {
     data: token
@@ -35,9 +25,6 @@ interface PenaltyProps {
 interface PenaltyState {
     data?: PenaltyResponse
     loaded: boolean
-    teacherSelectOpened: boolean
-    selectedTeacher: teacher
-    teacherSearch: string
 }
 
 class Penalty extends React.Component<PenaltyProps, PenaltyState> {

@@ -1,6 +1,5 @@
-import { teacher } from '../teacher/teacher'
 import commonApi from './commonApi'
-import { User, UserInfo } from '../user'
+import { UserInfo } from '../user'
 
 export enum MyeonbulRequestListType {
     listByUser,
