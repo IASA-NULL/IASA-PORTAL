@@ -147,12 +147,22 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                     buffer={1}
                 />
                 <br />
-                <Typography use='headline4'>
-                    현재 {this.state?.data?.data?.score > 0 ? '상점' : '벌점'}{' '}
-                    {Math.abs(this.state?.data?.data?.score)}점이에요.
-                </Typography>
-                <br />
-                <Typography use='subtitle1'>{message}</Typography>
+                {this.state?.loaded ? (
+                    <>
+                        <Typography use='headline4'>
+                            현재{' '}
+                            {this.state?.data?.data?.score > 0
+                                ? '상점'
+                                : '벌점'}{' '}
+                            {Math.abs(this.state?.data?.data?.score)}점이에요.
+                        </Typography>
+                        <br />
+                        <Typography use='subtitle1'>{message}</Typography>
+                    </>
+                ) : (
+                    <Typography use='headline4'>불러오는 중...</Typography>
+                )}
+
                 <br />
                 <br />
                 <Typography use='headline5'>상벌점 내역</Typography>
