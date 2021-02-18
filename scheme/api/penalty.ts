@@ -1,5 +1,5 @@
 import commonApi from './commonApi'
-import {UserInfo} from "../user"
+import { UserInfo } from '../user'
 
 export interface PenaltyRequest {
     token: string

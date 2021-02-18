@@ -2,7 +2,7 @@ import express from 'express'
 import path from 'path'
 import jwt from 'jsonwebtoken'
 import getSecret from './util/secret'
-import {changePasswordToken} from '../scheme/api/auth'
+import { changePasswordToken } from '../scheme/api/auth'
 import createURL from '../scheme/url'
 
 declare const DEV_MODE: boolean
@@ -38,7 +38,11 @@ authRouter.get('/challenge', (req, res, next) => {
 })
 
 authRouter.get('/signout', (req, res, next) => {
-    res.cookie('auth', '', {maxAge: -1, httpOnly: true, ...(!DEV_MODE && {domain: '.iasa.kr'})})
+    res.cookie('auth', '', {
+        maxAge: -1,
+        httpOnly: true,
+        ...(!DEV_MODE && { domain: '.iasa.kr' }),
+    })
     res.redirect('/')
 })
 

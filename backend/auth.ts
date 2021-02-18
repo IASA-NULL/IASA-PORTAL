@@ -1,9 +1,9 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
-import {token} from '../scheme/api/auth'
+import { token } from '../scheme/api/auth'
 import getSecret from './util/secret'
-import {getServerToken} from './util/serverState'
-import {reSignTime, maxTime, leftTokenTime} from './util/tokenTime'
+import { getServerToken } from './util/serverState'
+import { reSignTime, maxTime, leftTokenTime } from './util/tokenTime'
 import createURL from '../scheme/url'
 
 declare const DEV_MODE: boolean
@@ -24,27 +24,45 @@ router.use('*', (req, res, next) => {
         req.auth = jwt.verify(req.cookies.auth, getSecret('token')) as token
         if (req.auth.sid !== sid) {
             req.auth.expired = true
-            if ((DEV_MODE && !req.originalUrl.includes('/api') && !req.originalUrl.includes('/account')) ||
-                (!DEV_MODE && req.get('host') !== 'api.iasa.kr' && req.get('host') !== 'account.iasa.kr')) {
+            if (
+                (DEV_MODE &&
+                    !req.originalUrl.includes('/api') &&
+                    !req.originalUrl.includes('/account')) ||
+                (!DEV_MODE &&
+                    req.get('host') !== 'api.iasa.kr' &&
+                    req.get('host') !== 'account.iasa.kr')
+            ) {
                 res.redirect(
                     createURL('account', 'challenge') +
-                    '?next=' +
-                    Buffer.from(
-                        req.protocol + '://' + req.get('host') + req.originalUrl
-                    ).toString('base64')
+                        '?next=' +
+                        Buffer.from(
+                            req.protocol +
+                                '://' +
+                                req.get('host') +
+                                req.originalUrl
+                        ).toString('base64')
                 )
                 return
             }
         } else if (req.auth.expire < Date.now()) {
             req.auth.expired = true
-            if ((DEV_MODE && !req.originalUrl.includes('/api') && !req.originalUrl.includes('/account')) ||
-                (!DEV_MODE && req.get('host') !== 'api.iasa.kr' && req.get('host') !== 'account.iasa.kr')) {
+            if (
+                (DEV_MODE &&
+                    !req.originalUrl.includes('/api') &&
+                    !req.originalUrl.includes('/account')) ||
+                (!DEV_MODE &&
+                    req.get('host') !== 'api.iasa.kr' &&
+                    req.get('host') !== 'account.iasa.kr')
+            ) {
                 res.redirect(
                     createURL('account', 'challenge') +
-                    '?next=' +
-                    Buffer.from(
-                        req.protocol + '://' + req.get('host') + req.originalUrl
-                    ).toString('base64')
+                        '?next=' +
+                        Buffer.from(
+                            req.protocol +
+                                '://' +
+                                req.get('host') +
+                                req.originalUrl
+                        ).toString('base64')
                 )
                 return
             }
@@ -58,7 +76,11 @@ router.use('*', (req, res, next) => {
                     },
                     getSecret('token')
                 ),
-                {maxAge: leftTokenTime, httpOnly: true, ...(!DEV_MODE && {domain: '.iasa.kr'})}
+                {
+                    maxAge: leftTokenTime,
+                    httpOnly: true,
+                    ...(!DEV_MODE && { domain: '.iasa.kr' }),
+                }
             )
         }
     } catch (e) {
@@ -66,7 +88,7 @@ router.use('*', (req, res, next) => {
         res.cookie('auth', '', {
             maxAge: -1,
             httpOnly: true,
-            ...(!DEV_MODE && {domain: '.iasa.kr'}),
+            ...(!DEV_MODE && { domain: '.iasa.kr' }),
         })
     }
     try {
@@ -81,7 +103,7 @@ router.use('*', (req, res, next) => {
         res.cookie('sudo', '', {
             maxAge: -1,
             httpOnly: true,
-            ...(!DEV_MODE && {domain: '.iasa.kr'}),
+            ...(!DEV_MODE && { domain: '.iasa.kr' }),
         })
     }
     next()

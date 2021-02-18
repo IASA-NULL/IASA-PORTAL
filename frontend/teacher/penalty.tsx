@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import {Button} from '@rmwc/button'
-import {Typography} from '@rmwc/typography'
-import {LinearProgress} from '@rmwc/linear-progress'
+import { Button } from '@rmwc/button'
+import { Typography } from '@rmwc/typography'
+import { LinearProgress } from '@rmwc/linear-progress'
 import {
     DataTable,
     DataTableContent,
@@ -12,21 +12,30 @@ import {
     DataTableBody,
     DataTableCell,
 } from '@rmwc/data-table'
-import {createSnackbarQueue, SnackbarQueue} from '@rmwc/snackbar'
+import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 import {
     PenaltyRequest,
     PenaltyResponse,
     PenaltyResponseOne,
 } from '../../scheme/api/penalty'
-import {teacher, currentTeacherList} from '../../scheme/teacher/teacher'
+import { teacher, currentTeacherList } from '../../scheme/teacher/teacher'
 import teacherList from '../../scheme/teacher/2021/list'
-import {Permission, token} from '../../scheme/api/auth'
-import {BrIfMobile, fetchAPI, focusNextInput, requireSudo, SearchUser} from '../util'
-import {MyeonbulQuery, MyeonbulRequestListType} from "../../scheme/api/myeonbul";
-import {Grid, GridCell, GridRow} from "@rmwc/grid";
-import {TextField} from "@rmwc/textfield";
-import {Select} from "@rmwc/select";
+import { Permission, token } from '../../scheme/api/auth'
+import {
+    BrIfMobile,
+    fetchAPI,
+    focusNextInput,
+    requireSudo,
+    SearchUser,
+} from '../util'
+import {
+    MyeonbulQuery,
+    MyeonbulRequestListType,
+} from '../../scheme/api/myeonbul'
+import { Grid, GridCell, GridRow } from '@rmwc/grid'
+import { TextField } from '@rmwc/textfield'
+import { Select } from '@rmwc/select'
 
 interface PenaltyProps {
     data: token
@@ -53,7 +62,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
 
         this.state = {
             type: 'm',
-            loaded: false
+            loaded: false,
         }
         this.handleChange = this.handleChange.bind(this)
     }
@@ -64,7 +73,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
 
     public handleChange(e: React.FormEvent<HTMLInputElement>, target: string) {
         // @ts-ignore
-        this.setState({[target]: e.target.value})
+        this.setState({ [target]: e.target.value })
     }
 
     public refresh() {
@@ -77,18 +86,14 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
             })
             return
         }
-        this.setState({loaded: false})
-        fetchAPI(
-            'GET',
-            {},
-            'penalty',
-            'list',
-            this.state?.uid.toString()
-        ).then((res: PenaltyResponse) => {
-            if (res.success) {
-                this.setState({loaded: true, data: res})
+        this.setState({ loaded: false })
+        fetchAPI('GET', {}, 'penalty', 'list', this.state?.uid.toString()).then(
+            (res: PenaltyResponse) => {
+                if (res.success) {
+                    this.setState({ loaded: true, data: res })
+                }
             }
-        })
+        )
     }
 
     public give() {
@@ -105,35 +110,41 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
             'POST',
             {
                 uid: this.state.uid,
-                score: parseInt(this.state.score) * (this.state.type === 'a' ? 1 : -1),
-                reason: this.state.reason
+                score:
+                    parseInt(this.state.score) *
+                    (this.state.type === 'a' ? 1 : -1),
+                reason: this.state.reason,
             },
             'penalty'
-        ).then((res: PenaltyResponse) => {
-            if (res.success) this.notify({
-                title: <b>성공!</b>,
-                body: '상벌점 부여에 성공했어요.',
-                icon: 'check',
-                dismissIcon: true,
+        )
+            .then((res: PenaltyResponse) => {
+                if (res.success)
+                    this.notify({
+                        title: <b>성공!</b>,
+                        body: '상벌점 부여에 성공했어요.',
+                        icon: 'check',
+                        dismissIcon: true,
+                    })
+                else
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                this.setState({ score: '', reason: '' })
+                setTimeout(() => {
+                    this.refresh()
+                }, 0)
             })
-            else this.notify({
-                title: <b>오류</b>,
-                body: res.message,
-                icon: 'error_outline',
-                dismissIcon: true,
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
             })
-            this.setState({score: '', reason: ''})
-            setTimeout(() => {
-                this.refresh()
-            }, 0)
-        }).catch(() => {
-            this.notify({
-                title: <b>오류</b>,
-                body: '서버와 연결할 수 없어요.',
-                icon: 'error_outline',
-                dismissIcon: true,
-            })
-        })
     }
 
     public render() {
@@ -165,23 +176,21 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                         }
                     })
                     .filter((x) => x)
-            } catch (e) {
-            }
+            } catch (e) {}
             if (!tableBody || tableBody.length === 0) {
                 let message
                 try {
                     message = this.state.data.message
-                } catch (e) {
-                }
+                } catch (e) {}
                 if (!message) message = '상벌점 내역이 없어요!'
                 tableBody = (
                     <DataTableRow>
                         <DataTableCell>
                             <div>{message}</div>
                         </DataTableCell>
-                        <DataTableCell/>
-                        <DataTableCell/>
-                        <DataTableCell/>
+                        <DataTableCell />
+                        <DataTableCell />
+                        <DataTableCell />
                     </DataTableRow>
                 )
             }
@@ -191,20 +200,20 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                     <DataTableCell>
                         <div>로딩 중...</div>
                     </DataTableCell>
-                    <DataTableCell/>
-                    <DataTableCell/>
-                    <DataTableCell/>
+                    <DataTableCell />
+                    <DataTableCell />
+                    <DataTableCell />
                 </DataTableRow>
             )
         return (
             <div>
                 <Typography use='headline3'>벌점</Typography>
-                <BrIfMobile/>
-                <Typography use='subtitle1' style={{marginLeft: '10px'}}>
+                <BrIfMobile />
+                <Typography use='subtitle1' style={{ marginLeft: '10px' }}>
                     학생들에게 상점/벌점을 부여할 수 있어요.
                 </Typography>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <Grid>
                     <GridRow>
                         <GridCell desktop={8} tablet={8} phone={4}>
@@ -214,8 +223,11 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                                 }}
                                 label='학생 정보'
                                 type={[Permission.student]}
-                                onSelect={(user: { name: string, uid: number }) => {
-                                    this.setState({uid: user.uid})
+                                onSelect={(user: {
+                                    name: string
+                                    uid: number
+                                }) => {
+                                    this.setState({ uid: user.uid })
                                 }}
                             />
                         </GridCell>
@@ -238,117 +250,149 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                         </GridCell>
                     </GridRow>
                 </Grid>
-                {this.state?.data ? <>
-                    <Grid style={{marginTop: '-30px'}}>
-                        <GridRow>
-                            <GridCell desktop={2} tablet={4} phone={4}>
-                                <Select label="상/벌점"
+                {this.state?.data ? (
+                    <>
+                        <Grid style={{ marginTop: '-30px' }}>
+                            <GridRow>
+                                <GridCell desktop={2} tablet={4} phone={4}>
+                                    <Select
+                                        label='상/벌점'
                                         enhanced
                                         outlined
-                                        options={[{
-                                            label: '상점',
-                                            value: 'a'
-                                        }, {
-                                            label: '벌점',
-                                            value: 'm'
-                                        }]}
+                                        options={[
+                                            {
+                                                label: '상점',
+                                                value: 'a',
+                                            },
+                                            {
+                                                label: '벌점',
+                                                value: 'm',
+                                            },
+                                        ]}
                                         value={this.state.type}
-                                        onChange={(e) => this.setState({type: e.currentTarget.value})}
-                                />
-                            </GridCell>
-                            <GridCell desktop={2} tablet={4} phone={4}>
-                                <TextField
-                                    style={{width: '100%', height: '100%'}}
-                                    outlined
-                                    label='점수'
-                                    value={this.state?.score}
-                                    onChange={(e) =>
-                                        this.handleChange(e, 'score')
-                                    }
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') focusNextInput()
-                                    }}
-                                />
-                            </GridCell>
-                            <GridCell desktop={6} tablet={5} phone={4}>
-                                <TextField
-                                    style={{width: '100%', height: '100%'}}
-                                    outlined
-                                    label='사유'
-                                    value={this.state?.reason}
-                                    onChange={(e) =>
-                                        this.handleChange(e, 'reason')
-                                    }
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') focusNextInput()
-                                    }}
-                                />
-                            </GridCell>
-                            <GridCell desktop={2} tablet={3} phone={4}>
-                                <Button
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        minHeight: '45.2px',
-                                    }}
-                                    outlined
-                                    label='부여'
-                                    trailingIcon='send'
-                                    onClick={() => {
-                                        setTimeout(() => {
-                                            this.give()
-                                        }, 0)
-                                    }}
-                                />
-                            </GridCell>
-                        </GridRow>
-                    </Grid>
-                    <LinearProgress progress={-this.state?.data?.data?.score / 21.0} buffer={1}/>
-                    <br/>
-                    <Typography
-                        use='headline4'>현재 {this.state?.data?.data?.score > 0 ? "상점" : "벌점"} {Math.abs(this.state?.data?.data?.score)}점이에요.</Typography>
-                    <br/>
-                    <br/>
-                    <Typography use='headline5'>상벌점 내역</Typography>
-                    <br/>
-                    <br/>
-                    <DataTable
-                        stickyRows={1}
-                        stickyColumns={0}
-                        style={{
-                            width: 'calc(100% - 40px)',
-                            margin: '20px',
-                            maxHeight: 'calc(100vh - 300px)',
-                        }}>
-                        <DataTableContent>
-                            <DataTableHead>
-                                <DataTableRow>
-                                    <DataTableHeadCell>받은 점수</DataTableHeadCell>
-                                    <DataTableHeadCell>받은 시간</DataTableHeadCell>
-                                    <DataTableHeadCell>
-                                        부여한 선생님
-                                    </DataTableHeadCell>
-                                    <DataTableHeadCell alignEnd>
-                                        사유
-                                    </DataTableHeadCell>
-                                </DataTableRow>
-                            </DataTableHead>
-                            <DataTableBody>{tableBody}</DataTableBody>
-                        </DataTableContent>
-                    </DataTable>
-                    <br/>
-                    <br/>
-                    <Button
-                        outlined
-                        onClick={this.refresh.bind(this)}
-                        style={{marginLeft: '20px'}}>
-                        새로고침
-                    </Button></> : <></>}
-                <SnackbarQueue messages={this.messages}/>
+                                        onChange={(e) =>
+                                            this.setState({
+                                                type: e.currentTarget.value,
+                                            })
+                                        }
+                                    />
+                                </GridCell>
+                                <GridCell desktop={2} tablet={4} phone={4}>
+                                    <TextField
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                        }}
+                                        outlined
+                                        label='점수'
+                                        value={this.state?.score}
+                                        onChange={(e) =>
+                                            this.handleChange(e, 'score')
+                                        }
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter')
+                                                focusNextInput()
+                                        }}
+                                    />
+                                </GridCell>
+                                <GridCell desktop={6} tablet={5} phone={4}>
+                                    <TextField
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                        }}
+                                        outlined
+                                        label='사유'
+                                        value={this.state?.reason}
+                                        onChange={(e) =>
+                                            this.handleChange(e, 'reason')
+                                        }
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter')
+                                                focusNextInput()
+                                        }}
+                                    />
+                                </GridCell>
+                                <GridCell desktop={2} tablet={3} phone={4}>
+                                    <Button
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            minHeight: '45.2px',
+                                        }}
+                                        outlined
+                                        label='부여'
+                                        trailingIcon='send'
+                                        onClick={() => {
+                                            setTimeout(() => {
+                                                this.give()
+                                            }, 0)
+                                        }}
+                                    />
+                                </GridCell>
+                            </GridRow>
+                        </Grid>
+                        <LinearProgress
+                            progress={-this.state?.data?.data?.score / 21.0}
+                            buffer={1}
+                        />
+                        <br />
+                        <Typography use='headline4'>
+                            현재{' '}
+                            {this.state?.data?.data?.score > 0
+                                ? '상점'
+                                : '벌점'}{' '}
+                            {Math.abs(this.state?.data?.data?.score)}점이에요.
+                        </Typography>
+                        <br />
+                        <br />
+                        <Typography use='headline5'>상벌점 내역</Typography>
+                        <br />
+                        <br />
+                        <DataTable
+                            stickyRows={1}
+                            stickyColumns={0}
+                            style={{
+                                width: 'calc(100% - 40px)',
+                                margin: '20px',
+                                maxHeight: 'calc(100vh - 300px)',
+                            }}>
+                            <DataTableContent>
+                                <DataTableHead>
+                                    <DataTableRow>
+                                        <DataTableHeadCell>
+                                            받은 점수
+                                        </DataTableHeadCell>
+                                        <DataTableHeadCell>
+                                            받은 시간
+                                        </DataTableHeadCell>
+                                        <DataTableHeadCell>
+                                            부여한 선생님
+                                        </DataTableHeadCell>
+                                        <DataTableHeadCell alignEnd>
+                                            사유
+                                        </DataTableHeadCell>
+                                    </DataTableRow>
+                                </DataTableHead>
+                                <DataTableBody>{tableBody}</DataTableBody>
+                            </DataTableContent>
+                        </DataTable>
+                        <br />
+                        <br />
+                        <Button
+                            outlined
+                            onClick={this.refresh.bind(this)}
+                            style={{ marginLeft: '20px' }}>
+                            새로고침
+                        </Button>
+                    </>
+                ) : (
+                    <></>
+                )}
+                <SnackbarQueue messages={this.messages} />
             </div>
         )
     }
-
 }
 
 export default Penalty

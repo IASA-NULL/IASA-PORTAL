@@ -1,20 +1,25 @@
 import express from 'express'
 import getPath from '../util/getPath'
 import db from '../util/db'
-import {changePasswordToken, Permission, token} from '../../scheme/api/auth'
+import { changePasswordToken, Permission, token } from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import jwt from 'jsonwebtoken'
-import getSecret, {saltRound} from '../util/secret'
+import getSecret, { saltRound } from '../util/secret'
 import bcrypt from 'bcrypt'
 import _ from 'lodash'
-import {getServerToken} from '../util/serverState'
+import { getServerToken } from '../util/serverState'
 import signupRouter from './signup'
-import {User} from '../../scheme/user'
-import {getChangePasswordMailHTML, sendMail} from '../util/mail'
-import {download} from '../util/s3'
+import { User } from '../../scheme/user'
+import { getChangePasswordMailHTML, sendMail } from '../util/mail'
+import { download } from '../util/s3'
 import createURL from '../../scheme/url'
-import {REQUIRE_SIGNIN_ERROR, TOKEN_EXPIRE_ERROR} from '../../string/error'
-import {maxTime, sudoTime, changePasswordTokenExpire, leftTokenTime} from '../util/tokenTime'
+import { REQUIRE_SIGNIN_ERROR, TOKEN_EXPIRE_ERROR } from '../../string/error'
+import {
+    maxTime,
+    sudoTime,
+    changePasswordTokenExpire,
+    leftTokenTime,
+} from '../util/tokenTime'
 
 const router = express.Router()
 declare const DEV_MODE: boolean
@@ -24,7 +29,7 @@ router.use('/signup', signupRouter)
 router.get('/info', (req, res, next) => {
     res.send(
         createResponse(
-            _.pick(req.auth ?? {permission: Permission.none}, [
+            _.pick(req.auth ?? { permission: Permission.none }, [
                 'name',
                 'id',
                 'uid',
@@ -74,7 +79,7 @@ router.post('/signin', async (req, res) => {
                     {
                         maxAge: leftTokenTime,
                         httpOnly: true,
-                        ...(!DEV_MODE && {domain: '.iasa.kr'}),
+                        ...(!DEV_MODE && { domain: '.iasa.kr' }),
                     }
                 )
                 res.cookie(
@@ -89,7 +94,7 @@ router.post('/signin', async (req, res) => {
                     {
                         maxAge: sudoTime,
                         httpOnly: true,
-                        ...(!DEV_MODE && {domain: '.iasa.kr'}),
+                        ...(!DEV_MODE && { domain: '.iasa.kr' }),
                     }
                 )
                 res.send(createResponse(true))
@@ -152,9 +157,9 @@ router.get('/reqchangesecret', async (req, res, next) => {
             createURL(
                 'account',
                 'challenge?next=' +
-                Buffer.from(
-                    createURL('api', 'account', 'reqchangesecret')
-                ).toString('base64')
+                    Buffer.from(
+                        createURL('api', 'account', 'reqchangesecret')
+                    ).toString('base64')
             )
         )
     }
@@ -222,11 +227,15 @@ router.post('/sudo', async (req, res) => {
                             ...req.auth,
                             expire: Date.now() + maxTime,
                             expired: false,
-                            sid: getServerToken()
+                            sid: getServerToken(),
                         },
                         getSecret('token')
                     ),
-                    {maxAge: leftTokenTime, httpOnly: true, ...(!DEV_MODE && {domain: '.iasa.kr'})}
+                    {
+                        maxAge: leftTokenTime,
+                        httpOnly: true,
+                        ...(!DEV_MODE && { domain: '.iasa.kr' }),
+                    }
                 )
                 res.cookie(
                     'sudo',
@@ -240,7 +249,7 @@ router.post('/sudo', async (req, res) => {
                     {
                         maxAge: sudoTime,
                         httpOnly: true,
-                        ...(!DEV_MODE && {domain: '.iasa.kr'}),
+                        ...(!DEV_MODE && { domain: '.iasa.kr' }),
                     }
                 )
                 res.send(createResponse(true))
@@ -297,13 +306,18 @@ router.post('/search', async (req, res) => {
         return
     }
     const account = await db.direct('account')
-    const userList = await account.find({name: {$regex: req.body.name}}).toArray()
-    const respList = userList.map((user: User) => {
-        if (req.body.type.includes(user.permission)) return {
-            name: user.name,
-            uid: user.uid
-        }
-    }).filter((x: any) => x)
+    const userList = await account
+        .find({ name: { $regex: req.body.name } })
+        .toArray()
+    const respList = userList
+        .map((user: User) => {
+            if (req.body.type.includes(user.permission))
+                return {
+                    name: user.name,
+                    uid: user.uid,
+                }
+        })
+        .filter((x: any) => x)
     res.send(createResponse(respList))
 })
 

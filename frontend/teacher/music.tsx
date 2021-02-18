@@ -1,10 +1,10 @@
 import * as React from 'react'
 
-import {Button} from '@rmwc/button'
-import {Typography} from '@rmwc/typography'
-import {TextField} from '@rmwc/textfield'
-import {Grid, GridCell, GridRow} from '@rmwc/grid'
-import {createSnackbarQueue, SnackbarQueue} from '@rmwc/snackbar'
+import { Button } from '@rmwc/button'
+import { Typography } from '@rmwc/typography'
+import { TextField } from '@rmwc/textfield'
+import { Grid, GridCell, GridRow } from '@rmwc/grid'
+import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 import Siema from 'siema'
 import {
@@ -16,10 +16,10 @@ import {
     CardPrimaryAction,
 } from '@rmwc/card'
 
-import {CircularProgress} from '@rmwc/circular-progress'
-import {MusicResponse, MusicResponseOne} from '../../scheme/api/music'
+import { CircularProgress } from '@rmwc/circular-progress'
+import { MusicResponse, MusicResponseOne } from '../../scheme/api/music'
 import * as ReactDOM from 'react-dom'
-import {BrIfMobile, fetchAPI, focusNextInput} from '../util'
+import { BrIfMobile, fetchAPI, focusNextInput } from '../util'
 import {
     Dialog,
     DialogActions,
@@ -49,7 +49,7 @@ interface MusicOneState {
 class MusicOne extends React.Component<MusicOneProps, MusicOneState> {
     public render() {
         return (
-            <Card style={{margin: '20px'}}>
+            <Card style={{ margin: '20px' }}>
                 <a
                     rel='noreferrer'
                     href={`https://www.youtube.com/watch?v=${this.props.data.yt}`}
@@ -61,11 +61,11 @@ class MusicOne extends React.Component<MusicOneProps, MusicOneState> {
                                 backgroundImage: `url(${this.props.data.thumbnail})`,
                             }}
                         />
-                        <div style={{padding: '0 1rem 1rem 1rem'}}>
+                        <div style={{ padding: '0 1rem 1rem 1rem' }}>
                             <Typography
                                 use='headline6'
                                 tag='h2'
-                                style={{color: 'black'}}>
+                                style={{ color: 'black' }}>
                                 {this.props.data.name}
                             </Typography>
                             <Typography
@@ -147,7 +147,7 @@ class Music extends React.Component<{}, MusicState> {
     }
 
     public refresh() {
-        this.setState({loaded: false})
+        this.setState({ loaded: false })
         fetchAPI('GET', {}, 'music', 'today').then((res: MusicResponse) => {
             for (let i = 0; i < this.todayList.length; i++) this.today.remove(0)
             for (let i = 0; i < this.tomorrowList.length; i++)
@@ -157,12 +157,12 @@ class Music extends React.Component<{}, MusicState> {
             if (res.success) {
                 res.data.today.map((el: MusicResponseOne) => {
                     ;(() => {
-                        this.todayList.push(<MusicOne data={el}/>)
+                        this.todayList.push(<MusicOne data={el} />)
                     })()
                     setTimeout(() => {
                         ;((siema: Siema) => {
                             siema.append(
-                                Music.createCarouselItem(<MusicOne data={el}/>)
+                                Music.createCarouselItem(<MusicOne data={el} />)
                             )
                         })(this.today)
                     }, this.animationDuration)
@@ -170,19 +170,19 @@ class Music extends React.Component<{}, MusicState> {
                 })
                 res.data.tomorrow.map((el: MusicResponseOne) => {
                     ;(() => {
-                        this.tomorrowList.push(<MusicOne data={el}/>)
+                        this.tomorrowList.push(<MusicOne data={el} />)
                     })()
                     setTimeout(() => {
                         ;((siema: Siema) => {
                             siema.append(
-                                Music.createCarouselItem(<MusicOne data={el}/>)
+                                Music.createCarouselItem(<MusicOne data={el} />)
                             )
                         })(this.tomorrow)
                     }, this.animationDuration)
                     return true
                 })
             }
-            this.setState({loaded: true})
+            this.setState({ loaded: true })
         })
     }
 
@@ -199,25 +199,25 @@ class Music extends React.Component<{}, MusicState> {
 
     public handleChange(e: React.FormEvent<HTMLInputElement>, target: string) {
         // @ts-ignore
-        this.setState({[target]: e.target.value})
+        this.setState({ [target]: e.target.value })
     }
 
     public render() {
         return (
             <div>
                 <Typography use='headline3'>기상곡</Typography>
-                <BrIfMobile/>
-                <Typography use='subtitle1' style={{marginLeft: '10px'}}>
+                <BrIfMobile />
+                <Typography use='subtitle1' style={{ marginLeft: '10px' }}>
                     기상곡을 확인할 수 있어요.
                 </Typography>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <Typography use='headline5'>오늘 나왔던 기상곡</Typography>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <div
                     id='music-today-container'
-                    style={{padding: '1px', margin: '10px'}}>
+                    style={{ padding: '1px', margin: '10px' }}>
                     {this.todayList}
                 </div>
                 {this.state?.loaded ? (
@@ -228,7 +228,7 @@ class Music extends React.Component<{}, MusicState> {
                                     outlined
                                     label='이전'
                                     icon='keyboard_arrow_left'
-                                    style={{float: 'left'}}
+                                    style={{ float: 'left' }}
                                     onClick={() => {
                                         this.today.prev()
                                     }}
@@ -237,31 +237,31 @@ class Music extends React.Component<{}, MusicState> {
                                     outlined
                                     label='이후'
                                     trailingIcon='keyboard_arrow_right'
-                                    style={{float: 'right'}}
+                                    style={{ float: 'right' }}
                                     onClick={() => {
                                         this.today.next()
                                     }}
                                 />
                             </>
                         ) : (
-                            <p style={{marginTop: '-20px'}}>
+                            <p style={{ marginTop: '-20px' }}>
                                 신청된 기상곡이 없어요!
                             </p>
                         )}
                     </>
                 ) : (
-                    <CircularProgress size={96}/>
+                    <CircularProgress size={96} />
                 )}
-                <br/>
-                <br/>
-                <br/>
-                <br/>
+                <br />
+                <br />
+                <br />
+                <br />
                 <Typography use='headline5'>내일 나올 기상곡</Typography>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <div
                     id='music-tomorrow-container'
-                    style={{padding: '1px', margin: '10px'}}>
+                    style={{ padding: '1px', margin: '10px' }}>
                     {this.tomorrowList}
                 </div>
                 {this.state?.loaded ? (
@@ -272,7 +272,7 @@ class Music extends React.Component<{}, MusicState> {
                                     outlined
                                     label='이전'
                                     icon='keyboard_arrow_left'
-                                    style={{float: 'left'}}
+                                    style={{ float: 'left' }}
                                     onClick={() => {
                                         this.tomorrow.prev()
                                     }}
@@ -281,22 +281,22 @@ class Music extends React.Component<{}, MusicState> {
                                     outlined
                                     label='이후'
                                     trailingIcon='keyboard_arrow_right'
-                                    style={{float: 'right'}}
+                                    style={{ float: 'right' }}
                                     onClick={() => {
                                         this.tomorrow.next()
                                     }}
                                 />
                             </>
                         ) : (
-                            <p style={{marginTop: '-20px'}}>
+                            <p style={{ marginTop: '-20px' }}>
                                 신청된 기상곡이 없어요!
                             </p>
                         )}
                     </>
                 ) : (
-                    <CircularProgress size={96}/>
+                    <CircularProgress size={96} />
                 )}
-                <SnackbarQueue messages={this.messages}/>
+                <SnackbarQueue messages={this.messages} />
             </div>
         )
     }

@@ -1,13 +1,13 @@
 import express from 'express'
 import child_process from 'child_process'
 
-import {Permission} from '../../scheme/api/auth'
+import { Permission } from '../../scheme/api/auth'
 import createResponse from '../createResponse'
-import {getServerFlag, setServerFlag} from '../util/serverState'
+import { getServerFlag, setServerFlag } from '../util/serverState'
 import db from '../util/db'
-import {User} from '../../scheme/user'
-import {getRandomInt} from '../util/random'
-import {base32Encode} from '@ctrl/ts-base32'
+import { User } from '../../scheme/user'
+import { getRandomInt } from '../util/random'
+import { base32Encode } from '@ctrl/ts-base32'
 import {
     ALREADY_BUILDING_ERROR,
     DB_CONNECT_ERROR,

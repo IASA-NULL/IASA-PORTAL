@@ -32,7 +32,7 @@ async function get(collection: string, key: string, value: any) {
         return await db
             .db('iasa_portal')
             .collection(collection)
-            .findOne({[key]: value})
+            .findOne({ [key]: value })
     } catch (e) {
         console.log(e)
         return undefined
@@ -46,7 +46,7 @@ async function del(collection: string, key: string, value: any) {
         return await db
             .db('iasa_portal')
             .collection(collection)
-            .deleteOne({[key]: value})
+            .deleteOne({ [key]: value })
     } catch (e) {
         console.log(e)
         return undefined
@@ -64,18 +64,13 @@ async function set(collection: string, data: any) {
     }
 }
 
-async function update(
-    collection: string,
-    key: string,
-    value: any,
-    data: any
-) {
+async function update(collection: string, key: string, value: any, data: any) {
     let db
     try {
         db = await get_db()
         db.db('iasa_portal')
             .collection(collection)
-            .updateOne({[key]: value}, {$set: data}, {upsert: true})
+            .updateOne({ [key]: value }, { $set: data }, { upsert: true })
         return true
     } catch (e) {
         return false

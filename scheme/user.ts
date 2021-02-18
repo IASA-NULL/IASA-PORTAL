@@ -1,5 +1,5 @@
-import {Permission} from './api/auth'
-import {Penalty} from "./api/penalty";
+import { Permission } from './api/auth'
+import { Penalty } from './api/penalty'
 
 export interface User {
     permission: Permission
@@ -13,6 +13,6 @@ export interface User {
 }
 
 export interface UserInfo {
-    name: string,
+    name: string
     uid: number
 }

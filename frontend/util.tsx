@@ -1,15 +1,20 @@
-import {Link} from 'react-router-dom'
-import {ListItem, ListItemText, ListItemGraphic, ListDivider} from '@rmwc/list'
+import { Link } from 'react-router-dom'
+import {
+    ListItem,
+    ListItemText,
+    ListItemGraphic,
+    ListDivider,
+} from '@rmwc/list'
 import * as React from 'react'
-import {LegacyRef, useState} from 'react'
-import {Menu, MenuItem, MenuSurfaceAnchor} from '@rmwc/menu'
-import {TextField} from '@rmwc/textfield'
+import { LegacyRef, useState } from 'react'
+import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
+import { TextField } from '@rmwc/textfield'
 import createURL from '../scheme/url'
-import {Typography} from "@rmwc/typography";
-import {Button} from "@rmwc/button";
-import {currentTeacherList} from "../scheme/teacher/teacher";
-import set = Reflect.set;
-import {Permission} from "../scheme/api/auth";
+import { Typography } from '@rmwc/typography'
+import { Button } from '@rmwc/button'
+import { currentTeacherList } from '../scheme/teacher/teacher'
+import set = Reflect.set
+import { Permission } from '../scheme/api/auth'
 
 declare const DEV_MODE: boolean
 
@@ -37,7 +42,7 @@ export function ListLink(props: {
                 href={props.to}
                 onClick={props.onClick}>
                 <ListItem activated={props.to === window.location.pathname}>
-                    {props.icon ? <ListItemGraphic icon={props.icon}/> : <></>}
+                    {props.icon ? <ListItemGraphic icon={props.icon} /> : <></>}
                     <ListItemText>{props.body}</ListItemText>
                 </ListItem>
             </a>
@@ -48,13 +53,13 @@ export function ListLink(props: {
                 onClick={() => {
                     // @ts-ignore
                     scrollObj.scroll(
-                        {el: document.getElementById(props.to), margin: 80},
+                        { el: document.getElementById(props.to), margin: 80 },
                         500
                     )
                     props.onClick()
                 }}
                 activated={props.to === window.location.pathname}>
-                {props.icon ? <ListItemGraphic icon={props.icon}/> : <></>}
+                {props.icon ? <ListItemGraphic icon={props.icon} /> : <></>}
                 <ListItemText>{props.body}</ListItemText>
             </ListItem>
         )
@@ -69,7 +74,7 @@ export function ListLink(props: {
                 to={props.to}
                 onClick={props.onClick}>
                 <ListItem activated={props.to === window.location.pathname}>
-                    {props.icon ? <ListItemGraphic icon={props.icon}/> : <></>}
+                    {props.icon ? <ListItemGraphic icon={props.icon} /> : <></>}
                     <ListItemText>{props.body}</ListItemText>
                 </ListItem>
             </Link>
@@ -103,7 +108,7 @@ export function MenuLink(props: {
                 onClick={() => {
                     // @ts-ignore
                     scrollObj.scroll(
-                        {el: document.getElementById(props.to), margin: 80},
+                        { el: document.getElementById(props.to), margin: 80 },
                         500
                     )
                     props.onClick()
@@ -178,7 +183,7 @@ export function FileInput(props: any) {
                 }}
             />
             <input
-                style={{display: 'none'}}
+                style={{ display: 'none' }}
                 type='file'
                 onChange={(e) => {
                     setValue(fileInput.value)
@@ -200,7 +205,7 @@ export function useForceUpdate() {
 }
 
 export function BrIfMobile() {
-    if (window.innerWidth <= 760) return <br/>
+    if (window.innerWidth <= 760) return <br />
     return <></>
 }
 
@@ -235,7 +240,7 @@ export function focusNextInput() {
         (currentEl &&
             (!currentEl.matches(focussableElements) || isHidden(currentEl))) ||
         first
-        ) {
+    ) {
         if (currentEl.firstElementChild) currentEl = currentEl.firstElementChild
         else {
             while (!currentEl.nextElementSibling && currentEl)
@@ -256,11 +261,11 @@ export function focusNextInput() {
 export function fetchAPI(method: string, body: any, ...props: string[]) {
     return fetch(createURL('api', ...props), {
         method: method,
-        ...(!DEV_MODE && {credentials: 'include'}),
+        ...(!DEV_MODE && { credentials: 'include' }),
         headers: {
             'Content-Type': 'application/json',
         },
-        ...(method !== 'GET' && {body: JSON.stringify(body)}),
+        ...(method !== 'GET' && { body: JSON.stringify(body) }),
     }).then((res) => res.json())
 }
 
@@ -270,83 +275,113 @@ export function requireSudo() {
         if (!accountInfo.data.sudo) {
             window.location.replace(
                 createURL('account', 'challenge') +
-                '?next=' + btoa(window.location.href)
+                    '?next=' +
+                    btoa(window.location.href)
             )
         }
     }, 0)
 }
 
-export function SearchUser<T extends { label?: string, onKeyDown?: any, onSelect?: any, type?: [Permission] }>(props: T) {
-    const [query, setQuery] = useState("")
+export function SearchUser<
+    T extends {
+        label?: string
+        onKeyDown?: any
+        onSelect?: any
+        type?: [Permission]
+    }
+>(props: T) {
+    const [query, setQuery] = useState('')
     const [menu, setMenu] = useState(false)
     const [data, setData] = useState([])
-    const [sel, setSel] = useState({name: "", uid: 0})
-    const searchTextbox = React.useRef(null) as React.RefObject<HTMLInputElement>
+    const [sel, setSel] = useState({ name: '', uid: 0 })
+    const searchTextbox = React.useRef(
+        null
+    ) as React.RefObject<HTMLInputElement>
 
-    const {label, onKeyDown, onSelect, type, ...others} = {
-        label: "검색",
-        onKeyDown: () => {
-        },
-        onSelect: () => {
-        },
+    const { label, onKeyDown, onSelect, type, ...others } = {
+        label: '검색',
+        onKeyDown: () => {},
+        onSelect: () => {},
         type: [Permission.student, Permission.teacher],
-        ...props
+        ...props,
     }
 
     const refreshData = (q: string) => {
-        fetchAPI('POST', {name: q, type: type}, 'account', 'search').then((res) => {
-            if (res.data && res.data.length) setData(res.data)
-        })
+        fetchAPI('POST', { name: q, type: type }, 'account', 'search').then(
+            (res) => {
+                if (res.data && res.data.length) setData(res.data)
+            }
+        )
     }
 
-    return <MenuSurfaceAnchor>
-        <Menu
-            open={menu}
-            onClose={(e) => {
-                setMenu(false)
-            }}>
+    return (
+        <MenuSurfaceAnchor>
+            <Menu
+                open={menu}
+                onClose={(e) => {
+                    setMenu(false)
+                }}>
+                <TextField
+                    label='검색'
+                    ref={searchTextbox}
+                    style={{
+                        width: '100%',
+                        marginTop: '-8px',
+                        marginBottom: '8px',
+                    }}
+                    value={query}
+                    onChange={(e) => {
+                        setQuery((e.target as HTMLInputElement).value)
+                        refreshData((e.target as HTMLInputElement).value)
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') focusNextInput()
+                        onKeyDown(e)
+                    }}
+                />
+                {query ? (
+                    data.length > 0 ? (
+                        data.map((user) => {
+                            return (
+                                <MenuItem
+                                    onClick={() => {
+                                        onSelect({
+                                            name: user.name,
+                                            uid: user.uid,
+                                        })
+                                        setSel({
+                                            name: user.name,
+                                            uid: user.uid,
+                                        })
+                                        setMenu(false)
+                                    }}>
+                                    {user.name}
+                                </MenuItem>
+                            )
+                        })
+                    ) : (
+                        <Typography use='subtitle1' style={{ margin: '10px' }}>
+                            검색 결과가 없어요!
+                        </Typography>
+                    )
+                ) : (
+                    <Typography use='subtitle1' style={{ margin: '10px' }}>
+                        검색할 사람의 이름/학번을 입력하세요.
+                    </Typography>
+                )}
+            </Menu>
             <TextField
-                label='검색'
-                ref={searchTextbox}
-                style={{
-                    width: '100%',
-                    marginTop: '-8px',
-                    marginBottom: '8px',
-                }}
-                value={query}
-                onChange={(e) => {
-                    setQuery((e.target as HTMLInputElement).value)
-                    refreshData((e.target as HTMLInputElement).value)
-                }}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') focusNextInput()
-                    onKeyDown(e)
+                style={{ width: '100%', height: '100%' }}
+                outlined
+                label={label}
+                value={sel.name}
+                onFocus={() => {
+                    setMenu(true)
+                    setTimeout(() => {
+                        searchTextbox.current.focus()
+                    }, 300)
                 }}
             />
-            {query ? (data.length > 0 ? data.map((user) => {
-                    return <MenuItem
-                        onClick={() => {
-                            onSelect({name: user.name, uid: user.uid})
-                            setSel({name: user.name, uid: user.uid})
-                            setMenu(false)
-                        }}>
-                        {user.name}
-                    </MenuItem>
-                }) : <Typography use='subtitle1'
-                                 style={{margin: '10px'}}>검색 결과가 없어요!</Typography>) :
-                <Typography use='subtitle1' style={{margin: '10px'}}>검색할 사람의 이름/학번을 입력하세요.</Typography>}
-        </Menu>
-        <TextField
-            style={{width: '100%', height: '100%'}}
-            outlined
-            label={label}
-            value={sel.name}
-            onFocus={() => {
-                setMenu(true)
-                setTimeout(() => {
-                    searchTextbox.current.focus()
-                }, 300)
-            }}
-        />
-    </MenuSurfaceAnchor>
+        </MenuSurfaceAnchor>
+    )
 }

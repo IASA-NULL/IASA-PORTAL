@@ -153,15 +153,7 @@ router.get('/finalize/:token', async (req, res, next) => {
         ) as signupToken
         if (token.expire < Date.now()) {
             res.sendFile(
-                path.join(
-                    __dirname,
-                    '..',
-                    '..',
-                    '..',
-                    'template',
-                    'signup',
-                    'fail.html'
-                )
+                path.join(__dirname, '..', 'template', 'signup', 'fail.html')
             )
             return
         }
@@ -172,15 +164,7 @@ router.get('/finalize/:token', async (req, res, next) => {
         if (user) {
             res.status(412)
             res.sendFile(
-                path.join(
-                    __dirname,
-                    '..',
-                    '..',
-                    '..',
-                    'template',
-                    'signup',
-                    'already.html'
-                )
+                path.join(__dirname, '..', 'template', 'signup', 'already.html')
             )
             return
         }
@@ -200,29 +184,13 @@ router.get('/finalize/:token', async (req, res, next) => {
         } as User)
 
         res.sendFile(
-            path.join(
-                __dirname,
-                '..',
-                '..',
-                '..',
-                'template',
-                'signup',
-                'success.html'
-            )
+            path.join(__dirname, '..', 'template', 'signup', 'success.html')
         )
         return
     } catch (e) {
         res.status(400)
         res.sendFile(
-            path.join(
-                __dirname,
-                '..',
-                '..',
-                '..',
-                'template',
-                'signup',
-                'fail.html'
-            )
+            path.join(__dirname, '..', 'template', 'signup', 'fail.html')
         )
         return
     }
