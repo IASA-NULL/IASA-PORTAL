@@ -68,9 +68,14 @@ async function update(collection: string, key: string, value: any, data: any) {
     let db
     try {
         db = await get_db()
+        let original = get(collection, key, value)
         db.db('iasa_portal')
             .collection(collection)
-            .updateOne({ [key]: value }, { $set: data }, { upsert: true })
+            .updateOne(
+                { [key]: value },
+                { $set: Object.assign(original, data) },
+                { upsert: true }
+            )
         return true
     } catch (e) {
         return false

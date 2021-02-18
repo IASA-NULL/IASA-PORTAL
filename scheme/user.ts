@@ -15,4 +15,5 @@ export interface User {
 export interface UserInfo {
     name: string
     uid: number
+    type: Permission
 }

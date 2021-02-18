@@ -1,5 +1,6 @@
 import { teacher } from '../teacher/teacher'
 import commonApi from './commonApi'
+import { User, UserInfo } from '../user'
 
 export enum MyeonbulRequestListType {
     listByUser,
@@ -28,8 +29,16 @@ export interface MyeonbulQueryOne {
         nickname?: string
     }
     place: string
-    teacher: teacher
-    approved: boolean
+    reason: string
+    teacher: UserInfo
+    target: UserInfo
+    sid: number
+    tid: number
+}
+
+export interface MyeonbulDB extends MyeonbulQueryOne {
+    mid: string
+    approved: MyeonbulResponseType
 }
 
 export interface MyeonbulQuery extends commonApi {
