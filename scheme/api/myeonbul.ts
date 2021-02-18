@@ -39,6 +39,7 @@ export interface MyeonbulQueryOne {
 export interface MyeonbulDB extends MyeonbulQueryOne {
     mid: string
     approved: MyeonbulResponseType
+    date: string
 }
 
 export interface MyeonbulQuery extends commonApi {

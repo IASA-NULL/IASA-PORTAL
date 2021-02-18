@@ -321,4 +321,23 @@ router.post('/search', async (req, res) => {
     res.send(createResponse(respList))
 })
 
+router.post('/list', async (req, res) => {
+    if (!req.body.type) {
+        res.send(createResponse([]))
+        return
+    }
+    const account = await db.direct('account')
+    const userList = await account.find({}).toArray()
+    const respList = userList
+        .map((user: User) => {
+            if (req.body.type.includes(user.permission))
+                return {
+                    name: user.name,
+                    uid: user.uid,
+                }
+        })
+        .filter((x: any) => x)
+    res.send(createResponse(respList))
+})
+
 export default router

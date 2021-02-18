@@ -26,6 +26,7 @@ function get_db() {
 }
 
 async function get(collection: string, key: string, value: any) {
+    if (!key || !value) return undefined
     let db
     try {
         db = await get_db()
@@ -40,6 +41,7 @@ async function get(collection: string, key: string, value: any) {
 }
 
 async function del(collection: string, key: string, value: any) {
+    if (!key || !value) return undefined
     let db
     try {
         db = await get_db()
@@ -65,6 +67,7 @@ async function set(collection: string, data: any) {
 }
 
 async function update(collection: string, key: string, value: any, data: any) {
+    if (!key || !value) return false
     let db
     try {
         db = await get_db()

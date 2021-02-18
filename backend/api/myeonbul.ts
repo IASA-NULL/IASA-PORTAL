@@ -4,6 +4,7 @@ import { Permission } from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import {
     MyeonbulDB,
+    MyeonbulQueryOne,
     MyeonbulRequestListType,
     MyeonbulResponseType,
 } from '../../scheme/api/myeonbul'
@@ -15,6 +16,7 @@ import {
 } from '../../string/error'
 import { User } from '../../scheme/user'
 import { v4 as uuid } from 'uuid'
+import _ from 'lodash'
 
 const router = express.Router()
 
@@ -27,7 +29,40 @@ router.use((req, res, next) => {
     }
 })
 
+router.get('/', async (req, res, next) => {
+    const myeonbulDB = await db.direct('myeonbul')
+    let myeonbulList
+    if (!myeonbulDB) {
+        res.status(500)
+        res.send(createResponse(false, DB_CONNECT_ERROR))
+    }
+    if (req.auth.permission === Permission.teacher) {
+        myeonbulList = await myeonbulDB.find({ tid: req.auth.uid }).toArray()
+    } else if (req.auth.permission === Permission.student) {
+        myeonbulList = await myeonbulDB.find({ sid: req.auth.uid }).toArray()
+    }
+    if (!myeonbulList) myeonbulList = []
+    myeonbulList = myeonbulList.map((myeonbul: MyeonbulDB) => {
+        return _.pick(myeonbul, [
+            'mid',
+            'timeRange',
+            'place',
+            'reason',
+            'teacher',
+            'target',
+            'sid',
+            'tid',
+        ])
+    })
+    res.send(createResponse(myeonbulList))
+})
+
 router.post('/', async (req, res, next) => {
+    if (!req.body.timeRange || !req.body.place || !req.body.reason) {
+        res.status(400)
+        res.send(createResponse(false, '올바르지 않은 요청이에요.'))
+        return
+    }
     let student, teacher
     const mid = uuid()
     if (req.auth.permission === Permission.student) {
@@ -41,6 +76,16 @@ router.post('/', async (req, res, next) => {
         res.send(createResponse(false, '올바르지 않은 요청이에요.'))
         return
     }
+    if (!student || !teacher) {
+        res.status(400)
+        res.send(createResponse(false, '올바르지 않은 요청이에요.'))
+        return
+    }
+    const date = new Date(req.body.timeRange.begin),
+        year = date.getFullYear(),
+        month = date.getMonth() + 1,
+        day = date.getDate(),
+        dateStr = `${year}_${month}_${day}`
     await db.set('myeonbul', {
         timeRange: req.body.timeRange,
         place: req.body.place,
@@ -59,6 +104,7 @@ router.post('/', async (req, res, next) => {
         sid: student.uid,
         tid: teacher.uid,
         reason: req.body.reason,
+        date: dateStr,
     } as MyeonbulDB)
     res.send(createResponse(mid))
 })
@@ -70,6 +116,11 @@ router.delete('/:mid', async (req, res, next) => {
             'mid',
             req.params.mid
         )) as MyeonbulDB
+        if (!myeonbul) {
+            res.status(403)
+            res.send(createResponse(false, '존재하지 않는 면불 ID에요.'))
+            return
+        }
         if (myeonbul.sid !== req.auth.uid) {
             res.status(403)
             res.send(createResponse(false, '자신의 면불만 삭제할 수 있어요.'))
@@ -77,9 +128,10 @@ router.delete('/:mid', async (req, res, next) => {
         }
     }
     await db.del('myeonbul', 'mid', req.params.mid)
+    res.send(createResponse(true))
 })
 
-router.put('/:mid/reponse', async (req, res, next) => {
+router.put('/:mid/response', async (req, res, next) => {
     if (req.auth.permission === Permission.teacher) {
         if (
             req.body.type !== MyeonbulResponseType.ACCEPT &&
@@ -99,19 +151,38 @@ router.put('/:mid/reponse', async (req, res, next) => {
     }
 })
 
-router.get('/', async (req, res, next) => {
+router.get('/today', async (req, res) => {
     const myeonbulDB = await db.direct('myeonbul')
+    const date = new Date(req.body.timeRange.begin),
+        year = date.getFullYear(),
+        month = date.getMonth() + 1,
+        day = date.getDate(),
+        dateStr = `${year}_${month}_${day}`
     let myeonbulList
     if (!myeonbulDB) {
         res.status(500)
         res.send(createResponse(false, DB_CONNECT_ERROR))
     }
     if (req.auth.permission === Permission.teacher) {
-        myeonbulList = await myeonbulDB.find({ tid: req.auth.uid }).toArray()
+        myeonbulList = await myeonbulDB.find({ date: dateStr }).toArray()
     } else if (req.auth.permission === Permission.student) {
-        myeonbulList = await myeonbulDB.find({ sid: req.auth.uid }).toArray()
+        res.status(401)
+        res.send(createResponse(false, REQUIRE_PERMISSION_ERROR))
+        return
     }
     if (!myeonbulList) myeonbulList = []
+    myeonbulList = myeonbulList.map((myeonbul: MyeonbulDB) => {
+        return _.pick(myeonbul, [
+            'mid',
+            'timeRange',
+            'place',
+            'reason',
+            'teacher',
+            'target',
+            'sid',
+            'tid',
+        ])
+    })
     res.send(createResponse(myeonbulList))
 })
 
