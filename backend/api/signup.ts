@@ -175,7 +175,7 @@ router.get('/finalize/:token', async (req, res, next) => {
         await db.del('code', 'uid', token.uid)
         await db.set('account', {
             permission: tmpUser.type,
-            uid: tmpUser.uid,
+            uid: parseInt(tmpUser.uid),
             id: tmpUser.id,
             pwHash: tmpUser.pwHash,
             email: tmpUser.email,

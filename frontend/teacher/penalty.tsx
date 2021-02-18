@@ -111,7 +111,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
             {
                 uid: this.state.uid,
                 score:
-                    parseInt(this.state.score) *
+                    parseInt(this.state.score.replace(/-/g, '')) *
                     (this.state.type === 'a' ? 1 : -1),
                 reason: this.state.reason,
             },
