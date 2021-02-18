@@ -77,15 +77,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
     }
 
     public refresh() {
-        if (!this.state?.uid) {
-            this.notify({
-                title: <b>오류</b>,
-                body: '학생을 선택하세요.',
-                icon: 'error_outline',
-                dismissIcon: true,
-            })
-            return
-        }
+        if (!this.state?.uid) return
         this.setState({ loaded: false })
         fetchAPI('GET', {}, 'penalty', 'list', this.state?.uid.toString()).then(
             (res: PenaltyResponse) => {
