@@ -15,27 +15,20 @@ import {
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 import {
-    PenaltyRequest,
     PenaltyResponse,
     PenaltyResponseOne,
 } from '../../scheme/api/penalty'
-import { teacher, currentTeacherList } from '../../scheme/teacher/teacher'
-import teacherList from '../../scheme/teacher/2021/list'
 import { Permission, token } from '../../scheme/api/auth'
 import {
     BrIfMobile,
     fetchAPI,
     focusNextInput,
-    requireSudo,
     SearchUser,
 } from '../util'
-import {
-    MyeonbulQuery,
-    MyeonbulRequestListType,
-} from '../../scheme/api/myeonbul'
 import { Grid, GridCell, GridRow } from '@rmwc/grid'
 import { TextField } from '@rmwc/textfield'
 import { Select } from '@rmwc/select'
+import { UserInfo } from '../../scheme/user'
 
 interface PenaltyProps {
     data: token
@@ -215,10 +208,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                                 }}
                                 label='학생 정보'
                                 type={[Permission.student]}
-                                onSelect={(user: {
-                                    name: string
-                                    uid: number
-                                }) => {
+                                onSelect={(user: UserInfo) => {
                                     this.setState({ uid: user.uid })
                                 }}
                             />

@@ -1,19 +1,11 @@
 import { Link } from 'react-router-dom'
-import {
-    ListItem,
-    ListItemText,
-    ListItemGraphic,
-    ListDivider,
-} from '@rmwc/list'
+import { ListItem, ListItemText, ListItemGraphic } from '@rmwc/list'
 import * as React from 'react'
-import { LegacyRef, useState } from 'react'
+import { useState } from 'react'
 import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
 import { TextField } from '@rmwc/textfield'
 import createURL from '../scheme/url'
 import { Typography } from '@rmwc/typography'
-import { Button } from '@rmwc/button'
-import { currentTeacherList } from '../scheme/teacher/teacher'
-import set = Reflect.set
 import { Permission } from '../scheme/api/auth'
 
 declare const DEV_MODE: boolean

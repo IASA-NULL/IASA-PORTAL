@@ -4,7 +4,6 @@ import { Permission } from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import {
     MyeonbulDB,
-    MyeonbulQueryOne,
     MyeonbulRequestListType,
     MyeonbulResponseType,
 } from '../../scheme/api/myeonbul'

@@ -4,29 +4,27 @@ import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
 import {
     DataTable,
-    DataTableContent,
-    DataTableHead,
-    DataTableRow,
-    DataTableHeadCell,
     DataTableBody,
     DataTableCell,
+    DataTableContent,
+    DataTableHead,
+    DataTableHeadCell,
+    DataTableRow,
 } from '@rmwc/data-table'
 import { Checkbox } from '@rmwc/checkbox'
 import { TextField } from '@rmwc/textfield'
 import { Grid, GridCell, GridRow } from '@rmwc/grid'
-import { Menu, MenuSurfaceAnchor, MenuItem } from '@rmwc/menu'
-import { ListDivider } from '@rmwc/list'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 import {
-    MyeonbulRequestListType,
-    MyeonbulQuery,
-    MyeonbulQueryOne,
     MyeonbulDB,
+    MyeonbulQuery,
+    MyeonbulRequestListType,
+    MyeonbulResponseType,
 } from '../../scheme/api/myeonbul'
-import { teacher, currentTeacherList } from '../../scheme/teacher/teacher'
-import { token } from '../../scheme/api/auth'
-import { BrIfMobile, fetchAPI, focusNextInput } from '../util'
+import { Permission, token } from '../../scheme/api/auth'
+import { BrIfMobile, fetchAPI, focusNextInput, SearchUser } from '../util'
+import { UserInfo } from '../../scheme/user'
 
 interface MyeonbulProps {
     data: token
@@ -36,7 +34,7 @@ interface MyeonbulState {
     data?: MyeonbulQuery
     loaded: boolean
     teacherSelectOpened: boolean
-    selectedTeacher: teacher
+    selectedTeacher: UserInfo
     teacherSearch: string
 }
 
@@ -118,11 +116,12 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                         {el.teacher.name}
                                     </DataTableCell>
                                     <DataTableCell alignEnd>
-                                        {el.approved ? (
-                                            <Checkbox checked />
-                                        ) : (
-                                            <Checkbox checked={false} />
-                                        )}
+                                        <Checkbox
+                                            checked={
+                                                el.approved ===
+                                                MyeonbulResponseType.ACCEPT
+                                            }
+                                        />
                                     </DataTableCell>
                                 </DataTableRow>
                             )
@@ -194,85 +193,16 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                             />
                         </GridCell>
                         <GridCell desktop={4} tablet={4} phone={4}>
-                            <MenuSurfaceAnchor>
-                                <Menu
-                                    open={this.state?.teacherSelectOpened}
-                                    onClose={(e) => {
-                                        this.setState({
-                                            teacherSelectOpened: false,
-                                        })
-                                    }}>
-                                    <TextField
-                                        label='검색'
-                                        style={{
-                                            width: '100%',
-                                            marginTop: '-8px',
-                                            marginBottom: '8px',
-                                        }}
-                                        value={this.state?.teacherSearch}
-                                        onChange={(e) => {
-                                            this.setState({
-                                                teacherSearch: (e.target as HTMLInputElement)
-                                                    .value,
-                                            })
-                                        }}
-                                    />
-                                    {currentTeacherList.map((subject) => {
-                                        let teacherList = subject.teacherList
-                                            .map((teacher) => {
-                                                if (
-                                                    !this.state
-                                                        ?.teacherSearch ||
-                                                    teacher.name.includes(
-                                                        this.state
-                                                            ?.teacherSearch
-                                                    )
-                                                )
-                                                    return (
-                                                        <MenuItem
-                                                            onClick={() => {
-                                                                this.setState({
-                                                                    selectedTeacher: teacher,
-                                                                })
-                                                                setTimeout(
-                                                                    () => {
-                                                                        this.lastInput.focus()
-                                                                    },
-                                                                    0
-                                                                )
-                                                            }}>
-                                                            {teacher.name}
-                                                        </MenuItem>
-                                                    )
-                                                else return undefined
-                                            })
-                                            .filter((x) => x)
-                                        if (teacherList.length > 0)
-                                            return (
-                                                <>
-                                                    <ListDivider />
-                                                    <Typography use='caption'>
-                                                        {subject.subject}
-                                                    </Typography>
-                                                    {teacherList}
-                                                </>
-                                            )
-                                        else return undefined
-                                    })}
-                                </Menu>
-
-                                <TextField
-                                    style={{ width: '100%', height: '100%' }}
-                                    outlined
-                                    label='면불 담당 선생님'
-                                    onFocus={() => {
-                                        this.setState({
-                                            teacherSelectOpened: true,
-                                        })
-                                    }}
-                                    value={this.state?.selectedTeacher?.name}
-                                />
-                            </MenuSurfaceAnchor>
+                            <SearchUser
+                                onKeyDown={(e: any) => {
+                                    if (e.key === 'Enter') focusNextInput()
+                                }}
+                                type={[Permission.teacher]}
+                                label='면불 담당 선생님'
+                                onSelect={(user: UserInfo) => {
+                                    this.setState({ selectedTeacher: user })
+                                }}
+                            />
                         </GridCell>
                         <GridCell desktop={8} tablet={4} phone={4}>
                             <TextField
