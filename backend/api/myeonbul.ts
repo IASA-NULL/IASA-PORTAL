@@ -29,7 +29,7 @@ router.use((req, res, next) => {
     }
 })
 
-router.post('/list', async (req, res, next) => {
+router.post('/list', async (req, res) => {
     const myeonbulDB = await db.direct('myeonbul')
     let myeonbulList
     if (!myeonbulDB) {
@@ -74,7 +74,7 @@ router.post('/list', async (req, res, next) => {
     res.send(createResponse(myeonbulList))
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', async (req, res) => {
     if (!req.body.timeRange || !req.body.place || !req.body.reason) {
         res.status(400)
         res.send(createResponse(false, '올바르지 않은 요청이에요.'))
@@ -121,7 +121,7 @@ router.post('/', async (req, res, next) => {
     res.send(createResponse(mid))
 })
 
-router.delete('/:mid', async (req, res, next) => {
+router.delete('/:mid', async (req, res) => {
     if (req.auth.permission === Permission.student) {
         const myeonbul = (await db.get(
             'myeonbul',
@@ -143,7 +143,7 @@ router.delete('/:mid', async (req, res, next) => {
     res.send(createResponse(true))
 })
 
-router.put('/:mid/response', async (req, res, next) => {
+router.put('/:mid/response', async (req, res) => {
     if (req.auth.permission === Permission.teacher) {
         if (
             req.body.type !== MyeonbulResponseType.ACCEPT &&

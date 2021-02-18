@@ -30,7 +30,7 @@ router.use((req, res, next) => {
     }
 })
 
-router.post('/update', (req, res, next) => {
+router.post('/update', (req, res) => {
     if (!req.auth.sudo) {
         res.status(403)
         res.send(createResponse(false, REQUIRE_SUDO_ERROR))
@@ -58,7 +58,7 @@ router.post('/update', (req, res, next) => {
     }
 })
 
-router.put('/code', async (req, res, next) => {
+router.put('/code', async (req, res) => {
     let cid
     if (req.body.type === 'S') cid = 0
     else cid = 700
@@ -101,7 +101,7 @@ router.put('/code', async (req, res, next) => {
     }
 })
 
-router.get('/code', async (req, res, next) => {
+router.get('/code', async (req, res) => {
     try {
         let codeDB = await db.direct('code')
         codeDB.find({}).toArray((err: any, result: any[]) => {

@@ -231,7 +231,7 @@ export function FileInput(props: any) {
             <input
                 style={{ display: 'none' }}
                 type='file'
-                onChange={(e) => {
+                onChange={() => {
                     setValue(fileInput.value)
                     if (props.onFileSelect) props.onFileSelect(fileInput.files)
                 }}
@@ -364,7 +364,7 @@ export function SearchUser<
         <MenuSurfaceAnchor>
             <Menu
                 open={menu}
-                onClose={(e) => {
+                onClose={() => {
                     setMenu(false)
                 }}>
                 <TextField

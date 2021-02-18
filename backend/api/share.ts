@@ -7,7 +7,7 @@ import { REQUIRE_SIGNIN_ERROR } from '../../string/error'
 
 const router = express.Router()
 
-router.post('/upload', async (req, res, next) => {
+router.post('/upload', async (req, res) => {
     const code = getRandomCode(6)
 
     await db.set('share', {
@@ -32,7 +32,7 @@ router.use((req, res, next) => {
     }
 })
 
-router.get('/:code', async (req, res, next) => {
+router.get('/:code', async (req, res) => {
     const info = await db.get('share', 'code', req.params.code)
     if (info) res.send(createResponse(info.files))
     else {

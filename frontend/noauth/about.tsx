@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Typography } from '@rmwc/typography'
 import { Grid, GridCell, GridRow } from '@rmwc/grid'
 import { IconButton } from '@rmwc/icon-button'
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import {
     TopAppBar,
     TopAppBarActionItem,
@@ -14,7 +14,7 @@ import { Button } from '@rmwc/button'
 import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
 import createURL from '../../scheme/url'
 
-function About(props: RouteComponentProps) {
+function About() {
     const [accountMenuOpen, setAccountMenuOpen] = React.useState(false)
     return (
         <>
@@ -36,7 +36,7 @@ function About(props: RouteComponentProps) {
                         <MenuSurfaceAnchor>
                             <Menu
                                 open={accountMenuOpen}
-                                onClose={(evt) => setAccountMenuOpen(false)}>
+                                onClose={() => setAccountMenuOpen(false)}>
                                 <MenuItem
                                     onClick={() => {
                                         window.location.replace(
@@ -48,7 +48,7 @@ function About(props: RouteComponentProps) {
                             </Menu>
                             <TopAppBarActionItem
                                 icon='account_circle'
-                                onClick={(evt) =>
+                                onClick={() =>
                                     setAccountMenuOpen(!accountMenuOpen)
                                 }
                             />

@@ -8,11 +8,11 @@ import createURL from '../scheme/url'
 declare const DEV_MODE: boolean
 const authRouter = express.Router()
 
-authRouter.get('/signin', (req, res, next) => {
+authRouter.get('/signin', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'template', 'auth.html'))
 })
 
-authRouter.get('/changesecret/:token', (req, res, next) => {
+authRouter.get('/changesecret/:token', (req, res) => {
     try {
         let token = jwt.verify(
             req.params.token,
@@ -33,11 +33,11 @@ authRouter.get('/changesecret/:token', (req, res, next) => {
     }
 })
 
-authRouter.get('/challenge', (req, res, next) => {
+authRouter.get('/challenge', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'template', 'auth.html'))
 })
 
-authRouter.get('/signout', (req, res, next) => {
+authRouter.get('/signout', (req, res) => {
     res.cookie('auth', '', {
         maxAge: -1,
         httpOnly: true,

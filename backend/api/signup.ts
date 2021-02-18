@@ -14,7 +14,7 @@ import { signupTokenExpire } from '../util/tokenTime'
 
 const router = express.Router()
 
-router.post('/verify', async (req, res, next) => {
+router.post('/verify', async (req, res) => {
     let errRes = false
 
     let tmpUser
@@ -58,7 +58,7 @@ router.post('/verify', async (req, res, next) => {
     }
 })
 
-router.post('/mail', async (req, res, next) => {
+router.post('/mail', async (req, res) => {
     let errRes = false
 
     let tmpUser
@@ -145,7 +145,7 @@ router.post('/mail', async (req, res, next) => {
     }
 })
 
-router.get('/finalize/:token', async (req, res, next) => {
+router.get('/finalize/:token', async (req, res) => {
     try {
         let token = jwt.verify(
             req.params.token,

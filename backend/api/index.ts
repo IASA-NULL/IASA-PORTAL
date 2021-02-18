@@ -25,7 +25,7 @@ router.use('/files', filesRouter)
 router.use('/penalty', penaltyRouter)
 router.use('/share', shareRouter)
 
-router.use('*', (req, res, next) => {
+router.use('*', (req, res) => {
     res.status(404)
     res.send(createResponse(false, '알 수 없는 요청이에요.'))
 })

@@ -10,11 +10,11 @@ export function upload(body: any, bucket = 'upload') {
     return new Promise<string>((resolve, reject) => {
         s3Client.upload(
             {
-                Bucket: 'upload.iasa.kr',
+                Bucket: bucket + '.iasa.kr',
                 Key: fileName,
                 Body: body,
             },
-            (err: any, data: any) => {
+            (err: any) => {
                 if (err) {
                     reject()
                 }
@@ -27,7 +27,7 @@ export function upload(body: any, bucket = 'upload') {
 export function download(id: string, bucket = 'upload') {
     return s3Client
         .getObject({
-            Bucket: 'upload.iasa.kr',
+            Bucket: bucket + '.iasa.kr',
             Key: id,
         })
         .createReadStream()

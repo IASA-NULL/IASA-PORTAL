@@ -336,7 +336,7 @@ class App extends React.Component<any, IState> {
                             this.focusCurrentInput()
                         }
                     })
-                    .catch((e) => {
+                    .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
                         })
@@ -380,7 +380,7 @@ class App extends React.Component<any, IState> {
                             this.focusCurrentInput()
                         }
                     })
-                    .catch((e) => {
+                    .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
                         })
@@ -418,7 +418,7 @@ class App extends React.Component<any, IState> {
                             this.focusCurrentInput()
                         }
                     })
-                    .catch((e) => {
+                    .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
                         })
@@ -456,7 +456,7 @@ class App extends React.Component<any, IState> {
                             this.focusCurrentInput()
                         }
                     })
-                    .catch((e) => {
+                    .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
                         })
@@ -515,7 +515,7 @@ class App extends React.Component<any, IState> {
                             this.focusCurrentInput()
                         }
                     })
-                    .catch((e) => {
+                    .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
                         })
@@ -628,7 +628,7 @@ class App extends React.Component<any, IState> {
                         this.focusCurrentInput()
                     }
                 })
-                .catch((e) => {
+                .catch(() => {
                     this.setState({
                         errMessage: '서버와 통신 중 오류가 발생했어요.',
                         loaded: true,
@@ -681,7 +681,7 @@ class App extends React.Component<any, IState> {
                             this.focusCurrentInput()
                         }
                     })
-                    .catch((e) => {
+                    .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
                         })
@@ -725,7 +725,7 @@ class App extends React.Component<any, IState> {
                             this.focusCurrentInput()
                         }
                     })
-                    .catch((e) => {
+                    .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
                         })

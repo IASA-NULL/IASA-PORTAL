@@ -232,13 +232,13 @@ function getMeal(target: mealTime) {
 
 const router = express.Router()
 
-router.post('/', (req, res, next) => {
+router.post('/', (req, res) => {
     getMeal(req.body)
         .then((mealData: MealResponse) => {
             if (!mealData.success) res.status(404)
             res.send(mealData)
         })
-        .catch((e) => {
+        .catch(() => {
             res.status(500)
             res.send(createResponse(false, '급식 정보를 불러올 수 없어요.'))
         })

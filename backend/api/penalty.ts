@@ -23,7 +23,7 @@ async function getPenaltyInfo(uid: number, res: any) {
     }
     if (!account.penalty) {
         account.penalty = { score: 0, history: [] }
-        db.update('account', 'uid', uid, account)
+        await db.update('account', 'uid', uid, { penalty: account.penalty })
     }
     res.send(createResponse(account.penalty))
 }
@@ -43,7 +43,7 @@ async function addPenalty(uid: number, info: PenaltyResponseOne, res: any) {
     if (!account.penalty) account.penalty = { score: 0, history: [] }
     account.penalty.score += info.score
     account.penalty.history.unshift(info)
-    db.update('account', 'uid', uid, account)
+    await db.update('account', 'uid', uid, { penalty: account.penalty })
     res.send(createResponse(true))
 }
 

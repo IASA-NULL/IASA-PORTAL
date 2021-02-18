@@ -482,7 +482,7 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                         <MenuSurfaceAnchor>
                             <Menu
                                 open={accountMenuOpen}
-                                onClose={(evt) => setAccountMenuOpen(false)}>
+                                onClose={() => setAccountMenuOpen(false)}>
                                 {props?.accountInfo?.id ? (
                                     <>
                                         <p style={{ margin: '10px' }}>
@@ -522,7 +522,7 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                             </Menu>
                             <TopAppBarActionItem
                                 icon='account_circle'
-                                onClick={(evt) =>
+                                onClick={() =>
                                     setAccountMenuOpen(!accountMenuOpen)
                                 }
                             />

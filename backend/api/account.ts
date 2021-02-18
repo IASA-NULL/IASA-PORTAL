@@ -26,7 +26,7 @@ declare const DEV_MODE: boolean
 
 router.use('/signup', signupRouter)
 
-router.get('/info', (req, res, next) => {
+router.get('/info', (req, res) => {
     res.send(
         createResponse(
             _.pick(req.auth ?? { permission: Permission.none }, [
@@ -109,7 +109,7 @@ router.post('/signin', async (req, res) => {
         })
 })
 
-router.post('/find/id', async (req, res, next) => {
+router.post('/find/id', async (req, res) => {
     try {
         let account = (await db.get('account', 'email', req.body.email)) as User
         if (account.name === req.body.name) {
@@ -125,7 +125,7 @@ router.post('/find/id', async (req, res, next) => {
     }
 })
 
-router.post('/find/password', async (req, res, next) => {
+router.post('/find/password', async (req, res) => {
     try {
         let account = (await db.get('account', 'id', req.body.id)) as User
         if (account.email === req.body.email) {
@@ -151,7 +151,7 @@ router.post('/find/password', async (req, res, next) => {
     }
 })
 
-router.get('/reqchangesecret', async (req, res, next) => {
+router.get('/reqchangesecret', async (req, res) => {
     if (!req.auth.sudo) {
         res.redirect(
             createURL(
@@ -178,7 +178,7 @@ router.get('/reqchangesecret', async (req, res, next) => {
     )
 })
 
-router.post('/changesecret', async (req, res, next) => {
+router.post('/changesecret', async (req, res) => {
     try {
         let token = jwt.verify(
             req.body.token,

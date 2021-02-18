@@ -18,7 +18,7 @@ const uploadReq = multer({ storage: storage })
 
 const router = express.Router()
 
-router.post('/upload', uploadReq.any(), async (req, res, next) => {
+router.post('/upload', uploadReq.any(), async (req, res) => {
     try {
         if (!req.files || !req.files.length) {
             res.status(400)
@@ -83,7 +83,7 @@ function getDownloadFilename(filename: string, req: any) {
     return filename
 }
 
-router.get('/download/:id', async (req, res, next) => {
+router.get('/download/:id', async (req, res) => {
     try {
         const fileInfo = await db.get('upload', 'id', req.params.id)
         const fileBody = download(req.params.id)
