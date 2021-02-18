@@ -301,7 +301,7 @@ router.get('/avatar/:id', async (req, res) => {
 })
 
 router.post('/search', async (req, res) => {
-    if (!req.body.name) {
+    if (!req.body.name || !req.body.type) {
         res.send(createResponse([]))
         return
     }
