@@ -115,7 +115,7 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                         {el.place}
                                     </DataTableCell>
                                     <DataTableCell alignEnd>
-                                        {el.teacher.name}
+                                        {el.target.name}
                                     </DataTableCell>
                                     <DataTableCell alignEnd>
                                         {el.approved ? (
@@ -165,7 +165,7 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                 <Typography use='headline3'>면불</Typography>
                 <BrIfMobile />
                 <Typography use='subtitle1' style={{ marginLeft: '10px' }}>
-                    면불을 신청하거나 선생님의 승인 여부를 확인할 수 있어요.
+                    면불을 생성/승인하거나 면불대장을 출력할 수 있어요.
                 </Typography>
                 <br />
                 <br />
