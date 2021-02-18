@@ -24,7 +24,6 @@ import {
     MyeonbulQueryOne,
 } from '../../scheme/api/myeonbul'
 import { teacher, currentTeacherList } from '../../scheme/teacher/teacher'
-import teacherList from '../../scheme/teacher/2021/list'
 import { token } from '../../scheme/api/auth'
 import { BrIfMobile, fetchAPI, focusNextInput } from '../util'
 

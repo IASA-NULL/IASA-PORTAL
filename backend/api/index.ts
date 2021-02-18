@@ -8,6 +8,7 @@ import musicRouter from './music'
 import adminRouter from './admin'
 import filesRouter from './files'
 import penaltyRouter from './penalty'
+import shareRouter from './share'
 
 import createResponse from '../createResponse'
 
@@ -22,6 +23,7 @@ router.use('/music', musicRouter)
 router.use('/admin', adminRouter)
 router.use('/files', filesRouter)
 router.use('/penalty', penaltyRouter)
+router.use('/share', shareRouter)
 
 router.use('*', (req, res, next) => {
     res.status(404)

@@ -509,7 +509,11 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                                     <MenuItem
                                         onClick={() => {
                                             window.location.replace(
-                                                createURL('account', 'signin')
+                                                createURL('account', 'signin') +
+                                                    ('?next=' +
+                                                        btoa(
+                                                            window.location.href
+                                                        ))
                                             )
                                         }}>
                                         로그인
@@ -726,7 +730,6 @@ export function MainView(props: {
         headerHeight = document.querySelector('header').offsetHeight
     if (document.querySelector('footer'))
         footerHeight = document.querySelector('footer').offsetHeight
-    if (!props.navList) props.navList = undefined
     const forceUpdate = useForceUpdate()
     document.addEventListener('load', () => {
         if (document.querySelector('header'))

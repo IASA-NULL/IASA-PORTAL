@@ -1,5 +1,6 @@
 import express from 'express'
 import multer from 'multer'
+import iconvLite from 'iconv-lite'
 
 import createResponse from '../createResponse'
 
@@ -16,15 +17,6 @@ const storage = multer.memoryStorage()
 const uploadReq = multer({ storage: storage })
 
 const router = express.Router()
-
-router.use((req, res, next) => {
-    if (!req.auth) {
-        res.status(401)
-        res.send(createResponse(false, REQUIRE_SIGNIN_ERROR))
-    } else {
-        next()
-    }
-})
 
 router.post('/upload', uploadReq.any(), async (req, res, next) => {
     try {
@@ -57,13 +49,47 @@ router.post('/upload', uploadReq.any(), async (req, res, next) => {
     }
 })
 
+router.use((req, res, next) => {
+    if (!req.auth) {
+        res.status(401)
+        res.send(createResponse(false, REQUIRE_SIGNIN_ERROR))
+    } else {
+        next()
+    }
+})
+
+function getDownloadFilename(filename: string, req: any) {
+    const header = req.headers['user-agent']
+
+    if (header.includes('MSIE') || header.includes('Trident')) {
+        return encodeURIComponent(filename).replace(/\\+/gi, '%20')
+    } else if (header.includes('Chrome')) {
+        return iconvLite.decode(
+            iconvLite.encode(filename, 'UTF-8'),
+            'ISO-8859-1'
+        )
+    } else if (header.includes('Opera')) {
+        return iconvLite.decode(
+            iconvLite.encode(filename, 'UTF-8'),
+            'ISO-8859-1'
+        )
+    } else if (header.includes('Firefox')) {
+        return iconvLite.decode(
+            iconvLite.encode(filename, 'UTF-8'),
+            'ISO-8859-1'
+        )
+    }
+
+    return filename
+}
+
 router.get('/download/:id', async (req, res, next) => {
     try {
         const fileInfo = await db.get('upload', 'id', req.params.id)
         const fileBody = download(req.params.id)
         res.setHeader(
             'Content-disposition',
-            'attachment; filename=' + fileInfo.name
+            'attachment; filename=' + getDownloadFilename(fileInfo.name, req)
         )
         res.set('Content-Type', fileInfo.mime)
         res.set('Content-Length', fileInfo.size)

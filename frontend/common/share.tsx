@@ -1,17 +1,12 @@
 import * as React from 'react'
-import { withRouter } from 'react-router-dom'
 
 import { Button } from '@rmwc/button'
 import { Icon } from '@rmwc/icon'
 import { Typography } from '@rmwc/typography'
-import { BrIfMobile, focusNextInput, SearchUser } from '../util'
+import { BrIfMobile, fetchAPI, focusNextInput } from '../util'
 import { Grid, GridCell, GridRow } from '@rmwc/grid'
-import { Permission, token } from '../../scheme/api/auth'
 import { TextField } from '@rmwc/textfield'
-import { PenaltyResponse } from '../../scheme/api/penalty'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
-import { CardMedia } from '@rmwc/card'
-import { CircularProgress } from '@rmwc/circular-progress'
 import {
     Dialog,
     DialogActions,
@@ -20,13 +15,16 @@ import {
     DialogTitle,
 } from '@rmwc/dialog'
 import { Ripple } from '@rmwc/ripple'
+import createURL from '../../scheme/url'
 
-interface ShareProps {}
+interface ShareProps {
+    hideDownload?: boolean
+}
 
 interface ShareState {
     code: string
     detailOpened: boolean
-    data?: PenaltyResponse
+    data?: any
     uploaded: boolean
 }
 
@@ -49,8 +47,114 @@ class Share extends React.Component<ShareProps, ShareState> {
         this.setState({ [target]: e.target.value })
     }
 
-    public upload() {
+    public upload(files: File[]) {
+        if (!files.length) return
         this.setState({ uploaded: false, detailOpened: true })
+
+        const data = new FormData()
+
+        for (const file of files) {
+            data.append('files[]', file, file.name)
+        }
+
+        fetch(createURL('api', 'files', 'upload'), {
+            method: 'POST',
+            body: data,
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                if (res.success) {
+                    fetchAPI(
+                        'POST',
+                        {
+                            files: res.data.fileList,
+                        },
+                        'share',
+                        'upload'
+                    )
+                        .then((res) => {
+                            if (res.success) {
+                                this.setState({
+                                    uploaded: true,
+                                    data: res.data,
+                                })
+                            } else {
+                                this.notify({
+                                    title: <b>오류</b>,
+                                    body: res.message,
+                                    icon: 'error_outline',
+                                    dismissIcon: true,
+                                })
+                                this.setState({
+                                    detailOpened: false,
+                                })
+                            }
+                        })
+                        .catch(() => {
+                            this.notify({
+                                title: <b>오류</b>,
+                                body: '서버와 연결할 수 없어요.',
+                                icon: 'error_outline',
+                                dismissIcon: true,
+                            })
+                            this.setState({
+                                detailOpened: false,
+                            })
+                        })
+                }
+            })
+    }
+
+    public download() {
+        fetchAPI('GET', {}, 'share', this.state.code)
+            .then((res) => {
+                if (res.success) {
+                    this.setState({ code: '' })
+                    function download_next(i: number) {
+                        if (i >= res.data.length) {
+                            return
+                        }
+                        const a = document.createElement('a')
+                        a.href = createURL(
+                            'api',
+                            'files',
+                            'download',
+                            res.data[i]
+                        )
+                        a.target = '_parent'
+                        ;(
+                            document.body || document.documentElement
+                        ).appendChild(a)
+                        a.click()
+                        a.parentNode.removeChild(a)
+                        setTimeout(function () {
+                            download_next(i + 1)
+                        }, 500)
+                    }
+                    download_next(0)
+                } else {
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                    this.setState({
+                        detailOpened: false,
+                    })
+                }
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+                this.setState({
+                    detailOpened: false,
+                })
+            })
     }
 
     public render() {
@@ -90,12 +194,11 @@ class Share extends React.Component<ShareProps, ShareState> {
                             e.preventDefault()
                         }}
                         onDrop={(e) => {
-                            console.log('File(s) dropped')
-
                             e.preventDefault()
 
-                            const files = e.dataTransfer.items
-                            for (let file of files) {
+                            let files = []
+
+                            for (let file of e.dataTransfer.items) {
                                 if (file.webkitGetAsEntry().isDirectory) {
                                     this.notify({
                                         title: <b>오류</b>,
@@ -106,34 +209,19 @@ class Share extends React.Component<ShareProps, ShareState> {
                                     })
                                     return
                                 }
+                                files.push(file.getAsFile())
                             }
-                            this.upload()
 
-                            for (
-                                var i = 0;
-                                i < e.dataTransfer.items.length;
-                                i++
-                            ) {
-                                // If dropped items aren't files, reject them
-                                if (e.dataTransfer.items[i].kind === 'file') {
-                                    var file = e.dataTransfer.items[
-                                        i
-                                    ].getAsFile()
-                                    console.log(
-                                        '... file[' +
-                                            i +
-                                            '].name = ' +
-                                            file.name
-                                    )
-                                }
-                            }
+                            this.upload(files)
                         }}>
                         <Icon
                             icon='cloud_upload'
                             style={{ fontSize: '60px' }}
                         />
                         <br />
-                        <Typography use='headline4'>
+                        <Typography
+                            use='headline4'
+                            style={{ textAlign: 'center' }}>
                             여기를 클릭하거나 파일을 끌어다 놓으세요!
                         </Typography>
                     </div>
@@ -143,47 +231,68 @@ class Share extends React.Component<ShareProps, ShareState> {
                     multiple
                     style={{ display: 'none' }}
                     ref={this.fileInput}
+                    onChange={(e) => {
+                        if (e.currentTarget.files)
+                            this.upload(Array.from(e.currentTarget.files))
+                    }}
                 />
-                <br />
-                <br />
-                <Typography use='headline5'>다운로드</Typography>
-                <BrIfMobile />
-                <Typography use='subtitle2' style={{ marginLeft: '10px' }}>
-                    코드를 입력해서 파일을 다운받아요.
-                </Typography>
-                <br />
-                <Grid>
-                    <GridRow>
-                        <GridCell desktop={8} tablet={8} phone={4}>
-                            <TextField
-                                style={{ width: '100%', height: '100%' }}
-                                outlined
-                                label='코드'
-                                value={this.state?.code}
-                                onChange={(e) => this.handleChange(e, 'code')}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') focusNextInput()
-                                }}
-                            />
-                        </GridCell>
-                        <GridCell desktop={4} tablet={8} phone={4}>
-                            <Button
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    minHeight: '45.2px',
-                                }}
-                                outlined
-                                label='조회'
-                                trailingIcon='send'
-                                onClick={() => {
-                                    setTimeout(() => {}, 0)
-                                }}
-                            />
-                        </GridCell>
-                    </GridRow>
-                </Grid>
-
+                {!this.props.hideDownload ? (
+                    <>
+                        <br />
+                        <br />
+                        <Typography use='headline5'>다운로드</Typography>
+                        <BrIfMobile />
+                        <Typography
+                            use='subtitle2'
+                            style={{ marginLeft: '10px' }}>
+                            코드를 입력해서 파일을 다운받아요.
+                        </Typography>
+                        <br />
+                        <Grid>
+                            <GridRow>
+                                <GridCell desktop={8} tablet={8} phone={4}>
+                                    <TextField
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                        }}
+                                        outlined
+                                        label='코드'
+                                        value={this.state?.code}
+                                        onChange={(e) =>
+                                            this.handleChange(e, 'code')
+                                        }
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter')
+                                                focusNextInput()
+                                        }}
+                                    />
+                                </GridCell>
+                                <GridCell desktop={4} tablet={8} phone={4}>
+                                    <Button
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            minHeight: '45.2px',
+                                        }}
+                                        outlined
+                                        label='다운로드'
+                                        trailingIcon='send'
+                                        onClick={() => {
+                                            setTimeout(() => {
+                                                this.download()
+                                            }, 0)
+                                        }}
+                                    />
+                                </GridCell>
+                            </GridRow>
+                        </Grid>
+                    </>
+                ) : (
+                    <Typography use='headline5'>
+                        다운로드 기능을 사용하려면 로그인하세요.
+                    </Typography>
+                )}
                 <Dialog
                     preventOutsideDismiss
                     open={this.state?.detailOpened}
@@ -196,12 +305,20 @@ class Share extends React.Component<ShareProps, ShareState> {
                             : '파일을 업로드하고 있어요.'}
                     </DialogTitle>
                     <DialogContent>
-                        {this.state?.uploaded
-                            ? `코드는 0000 이에요.`
-                            : '잠시만 기다리세요.'}
+                        {this.state?.uploaded ? (
+                            <Typography use='headline2'>
+                                {this.state?.data?.code}
+                            </Typography>
+                        ) : (
+                            '잠시만 기다리세요.'
+                        )}
                     </DialogContent>
                     <DialogActions>
-                        <DialogButton action='close'>닫기</DialogButton>
+                        <DialogButton
+                            action='close'
+                            disabled={!this.state?.uploaded}>
+                            닫기
+                        </DialogButton>
                     </DialogActions>
                 </Dialog>
                 <SnackbarQueue messages={this.messages} />

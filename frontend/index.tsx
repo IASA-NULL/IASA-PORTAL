@@ -345,6 +345,14 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/share'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultAdminNavList}
+                            appCont={<Share />}
+                        />
+                    </Route>
+
                     <Route path='/program/ip'>
                         <MainView
                             accountInfo={this.state.data}
@@ -417,6 +425,13 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             appCont={<PROGRAM_IP />}
+                        />
+                    </Route>
+
+                    <Route path='/share'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            appCont={<Share hideDownload={true} />}
                         />
                     </Route>
 
