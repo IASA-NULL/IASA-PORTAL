@@ -15,6 +15,7 @@ export type MyeonbulRequest = MyeonbulRequestList
 export enum MyeonbulResponseType {
     ACCEPT,
     DENY,
+    UNDEFINED,
 }
 
 export interface MyeonbulResponse {

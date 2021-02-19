@@ -69,6 +69,7 @@ router.post('/list', async (req, res) => {
             'target',
             'sid',
             'tid',
+            'approved',
         ])
     })
     res.send(createResponse(myeonbulList))
@@ -111,7 +112,7 @@ router.post('/', async (req, res) => {
             uid: student.uid,
             type: student.permission,
         },
-        approved: MyeonbulResponseType.DENY,
+        approved: MyeonbulResponseType.UNDEFINED,
         mid: mid,
         sid: student.uid,
         tid: teacher.uid,

@@ -4,12 +4,12 @@ import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
 import {
     DataTable,
-    DataTableContent,
-    DataTableHead,
-    DataTableRow,
-    DataTableHeadCell,
     DataTableBody,
     DataTableCell,
+    DataTableContent,
+    DataTableHead,
+    DataTableHeadCell,
+    DataTableRow,
 } from '@rmwc/data-table'
 import { Checkbox } from '@rmwc/checkbox'
 import { TextField } from '@rmwc/textfield'
@@ -17,9 +17,9 @@ import { Grid, GridCell, GridRow } from '@rmwc/grid'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 import {
-    MyeonbulRequestListType,
-    MyeonbulQuery,
     MyeonbulDB,
+    MyeonbulQuery,
+    MyeonbulRequestListType,
     MyeonbulResponseType,
 } from '../../scheme/api/myeonbul'
 import { Permission, token } from '../../scheme/api/auth'
@@ -80,6 +80,45 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
         this.refresh()
     }
 
+    public response(mid: string, stat: boolean) {
+        fetchAPI(
+            'PUT',
+            {
+                type: stat
+                    ? MyeonbulResponseType.ACCEPT
+                    : MyeonbulResponseType.DENY,
+            },
+            'myeonbul',
+            mid,
+            'response'
+        )
+            .then((res) => {
+                if (res.success) {
+                    this.notify({
+                        title: <b>성공!</b>,
+                        body: '정상적으로 처리됐어요.',
+                        icon: 'check',
+                        dismissIcon: true,
+                    })
+                } else
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                this.refresh()
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
+    }
+
     public render() {
         let tableBody
         if (this.state?.loaded) {
@@ -117,10 +156,21 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                     </DataTableCell>
                                     <DataTableCell alignEnd>
                                         <Checkbox
+                                            indeterminate={
+                                                el.approved ===
+                                                MyeonbulResponseType.UNDEFINED
+                                            }
                                             checked={
                                                 el.approved ===
                                                 MyeonbulResponseType.ACCEPT
                                             }
+                                            onClick={(e) => {
+                                                this.response(
+                                                    el.mid,
+                                                    (e.target as HTMLInputElement)
+                                                        .checked
+                                                )
+                                            }}
                                         />
                                     </DataTableCell>
                                 </DataTableRow>
@@ -235,7 +285,6 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                 <br />
                 <Typography use='headline5'>면불 승인</Typography>
                 <br />
-                <br />
                 <DataTable
                     stickyRows={1}
                     stickyColumns={0}
@@ -253,7 +302,7 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                     담당 선생님
                                 </DataTableHeadCell>
                                 <DataTableHeadCell alignEnd>
-                                    승인 여부
+                                    승인
                                 </DataTableHeadCell>
                             </DataTableRow>
                         </DataTableHead>
@@ -261,13 +310,13 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                     </DataTableContent>
                 </DataTable>
                 <br />
-                <br />
                 <Button
                     outlined
                     onClick={this.refresh.bind(this)}
                     style={{ marginLeft: '20px' }}>
                     새로고침
                 </Button>
+                <br />
                 <br />
                 <Typography use='headline5'>면불대장 출력</Typography>
                 <BrIfMobile />

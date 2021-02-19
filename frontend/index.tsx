@@ -29,6 +29,7 @@ import PenaltyStudent from './student/penalty'
 import MainStudent from './student/main'
 import MusicStudent from './student/music'
 
+import MyeonbulTeacher from './teacher/myeonbul'
 import PenaltyTeacher from './teacher/penalty'
 import MainTeacher from './teacher/main'
 import MusicTeacher from './teacher/music'
@@ -178,6 +179,15 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/myeonbul'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultTeacherNavList}
+                            appCont={
+                                <MyeonbulTeacher data={this.state?.data} />
+                            }
+                        />
+                    </Route>
                     <Route path='/penalty'>
                         <MainView
                             accountInfo={this.state.data}

@@ -117,6 +117,10 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                     </DataTableCell>
                                     <DataTableCell alignEnd>
                                         <Checkbox
+                                            indeterminate={
+                                                el.approved ===
+                                                MyeonbulResponseType.UNDEFINED
+                                            }
                                             checked={
                                                 el.approved ===
                                                 MyeonbulResponseType.ACCEPT
