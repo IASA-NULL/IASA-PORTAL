@@ -17,13 +17,21 @@ import { Grid, GridCell, GridRow } from '@rmwc/grid'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 import {
+    getMyeonbulTime,
     MyeonbulDB,
     MyeonbulQuery,
     MyeonbulRequestListType,
     MyeonbulResponseType,
+    MyeonbulTimeType,
 } from '../../scheme/api/myeonbul'
 import { Permission, token } from '../../scheme/api/auth'
-import { BrIfMobile, fetchAPI, focusNextInput, SearchUser } from '../util'
+import {
+    BrIfMobile,
+    fetchAPI,
+    focusNextInput,
+    SearchUser,
+    TimeSelect,
+} from '../util'
 import { UserInfo } from '../../scheme/user'
 
 interface MyeonbulProps {
@@ -223,13 +231,18 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                 <Grid>
                     <GridRow>
                         <GridCell desktop={4} tablet={4} phone={4}>
-                            <TextField
-                                style={{ width: '100%', height: '100%' }}
-                                outlined
+                            <TimeSelect
                                 label='면불 시간'
-                                onKeyDown={(e) => {
+                                onKeyDown={(e: any) => {
                                     if (e.key === 'Enter') focusNextInput()
                                 }}
+                                preset={[
+                                    getMyeonbulTime(MyeonbulTimeType.WEEKDAY_1),
+                                    getMyeonbulTime(MyeonbulTimeType.WEEKDAY_2),
+                                    getMyeonbulTime(
+                                        MyeonbulTimeType.WEEKDAY_ALL
+                                    ),
+                                ]}
                             />
                         </GridCell>
                         <GridCell desktop={4} tablet={4} phone={4}>

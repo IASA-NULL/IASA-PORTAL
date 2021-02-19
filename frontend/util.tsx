@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom'
 import { ListItem, ListItemText, ListItemGraphic } from '@rmwc/list'
 import * as React from 'react'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
 import { TextField } from '@rmwc/textfield'
 import createURL from '../scheme/url'
 import { Typography } from '@rmwc/typography'
 import { Permission } from '../scheme/api/auth'
+import { TimeRange } from '../scheme/time'
 
 declare const DEV_MODE: boolean
 
@@ -425,6 +426,173 @@ export function SearchUser<
                     setMenu(true)
                     setTimeout(() => {
                         searchTextbox.current.focus()
+                    }, 300)
+                }}
+            />
+        </MenuSurfaceAnchor>
+    )
+}
+
+export function TimeSelect<
+    T extends {
+        label?: string
+        onKeyDown?: any
+        onSelect?: any
+        preset?: TimeRange[]
+    }
+>(props: T) {
+    const [menu, setMenu] = useState(false)
+    const [text, setText] = useState(
+        {} as { bh: string; bm: string; eh: string; em: string }
+    )
+    const [sel, setSel] = useState({} as TimeRange)
+
+    const beginHour = React.useRef(null) as React.RefObject<HTMLInputElement>
+    const beginMinute = React.useRef(null) as React.RefObject<HTMLInputElement>
+    const endHour = React.useRef(null) as React.RefObject<HTMLInputElement>
+    const endMinute = React.useRef(null) as React.RefObject<HTMLInputElement>
+
+    const { label, onKeyDown, onSelect, preset, ...others } = {
+        label: '검색',
+        onKeyDown: () => {},
+        onSelect: () => {},
+        preset: new Array<TimeRange>(),
+        ...props,
+    }
+
+    return (
+        <MenuSurfaceAnchor>
+            <Menu
+                open={menu}
+                onClose={() => {
+                    setMenu(false)
+                }}>
+                <TextField
+                    label='시'
+                    style={{
+                        width: '16.66%',
+                        marginTop: '-8px',
+                        marginBottom: '8px',
+                    }}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        setText(
+                            Object.assign(text, {
+                                bh: e.target.value.replace(/\D/g, ''),
+                            })
+                        )
+                    }}
+                    value={text.bh}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') beginMinute.current.focus()
+                    }}
+                    ref={beginHour}
+                />
+                <span
+                    style={{
+                        width: '8.33%',
+                        textAlign: 'center',
+                        display: 'inline-block',
+                    }}>
+                    :
+                </span>
+                <TextField
+                    label='분'
+                    style={{
+                        width: '16.66%',
+                        marginTop: '-8px',
+                        marginBottom: '8px',
+                    }}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        setText(
+                            Object.assign(text, {
+                                bm: e.target.value.replace(/\D/g, ''),
+                            })
+                        )
+                    }}
+                    value={text.bm}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') endHour.current.focus()
+                    }}
+                    ref={beginMinute}
+                />
+                <span
+                    style={{
+                        width: '16.66%',
+                        textAlign: 'center',
+                        display: 'inline-block',
+                    }}>
+                    -
+                </span>
+                <TextField
+                    label='시'
+                    style={{
+                        width: '16.66%',
+                        marginTop: '-8px',
+                        marginBottom: '8px',
+                    }}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        setText(
+                            Object.assign(text, {
+                                eh: e.target.value.replace(/\D/g, ''),
+                            })
+                        )
+                    }}
+                    value={text.eh}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') endMinute.current.focus()
+                    }}
+                    ref={endHour}
+                />
+                <span
+                    style={{
+                        width: '8.33%',
+                        textAlign: 'center',
+                        display: 'inline-block',
+                    }}>
+                    :
+                </span>
+                <TextField
+                    label='분'
+                    style={{
+                        width: '16.66%',
+                        marginTop: '-8px',
+                        marginBottom: '8px',
+                    }}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        setText(
+                            Object.assign(text, {
+                                em: e.target.value.replace(/\D/g, ''),
+                            })
+                        )
+                    }}
+                    value={text.em}
+                    onKeyDown={(e) => {
+                        onKeyDown(e)
+                    }}
+                    ref={endMinute}
+                />
+                {preset.map((time) => {
+                    return (
+                        <MenuItem
+                            onClick={() => {
+                                onSelect(time)
+                                setSel(time)
+                                setMenu(false)
+                            }}>
+                            {time.nickname}
+                        </MenuItem>
+                    )
+                })}
+            </Menu>
+            <TextField
+                style={{ width: '100%', height: '100%' }}
+                outlined
+                label={label}
+                value={sel.nickname}
+                onFocus={() => {
+                    setMenu(true)
+                    setTimeout(() => {
+                        beginHour.current.focus()
                     }, 300)
                 }}
             />
