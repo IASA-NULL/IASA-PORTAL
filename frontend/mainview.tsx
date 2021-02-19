@@ -456,7 +456,12 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                     zIndex: 10,
                     boxShadow:
                         '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                }}>
+                    background: '#ffffff',
+                    color: 'var(--mdc-theme-primary)',
+                }}
+                className={
+                    window.location.pathname === '/about' ? '' : 'header'
+                }>
                 <TopAppBarRow>
                     <TopAppBarSection alignStart>
                         {props.list ? (
@@ -537,7 +542,10 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                     modal={window.innerWidth <= 760}
                     open={drawerOpen && props.list}
                     onClose={() => setDrawerOpen(false)}
-                    style={{ position: 'fixed' }}>
+                    style={{
+                        position: 'fixed',
+                        background: '#fbfbff',
+                    }}>
                     {props?.accountInfo?.id ? (
                         <DrawerHeader>
                             <DrawerTitle>
@@ -591,7 +599,8 @@ function Footer() {
                     width: '100%',
                     zIndex: 7,
                     textAlign: 'center',
-                }}>
+                }}
+                className='footer'>
                 <br />
                 <br />
                 <Typography use='headline4'>IASA PORTAL</Typography>
@@ -744,6 +753,7 @@ export function MainView(props: {
             <DrawerAppContent
                 style={{
                     transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    background: '#fbfbff',
                 }}>
                 <div
                     style={{

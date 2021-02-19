@@ -249,3 +249,15 @@ a {
     height: 30px;
     border-radius: 50%;
 }
+
+.header * {
+    color: var(--mdc-theme-primary) !important;
+}
+
+.footer {
+    background: #f2f2ff !important;
+}
+
+.footer * {
+    color: #383870 !important;
+}
