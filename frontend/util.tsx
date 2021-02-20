@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ListItem, ListItemText, ListItemGraphic } from '@rmwc/list'
 import * as React from 'react'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
 import { TextField } from '@rmwc/textfield'
 import createURL from '../scheme/url'
@@ -446,6 +446,11 @@ export function TimeSelect<
     const [bm, setBM] = useState('')
     const [eh, setEH] = useState('')
     const [em, setEM] = useState('')
+
+    useEffect(() => {
+        updateTime()
+    }, [bh, bm, eh, em])
+
     const [title, setTitle] = useState('')
     const [sel, setSel] = useState({} as TimeRange)
 
@@ -463,20 +468,29 @@ export function TimeSelect<
     }
 
     const updateTime = () => {
-        if (bh && bm && eh && em) {
-            setSel(
-                timeRange(
-                    getToday(parseInt(bh), parseInt(bm)),
-                    getToday(parseInt(eh), parseInt(em)),
-                    undefined
+        setTimeout(() => {
+            if (bh && bm && eh && em) {
+                setSel(
+                    timeRange(
+                        getToday(parseInt(bh), parseInt(bm)),
+                        getToday(parseInt(eh), parseInt(em)),
+                        undefined
+                    )
                 )
-            )
-            setTitle(
-                formatTime(parseInt(bh), parseInt(bm)) +
-                    ' - ' +
-                    formatTime(parseInt(eh), parseInt(em))
-            )
-        }
+                onSelect(
+                    timeRange(
+                        getToday(parseInt(bh), parseInt(bm)),
+                        getToday(parseInt(eh), parseInt(em)),
+                        undefined
+                    )
+                )
+                setTitle(
+                    formatTime(parseInt(bh), parseInt(bm)) +
+                        ' - ' +
+                        formatTime(parseInt(eh), parseInt(em))
+                )
+            }
+        }, 100)
     }
 
     return (
@@ -496,15 +510,15 @@ export function TimeSelect<
                     }}
                     value={bh}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        const num = parseInt(e.target.value.replace(/\D/g, ''))
+                        let raw = e.target.value.replace(/\D/g, '')
+                        const num = parseInt(raw)
                         if (!num && num !== 0) setBH('')
-                        else if (num > 23) {
-                            setBH(e.target.value.replace(/\D/g, '')[0])
-                        } else if (num > 3 || !num) {
-                            setBH(e.target.value.replace(/\D/g, ''))
-                            beginMinute.current.focus()
-                        } else setBH(e.target.value.replace(/\D/g, ''))
-                        updateTime()
+                        else {
+                            if (num > 23) raw = raw[0]
+                            else if (num > 3 || !num)
+                                beginMinute.current.focus()
+                            setBH(raw)
+                        }
                     }}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.which === 9) {
@@ -531,15 +545,14 @@ export function TimeSelect<
                         marginBottom: '8px',
                     }}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        const num = parseInt(e.target.value.replace(/\D/g, ''))
+                        let raw = e.target.value.replace(/\D/g, '')
+                        const num = parseInt(raw)
                         if (!num && num !== 0) setBM('')
-                        else if (num > 59) {
-                            setBM(e.target.value.replace(/\D/g, '')[0])
-                        } else if (num > 6 || !num) {
-                            setBM(e.target.value.replace(/\D/g, ''))
-                            endHour.current.focus()
-                        } else setBM(e.target.value.replace(/\D/g, ''))
-                        updateTime()
+                        else {
+                            if (num > 59) raw = raw[0]
+                            else if (num > 6 || !num) endHour.current.focus()
+                            setBM(raw)
+                        }
                     }}
                     value={bm}
                     onKeyDown={(e) => {
@@ -567,15 +580,14 @@ export function TimeSelect<
                         marginBottom: '8px',
                     }}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        const num = parseInt(e.target.value.replace(/\D/g, ''))
+                        let raw = e.target.value.replace(/\D/g, '')
+                        const num = parseInt(raw)
                         if (!num && num !== 0) setEH('')
-                        else if (num > 23) {
-                            setEH(e.target.value.replace(/\D/g, '')[0])
-                        } else if (num > 3 || !num) {
-                            setEH(e.target.value.replace(/\D/g, ''))
-                            endMinute.current.focus()
-                        } else setEH(e.target.value.replace(/\D/g, ''))
-                        updateTime()
+                        else {
+                            if (num > 23) raw = raw[0]
+                            else if (num > 3 || !num) endMinute.current.focus()
+                            setEH(raw)
+                        }
                     }}
                     value={eh}
                     onKeyDown={(e) => {
@@ -603,12 +615,13 @@ export function TimeSelect<
                         marginBottom: '8px',
                     }}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        const num = parseInt(e.target.value.replace(/\D/g, ''))
+                        let raw = e.target.value.replace(/\D/g, '')
+                        const num = parseInt(raw)
                         if (!num && num !== 0) setEM('')
-                        else if (num > 59) {
-                            setEM(e.target.value.replace(/\D/g, '')[0])
-                        } else setEM(e.target.value.replace(/\D/g, ''))
-                        updateTime()
+                        else {
+                            if (num > 23) raw = raw[0]
+                            setEM(raw)
+                        }
                     }}
                     value={em}
                     onKeyDown={(e) => {
