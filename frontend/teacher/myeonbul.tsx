@@ -33,6 +33,7 @@ import {
     TimeSelect,
 } from '../util'
 import { UserInfo } from '../../scheme/user'
+import { TimeRange } from '../../scheme/time'
 
 interface MyeonbulProps {
     data: token
@@ -44,6 +45,9 @@ interface MyeonbulState {
     teacherSelectOpened: boolean
     selectedStudent: UserInfo
     teacherSearch: string
+    selectedTime: TimeRange
+    selectedPlace: string
+    reason: string
 }
 
 class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
@@ -56,10 +60,16 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
         let qu = createSnackbarQueue()
         this.messages = qu.messages
         this.notify = qu.notify
+        this.handleChange = this.handleChange.bind(this)
     }
 
     public componentDidMount() {
         this.refresh()
+    }
+
+    public handleChange(e: React.FormEvent<HTMLInputElement>, target: string) {
+        // @ts-ignore
+        this.setState({ [target]: e.target.value })
     }
 
     public refresh() {
@@ -79,13 +89,41 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
     }
 
     public register() {
-        this.notify({
-            title: <b>성공!</b>,
-            body: '면불 신청에 성공했어요.',
-            icon: 'check',
-            dismissIcon: true,
-        })
-        this.refresh()
+        fetchAPI(
+            'POST',
+            {
+                timeRange: this.state?.selectedTime,
+                place: this.state?.selectedPlace,
+                reason: this.state?.reason,
+                student: this.state?.selectedStudent.uid,
+            },
+            'myeonbul'
+        )
+            .then((res) => {
+                if (res.success)
+                    this.notify({
+                        title: <b>성공!</b>,
+                        body: '면불 신청에 성공했어요.',
+                        icon: 'check',
+                        dismissIcon: true,
+                    })
+                else
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                this.refresh()
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
     }
 
     public response(mid: string, stat: boolean) {
@@ -233,9 +271,6 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                         <GridCell desktop={4} tablet={4} phone={4}>
                             <TimeSelect
                                 label='면불 시간'
-                                onKeyDown={(e: any) => {
-                                    if (e.key === 'Enter') focusNextInput()
-                                }}
                                 preset={[
                                     getMyeonbulTime(MyeonbulTimeType.WEEKDAY_1),
                                     getMyeonbulTime(MyeonbulTimeType.WEEKDAY_2),
@@ -243,6 +278,9 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                         MyeonbulTimeType.WEEKDAY_ALL
                                     ),
                                 ]}
+                                onSelect={(res: TimeRange) => {
+                                    this.setState({ selectedTime: res })
+                                }}
                             />
                         </GridCell>
                         <GridCell desktop={4} tablet={4} phone={4}>
@@ -250,6 +288,10 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                 style={{ width: '100%', height: '100%' }}
                                 outlined
                                 label='면불 장소'
+                                value={this.state?.selectedPlace}
+                                onChange={(e) =>
+                                    this.handleChange(e, 'selectedPlace')
+                                }
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') focusNextInput()
                                 }}
@@ -272,6 +314,8 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                 style={{ width: '100%', height: '100%' }}
                                 outlined
                                 label='면불 사유'
+                                value={this.state?.reason}
+                                onChange={(e) => this.handleChange(e, 'reason')}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') this.register()
                                 }}

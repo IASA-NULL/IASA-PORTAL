@@ -16,7 +16,7 @@ export function timeRange(
     }
 }
 
-export function getToday(hour: number, minute: number, second?: number) {
+export function getToday(hour: number, minute: number, second = 0) {
     const today = new Date()
     return new Date(
         today.getFullYear(),
@@ -26,4 +26,14 @@ export function getToday(hour: number, minute: number, second?: number) {
         minute,
         second
     ).getTime()
+}
+
+export function formatTime(hour: number, minute: number, second?: number) {
+    if (second !== undefined) {
+        return `${('00' + hour).substr(-2)}:${('00' + minute).substr(-2)}:${(
+            '00' + second
+        ).substr(-2)}`
+    } else {
+        return `${('00' + hour).substr(-2)}:${('00' + minute).substr(-2)}`
+    }
 }

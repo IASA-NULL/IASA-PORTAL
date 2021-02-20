@@ -7,7 +7,7 @@ import { TextField } from '@rmwc/textfield'
 import createURL from '../scheme/url'
 import { Typography } from '@rmwc/typography'
 import { Permission } from '../scheme/api/auth'
-import { TimeRange } from '../scheme/time'
+import { formatTime, getToday, timeRange, TimeRange } from '../scheme/time'
 
 declare const DEV_MODE: boolean
 
@@ -442,9 +442,11 @@ export function TimeSelect<
     }
 >(props: T) {
     const [menu, setMenu] = useState(false)
-    const [text, setText] = useState(
-        {} as { bh: string; bm: string; eh: string; em: string }
-    )
+    const [bh, setBH] = useState('')
+    const [bm, setBM] = useState('')
+    const [eh, setEH] = useState('')
+    const [em, setEM] = useState('')
+    const [title, setTitle] = useState('')
     const [sel, setSel] = useState({} as TimeRange)
 
     const beginHour = React.useRef(null) as React.RefObject<HTMLInputElement>
@@ -453,19 +455,37 @@ export function TimeSelect<
     const endMinute = React.useRef(null) as React.RefObject<HTMLInputElement>
 
     const { label, onKeyDown, onSelect, preset, ...others } = {
-        label: '검색',
+        label: '시간 설정',
         onKeyDown: () => {},
         onSelect: () => {},
         preset: new Array<TimeRange>(),
         ...props,
     }
 
+    const updateTime = () => {
+        if (bh && bm && eh && em) {
+            setSel(
+                timeRange(
+                    getToday(parseInt(bh), parseInt(bm)),
+                    getToday(parseInt(eh), parseInt(em)),
+                    undefined
+                )
+            )
+            setTitle(
+                formatTime(parseInt(bh), parseInt(bm)) +
+                    ' - ' +
+                    formatTime(parseInt(eh), parseInt(em))
+            )
+        }
+    }
+
     return (
         <MenuSurfaceAnchor>
             <Menu
+                style={{ minWidth: '300px' }}
                 open={menu}
                 onClose={() => {
-                    setMenu(false)
+                    if (sel) setMenu(false)
                 }}>
                 <TextField
                     label='시'
@@ -474,16 +494,24 @@ export function TimeSelect<
                         marginTop: '-8px',
                         marginBottom: '8px',
                     }}
+                    value={bh}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        setText(
-                            Object.assign(text, {
-                                bh: e.target.value.replace(/\D/g, ''),
-                            })
-                        )
+                        const num = parseInt(e.target.value.replace(/\D/g, ''))
+                        if (!num && num !== 0) setBH('')
+                        else if (num > 23) {
+                            setBH(e.target.value.replace(/\D/g, '')[0])
+                        } else if (num > 3 || !num) {
+                            setBH(e.target.value.replace(/\D/g, ''))
+                            beginMinute.current.focus()
+                        } else setBH(e.target.value.replace(/\D/g, ''))
+                        updateTime()
                     }}
-                    value={text.bh}
                     onKeyDown={(e) => {
-                        if (e.key === 'Enter') beginMinute.current.focus()
+                        if (e.key === 'Enter' || e.which === 9) {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            beginMinute.current.focus()
+                        }
                     }}
                     ref={beginHour}
                 />
@@ -503,15 +531,23 @@ export function TimeSelect<
                         marginBottom: '8px',
                     }}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        setText(
-                            Object.assign(text, {
-                                bm: e.target.value.replace(/\D/g, ''),
-                            })
-                        )
+                        const num = parseInt(e.target.value.replace(/\D/g, ''))
+                        if (!num && num !== 0) setBM('')
+                        else if (num > 59) {
+                            setBM(e.target.value.replace(/\D/g, '')[0])
+                        } else if (num > 6 || !num) {
+                            setBM(e.target.value.replace(/\D/g, ''))
+                            endHour.current.focus()
+                        } else setBM(e.target.value.replace(/\D/g, ''))
+                        updateTime()
                     }}
-                    value={text.bm}
+                    value={bm}
                     onKeyDown={(e) => {
-                        if (e.key === 'Enter') endHour.current.focus()
+                        if (e.key === 'Enter' || e.which === 9) {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            endHour.current.focus()
+                        }
                     }}
                     ref={beginMinute}
                 />
@@ -531,15 +567,23 @@ export function TimeSelect<
                         marginBottom: '8px',
                     }}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        setText(
-                            Object.assign(text, {
-                                eh: e.target.value.replace(/\D/g, ''),
-                            })
-                        )
+                        const num = parseInt(e.target.value.replace(/\D/g, ''))
+                        if (!num && num !== 0) setEH('')
+                        else if (num > 23) {
+                            setEH(e.target.value.replace(/\D/g, '')[0])
+                        } else if (num > 3 || !num) {
+                            setEH(e.target.value.replace(/\D/g, ''))
+                            endMinute.current.focus()
+                        } else setEH(e.target.value.replace(/\D/g, ''))
+                        updateTime()
                     }}
-                    value={text.eh}
+                    value={eh}
                     onKeyDown={(e) => {
-                        if (e.key === 'Enter') endMinute.current.focus()
+                        if (e.key === 'Enter' || e.which === 9) {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            endMinute.current.focus()
+                        }
                     }}
                     ref={endHour}
                 />
@@ -559,15 +603,20 @@ export function TimeSelect<
                         marginBottom: '8px',
                     }}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        setText(
-                            Object.assign(text, {
-                                em: e.target.value.replace(/\D/g, ''),
-                            })
-                        )
+                        const num = parseInt(e.target.value.replace(/\D/g, ''))
+                        if (!num && num !== 0) setEM('')
+                        else if (num > 59) {
+                            setEM(e.target.value.replace(/\D/g, '')[0])
+                        } else setEM(e.target.value.replace(/\D/g, ''))
+                        updateTime()
                     }}
-                    value={text.em}
+                    value={em}
                     onKeyDown={(e) => {
-                        onKeyDown(e)
+                        if (e.key === 'Enter' || e.which === 9) {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            setMenu(false)
+                        }
                     }}
                     ref={endMinute}
                 />
@@ -576,7 +625,26 @@ export function TimeSelect<
                         <MenuItem
                             onClick={() => {
                                 onSelect(time)
+                                setBH(
+                                    new Date(time.begin).getHours().toString()
+                                )
+                                setBM(
+                                    new Date(time.begin).getMinutes().toString()
+                                )
+                                setEH(new Date(time.end).getHours().toString())
+                                setEM(
+                                    new Date(time.end).getMinutes().toString()
+                                )
                                 setSel(time)
+                                setTitle(
+                                    time.nickname ??
+                                        formatTime(parseInt(bh), parseInt(bm)) +
+                                            ' - ' +
+                                            formatTime(
+                                                parseInt(eh),
+                                                parseInt(em)
+                                            )
+                                )
                                 setMenu(false)
                             }}>
                             {time.nickname}
@@ -588,7 +656,7 @@ export function TimeSelect<
                 style={{ width: '100%', height: '100%' }}
                 outlined
                 label={label}
-                value={sel.nickname}
+                value={title}
                 onFocus={() => {
                     setMenu(true)
                     setTimeout(() => {

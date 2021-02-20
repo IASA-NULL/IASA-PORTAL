@@ -67,13 +67,13 @@ export const DefaultStudentNavList = (closeIfModal: any) => {
                     />
                 }>
                 <div style={{ paddingLeft: '20px' }}>
-                    {/*<ListLink
+                    <ListLink
                         body='면불'
                         to='/myeonbul'
                         onClick={closeIfModal}
                         type={LinkType.link}
                         icon='pan_tool'
-                    />*/}
+                    />
                     <ListLink
                         body='기상곡'
                         to='/music'
@@ -195,13 +195,13 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
                         type={LinkType.link}
                         icon='assignment_late'
                     />
-                    {/*<ListLink
+                    <ListLink
                         body='면불'
                         to='/myeonbul'
                         onClick={closeIfModal}
                         type={LinkType.link}
                         icon='pan_tool'
-                    />*/}
+                    />
                 </div>
             </CollapsibleList>
             <ListLink

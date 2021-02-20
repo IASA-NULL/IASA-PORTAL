@@ -112,7 +112,10 @@ router.post('/', async (req, res) => {
             uid: student.uid,
             type: student.permission,
         },
-        approved: MyeonbulResponseType.UNDEFINED,
+        approved:
+            req.auth.permission === Permission.student
+                ? MyeonbulResponseType.UNDEFINED
+                : MyeonbulResponseType.ACCEPT,
         mid: mid,
         sid: student.uid,
         tid: teacher.uid,
