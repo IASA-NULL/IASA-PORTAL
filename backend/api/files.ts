@@ -4,7 +4,7 @@ import iconvLite from 'iconv-lite'
 
 import createResponse from '../createResponse'
 
-import { upload, download } from '../util/s3'
+import { upload, downloadAsStream } from '../util/s3'
 import db from '../util/db'
 import {
     FAIL_UPLOAD_ERROR,
@@ -86,7 +86,7 @@ function getDownloadFilename(filename: string, req: any) {
 router.get('/download/:id', async (req, res) => {
     try {
         const fileInfo = await db.get('upload', 'id', req.params.id)
-        const fileBody = download(req.params.id)
+        const fileBody = downloadAsStream(req.params.id)
         res.setHeader(
             'Content-disposition',
             'attachment; filename=' + getDownloadFilename(fileInfo.name, req)

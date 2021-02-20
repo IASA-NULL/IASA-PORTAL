@@ -48,6 +48,13 @@ export const DefaultStudentNavList = (closeIfModal: any) => {
                 type={LinkType.link}
                 icon='share'
             />
+            <ListLink
+                body='메일'
+                to='/mail'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='email'
+            />
             <CollapsibleList
                 defaultOpen={['/myeonbul', '/music'].includes(
                     window.location.pathname
@@ -162,6 +169,13 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
                 type={LinkType.link}
                 icon='share'
             />
+            <ListLink
+                body='메일'
+                to='/mail'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='email'
+            />
             <CollapsibleList
                 defaultOpen={['/penalty', '/myeonbul'].includes(
                     window.location.pathname
@@ -211,6 +225,20 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
 export const DefaultAdminNavList = (closeIfModal: any) => {
     return (
         <>
+            <ListLink
+                body='메인'
+                to='/'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='home'
+            />
+            <ListLink
+                body='메일'
+                to='/mail'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='email'
+            />
             <CollapsibleList
                 defaultOpen={['/update'].includes(window.location.pathname)}
                 handle={

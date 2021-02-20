@@ -12,6 +12,7 @@ import authRouter from './auth'
 import accountRouter from './account'
 
 import { getServerFlag } from './util/serverState'
+import mailParse from './mailParse'
 
 //import helmet from 'helmet'
 
@@ -65,6 +66,7 @@ if (DEV_MODE) {
 } else {
     app.use(vhost('api.iasa.kr', apiRouter))
     app.use(vhost('account.iasa.kr', accountRouter))
+    setInterval(mailParse, 5000)
 }
 
 app.get('*', (req, res) => {

@@ -9,6 +9,7 @@ import adminRouter from './admin'
 import filesRouter from './files'
 import penaltyRouter from './penalty'
 import shareRouter from './share'
+import mailRouter from './mail'
 
 import createResponse from '../createResponse'
 
@@ -24,6 +25,7 @@ router.use('/admin', adminRouter)
 router.use('/files', filesRouter)
 router.use('/penalty', penaltyRouter)
 router.use('/share', shareRouter)
+router.use('/mail', mailRouter)
 
 router.use('*', (req, res) => {
     res.status(404)

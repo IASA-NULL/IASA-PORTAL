@@ -10,6 +10,7 @@ export interface User {
     name: string
     penalty?: Penalty
     avatar?: string
+    mail?: string[]
 }
 
 export interface UserInfo {

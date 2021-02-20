@@ -38,6 +38,7 @@ import MainAdmin from './admin/main'
 import Update from './admin/update'
 import CreateCode from './admin/createcode'
 
+import Mail from './common/mail'
 import Meal from './common/meal'
 import Share from './common/share'
 import Terms from './common/terms'
@@ -48,6 +49,7 @@ import About from './noauth/about'
 import PROGRAM_IP from './student/program/ip'
 import MyPage from './common/mypage'
 import { lightTheme } from './util'
+import MailView from './common/mailview'
 
 interface IState {
     loaded: boolean
@@ -78,6 +80,22 @@ class App extends React.Component<any, IState> {
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
                             appCont={<MainStudent />}
+                        />
+                    </Route>
+
+                    <Route path='/mail/:eid'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultStudentNavList}
+                            appCont={<MailView data={this.state?.data} />}
+                        />
+                    </Route>
+
+                    <Route path='/mail'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultStudentNavList}
+                            appCont={<Mail data={this.state?.data} />}
                         />
                     </Route>
 
@@ -179,6 +197,22 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/mail/:eid'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultStudentNavList}
+                            appCont={<MailView data={this.state?.data} />}
+                        />
+                    </Route>
+
+                    <Route path='/mail'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultTeacherNavList}
+                            appCont={<Mail data={this.state?.data} />}
+                        />
+                    </Route>
+
                     <Route path='/myeonbul'>
                         <MainView
                             accountInfo={this.state.data}
@@ -275,6 +309,22 @@ class App extends React.Component<any, IState> {
                             accountInfo={this.state.data}
                             navList={DefaultAdminNavList}
                             appCont={<MainAdmin />}
+                        />
+                    </Route>
+
+                    <Route path='/mail/:eid'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultStudentNavList}
+                            appCont={<MailView data={this.state?.data} />}
+                        />
+                    </Route>
+
+                    <Route path='/mail'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultAdminNavList}
+                            appCont={<Mail data={this.state?.data} />}
                         />
                     </Route>
 

@@ -11,7 +11,7 @@ import { getServerToken } from '../util/serverState'
 import signupRouter from './signup'
 import { User } from '../../scheme/user'
 import { getChangePasswordMailHTML, sendMail } from '../util/mail'
-import { download } from '../util/s3'
+import { downloadAsStream } from '../util/s3'
 import createURL from '../../scheme/url'
 import { REQUIRE_SIGNIN_ERROR, TOKEN_EXPIRE_ERROR } from '../../string/error'
 import {
@@ -269,7 +269,7 @@ router.get('/avatar', async (req, res) => {
         const user = (await db.get('account', 'id', req.auth.id)) as User
         if (!user) throw new Error()
         const fileInfo = await db.get('upload', 'id', user.avatar)
-        const fileBody = download(fileInfo.id)
+        const fileBody = downloadAsStream(fileInfo.id)
         res.setHeader(
             'Content-disposition',
             'attachment; filename=' + fileInfo.name
@@ -287,7 +287,7 @@ router.get('/avatar/:id', async (req, res) => {
         const user = (await db.get('account', 'id', req.params.id)) as User
         if (!user) throw new Error()
         const fileInfo = await db.get('upload', 'id', user.avatar)
-        const fileBody = download(fileInfo.id)
+        const fileBody = downloadAsStream(fileInfo.id)
         res.setHeader(
             'Content-disposition',
             'attachment; filename=' + fileInfo.name
