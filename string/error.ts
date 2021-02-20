@@ -1,6 +1,6 @@
 export const REQUIRE_SUDO_ERROR = '토큰이 만료되었어요. 새로고침 하세요.'
 export const REQUIRE_SIGNIN_ERROR = '먼저 로그인하세요.'
-export const REQUIRE_PERMISSION_ERROR = '권한이 없어요.'
+export const REQUIRE_PERMISSION_ERROR = '권한이 없어요. 사이트를 새로고침 해보세요.'
 export const DB_CONNECT_ERROR = '데이터베이스에 연결할 수 없어요.'
 export const ALREADY_BUILDING_ERROR = '사이트가 이미 빌드 중이에요.'
 export const NO_FILE_ERROR = '첨부된 파일이 없어요.'

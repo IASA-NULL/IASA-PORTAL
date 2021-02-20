@@ -13,6 +13,7 @@ function get_db() {
             `mongodb://portal:${getSecret(
                 'db'
             )}@localhost:27017/?authSource=admin&readPreference=primary&appname=portal&ssl=false`,
+            { useUnifiedTopology: true },
             (err, _db) => {
                 if (err) {
                     reject()

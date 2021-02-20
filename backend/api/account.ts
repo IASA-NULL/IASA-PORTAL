@@ -13,13 +13,18 @@ import { User } from '../../scheme/user'
 import { getChangePasswordMailHTML, sendMail } from '../util/mail'
 import { downloadAsStream } from '../util/s3'
 import createURL from '../../scheme/url'
-import { REQUIRE_SIGNIN_ERROR, TOKEN_EXPIRE_ERROR } from '../../string/error'
+import {
+    REQUIRE_PERMISSION_ERROR,
+    REQUIRE_SIGNIN_ERROR,
+    TOKEN_EXPIRE_ERROR,
+} from '../../string/error'
 import {
     maxTime,
     sudoTime,
     changePasswordTokenExpire,
     leftTokenTime,
 } from '../util/tokenTime'
+import { getDownloadFilename } from '../util/encode'
 
 const router = express.Router()
 declare const DEV_MODE: boolean
@@ -191,7 +196,6 @@ router.post('/changesecret', async (req, res) => {
         }
         let account = (await db.get('account', 'id', token.id)) as User
         await db.update('account', 'id', token.id, {
-            ...account,
             pwHash: await bcrypt.hash(req.body.password, saltRound),
         })
         res.send(createResponse(true))
@@ -272,7 +276,7 @@ router.get('/avatar', async (req, res) => {
         const fileBody = downloadAsStream(fileInfo.id)
         res.setHeader(
             'Content-disposition',
-            'attachment; filename=' + fileInfo.name
+            'attachment; filename=' + getDownloadFilename(fileInfo.name, req)
         )
         res.set('Content-Type', fileInfo.mime)
         res.set('Content-Length', fileInfo.size)
@@ -340,6 +344,23 @@ router.post('/list', async (req, res) => {
         })
         .filter((x: any) => x)
     res.send(createResponse(respList))
+})
+
+router.put('/edit', async (req, res) => {
+    try {
+        if (!req.auth.sudo) {
+            res.status(403)
+            res.send(createResponse(REQUIRE_PERMISSION_ERROR))
+            return
+        }
+        await db.update('account', 'id', req.auth.id, {
+            avatar: req.body.avatar,
+        })
+        res.send(createResponse(true))
+    } catch (e) {
+        res.status(404)
+        res.send(createResponse(false, '일치하는 계정이 존재하지 않아요.'))
+    }
 })
 
 export default router
