@@ -9,7 +9,7 @@ import {
     DrawerContent,
     DrawerAppContent,
 } from '@rmwc/drawer'
-import { List, CollapsibleList, SimpleListItem } from '@rmwc/list'
+import { List, CollapsibleList, SimpleListItem, ListDivider } from '@rmwc/list'
 import {
     TopAppBar,
     TopAppBarRow,
@@ -304,7 +304,7 @@ export const TermsNavList = (closeIfModal: any) => {
             />
             <ListLink
                 body='계정'
-                to='cont_account'
+                to='account_circle'
                 onClick={closeIfModal}
                 type={LinkType.js}
             />
@@ -465,6 +465,42 @@ export const OpensourceNavList = (closeIfModal: any) => {
                 to='cont_icons'
                 onClick={closeIfModal}
                 type={LinkType.js}
+            />
+        </>
+    )
+}
+
+export const OpenAPINavList = (closeIfModal: any) => {
+    return (
+        <>
+            <ListLink
+                body='메인'
+                to='/openapi'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='home'
+            />
+            <ListLink
+                body='개요'
+                to='/openapi/desc'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='subject'
+            />
+            <ListDivider />
+            <ListLink
+                body='계정'
+                to='/openapi/account'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='account_circle'
+            />
+            <ListLink
+                body='급식'
+                to='/openapi/meal'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='fastfood'
             />
         </>
     )
@@ -644,8 +680,8 @@ function Footer() {
                 <br />
                 <Grid>
                     <GridRow>
-                        <GridCell desktop={3} tablet={1} phone={0} />
-                        <GridCell desktop={6} tablet={6} phone={4}>
+                        <GridCell desktop={3} tablet={0} phone={0} />
+                        <GridCell desktop={6} tablet={8} phone={4}>
                             <Grid>
                                 <GridRow>
                                     <GridCell desktop={4} tablet={3} phone={1}>
@@ -705,14 +741,14 @@ function Footer() {
                                         </Link>
                                     </GridCell>
                                     <GridCell desktop={3} tablet={2} phone={2}>
-                                        <a
+                                        <Link
                                             style={{
                                                 color: 'white',
                                                 textDecoration: 'none',
                                             }}
-                                            href='//docs.iasa.kr'>
+                                            to='/openapi'>
                                             OpenAPI
-                                        </a>
+                                        </Link>
                                     </GridCell>
                                 </GridRow>
                             </Grid>

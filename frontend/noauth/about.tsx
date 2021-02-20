@@ -136,8 +136,8 @@ function About() {
                         <br />
                         <Grid>
                             <GridRow>
-                                <GridCell desktop={3} tablet={1} phone={0} />
-                                <GridCell desktop={6} tablet={6} phone={4}>
+                                <GridCell desktop={3} tablet={0} phone={0} />
+                                <GridCell desktop={6} tablet={8} phone={4}>
                                     <Grid>
                                         <GridRow>
                                             <GridCell
@@ -218,14 +218,14 @@ function About() {
                                                 desktop={3}
                                                 tablet={2}
                                                 phone={2}>
-                                                <a
+                                                <Link
                                                     style={{
                                                         color: 'white',
                                                         textDecoration: 'none',
                                                     }}
-                                                    href='//docs.iasa.kr'>
+                                                    to='/openapi'>
                                                     OpenAPI
-                                                </a>
+                                                </Link>
                                             </GridCell>
                                         </GridRow>
                                     </Grid>

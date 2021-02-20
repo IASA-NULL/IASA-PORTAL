@@ -269,3 +269,40 @@ a {
 header.raised {
     box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
 }
+
+.rmwc-badge--align-inline {
+    margin: 0.5rem;
+}
+
+.rmwc-badge {
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: var(--mdc-theme-on-error);
+    background: var(--mdc-theme-error);
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 9999px;
+    -webkit-transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    -webkit-transform: none;
+    transform: none;
+    min-width: 1.5rem;
+    box-sizing: border-box;
+    padding: 0 0.3125rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    margin-top: 0;
+    margin-top: var(--rmwc-badge-inset, 0);
+    text-transform: uppercase;
+}
+
+.mdc-chip {
+    margin-bottom: 7px;
+}

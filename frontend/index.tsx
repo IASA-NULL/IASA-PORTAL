@@ -21,6 +21,7 @@ import {
     OpensourceNavList,
     TermsNavList,
     UserDataNavList,
+    OpenAPINavList,
 } from './mainview'
 import { fetchAPI } from './util'
 
@@ -50,6 +51,12 @@ import PROGRAM_IP from './student/program/ip'
 import MyPage from './common/mypage'
 import { lightTheme } from './util'
 import MailView from './common/mailview'
+
+import OpenAPIIndex from './openapi'
+import OpenAPIAccount from './openapi/account'
+import OpenAPIMel from './openapi/meal'
+import OpenAPIMeal from './openapi/meal'
+import OpenAPIDesc from './openapi/desc'
 
 interface IState {
     loaded: boolean
@@ -177,6 +184,38 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/openapi/desc'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIDesc />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi/account'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIAccount />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi/meal'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIMeal />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIIndex />}
+                        />
+                    </Route>
+
                     <Route>
                         <MainView
                             accountInfo={this.state.data}
@@ -292,6 +331,38 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/openapi/desc'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIDesc />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi/account'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIAccount />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi/meal'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIMeal />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIIndex />}
+                        />
+                    </Route>
+
                     <Route>
                         <MainView
                             accountInfo={this.state.data}
@@ -383,6 +454,7 @@ class App extends React.Component<any, IState> {
                             appCont={<Terms />}
                         />
                     </Route>
+
                     <Route path='/userdata'>
                         <MainView
                             accountInfo={this.state.data}
@@ -390,11 +462,52 @@ class App extends React.Component<any, IState> {
                             appCont={<Userdata />}
                         />
                     </Route>
+
                     <Route path='/opensource'>
                         <MainView
                             accountInfo={this.state.data}
                             navList={OpensourceNavList}
                             appCont={<Opensource />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi/desc'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIDesc />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi/account'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIAccount />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi/meal'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIMeal />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIIndex />}
+                        />
+                    </Route>
+
+                    <Route>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultTeacherNavList}
+                            appCont={<NotFound />}
                         />
                     </Route>
                 </Switch>
@@ -442,6 +555,38 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/openapi/desc'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIDesc />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi/account'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIAccount />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi/meal'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIMeal />}
+                        />
+                    </Route>
+
+                    <Route path='/openapi'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={OpenAPINavList}
+                            appCont={<OpenAPIIndex />}
+                        />
+                    </Route>
+
                     <Route>
                         <Redirect to='/about' />
                     </Route>
@@ -464,6 +609,7 @@ function init() {
     window.scrollObj = OverlayScrollbars(document.body, {
         callbacks: {
             onScroll: (e: any) => {
+                if (!document.querySelector('header')) return
                 if (e.target.scrollTop === 0)
                     document.querySelector('header').classList.remove('raised')
                 else document.querySelector('header').classList.add('raised')

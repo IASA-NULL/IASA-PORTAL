@@ -413,7 +413,7 @@ export function SearchUser<
                     )
                 ) : (
                     <Typography use='subtitle1' style={{ margin: '10px' }}>
-                        검색할 사람의 이름/학번을 입력하세요.
+                        검색할 사람의 이름을 입력하세요.
                     </Typography>
                 )}
             </Menu>

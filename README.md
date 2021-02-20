@@ -17,16 +17,16 @@ TS + Node.js + React + MongoDB로 만든 IASA PORTAL입니다.
 
 ## TODO
 
--   [ ] 가입메일 전송 시스템
--   [ ] 가입
+-   [X] 가입메일 전송 시스템
+-   [X] 가입
 -   [ ] 면불
--   [ ] 마이페이지
+-   [X] 마이페이지
 -   [ ] File Splitting
 -   [ ] Docker + Cloud(EC2)
--   [ ] 벌점
--   [ ] 메인 페이지
--   [ ] 업로드 시스템 구현(S3)
--   [ ] IASA-PRINT integration
+-   [X] 벌점
+-   [X] 메인 페이지
+-   [X] 업로드 시스템 구현(S3)
+-   [X] IASA-PRINT integration
 
 ## TODO(나중에)
 
