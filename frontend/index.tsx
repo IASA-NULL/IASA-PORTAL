@@ -200,7 +200,7 @@ class App extends React.Component<any, IState> {
                     <Route path='/mail/:eid'>
                         <MainView
                             accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
+                            navList={DefaultTeacherNavList}
                             appCont={<MailView data={this.state?.data} />}
                         />
                     </Route>
@@ -315,7 +315,7 @@ class App extends React.Component<any, IState> {
                     <Route path='/mail/:eid'>
                         <MainView
                             accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
+                            navList={DefaultAdminNavList}
                             appCont={<MailView data={this.state?.data} />}
                         />
                     </Route>
