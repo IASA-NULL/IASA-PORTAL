@@ -470,6 +470,11 @@ export function TimeSelect<
     const updateTime = () => {
         setTimeout(() => {
             if (bh && bm && eh && em) {
+                if (
+                    sel.begin === getToday(parseInt(bh), parseInt(bm)) &&
+                    sel.end === getToday(parseInt(eh), parseInt(em))
+                )
+                    return
                 setSel(
                     timeRange(
                         getToday(parseInt(bh), parseInt(bm)),
@@ -499,7 +504,7 @@ export function TimeSelect<
                 style={{ minWidth: '300px' }}
                 open={menu}
                 onClose={() => {
-                    if (sel) setMenu(false)
+                    setMenu(false)
                 }}>
                 <TextField
                     label='시'
@@ -671,6 +676,12 @@ export function TimeSelect<
                 label={label}
                 value={title}
                 onFocus={() => {
+                    setMenu(true)
+                    setTimeout(() => {
+                        beginHour.current.focus()
+                    }, 300)
+                }}
+                onClick={() => {
                     setMenu(true)
                     setTimeout(() => {
                         beginHour.current.focus()

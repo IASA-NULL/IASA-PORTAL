@@ -40,16 +40,22 @@ router.post('/list', async (req, res) => {
         if (req.auth.permission === Permission.teacher) {
             myeonbulList = await myeonbulDB
                 .find({ tid: req.auth.uid })
+                .sort('_id', -1)
+                .limit(40)
                 .toArray()
         } else if (req.auth.permission === Permission.student) {
             myeonbulList = await myeonbulDB
                 .find({ sid: req.auth.uid })
+                .sort('_id', -1)
+                .limit(40)
                 .toArray()
         }
     } else {
         if (req.auth.permission === Permission.teacher) {
             myeonbulList = await myeonbulDB
                 .find({ date: getDateStr() })
+                .sort('_id', -1)
+                .limit(40)
                 .toArray()
         } else if (req.auth.permission === Permission.student) {
             res.status(401)

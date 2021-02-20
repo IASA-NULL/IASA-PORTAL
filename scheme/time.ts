@@ -37,3 +37,7 @@ export function formatTime(hour: number, minute: number, second?: number) {
         return `${('00' + hour).substr(-2)}:${('00' + minute).substr(-2)}`
     }
 }
+
+export function formatTimeD(date: Date) {
+    return formatTime(date.getHours(), date.getMinutes())
+}

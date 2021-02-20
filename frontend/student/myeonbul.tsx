@@ -33,7 +33,8 @@ import {
     TimeSelect,
 } from '../util'
 import { UserInfo } from '../../scheme/user'
-import { TimeRange } from '../../scheme/time'
+import { formatTime, formatTimeD, TimeRange } from '../../scheme/time'
+import { IconButton } from '@rmwc/icon-button'
 
 interface MyeonbulProps {
     data: token
@@ -126,6 +127,35 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
             })
     }
 
+    public cancel(mid: string) {
+        fetchAPI('DELETE', {}, 'myeonbul', mid)
+            .then((res) => {
+                if (res.success) {
+                    this.notify({
+                        title: <b>성공!</b>,
+                        body: '정상적으로 삭제했어요.',
+                        icon: 'check',
+                        dismissIcon: true,
+                    })
+                } else
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                this.refresh()
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
+    }
+
     public render() {
         let tableBody
         if (this.state?.loaded) {
@@ -143,13 +173,17 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                             else if (begin.getDay() === end.getDay())
                                 formattedDate = `${end.getFullYear()}/${
                                     end.getMonth() + 1
-                                }/${end.getDate()} ${begin.getHours()}:${begin.getMinutes()} - ${end.getHours()}:${end.getMinutes()}`
+                                }/${end.getDate()} ${formatTimeD(
+                                    begin
+                                )} - ${formatTimeD(end)}`
                             else
                                 formattedDate = `${begin.getFullYear()}/${
                                     begin.getMonth() + 1
-                                }/${begin.getDate()} ${begin.getHours()}:${begin.getMinutes()} - ${end.getFullYear()}/${
+                                }/${begin.getDate()} ${formatTimeD(
+                                    begin
+                                )} - ${end.getFullYear()}/${
                                     end.getMonth() + 1
-                                }/${end.getDate()} ${end.getHours()}:${end.getMinutes()}`
+                                }/${end.getDate()} ${formatTimeD(end)}`
                             return (
                                 <DataTableRow>
                                     <DataTableCell>
@@ -162,6 +196,9 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                         {el.teacher.name}
                                     </DataTableCell>
                                     <DataTableCell alignEnd>
+                                        {el.reason}
+                                    </DataTableCell>
+                                    <DataTableCell alignEnd>
                                         <Checkbox
                                             indeterminate={
                                                 el.approved ===
@@ -171,6 +208,14 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                                 el.approved ===
                                                 MyeonbulResponseType.ACCEPT
                                             }
+                                        />
+                                    </DataTableCell>
+                                    <DataTableCell alignEnd>
+                                        <IconButton
+                                            icon='delete'
+                                            onClick={() => {
+                                                this.cancel(el.mid)
+                                            }}
                                         />
                                     </DataTableCell>
                                 </DataTableRow>
@@ -195,6 +240,8 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                         <DataTableCell />
                         <DataTableCell />
                         <DataTableCell />
+                        <DataTableCell />
+                        <DataTableCell />
                     </DataTableRow>
                 )
             }
@@ -204,6 +251,8 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                     <DataTableCell>
                         <div>로딩 중...</div>
                     </DataTableCell>
+                    <DataTableCell />
+                    <DataTableCell />
                     <DataTableCell />
                     <DataTableCell />
                     <DataTableCell />
@@ -313,8 +362,12 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                                 <DataTableHeadCell>
                                     담당 선생님
                                 </DataTableHeadCell>
+                                <DataTableHeadCell>면불 사유</DataTableHeadCell>
                                 <DataTableHeadCell alignEnd>
                                     승인 여부
+                                </DataTableHeadCell>
+                                <DataTableHeadCell alignEnd>
+                                    작업
                                 </DataTableHeadCell>
                             </DataTableRow>
                         </DataTableHead>
