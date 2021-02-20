@@ -454,8 +454,7 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                 fixed
                 style={{
                     zIndex: 10,
-                    boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                    borderBottom: 'solid 1px #ddd',
                     background: '#ffffff',
                     color: 'var(--mdc-theme-primary)',
                 }}
@@ -579,7 +578,7 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                     ) : (
                         <></>
                     )}
-                    <DrawerContent>
+                    <DrawerContent style={{ height: 'calc(100% - 203px)' }}>
                         <List>
                             {props.list ? props.list(closeIfModal) : <></>}
                         </List>
@@ -709,7 +708,7 @@ class AppContentWrapper extends React.Component<any, {}> {
     public componentWillUpdate() {
         this.myRef.current.className = 'before-fadein'
         setTimeout(() => {
-            //@ts-ignore
+            // @ts-ignore
             scrollObj.scroll(0)
             this.myRef.current.className = 'fadein'
         }, 100)

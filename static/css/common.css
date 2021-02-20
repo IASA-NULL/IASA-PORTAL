@@ -254,10 +254,18 @@ a {
     color: var(--mdc-theme-primary) !important;
 }
 
+.header .mdc-menu * {
+    color: black !important;
+}
+
 .footer {
     background: #f2f2ff !important;
 }
 
 .footer * {
     color: #383870 !important;
+}
+
+header.raised {
+    box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
 }

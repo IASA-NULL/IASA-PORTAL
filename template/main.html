@@ -6,10 +6,22 @@
         <title>IASA Portal</title>
         <!--Splash-->
         <script>
-            let scrollObj
             let timerStart = Date.now()
             document.addEventListener('DOMContentLoaded', function () {
-                scrollObj = OverlayScrollbars(document.body, {})
+                window.scrollObj = OverlayScrollbars(document.body, {
+                    callbacks: {
+                        onScroll: (e) => {
+                            if (e.target.scrollTop === 0)
+                                document
+                                    .querySelector('header')
+                                    .classList.remove('raised')
+                            else
+                                document
+                                    .querySelector('header')
+                                    .classList.add('raised')
+                        },
+                    },
+                })
             })
             window.addEventListener('load', () => {
                 let ti = 500 - (Date.now() - timerStart)
