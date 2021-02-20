@@ -7,32 +7,6 @@
         <!--Splash-->
         <script>
             let timerStart = Date.now()
-            document.addEventListener('DOMContentLoaded', function () {
-                window.scrollObj = OverlayScrollbars(document.body, {
-                    callbacks: {
-                        onScroll: (e) => {
-                            if (e.target.scrollTop === 0)
-                                document
-                                    .querySelector('header')
-                                    .classList.remove('raised')
-                            else
-                                document
-                                    .querySelector('header')
-                                    .classList.add('raised')
-                        },
-                    },
-                })
-            })
-            window.addEventListener('load', () => {
-                let ti = 500 - (Date.now() - timerStart)
-                if (ti < 1) ti = 1
-                setTimeout(function () {
-                    document.getElementById('preloader').style.opacity = '0'
-                }, ti)
-                setTimeout(function () {
-                    document.getElementById('preloader').remove()
-                }, ti + 500)
-            })
         </script>
         <style>
             .fade {
@@ -46,13 +20,13 @@
                 background: initial;
             }
 
-            #logo-flag {
+            .anim #logo-flag {
                 opacity: 0;
                 animation: logo-obj-anim 0.5s ease forwards;
                 animation-delay: 0.2s;
             }
 
-            #logo-school {
+            .anim #logo-school {
                 opacity: 0;
                 animation: logo-obj-anim 0.5s ease forwards;
                 animation-delay: 0.5s;
@@ -68,7 +42,7 @@
                 }
             }
 
-            #logo-l1 {
+            .anim #logo-l1 {
                 stroke-dasharray: 160.4;
                 stroke-dashoffset: 160.4;
                 animation: logo-dash-1 0.1s linear forwards;
@@ -86,7 +60,7 @@
                 }
             }
 
-            #logo-l2 {
+            .anim #logo-l2 {
                 stroke-dasharray: 239.1;
                 stroke-dashoffset: 239.1;
                 animation: logo-dash-2 0.2s ease forwards;
@@ -104,7 +78,7 @@
                 }
             }
 
-            #logo-l3 {
+            .anim #logo-l3 {
                 stroke-dasharray: 447.8;
                 stroke-dashoffset: 447.8;
                 animation: logo-dash-3 0.2s linear forwards;
@@ -122,7 +96,7 @@
                 }
             }
 
-            #logo-l4 {
+            .anim #logo-l4 {
                 stroke-dasharray: 421.1;
                 stroke-dashoffset: 421.1;
                 animation: logo-dash-4 0.5s ease forwards;
@@ -140,7 +114,7 @@
                 }
             }
 
-            #logo-l5 {
+            .anim #logo-l5 {
                 stroke-dasharray: 418.1;
                 stroke-dashoffset: 418.1;
                 animation: logo-dash-5 0.5s ease forwards;
@@ -158,7 +132,7 @@
                 }
             }
 
-            #logo-l6 {
+            .anim #logo-l6 {
                 stroke-dasharray: 418.1;
                 stroke-dashoffset: 418.1;
                 animation: logo-dash-6 0.5s ease forwards;
@@ -177,7 +151,7 @@
             }
         </style>
         <div
-            class="fade"
+            class="fade anim"
             id="preloader"
             style="
                 z-index: 5000;
@@ -211,7 +185,6 @@
                         d="M127 365h389v233H127z"
                         fill="#5351DB"
                         id="logo-school"
-                        opacity="0"
                     />
                     <path
                         d="M237.462 202.729 98.5001 122.5 "
