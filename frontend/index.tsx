@@ -54,7 +54,6 @@ import MailView from './common/mailview'
 
 import OpenAPIIndex from './openapi'
 import OpenAPIAccount from './openapi/account'
-import OpenAPIMel from './openapi/meal'
 import OpenAPIMeal from './openapi/meal'
 import OpenAPIDesc from './openapi/desc'
 

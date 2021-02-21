@@ -33,7 +33,7 @@ import {
     TimeSelect,
 } from '../util'
 import { UserInfo } from '../../scheme/user'
-import { formatTime, formatTimeD, TimeRange } from '../../scheme/time'
+import { formatTimeD, TimeRange } from '../../scheme/time'
 import { IconButton } from '@rmwc/icon-button'
 
 interface MyeonbulProps {

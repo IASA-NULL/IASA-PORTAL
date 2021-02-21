@@ -11,7 +11,6 @@ import {
     requireSudo,
 } from '../util'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
-import { GridCell } from '@rmwc/grid'
 import createURL from '../../scheme/url'
 
 interface IProps {}

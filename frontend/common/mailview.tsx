@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { Typography } from '@rmwc/typography'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
-import { MailListResponse, MailResponse } from '../../scheme/api/Mail'
+import { MailResponse } from '../../scheme/api/Mail'
 import { token } from '../../scheme/api/auth'
 import { BrIfMobile, fetchAPI } from '../util'
 import { IconButton } from '@rmwc/icon-button'

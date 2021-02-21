@@ -1,14 +1,12 @@
 import * as AWS from 'aws-sdk'
 import { v4 as uuid } from 'uuid'
-import { body } from 'express-validator'
-import { DeleteObjectOutput, DeleteObjectRequest } from 'aws-sdk/clients/s3'
 
 const s3Client = new AWS.S3({
     region: 'ap-northeast-2',
 })
 
 export function fileList(path: string, bucket = 'upload') {
-    return new Promise<AWS.S3.ListObjectsOutput>((resolve, reject) => {
+    return new Promise<AWS.S3.ListObjectsOutput>((resolve) => {
         s3Client.listObjects(
             {
                 Bucket: bucket + '.iasa.kr',

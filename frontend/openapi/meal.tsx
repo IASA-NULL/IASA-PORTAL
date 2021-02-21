@@ -1,17 +1,8 @@
 import * as React from 'react'
 import { withRouter } from 'react-router-dom'
 
-import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
 import { BrIfMobile } from '../util'
-import {
-    Card,
-    CardPrimaryAction,
-    CardMedia,
-    CardActions,
-    CardActionButtons,
-    CardActionButton,
-} from '@rmwc/card'
 import { APIInfo } from './component'
 
 class OpenAPIMeal extends React.Component<any, {}> {

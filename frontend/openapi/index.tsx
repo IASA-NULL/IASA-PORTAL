@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { withRouter } from 'react-router-dom'
 
-import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
 import { BrIfMobile } from '../util'
 import {
@@ -53,7 +52,8 @@ class OpenAPIIndex extends React.Component<any, {}> {
                         <CardActionButtons>
                             <a
                                 href='https://github.com/IASA-Null/IASA-PORTAL'
-                                target='_blank'>
+                                target='_blank'
+                                rel='noreferer'>
                                 <CardActionButton>깃허브 열기</CardActionButton>
                             </a>
                         </CardActionButtons>

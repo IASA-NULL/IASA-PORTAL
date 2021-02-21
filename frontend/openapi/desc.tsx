@@ -3,8 +3,9 @@ import { withRouter } from 'react-router-dom'
 
 import { Typography } from '@rmwc/typography'
 import { BrIfMobile } from '../util'
-import { CodeBlock, github } from 'react-code-blocks'
-import { PropInfo } from './component'
+import SyntaxHighlighter from 'react-syntax-highlighter'
+import { github } from 'react-syntax-highlighter/dist/esm/styles/hljs'
+import { CodeBlock, PropInfo } from './component'
 
 class OpenAPIDesc extends React.Component<any, {}> {
     public toMain() {
@@ -32,15 +33,11 @@ class OpenAPIDesc extends React.Component<any, {}> {
                     아래와 같은 스키마를 만족하는 것이 보장됩니다.
                 </p>
                 <CodeBlock
-                    text={`{
+                    code={`{
     success: boolean
     data: any
     message: string
 }`}
-                    language='typescript'
-                    showLineNumbers
-                    theme={github}
-                    wrapLines
                 />
                 <br />
                 <PropInfo

@@ -4,7 +4,21 @@ import { BrIfMobile } from '../util'
 import { Typography } from '@rmwc/typography'
 import { Badge } from '@rmwc/badge'
 import { Chip } from '@rmwc/chip'
-import { CodeBlock, github } from 'react-code-blocks'
+
+import SyntaxHighlighter from 'react-syntax-highlighter'
+import { github } from 'react-syntax-highlighter/dist/esm/styles/hljs'
+
+export function CodeBlock(props: { code: string }) {
+    return (
+        <SyntaxHighlighter
+            language='typescript'
+            showLineNumbers
+            style={github}
+            wrapLines>
+            {props.code}
+        </SyntaxHighlighter>
+    )
+}
 
 export function APIInfo(props: {
     path: string
@@ -56,13 +70,7 @@ export function APIInfo(props: {
             <Typography use='headline5'>요청</Typography>
             <br />
             <br />
-            <CodeBlock
-                text={props.request.raw}
-                language='typescript'
-                showLineNumbers
-                theme={github}
-                wrapLines
-            />
+            <CodeBlock code={props.request.raw} />
             <br />
             {props.request.desc && <br />}
             {props.request.props.map((el) => {
@@ -82,13 +90,7 @@ export function APIInfo(props: {
             <Typography use='headline5'>응답</Typography>
             <br />
             <br />
-            <CodeBlock
-                text={props.response.raw}
-                language='typescript'
-                showLineNumbers
-                theme={github}
-                wrapLines
-            />
+            <CodeBlock code={props.response.raw} />
             <br />
             {props.response.desc && <br />}
             {props.response.props.map((el) => {
