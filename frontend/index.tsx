@@ -56,6 +56,7 @@ import OpenAPIIndex from './openapi'
 import OpenAPIAccount from './openapi/account'
 import OpenAPIMeal from './openapi/meal'
 import OpenAPIDesc from './openapi/desc'
+import PROGRAM_NETWORK from './common/network'
 
 interface IState {
     loaded: boolean
@@ -180,6 +181,14 @@ class App extends React.Component<any, IState> {
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
                             appCont={<PROGRAM_IP />}
+                        />
+                    </Route>
+
+                    <Route path='/program/network'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultStudentNavList}
+                            appCont={<PROGRAM_NETWORK />}
                         />
                     </Route>
 
@@ -322,6 +331,14 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/program/network'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultTeacherNavList}
+                            appCont={<PROGRAM_NETWORK />}
+                        />
+                    </Route>
+
                     <Route path='/share'>
                         <MainView
                             accountInfo={this.state.data}
@@ -438,6 +455,14 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/program/network'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultAdminNavList}
+                            appCont={<PROGRAM_NETWORK />}
+                        />
+                    </Route>
+
                     <Route path='/terms'>
                         <MainView
                             accountInfo={this.state.data}
@@ -536,6 +561,13 @@ class App extends React.Component<any, IState> {
                         <MainView
                             accountInfo={this.state.data}
                             appCont={<PROGRAM_IP />}
+                        />
+                    </Route>
+
+                    <Route path='/program/network'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            appCont={<PROGRAM_NETWORK />}
                         />
                     </Route>
 

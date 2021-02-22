@@ -113,7 +113,7 @@ export const DefaultStudentNavList = (closeIfModal: any) => {
             </CollapsibleList>
             <CollapsibleList
                 defaultOpen={[
-                    '/program/nac',
+                    '/program/network',
                     '/program/ip',
                     '/program/client',
                 ].includes(window.location.pathname)}
@@ -127,7 +127,7 @@ export const DefaultStudentNavList = (closeIfModal: any) => {
                 <div style={{ paddingLeft: '20px' }}>
                     <ListLink
                         body='인터넷 연결 도구'
-                        to='/program/nac'
+                        to='/program/network'
                         onClick={closeIfModal}
                         type={LinkType.link}
                         icon='wysiwyg'
@@ -218,6 +218,43 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
                 type={LinkType.link}
                 icon='fastfood'
             />
+            <CollapsibleList
+                defaultOpen={[
+                    '/program/network',
+                    '/program/ip',
+                    '/program/client',
+                ].includes(window.location.pathname)}
+                handle={
+                    <SimpleListItem
+                        text='프로그램'
+                        graphic='folder'
+                        metaIcon='chevron_right'
+                    />
+                }>
+                <div style={{ paddingLeft: '20px' }}>
+                    <ListLink
+                        body='인터넷 연결 도구'
+                        to='/program/network'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='wysiwyg'
+                    />
+                    <ListLink
+                        body='IP'
+                        to='/program/ip'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='wysiwyg'
+                    />
+                    <ListLink
+                        body='IASA CLIENT'
+                        to='/program/client'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='wysiwyg'
+                    />
+                </div>
+            </CollapsibleList>
         </>
     )
 }
@@ -274,6 +311,43 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                         onClick={closeIfModal}
                         type={LinkType.link}
                         icon='recent_actors'
+                    />
+                </div>
+            </CollapsibleList>
+            <CollapsibleList
+                defaultOpen={[
+                    '/program/network',
+                    '/program/ip',
+                    '/program/client',
+                ].includes(window.location.pathname)}
+                handle={
+                    <SimpleListItem
+                        text='프로그램'
+                        graphic='folder'
+                        metaIcon='chevron_right'
+                    />
+                }>
+                <div style={{ paddingLeft: '20px' }}>
+                    <ListLink
+                        body='인터넷 연결 도구'
+                        to='/program/network'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='wysiwyg'
+                    />
+                    <ListLink
+                        body='IP'
+                        to='/program/ip'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='wysiwyg'
+                    />
+                    <ListLink
+                        body='IASA CLIENT'
+                        to='/program/client'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='wysiwyg'
                     />
                 </div>
             </CollapsibleList>
