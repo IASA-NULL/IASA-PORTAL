@@ -35,6 +35,7 @@ import {
 import { UserInfo } from '../../scheme/user'
 import { formatTimeD, TimeRange } from '../../scheme/time'
 import { IconButton } from '@rmwc/icon-button'
+import createURL from '../../scheme/url'
 
 interface MyeonbulProps {
     data: token
@@ -434,8 +435,19 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                     면불대장을 출력하거나 pdf로 저장할 수 있어요.
                 </Typography>
                 <br />
-                <p>아직 개발 중이에요.</p>
-                <p>조금만 기다려 주세요!</p>
+                <br />
+                <Button
+                    outlined
+                    onClick={() => {
+                        window.open(
+                            createURL('application', 'myeonbul_boss'),
+                            '면불대장 - IASA PORTAL',
+                            'width=600,height=1000'
+                        )
+                    }}
+                    style={{ marginLeft: '20px' }}>
+                    면불대장 열기
+                </Button>
                 <br />
                 <br />
                 <SnackbarQueue messages={this.messages} />

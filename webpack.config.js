@@ -37,8 +37,9 @@ module.exports = (env, argv) => {
             entry: {
                 main: './frontend/index.tsx',
                 auth: './frontend/auth.tsx',
+                app: './frontend/app/index.tsx',
             },
-            devtool: 'source-map',
+            ...(devMode && { devtool: 'source-map' }),
             target: 'es6',
             output: {
                 path: path.resolve(__dirname, 'static', 'js'),

@@ -8,7 +8,7 @@ import {
     fetchAPI,
     FileInput,
     focusNextInput,
-    requireSudo,
+    RequireSudo,
 } from '../util'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 import createURL from '../../scheme/url'
@@ -34,7 +34,7 @@ class MyPage extends React.Component<any, IState> {
         try {
             const edit = searchParams.get('edit')
             if (edit) {
-                requireSudo()
+                RequireSudo()
                 this.state = { edit: true }
             }
         } catch (e) {}
@@ -49,7 +49,7 @@ class MyPage extends React.Component<any, IState> {
             window.location.pathname + '?' + searchParams.toString()
         )
         this.setState({ edit: true })
-        requireSudo()
+        RequireSudo()
     }
 
     public save() {

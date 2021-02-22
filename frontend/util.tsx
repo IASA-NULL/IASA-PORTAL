@@ -316,7 +316,7 @@ export function fetchAPI(method: string, body: any, ...props: string[]) {
     }).then((res) => res.json())
 }
 
-export function requireSudo() {
+export function RequireSudo() {
     setTimeout(async () => {
         const accountInfo = await fetchAPI('GET', {}, 'account', 'info')
         if (!accountInfo.data.sudo) {
@@ -327,6 +327,7 @@ export function requireSudo() {
             )
         }
     }, 0)
+    return <></>
 }
 
 export function SearchUser<

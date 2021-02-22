@@ -22,13 +22,7 @@ authRouter.get('/changesecret/:token', (req, res) => {
         res.sendFile(path.join(__dirname, '..', 'template', 'auth.html'))
     } catch (e) {
         res.sendFile(
-            path.join(
-                __dirname,
-                '..',
-                '..',
-                'template',
-                'changesecretfail.html'
-            )
+            path.join(__dirname, '..', 'template', 'changesecretfail.html')
         )
     }
 })

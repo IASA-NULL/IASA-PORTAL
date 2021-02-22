@@ -10,6 +10,7 @@ import cors from 'cors'
 import apiRouter from './api/index'
 import authRouter from './auth'
 import accountRouter from './account'
+import applicationRouter from './application'
 
 import { getServerFlag } from './util/serverState'
 import mailParse from './mailParse'
@@ -63,9 +64,11 @@ app.use(authRouter)
 if (DEV_MODE) {
     app.use('/api', apiRouter)
     app.use('/account', accountRouter)
+    app.use('/application', applicationRouter)
 } else {
     app.use(vhost('api.iasa.kr', apiRouter))
     app.use(vhost('account.iasa.kr', accountRouter))
+    app.use(vhost('application.iasa.kr', applicationRouter))
     setInterval(mailParse, 5000)
 }
 
