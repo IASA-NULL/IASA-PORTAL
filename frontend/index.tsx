@@ -438,14 +438,6 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
-                    <Route>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<NotFound />}
-                        />
-                    </Route>
-
                     <Route path='/terms'>
                         <MainView
                             accountInfo={this.state.data}

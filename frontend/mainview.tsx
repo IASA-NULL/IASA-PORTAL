@@ -284,6 +284,11 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
 export const TermsNavList = (closeIfModal: any) => {
     return (
         <>
+            <Typography
+                use='subtitle1'
+                style={{ margin: '10px', display: 'inline-block' }}>
+                이용약관
+            </Typography>
             <ListLink
                 body='약관'
                 to='cont_index'
@@ -369,6 +374,11 @@ export const TermsNavList = (closeIfModal: any) => {
 export const UserDataNavList = (closeIfModal: any) => {
     return (
         <>
+            <Typography
+                use='subtitle1'
+                style={{ margin: '10px', display: 'inline-block' }}>
+                개인정보 처리방침
+            </Typography>
             <ListLink
                 body='개인정보 처리방침'
                 to='cont_index'
@@ -442,6 +452,11 @@ export const UserDataNavList = (closeIfModal: any) => {
 export const OpensourceNavList = (closeIfModal: any) => {
     return (
         <>
+            <Typography
+                use='subtitle1'
+                style={{ margin: '10px', display: 'inline-block' }}>
+                오픈소스 사용내역
+            </Typography>
             <ListLink
                 body='Material Components for the web'
                 to='cont_mdc'
@@ -473,6 +488,11 @@ export const OpensourceNavList = (closeIfModal: any) => {
 export const OpenAPINavList = (closeIfModal: any) => {
     return (
         <>
+            <Typography
+                use='subtitle1'
+                style={{ margin: '10px', display: 'inline-block' }}>
+                OpenAPI
+            </Typography>
             <ListLink
                 body='메인'
                 to='/openapi'

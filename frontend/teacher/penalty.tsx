@@ -21,7 +21,7 @@ import { Grid, GridCell, GridRow } from '@rmwc/grid'
 import { TextField } from '@rmwc/textfield'
 import { Select } from '@rmwc/select'
 import { UserInfo } from '../../scheme/user'
-import {formatTimeD} from "../../scheme/time";
+import { formatTimeD } from '../../scheme/time'
 
 interface PenaltyProps {
     data: token
@@ -137,8 +137,8 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                                 <DataTableRow>
                                     <DataTableCell alignEnd>
                                         {(el.score > 0 ? '상점 ' : '벌점 ') +
-                                        Math.abs(el.score) +
-                                        '점'}
+                                            Math.abs(el.score) +
+                                            '점'}
                                     </DataTableCell>
                                     <DataTableCell>{`${time.getFullYear()}/${
                                         time.getMonth() + 1
