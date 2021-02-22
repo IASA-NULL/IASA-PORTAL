@@ -434,6 +434,9 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                     면불대장을 출력하거나 pdf로 저장할 수 있어요.
                 </Typography>
                 <br />
+                <p>아직 개발 중이에요.</p>
+                <p>조금만 기다려 주세요!</p>
+                <br />
                 <br />
                 <SnackbarQueue messages={this.messages} />
             </div>

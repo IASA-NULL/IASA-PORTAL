@@ -21,7 +21,7 @@ class OpenAPIMeal extends React.Component<any, {}> {
                 <br />
                 <br />
                 <APIInfo
-                    path='/'
+                    path='/meal'
                     method='POST'
                     info='급식 정보를 불러옵니다.'
                     request={{
@@ -269,7 +269,7 @@ class OpenAPIMeal extends React.Component<any, {}> {
                     }}
                 />
                 <APIInfo
-                    path='/vote'
+                    path='/meal/vote'
                     method='POST'
                     info='급식을 평가합니다.'
                     beta

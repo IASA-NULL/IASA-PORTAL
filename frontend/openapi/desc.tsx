@@ -22,6 +22,11 @@ class OpenAPIDesc extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <br />
+                <Typography use='headline4'>엔드포인트</Typography>
+                <p>
+                    IASA PORTAL의 모든 OpenAPI는 api.iasa.kr에서 호출할 수 있습니다.
+                </p>
+                <br />
                 <Typography use='headline4'>요청</Typography>
                 <p>
                     파일 업로드를 제외한 모든 요청은 JSON 형태로 이루어집니다.

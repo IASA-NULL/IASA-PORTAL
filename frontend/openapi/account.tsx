@@ -21,7 +21,7 @@ class OpenAPIAccount extends React.Component<any, {}> {
                 <br />
                 <br />
                 <APIInfo
-                    path='/'
+                    path='/account/list'
                     method='GET'
                     info='계정 목록을 불러와요.'
                     secure
