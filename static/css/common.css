@@ -306,3 +306,16 @@ header.raised {
 .mdc-chip {
     margin-bottom: 7px;
 }
+
+@media print {
+    @page {
+        margin: 0;
+    }
+    body {
+        margin: 1.6cm;
+    }
+    .no-print,
+    .no-print * {
+        display: none !important;
+    }
+}

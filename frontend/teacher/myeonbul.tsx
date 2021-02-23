@@ -458,7 +458,7 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                         window.open(
                             createURL('application', 'myeonbul_boss'),
                             '면불대장 - IASA PORTAL',
-                            'width=600,height=1000'
+                            'width=800,height=1200'
                         )
                     }}
                     style={{ marginLeft: '20px' }}>
