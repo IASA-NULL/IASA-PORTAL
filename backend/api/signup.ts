@@ -111,7 +111,6 @@ router.post('/mail', async (req, res) => {
         }
 
         await db.update('code', 'code', req.body.code, {
-            ...tmpUser,
             id: req.body.id.toLowerCase(),
             pwHash: await bcrypt.hash(req.body.password, saltRound),
             email: req.body.email,

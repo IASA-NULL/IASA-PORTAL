@@ -21,11 +21,12 @@ async function getPenaltyInfo(uid: number, res: any) {
         res.send(createResponse(false, '대상 계정이 학생이 아니에요.'))
         return
     }
-    if (!account.penalty) {
-        account.penalty = { score: 0, history: [] }
-        await db.update('account', 'uid', uid, { penalty: account.penalty })
+    let penalty = account.penalty
+    if (!penalty) {
+        penalty = { score: 0, history: [] }
+        await db.update('account', 'uid', uid, { penalty: penalty })
     }
-    res.send(createResponse(account.penalty))
+    res.send(createResponse(penalty))
 }
 
 async function addPenalty(uid: number, info: PenaltyResponseOne, res: any) {
@@ -40,10 +41,11 @@ async function addPenalty(uid: number, info: PenaltyResponseOne, res: any) {
         res.send(createResponse(false, '대상 계정이 학생이 아니에요.'))
         return
     }
-    if (!account.penalty) account.penalty = { score: 0, history: [] }
-    account.penalty.score += info.score
-    account.penalty.history.unshift(info)
-    await db.update('account', 'uid', uid, { penalty: account.penalty })
+    let penalty = account.penalty
+    if (!penalty) penalty = { score: 0, history: [] }
+    penalty.score += info.score
+    penalty.history.unshift(info)
+    await db.update('account', 'uid', uid, { penalty: penalty })
     res.send(createResponse(true))
 }
 

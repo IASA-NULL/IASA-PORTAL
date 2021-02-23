@@ -16,7 +16,7 @@ export default function PROGRAM_NETWORK() {
             <Typography use='headline5'>NAC</Typography>
             <br />
             <br />
-            <a href='https://s3.ap-northeast-2.amazonaws.com/public.iasa.kr/network/agent.exe'>
+            <a href='https://s3.ap-northeast-2.amazonaws.com/public.iasa.kr/network/nac.exe'>
                 <Button outlined label='다운로드' icon='get_app' />
             </a>
             <br />

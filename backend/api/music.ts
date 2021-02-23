@@ -92,7 +92,6 @@ router.post('/register', async (req, res) => {
     })
     if (
         await db.update('music', 'date', tomorrowStr, {
-            date: tomorrowStr,
             musicList: musicList,
         })
     ) {
