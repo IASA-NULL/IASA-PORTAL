@@ -360,8 +360,12 @@ export const TermsNavList = (closeIfModal: any) => {
     return (
         <>
             <Typography
-                use='subtitle1'
-                style={{ margin: '10px', display: 'inline-block' }}>
+                use='headline5'
+                style={{
+                    margin: '10px',
+                    display: 'inline-block',
+                    fontWeight: 600,
+                }}>
                 이용약관
             </Typography>
             <ListLink
@@ -450,8 +454,12 @@ export const UserDataNavList = (closeIfModal: any) => {
     return (
         <>
             <Typography
-                use='subtitle1'
-                style={{ margin: '10px', display: 'inline-block' }}>
+                use='headline5'
+                style={{
+                    margin: '10px',
+                    display: 'inline-block',
+                    fontWeight: 600,
+                }}>
                 개인정보 처리방침
             </Typography>
             <ListLink
@@ -528,8 +536,12 @@ export const OpensourceNavList = (closeIfModal: any) => {
     return (
         <>
             <Typography
-                use='subtitle1'
-                style={{ margin: '10px', display: 'inline-block' }}>
+                use='headline5'
+                style={{
+                    margin: '10px',
+                    display: 'inline-block',
+                    fontWeight: 600,
+                }}>
                 오픈소스 사용내역
             </Typography>
             <ListLink
@@ -564,8 +576,12 @@ export const OpenAPINavList = (closeIfModal: any) => {
     return (
         <>
             <Typography
-                use='subtitle1'
-                style={{ margin: '10px', display: 'inline-block' }}>
+                use='headline5'
+                style={{
+                    margin: '10px',
+                    display: 'inline-block',
+                    fontWeight: 600,
+                }}>
                 OpenAPI
             </Typography>
             <ListLink
