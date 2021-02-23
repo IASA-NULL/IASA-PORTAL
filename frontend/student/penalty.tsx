@@ -45,11 +45,27 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
 
     public refresh() {
         this.setState({ loaded: false })
-        fetchAPI('GET', {}, 'penalty', 'list').then((res: PenaltyResponse) => {
-            if (res.success) {
-                this.setState({ loaded: true, data: res })
-            }
-        })
+        fetchAPI('GET', {}, 'penalty')
+            .then((res: PenaltyResponse) => {
+                if (res.success) {
+                    this.setState({ loaded: true, data: res })
+                } else {
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                }
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
     }
 
     public render() {

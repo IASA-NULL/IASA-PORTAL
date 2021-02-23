@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router'
 
 import {
     Drawer,
@@ -96,7 +97,7 @@ export const DefaultStudentNavList = (closeIfModal: any) => {
                 }>
                 <div style={{ paddingLeft: '20px' }}>
                     <ListLink
-                        body='벌점'
+                        body='상벌점'
                         to='/penalty'
                         onClick={closeIfModal}
                         type={LinkType.link}
@@ -189,18 +190,18 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
                 }>
                 <div style={{ paddingLeft: '20px' }}>
                     <ListLink
-                        body='벌점'
-                        to='/penalty'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='assignment_late'
-                    />
-                    <ListLink
                         body='면불'
                         to='/myeonbul'
                         onClick={closeIfModal}
                         type={LinkType.link}
                         icon='pan_tool'
+                    />
+                    <ListLink
+                        body='상벌점'
+                        to='/penalty'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='assignment_late'
                     />
                 </div>
             </CollapsibleList>
@@ -600,7 +601,7 @@ export const OpenAPINavList = (closeIfModal: any) => {
     )
 }
 
-function Navbar(props: { list?: any; accountInfo: token }) {
+function Navbar(props: { list?: any; accountInfo: token; history: any }) {
     const [drawerOpen, setDrawerOpen] = React.useState(window.innerWidth > 760)
     const [accountMenuOpen, setAccountMenuOpen] = React.useState(false)
     const closeIfModal = () => {
@@ -682,6 +683,12 @@ function Navbar(props: { list?: any; accountInfo: token }) {
                                     </MenuItem>
                                 )}
                             </Menu>
+                            <TopAppBarActionItem
+                                icon='notifications'
+                                onClick={() => {
+                                    props.history.push('/notifications')
+                                }}
+                            />
                             <TopAppBarActionItem
                                 icon='account_circle'
                                 onClick={() =>
@@ -884,11 +891,13 @@ class AppContentWrapper extends React.Component<any, {}> {
     }
 }
 
-export function MainView(props: {
-    appCont: JSX.Element
-    navList?: any
-    accountInfo: token
-}) {
+function MainViewEl(
+    props: {
+        appCont: JSX.Element
+        navList?: any
+        accountInfo: token
+    } & RouteComponentProps<any>
+) {
     let appCont = <AppContentWrapper appCont={props.appCont} />
     let headerHeight = 48,
         footerHeight = 100
@@ -906,7 +915,11 @@ export function MainView(props: {
     })
     return (
         <>
-            <Navbar list={props.navList} accountInfo={props.accountInfo} />
+            <Navbar
+                list={props.navList}
+                accountInfo={props.accountInfo}
+                history={props.history}
+            />
             <DrawerAppContent
                 style={{
                     transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -927,3 +940,5 @@ export function MainView(props: {
         </>
     )
 }
+
+export const MainView = withRouter(MainViewEl)

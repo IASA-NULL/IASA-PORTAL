@@ -14,6 +14,7 @@ export interface PenaltyResponseOne {
     teacher: UserInfo
     info: string
     time: number
+    pid: string
 }
 
 export interface Penalty {

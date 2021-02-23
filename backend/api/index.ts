@@ -17,8 +17,22 @@ let jsonParser = bodyParser.json()
 const router = express.Router()
 router.use(jsonParser)
 
-router.use('/meal', mealRouter)
 router.use('/account', accountRouter)
+
+router.use('*', (req, res, next) => {
+    if (req.auth.expired) {
+        res.send(
+            createResponse(
+                false,
+                '토큰이 만료되었어요. 페이지를 새로고침 해보세요.'
+            )
+        )
+        return
+    }
+    next()
+})
+
+router.use('/meal', mealRouter)
 router.use('/myeonbul', myeonbulRouter)
 router.use('/music', musicRouter)
 router.use('/admin', adminRouter)

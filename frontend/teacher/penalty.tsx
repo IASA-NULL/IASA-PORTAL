@@ -22,6 +22,7 @@ import { TextField } from '@rmwc/textfield'
 import { Select } from '@rmwc/select'
 import { UserInfo } from '../../scheme/user'
 import { formatTimeD } from '../../scheme/time'
+import { IconButton } from '@rmwc/icon-button'
 
 interface PenaltyProps {
     data: token
@@ -65,13 +66,27 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
     public refresh() {
         if (!this.state?.uid) return
         this.setState({ loaded: false })
-        fetchAPI('GET', {}, 'penalty', 'list', this.state?.uid.toString()).then(
-            (res: PenaltyResponse) => {
+        fetchAPI('GET', {}, 'penalty', this.state?.uid.toString())
+            .then((res: PenaltyResponse) => {
                 if (res.success) {
                     this.setState({ loaded: true, data: res })
+                } else {
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
                 }
-            }
-        )
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
     }
 
     public give() {
@@ -125,6 +140,38 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
             })
     }
 
+    public remove(pid: string) {
+        fetchAPI('DELETE', {}, 'penalty', this.state?.uid.toString(), pid)
+            .then((res: PenaltyResponse) => {
+                if (res.success)
+                    this.notify({
+                        title: <b>성공!</b>,
+                        body: '상벌점 삭제에 성공했어요.',
+                        icon: 'check',
+                        dismissIcon: true,
+                    })
+                else
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                this.setState({ score: '', reason: '' })
+                setTimeout(() => {
+                    this.refresh()
+                }, 0)
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
+    }
+
     public render() {
         let tableBody
         if (this.state?.loaded) {
@@ -151,6 +198,14 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                                     <DataTableCell alignEnd>
                                         {el.info}
                                     </DataTableCell>
+                                    <DataTableCell alignEnd>
+                                        <IconButton
+                                            icon='delete'
+                                            onClick={() => {
+                                                this.remove(el.pid)
+                                            }}
+                                        />
+                                    </DataTableCell>
                                 </DataTableRow>
                             )
                         } catch (e) {
@@ -173,6 +228,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                         <DataTableCell />
                         <DataTableCell />
                         <DataTableCell />
+                        <DataTableCell />
                     </DataTableRow>
                 )
             }
@@ -182,6 +238,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                     <DataTableCell>
                         <div>로딩 중...</div>
                     </DataTableCell>
+                    <DataTableCell />
                     <DataTableCell />
                     <DataTableCell />
                     <DataTableCell />
@@ -350,6 +407,9 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                                         </DataTableHeadCell>
                                         <DataTableHeadCell alignEnd>
                                             사유
+                                        </DataTableHeadCell>
+                                        <DataTableHeadCell alignEnd>
+                                            작업
                                         </DataTableHeadCell>
                                     </DataTableRow>
                                 </DataTableHead>

@@ -148,42 +148,63 @@ class Music extends React.Component<{}, MusicState> {
 
     public refresh() {
         this.setState({ loaded: false })
-        fetchAPI('GET', {}, 'music', 'today').then((res: MusicResponse) => {
-            for (let i = 0; i < this.todayList.length; i++) this.today.remove(0)
-            for (let i = 0; i < this.tomorrowList.length; i++)
-                this.tomorrow.remove(0)
-            this.todayList = []
-            this.tomorrowList = []
-            if (res.success) {
-                res.data.today.map((el: MusicResponseOne) => {
-                    ;(() => {
-                        this.todayList.push(<MusicOne data={el} />)
-                    })()
-                    setTimeout(() => {
-                        ;((siema: Siema) => {
-                            siema.append(
-                                Music.createCarouselItem(<MusicOne data={el} />)
-                            )
-                        })(this.today)
-                    }, this.animationDuration)
-                    return true
+        fetchAPI('GET', {}, 'music', 'today')
+            .then((res: MusicResponse) => {
+                for (let i = 0; i < this.todayList.length; i++)
+                    this.today.remove(0)
+                for (let i = 0; i < this.tomorrowList.length; i++)
+                    this.tomorrow.remove(0)
+                this.todayList = []
+                this.tomorrowList = []
+                if (res.success) {
+                    res.data.today.map((el: MusicResponseOne) => {
+                        ;(() => {
+                            this.todayList.push(<MusicOne data={el} />)
+                        })()
+                        setTimeout(() => {
+                            ;((siema: Siema) => {
+                                siema.append(
+                                    Music.createCarouselItem(
+                                        <MusicOne data={el} />
+                                    )
+                                )
+                            })(this.today)
+                        }, this.animationDuration)
+                        return true
+                    })
+                    res.data.tomorrow.map((el: MusicResponseOne) => {
+                        ;(() => {
+                            this.tomorrowList.push(<MusicOne data={el} />)
+                        })()
+                        setTimeout(() => {
+                            ;((siema: Siema) => {
+                                siema.append(
+                                    Music.createCarouselItem(
+                                        <MusicOne data={el} />
+                                    )
+                                )
+                            })(this.tomorrow)
+                        }, this.animationDuration)
+                        return true
+                    })
+                } else {
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                }
+                this.setState({ loaded: true })
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
                 })
-                res.data.tomorrow.map((el: MusicResponseOne) => {
-                    ;(() => {
-                        this.tomorrowList.push(<MusicOne data={el} />)
-                    })()
-                    setTimeout(() => {
-                        ;((siema: Siema) => {
-                            siema.append(
-                                Music.createCarouselItem(<MusicOne data={el} />)
-                            )
-                        })(this.tomorrow)
-                    }, this.animationDuration)
-                    return true
-                })
-            }
-            this.setState({ loaded: true })
-        })
+            })
     }
 
     private static createCarouselItem(el: JSX.Element) {
@@ -207,27 +228,29 @@ class Music extends React.Component<{}, MusicState> {
             },
             'music',
             'confirm'
-        ).then((res) => {
-            this.setState({ findLoaded: true })
-            if (res.success) {
-                this.setState({ find: res.data, findLoaded: true })
-            } else {
-                this.setState({ confirm: false })
+        )
+            .then((res) => {
+                this.setState({ findLoaded: true })
+                if (res.success) {
+                    this.setState({ find: res.data, findLoaded: true })
+                } else {
+                    this.setState({ confirm: false })
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: '정보를 불러올 수 없어요.',
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                }
+            })
+            .catch(() => {
                 this.notify({
                     title: <b>오류</b>,
-                    body: '정보를 불러올 수 없어요.',
+                    body: '서버와 연결할 수 없어요.',
                     icon: 'error_outline',
                     dismissIcon: true,
                 })
-            }
-        }).catch(() => {
-            this.notify({
-                title: <b>오류</b>,
-                body: '서버와 연결할 수 없어요.',
-                icon: 'error_outline',
-                dismissIcon: true,
             })
-        })
     }
 
     public register() {
@@ -242,32 +265,34 @@ class Music extends React.Component<{}, MusicState> {
             },
             'music',
             'register'
-        ).then((res) => {
-            this.setState({ requestName: '', requestSinger: '' })
-            if (res.success) {
-                this.notify({
-                    title: <b>성공!</b>,
-                    body: '기상곡 신청에 성공했어요.',
-                    icon: 'check',
-                    dismissIcon: true,
-                })
-                this.refresh()
-            } else {
+        )
+            .then((res) => {
+                this.setState({ requestName: '', requestSinger: '' })
+                if (res.success) {
+                    this.notify({
+                        title: <b>성공!</b>,
+                        body: '기상곡 신청에 성공했어요.',
+                        icon: 'check',
+                        dismissIcon: true,
+                    })
+                    this.refresh()
+                } else {
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                }
+            })
+            .catch(() => {
                 this.notify({
                     title: <b>오류</b>,
-                    body: res.message,
+                    body: '서버와 연결할 수 없어요.',
                     icon: 'error_outline',
                     dismissIcon: true,
                 })
-            }
-        }).catch(() => {
-            this.notify({
-                title: <b>오류</b>,
-                body: '서버와 연결할 수 없어요.',
-                icon: 'error_outline',
-                dismissIcon: true,
             })
-        })
     }
 
     public handleChange(e: React.FormEvent<HTMLInputElement>, target: string) {

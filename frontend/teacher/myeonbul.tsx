@@ -83,11 +83,27 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
             },
             'myeonbul',
             'list'
-        ).then((res: MyeonbulQuery) => {
-            if (res.success) {
-                this.setState({ loaded: true, data: res })
-            }
-        })
+        )
+            .then((res: MyeonbulQuery) => {
+                if (res.success) {
+                    this.setState({ loaded: true, data: res })
+                } else {
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                }
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
     }
 
     public register() {
