@@ -220,6 +220,13 @@ class Music extends React.Component<{}, MusicState> {
                     dismissIcon: true,
                 })
             }
+        }).catch(() => {
+            this.notify({
+                title: <b>오류</b>,
+                body: '서버와 연결할 수 없어요.',
+                icon: 'error_outline',
+                dismissIcon: true,
+            })
         })
     }
 
@@ -253,6 +260,13 @@ class Music extends React.Component<{}, MusicState> {
                     dismissIcon: true,
                 })
             }
+        }).catch(() => {
+            this.notify({
+                title: <b>오류</b>,
+                body: '서버와 연결할 수 없어요.',
+                icon: 'error_outline',
+                dismissIcon: true,
+            })
         })
     }
 

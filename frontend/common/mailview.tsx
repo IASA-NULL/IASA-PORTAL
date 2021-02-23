@@ -39,13 +39,27 @@ class MailView extends React.Component<MailViewProps, MailViewState> {
 
     public refresh() {
         this.setState({ loaded: false })
-        fetchAPI('GET', {}, 'mail', this.props.match.params.eid).then(
-            (res: MailResponse) => {
+        fetchAPI('GET', {}, 'mail', this.props.match.params.eid)
+            .then((res: MailResponse) => {
                 if (res.success) {
                     this.setState({ loaded: true, data: res })
+                } else {
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
                 }
-            }
-        )
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
     }
 
     public render() {
@@ -59,7 +73,7 @@ class MailView extends React.Component<MailViewProps, MailViewState> {
                     style={{ marginRight: '10px' }}
                 />
                 <Typography use='headline3'>
-                    {this.state?.data?.data?.subject}
+                    {this.state?.data?.data?.subject ?? '로드 중...'}
                 </Typography>
                 <BrIfMobile />
                 <Typography use='subtitle1' style={{ marginLeft: '10px' }}>
