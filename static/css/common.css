@@ -135,7 +135,7 @@ a {
 @keyframes rmwc-circular-progress-indeterminate-bar-dash {
     0% {
         stroke-dasharray: 2.08%, 416%;
-        stroke-dashoffset: 0%;
+        stroke-dashoffset: 0;
     }
     50% {
         stroke-dasharray: 185.4%, 416%;
@@ -307,8 +307,8 @@ header.raised {
     margin-bottom: 7px;
 }
 
-.mdc-top-app-bar button::before,
-.mdc-top-app-bar button::after {
+.mdc-top-app-bar:not(.transparent) button::before,
+.mdc-top-app-bar:not(.transparent) button::after {
     background-color: var(--mdc-theme-primary, #6200ee) !important;
 }
 

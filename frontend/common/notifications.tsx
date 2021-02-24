@@ -140,6 +140,7 @@ class Notifications extends React.Component<
                                                         label='알림 삭제'
                                                         onClick={(e: any) => {
                                                             e.preventDefault()
+                                                            e.stopPropagation()
                                                             this.remove(
                                                                 notify.nid
                                                             )
@@ -155,7 +156,15 @@ class Notifications extends React.Component<
                         )
                     })
                 ) : (
-                    <Typography use='headline5'>알림이 없어요!</Typography>
+                    <>
+                        <Typography
+                            use='headline5'
+                            style={{ marginLeft: '20px' }}>
+                            알림이 없어요!
+                        </Typography>
+                        <br />
+                        <br />
+                    </>
                 )}
 
                 <Button
