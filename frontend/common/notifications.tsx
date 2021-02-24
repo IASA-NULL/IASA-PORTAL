@@ -17,6 +17,7 @@ import {
 } from '@rmwc/list'
 import { IconButton } from '@rmwc/icon-button'
 import { NotificationApi } from '../../scheme/api/notification'
+import commonApi from '../../scheme/api/commonApi'
 
 interface NotificationsProps {
     data: token
@@ -74,6 +75,14 @@ class Notifications extends React.Component<
             })
     }
 
+    public remove(nid: string) {
+        fetchAPI('DELETE', {}, 'notifications', nid).then((res: commonApi) => {
+            if (res.success) {
+                this.refresh()
+            }
+        })
+    }
+
     public render() {
         return (
             <div>
@@ -85,55 +94,66 @@ class Notifications extends React.Component<
                 <br />
                 <br />
 
-                {this.state?.data?.data?.map((el) => {
-                    return (
-                        <>
-                            <Typography use='headline5'>{`${new Date(
-                                el.date
-                            ).getFullYear()}년 ${
-                                new Date(el.date).getMonth() + 1
-                            }월 ${new Date(el.date).getDate()}일`}</Typography>
-                            <List
-                                style={{
-                                    border: '1px solid #dddddd',
-                                    borderRadius: '3px',
-                                    background: 'white',
-                                    padding: '0',
-                                    marginTop: '10px',
-                                }}>
-                                {el.notifications.map((notify) => {
-                                    return (
-                                        <Link to={notify.link}>
-                                            <ListItem className='mdc-list--two-line'>
-                                                <ListItemText>
-                                                    <ListItemPrimaryText
-                                                        style={{
-                                                            color: 'black',
-                                                        }}>
-                                                        {notify.title}
-                                                    </ListItemPrimaryText>
-                                                    <ListItemSecondaryText>
-                                                        {notify.subtitle}
-                                                    </ListItemSecondaryText>
-                                                </ListItemText>
-                                                <ListItemMeta>
-                                                    <IconButton
-                                                        icon='close'
-                                                        label='알림 삭제'
-                                                        onClick={(e: any) => {
-                                                            e.preventDefault()
-                                                        }}
-                                                    />
-                                                </ListItemMeta>
-                                            </ListItem>
-                                        </Link>
-                                    )
-                                })}
-                            </List>
-                            <br />
-                        </>
-                    )
-                })}
+                {this.state?.data?.data?.length ? (
+                    this.state?.data?.data?.map((el) => {
+                        return (
+                            <>
+                                <Typography use='headline5'>{`${new Date(
+                                    el.date
+                                ).getFullYear()}년 ${
+                                    new Date(el.date).getMonth() + 1
+                                }월 ${new Date(
+                                    el.date
+                                ).getDate()}일`}</Typography>
+                                <List
+                                    style={{
+                                        border: '1px solid #dddddd',
+                                        borderRadius: '3px',
+                                        background: 'white',
+                                        padding: '0',
+                                        marginTop: '10px',
+                                    }}>
+                                    {el.notifications.map((notify) => {
+                                        return (
+                                            <Link to={notify.link}>
+                                                <ListItem className='mdc-list--two-line'>
+                                                    <ListItemText>
+                                                        <ListItemPrimaryText
+                                                            style={{
+                                                                color: 'black',
+                                                            }}>
+                                                            {notify.title}
+                                                        </ListItemPrimaryText>
+                                                        <ListItemSecondaryText>
+                                                            {notify.subtitle}
+                                                        </ListItemSecondaryText>
+                                                    </ListItemText>
+                                                    <ListItemMeta>
+                                                        <IconButton
+                                                            icon='close'
+                                                            label='알림 삭제'
+                                                            onClick={(
+                                                                e: any
+                                                            ) => {
+                                                                e.preventDefault()
+                                                                this.remove(
+                                                                    notify.nid
+                                                                )
+                                                            }}
+                                                        />
+                                                    </ListItemMeta>
+                                                </ListItem>
+                                            </Link>
+                                        )
+                                    })}
+                                </List>
+                                <br />
+                            </>
+                        )
+                    })
+                ) : (
+                    <Typography use='headline5'>알림이 없어요!</Typography>
+                )}
 
                 <Button
                     outlined

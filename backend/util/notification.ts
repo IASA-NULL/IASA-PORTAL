@@ -1,6 +1,6 @@
 import db from './db'
 import { v4 as uuid } from 'uuid'
-import { Notifications } from '../../scheme/api/notification'
+import { NotificationOne } from '../../scheme/api/notification'
 
 export async function createNotify(
     uidL: number[],
@@ -31,4 +31,17 @@ export async function createNotify(
 export async function getNotifications(uid: number) {
     const notifyDB = await db.direct('notifications')
     return await notifyDB.find({ uid: uid }).sort('_id', -1).limit(40).toArray()
+}
+
+export async function removeNotification(nid: string, uid?: number) {
+    if (uid) {
+        const notify = (await db.get(
+            'notifications',
+            'nid',
+            nid
+        )) as NotificationOne
+        if (!notify) return false
+        if (notify.uid !== uid) return false
+    }
+    return await db.del('notifications', 'nid', nid)
 }

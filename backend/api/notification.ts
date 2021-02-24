@@ -2,7 +2,7 @@ import express from 'express'
 
 import createResponse from '../createResponse'
 import { REQUIRE_PERMISSION_ERROR } from '../../string/error'
-import { getNotifications } from '../util/notification'
+import { getNotifications, removeNotification } from '../util/notification'
 import {
     Notifications,
     OneDayNotifications,
@@ -38,12 +38,16 @@ router.get('/', async (req, res) => {
             thisDayNotify.notifications.push(notify)
             lastDate = thisDate
         }
-        notifyList.push(thisDayNotify)
+        if (thisDayNotify.notifications.length) notifyList.push(thisDayNotify)
         res.send(createResponse(notifyList))
     } catch (e) {
         res.status(500)
         res.send(createResponse(false, REQUIRE_PERMISSION_ERROR))
     }
+})
+
+router.delete('/:nid', async (req, res) => {
+    res.send(createResponse(removeNotification(req.params.nid, req.auth.uid)))
 })
 
 export default router
