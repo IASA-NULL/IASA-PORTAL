@@ -4,6 +4,7 @@ import { Permission } from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import {
     MyeonbulDB,
+    MyeonbulQueryOne,
     MyeonbulRequestListType,
     MyeonbulResponseType,
 } from '../../scheme/api/myeonbul'
@@ -17,8 +18,13 @@ import { User } from '../../scheme/user'
 import { v4 as uuid } from 'uuid'
 import _ from 'lodash'
 import { getDateStr } from '../util/date'
-import { createNotify } from '../util/notification'
-import { MYEONBUL_REQUEST } from '../../string/notify'
+import { createNotify, removeNotification } from '../util/notification'
+import {
+    MYEONBUL_CREATED,
+    MYEONBUL_REQUEST,
+    MYEONBUL_RESPONSE_ALLOW,
+    MYEONBUL_RESPONSE_DISALLOW,
+} from '../../string/notify'
 import createURL from '../../scheme/url'
 
 const router = express.Router()
@@ -139,6 +145,13 @@ router.post('/', async (req, res) => {
             '자세한 내용을 보려면 이 링크를 누르세요.',
             createURL('', 'myeonbul')
         )
+    } else {
+        createNotify(
+            [student.uid],
+            MYEONBUL_CREATED(teacher.name),
+            '자세한 내용을 보려면 이 링크를 누르세요.',
+            createURL('', 'myeonbul')
+        )
     }
 })
 
@@ -174,8 +187,23 @@ router.put('/:mid/response', async (req, res) => {
             res.send(createResponse(false, '올바르지 않은 요청이에요.'))
             return
         }
+        const myeonbul = (await db.get(
+            'myeonbul',
+            'mid',
+            req.params.mid
+        )) as MyeonbulQueryOne
+        if (myeonbul.response_nid) removeNotification(myeonbul.response_nid)
+        const response_nid = await createNotify(
+            [myeonbul.target.uid],
+            req.body.type === MyeonbulResponseType.ACCEPT
+                ? MYEONBUL_RESPONSE_ALLOW
+                : MYEONBUL_RESPONSE_DISALLOW,
+            '자세한 내용을 보려면 이 링크를 누르세요.',
+            createURL('', 'myeonbul')
+        )
         await db.update('myeonbul', 'mid', req.params.mid, {
             approved: req.body.type,
+            response_nid: response_nid[0],
         })
         res.send(createResponse(true))
     } else {

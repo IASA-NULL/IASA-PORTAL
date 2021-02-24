@@ -42,6 +42,7 @@ export interface MyeonbulQueryOne {
     target: UserInfo
     sid: number
     tid: number
+    response_nid?: string
 }
 
 export interface MyeonbulDB extends MyeonbulQueryOne {
