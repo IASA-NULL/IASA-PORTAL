@@ -11,6 +11,9 @@ import { User, UserInfo } from '../../scheme/user'
 import { PenaltyResponseOne } from '../../scheme/api/penalty'
 import { v4 as uuid } from 'uuid'
 import _ from 'lodash'
+import { createNotify } from '../util/notification'
+import { MYEONBUL_REQUEST, PENALTY_GOT } from '../../string/notify'
+import createURL from '../../scheme/url'
 
 const router = express.Router()
 
@@ -53,6 +56,12 @@ async function addPenalty(uid: number, info: PenaltyResponseOne, res: any) {
     penalty.history.unshift(info)
     await db.update('account', 'uid', uid, { penalty: penalty })
     res.send(createResponse(true))
+    createNotify(
+        [uid],
+        PENALTY_GOT(info.score),
+        '자세한 내용을 보려면 이 링크를 누르세요.',
+        createURL('', 'penalty')
+    )
 }
 
 async function deletePenalty(uid: number, pid: string, res: any) {

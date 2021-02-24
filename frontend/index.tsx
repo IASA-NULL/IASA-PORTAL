@@ -57,6 +57,7 @@ import OpenAPIAccount from './openapi/account'
 import OpenAPIMeal from './openapi/meal'
 import OpenAPIDesc from './openapi/desc'
 import PROGRAM_NETWORK from './common/network'
+import Notifications from './common/notifications'
 
 interface IState {
     loaded: boolean
@@ -151,6 +152,14 @@ class App extends React.Component<any, IState> {
                             accountInfo={this.state.data}
                             navList={DefaultStudentNavList}
                             appCont={<MyPage />}
+                        />
+                    </Route>
+
+                    <Route path='/notifications'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultStudentNavList}
+                            appCont={<Notifications data={this.state.data} />}
                         />
                     </Route>
 
@@ -301,6 +310,14 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/notifications'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultTeacherNavList}
+                            appCont={<Notifications data={this.state.data} />}
+                        />
+                    </Route>
+
                     <Route path='/terms'>
                         <MainView
                             accountInfo={this.state.data}
@@ -444,6 +461,14 @@ class App extends React.Component<any, IState> {
                             accountInfo={this.state.data}
                             navList={DefaultAdminNavList}
                             appCont={<Share />}
+                        />
+                    </Route>
+
+                    <Route path='/notifications'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultAdminNavList}
+                            appCont={<Notifications data={this.state.data} />}
                         />
                     </Route>
 

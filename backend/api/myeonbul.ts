@@ -17,6 +17,9 @@ import { User } from '../../scheme/user'
 import { v4 as uuid } from 'uuid'
 import _ from 'lodash'
 import { getDateStr } from '../util/date'
+import { createNotify } from '../util/notification'
+import { MYEONBUL_REQUEST } from '../../string/notify'
+import createURL from '../../scheme/url'
 
 const router = express.Router()
 
@@ -129,6 +132,14 @@ router.post('/', async (req, res) => {
         date: getDateStr(req.body.timeRange.begin),
     } as MyeonbulDB)
     res.send(createResponse(mid))
+    if (req.auth.permission === Permission.student) {
+        createNotify(
+            [teacher.uid],
+            MYEONBUL_REQUEST(student.name),
+            '자세한 내용을 보려면 이 링크를 누르세요.',
+            createURL('', 'myeonbul')
+        )
+    }
 })
 
 router.delete('/:mid', async (req, res) => {
