@@ -143,14 +143,14 @@ router.post('/', async (req, res) => {
             [teacher.uid],
             MYEONBUL_REQUEST(student.name),
             '자세한 내용을 보려면 이 링크를 누르세요.',
-            createURL('', 'myeonbul')
+            '/myeonbul'
         )
     } else {
         createNotify(
             [student.uid],
             MYEONBUL_CREATED(teacher.name),
             '자세한 내용을 보려면 이 링크를 누르세요.',
-            createURL('', 'myeonbul')
+            '/myeonbul'
         )
     }
 })
@@ -199,7 +199,7 @@ router.put('/:mid/response', async (req, res) => {
                 ? MYEONBUL_RESPONSE_ALLOW
                 : MYEONBUL_RESPONSE_DISALLOW,
             '자세한 내용을 보려면 이 링크를 누르세요.',
-            createURL('', 'myeonbul')
+            '/myeonbul'
         )
         await db.update('myeonbul', 'mid', req.params.mid, {
             approved: req.body.type,

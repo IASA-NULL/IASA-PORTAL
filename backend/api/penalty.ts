@@ -60,7 +60,7 @@ async function addPenalty(uid: number, info: PenaltyResponseOne, res: any) {
         [uid],
         PENALTY_GOT(info.score),
         '자세한 내용을 보려면 이 링크를 누르세요.',
-        createURL('', 'penalty')
+        '/penalty'
     )
 }
 
