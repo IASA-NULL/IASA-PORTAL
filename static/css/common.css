@@ -307,6 +307,11 @@ header.raised {
     margin-bottom: 7px;
 }
 
+.mdc-top-app-bar button::before,
+.mdc-top-app-bar button::after {
+    background-color: var(--mdc-theme-primary, #6200ee) !important;
+}
+
 @media print {
     @page {
         margin: 0;

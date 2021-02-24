@@ -115,35 +115,38 @@ class Notifications extends React.Component<
                                     }}>
                                     {el.notifications.map((notify) => {
                                         return (
-                                            <Link to={notify.link}>
-                                                <ListItem className='mdc-list--two-line'>
-                                                    <ListItemText>
-                                                        <ListItemPrimaryText
-                                                            style={{
-                                                                color: 'black',
-                                                            }}>
-                                                            {notify.title}
-                                                        </ListItemPrimaryText>
-                                                        <ListItemSecondaryText>
-                                                            {notify.subtitle}
-                                                        </ListItemSecondaryText>
-                                                    </ListItemText>
-                                                    <ListItemMeta>
-                                                        <IconButton
-                                                            icon='close'
-                                                            label='알림 삭제'
-                                                            onClick={(
-                                                                e: any
-                                                            ) => {
-                                                                e.preventDefault()
-                                                                this.remove(
-                                                                    notify.nid
-                                                                )
-                                                            }}
-                                                        />
-                                                    </ListItemMeta>
-                                                </ListItem>
-                                            </Link>
+                                            <ListItem
+                                                className='mdc-list--two-line'
+                                                style={{ cursor: 'pointer' }}
+                                                onClick={() => {
+                                                    this.props.history.push(
+                                                        notify.link
+                                                    )
+                                                }}>
+                                                <ListItemText>
+                                                    <ListItemPrimaryText
+                                                        style={{
+                                                            color: 'black',
+                                                        }}>
+                                                        {notify.title}
+                                                    </ListItemPrimaryText>
+                                                    <ListItemSecondaryText>
+                                                        {notify.subtitle}
+                                                    </ListItemSecondaryText>
+                                                </ListItemText>
+                                                <ListItemMeta>
+                                                    <IconButton
+                                                        icon='close'
+                                                        label='알림 삭제'
+                                                        onClick={(e: any) => {
+                                                            e.preventDefault()
+                                                            this.remove(
+                                                                notify.nid
+                                                            )
+                                                        }}
+                                                    />
+                                                </ListItemMeta>
+                                            </ListItem>
                                         )
                                     })}
                                 </List>
