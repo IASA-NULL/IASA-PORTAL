@@ -25,10 +25,12 @@ import { Theme } from '@rmwc/theme'
 import { Typography } from '@rmwc/typography'
 import { IconButton } from '@rmwc/icon-button'
 import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
+import { Badge } from '@rmwc/badge'
 
-import { ListLink, useForceUpdate, LinkType } from './util'
+import { ListLink, useForceUpdate, LinkType, fetchAPI } from './util'
 import { token } from '../scheme/api/auth'
 import createURL from '../scheme/url'
+import { useEffect } from 'react'
 
 declare const DEV_MODE: boolean
 
@@ -620,9 +622,21 @@ export const OpenAPINavList = (closeIfModal: any) => {
 function Navbar(props: { list?: any; accountInfo: token; history: any }) {
     const [drawerOpen, setDrawerOpen] = React.useState(window.innerWidth > 760)
     const [accountMenuOpen, setAccountMenuOpen] = React.useState(false)
+    const [unreadNotifications, setUnreadNotifications] = React.useState(0)
     const closeIfModal = () => {
         if (window.innerWidth <= 760) setDrawerOpen(false)
     }
+    const refreshUnreadNotifications = () => {
+        fetchAPI('GET', {}, 'notifications', 'count').then((res) => {
+            if (res.success) setUnreadNotifications(res.data.count)
+        })
+    }
+
+    useEffect(() => {
+        refreshUnreadNotifications()
+        setInterval(refreshUnreadNotifications, 3000)
+    }, [])
+
     return (
         <>
             <TopAppBar
@@ -704,6 +718,18 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
                                 onClick={() => {
                                     props.history.push('/notifications')
                                 }}
+                                style={{ right: '-20px' }}
+                            />
+                            <Badge
+                                align='inline'
+                                label={unreadNotifications}
+                                style={{
+                                    position: 'relative',
+                                    top: '-20px',
+                                    margin: '0',
+                                }}
+                                theme={['primaryBg', 'onPrimary']}
+                                exited={!unreadNotifications}
                             />
                             <TopAppBarActionItem
                                 icon='account_circle'

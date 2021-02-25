@@ -324,3 +324,14 @@ header.raised {
         display: none !important;
     }
 }
+
+.rmwc-badge {
+    color: white !important;
+}
+
+.rmwc-badge--exited {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 0;
+    font-size: 0;
+}

@@ -1,19 +1,22 @@
 import express from 'express'
 
 import createResponse from '../createResponse'
-import { REQUIRE_PERMISSION_ERROR } from '../../string/error'
+import { DB_CONNECT_ERROR, REQUIRE_PERMISSION_ERROR } from '../../string/error'
 import { getNotifications, removeNotification } from '../util/notification'
 import {
     Notifications,
     OneDayNotifications,
 } from '../../scheme/api/notification'
+import db from '../util/db'
+import { User } from '../../scheme/user'
 
 const router = express.Router()
 
 router.get('/', async (req, res) => {
     try {
         const notificationList = (await getNotifications(
-            req.auth.uid
+            req.auth.uid,
+            true
         )) as Notifications
         let lastDate = new Date(0)
         let notifyList = [] as OneDayNotifications[],
@@ -43,6 +46,16 @@ router.get('/', async (req, res) => {
     } catch (e) {
         res.status(500)
         res.send(createResponse(false, REQUIRE_PERMISSION_ERROR))
+    }
+})
+
+router.get('/count', async (req, res) => {
+    try {
+        const user = (await db.get('account', 'uid', req.auth.uid)) as User
+        res.send(createResponse({ count: user.unreadNotifications }))
+    } catch (e) {
+        res.status(500)
+        res.send(createResponse(DB_CONNECT_ERROR))
     }
 })
 

@@ -11,6 +11,7 @@ export interface User {
     penalty?: Penalty
     avatar?: string
     mail?: string[]
+    unreadNotifications: number
 }
 
 export interface UserInfo {

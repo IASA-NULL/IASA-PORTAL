@@ -12,6 +12,11 @@ export async function createNotify(
 ) {
     const nidL = [] as string[]
     for (const uid of uidL) {
+        const user = await db.get('account', 'uid', uid)
+        if (!user) continue
+        await db.update('account', 'uid', uid, {
+            unreadNotifications: (user.unreadNotifications ?? 0) + 1,
+        })
         const nid = uuid()
         await db.set('notifications', {
             uid: uid,
@@ -28,7 +33,8 @@ export async function createNotify(
     return nidL
 }
 
-export async function getNotifications(uid: number) {
+export async function getNotifications(uid: number, read = false) {
+    if (read) await db.update('account', 'uid', uid, { unreadNotifications: 0 })
     const notifyDB = await db.direct('notifications')
     return await notifyDB.find({ uid: uid }).sort('_id', -1).limit(40).toArray()
 }

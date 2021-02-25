@@ -94,73 +94,89 @@ class Notifications extends React.Component<
                 <br />
                 <br />
 
-                {this.state?.data?.data?.length ? (
-                    this.state?.data?.data?.map((el) => {
-                        return (
-                            <>
-                                <Typography use='headline5'>{`${new Date(
-                                    el.date
-                                ).getFullYear()}년 ${
-                                    new Date(el.date).getMonth() + 1
-                                }월 ${new Date(
-                                    el.date
-                                ).getDate()}일`}</Typography>
-                                <List
-                                    style={{
-                                        border: '1px solid #dddddd',
-                                        borderRadius: '3px',
-                                        background: 'white',
-                                        padding: '0',
-                                        marginTop: '10px',
-                                    }}>
-                                    {el.notifications.map((notify) => {
-                                        return (
-                                            <ListItem
-                                                className='mdc-list--two-line'
-                                                style={{ cursor: 'pointer' }}
-                                                onClick={() => {
-                                                    this.props.history.push(
-                                                        notify.link
-                                                    )
-                                                }}>
-                                                <ListItemText>
-                                                    <ListItemPrimaryText
-                                                        style={{
-                                                            color: 'black',
-                                                        }}>
-                                                        {notify.title}
-                                                    </ListItemPrimaryText>
-                                                    <ListItemSecondaryText>
-                                                        {notify.subtitle}
-                                                    </ListItemSecondaryText>
-                                                </ListItemText>
-                                                <ListItemMeta>
-                                                    <IconButton
-                                                        icon='close'
-                                                        label='알림 삭제'
-                                                        onClick={(e: any) => {
-                                                            e.preventDefault()
-                                                            e.stopPropagation()
-                                                            this.remove(
-                                                                notify.nid
-                                                            )
-                                                        }}
-                                                    />
-                                                </ListItemMeta>
-                                            </ListItem>
-                                        )
-                                    })}
-                                </List>
-                                <br />
-                            </>
-                        )
-                    })
+                {this.state?.loaded ? (
+                    this.state?.data?.data?.length ? (
+                        this.state?.data?.data?.map((el) => {
+                            return (
+                                <div style={{ marginLeft: '20px' }}>
+                                    <Typography use='headline5'>{`${new Date(
+                                        el.date
+                                    ).getFullYear()}년 ${
+                                        new Date(el.date).getMonth() + 1
+                                    }월 ${new Date(
+                                        el.date
+                                    ).getDate()}일`}</Typography>
+                                    <List
+                                        style={{
+                                            border: '1px solid #dddddd',
+                                            borderRadius: '3px',
+                                            background: 'white',
+                                            padding: '0',
+                                            marginTop: '10px',
+                                        }}>
+                                        {el.notifications.map((notify) => {
+                                            return (
+                                                <ListItem
+                                                    className='mdc-list--two-line'
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                    }}
+                                                    onClick={() => {
+                                                        this.props.history.push(
+                                                            notify.link
+                                                        )
+                                                    }}>
+                                                    <ListItemText>
+                                                        <ListItemPrimaryText
+                                                            style={{
+                                                                color: 'black',
+                                                            }}>
+                                                            {notify.title}
+                                                        </ListItemPrimaryText>
+                                                        <ListItemSecondaryText>
+                                                            {notify.subtitle}
+                                                        </ListItemSecondaryText>
+                                                    </ListItemText>
+                                                    <ListItemMeta>
+                                                        <IconButton
+                                                            icon='close'
+                                                            label='알림 삭제'
+                                                            onClick={(
+                                                                e: any
+                                                            ) => {
+                                                                e.preventDefault()
+                                                                e.stopPropagation()
+                                                                this.remove(
+                                                                    notify.nid
+                                                                )
+                                                            }}
+                                                        />
+                                                    </ListItemMeta>
+                                                </ListItem>
+                                            )
+                                        })}
+                                    </List>
+                                    <br />
+                                </div>
+                            )
+                        })
+                    ) : (
+                        <>
+                            <Typography
+                                use='headline5'
+                                style={{ marginLeft: '20px' }}>
+                                알림이 없어요!
+                            </Typography>
+                            <br />
+                            <br />
+                        </>
+                    )
                 ) : (
                     <>
                         <Typography
                             use='headline5'
                             style={{ marginLeft: '20px' }}>
-                            알림이 없어요!
+                            불러오는 중...
                         </Typography>
                         <br />
                         <br />
