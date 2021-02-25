@@ -152,8 +152,21 @@ class MyPage extends React.Component<any, IState> {
                         if (this.state?.edit) this.save()
                         else this.enableEdit()
                     }}
-                    outlined>
+                    outlined
+                    style={{ marginLeft: '20px' }}>
                     {this.state?.edit ? '저장' : '수정하기'}
+                </Button>
+                <Button
+                    onClick={() => {
+                        window.location.href = createURL(
+                            'api',
+                            'account',
+                            'reqchangesecret'
+                        )
+                    }}
+                    outlined
+                    style={{ marginLeft: '10px' }}>
+                    비밀번호 변경하기
                 </Button>
                 <SnackbarQueue messages={this.messages} />
             </>
