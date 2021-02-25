@@ -316,6 +316,14 @@ export function fetchAPI(method: string, body: any, ...props: string[]) {
     }).then((res) => res.json())
 }
 
+export function uploadFile(body: any) {
+    return fetch(createURL('api', 'files', 'upload'), {
+        method: 'POST',
+        ...(!DEV_MODE && { credentials: 'include' }),
+        body: body,
+    }).then((res) => res.json())
+}
+
 export function RequireSudo() {
     setTimeout(async () => {
         const accountInfo = await fetchAPI('GET', {}, 'account', 'info')

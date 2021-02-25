@@ -9,6 +9,7 @@ import {
     FileInput,
     focusNextInput,
     RequireSudo,
+    uploadFile,
 } from '../util'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 import createURL from '../../scheme/url'
@@ -63,11 +64,7 @@ class MyPage extends React.Component<any, IState> {
         searchParams.set('edit', '')
         window.history.replaceState(null, null, window.location.pathname)
         this.setState({ edit: false })
-        fetch(createURL('api', 'files', 'upload'), {
-            method: 'POST',
-            body: data,
-        })
-            .then((res) => res.json())
+        uploadFile(data)
             .then((res) => {
                 if (res.success) {
                     fetchAPI(

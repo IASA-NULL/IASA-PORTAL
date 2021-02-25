@@ -5,7 +5,13 @@ import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
 import { Select } from '@rmwc/select'
 
-import { BrIfMobile, fetchAPI, FileInput, focusNextInput } from '../util'
+import {
+    BrIfMobile,
+    fetchAPI,
+    FileInput,
+    focusNextInput,
+    uploadFile,
+} from '../util'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 import createURL from '../../scheme/url'
 import { Grid, GridCell, GridRow } from '@rmwc/grid'
@@ -60,53 +66,48 @@ class CreateCode extends React.Component<any, IState> {
                 data.append('files[]', file, file.name)
             }
 
-            fetch(createURL('api', 'files', 'upload'), {
-                method: 'POST',
-                body: data,
-            })
-                .then((res) => res.json())
-                .then((res) => {
-                    if (res.success) {
-                        fetchAPI(
-                            'PUT',
-                            {
-                                avatar: res.data.fileList[0],
-                                name: this.state?.name,
-                                type: this.state?.selectedType[0],
-                                year:
-                                    new Date().getFullYear() -
-                                    parseInt(this.state?.selectedType[1]) +
-                                    1,
-                            },
-                            'admin',
-                            'code'
-                        )
-                            .then((res) => {
-                                if (res.success) {
-                                    this.setState({
-                                        showDialog: true,
-                                        code: res.data.code,
-                                    })
-                                    this.refresh()
-                                } else {
-                                    this.notify({
-                                        title: <b>오류</b>,
-                                        body: res.message,
-                                        icon: 'error_outline',
-                                        dismissIcon: true,
-                                    })
-                                }
-                            })
-                            .catch(() => {
+            uploadFile(data).then((res) => {
+                if (res.success) {
+                    fetchAPI(
+                        'PUT',
+                        {
+                            avatar: res.data.fileList[0],
+                            name: this.state?.name,
+                            type: this.state?.selectedType[0],
+                            year:
+                                new Date().getFullYear() -
+                                parseInt(this.state?.selectedType[1]) +
+                                1,
+                        },
+                        'admin',
+                        'code'
+                    )
+                        .then((res) => {
+                            if (res.success) {
+                                this.setState({
+                                    showDialog: true,
+                                    code: res.data.code,
+                                })
+                                this.refresh()
+                            } else {
                                 this.notify({
                                     title: <b>오류</b>,
-                                    body: '서버와 연결할 수 없어요.',
+                                    body: res.message,
                                     icon: 'error_outline',
                                     dismissIcon: true,
                                 })
+                            }
+                        })
+                        .catch(() => {
+                            this.notify({
+                                title: <b>오류</b>,
+                                body: '서버와 연결할 수 없어요.',
+                                icon: 'error_outline',
+                                dismissIcon: true,
                             })
-                    }
-                })
+                        })
+                }
+            })
         } else {
             fetchAPI(
                 'PUT',

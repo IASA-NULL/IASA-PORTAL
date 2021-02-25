@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Button } from '@rmwc/button'
 import { Icon } from '@rmwc/icon'
 import { Typography } from '@rmwc/typography'
-import { BrIfMobile, fetchAPI, focusNextInput } from '../util'
+import { BrIfMobile, fetchAPI, focusNextInput, uploadFile } from '../util'
 import { Grid, GridCell, GridRow } from '@rmwc/grid'
 import { TextField } from '@rmwc/textfield'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
@@ -57,52 +57,47 @@ class Share extends React.Component<ShareProps, ShareState> {
             data.append('files[]', file, file.name)
         }
 
-        fetch(createURL('api', 'files', 'upload'), {
-            method: 'POST',
-            body: data,
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                if (res.success) {
-                    fetchAPI(
-                        'POST',
-                        {
-                            files: res.data.fileList,
-                        },
-                        'share',
-                        'upload'
-                    )
-                        .then((res) => {
-                            if (res.success) {
-                                this.setState({
-                                    uploaded: true,
-                                    data: res.data,
-                                })
-                            } else {
-                                this.notify({
-                                    title: <b>오류</b>,
-                                    body: res.message,
-                                    icon: 'error_outline',
-                                    dismissIcon: true,
-                                })
-                                this.setState({
-                                    detailOpened: false,
-                                })
-                            }
-                        })
-                        .catch(() => {
+        uploadFile(data).then((res) => {
+            if (res.success) {
+                fetchAPI(
+                    'POST',
+                    {
+                        files: res.data.fileList,
+                    },
+                    'share',
+                    'upload'
+                )
+                    .then((res) => {
+                        if (res.success) {
+                            this.setState({
+                                uploaded: true,
+                                data: res.data,
+                            })
+                        } else {
                             this.notify({
                                 title: <b>오류</b>,
-                                body: '서버와 연결할 수 없어요.',
+                                body: res.message,
                                 icon: 'error_outline',
                                 dismissIcon: true,
                             })
                             this.setState({
                                 detailOpened: false,
                             })
+                        }
+                    })
+                    .catch(() => {
+                        this.notify({
+                            title: <b>오류</b>,
+                            body: '서버와 연결할 수 없어요.',
+                            icon: 'error_outline',
+                            dismissIcon: true,
                         })
-                }
-            })
+                        this.setState({
+                            detailOpened: false,
+                        })
+                    })
+            }
+        })
     }
 
     public download() {
