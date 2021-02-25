@@ -21,7 +21,7 @@ router.use(jsonParser)
 router.use('/account', accountRouter)
 
 router.use('*', (req, res, next) => {
-    if (req.auth.expired) {
+    if (req.auth && req.auth.expired) {
         res.send(
             createResponse(
                 false,
