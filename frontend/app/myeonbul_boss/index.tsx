@@ -6,7 +6,6 @@ import { token } from '../../../scheme/api/auth'
 import {
     MyeonbulDB,
     MyeonbulQuery,
-    MyeonbulRequest,
     MyeonbulRequestListType,
     MyeonbulResponseType,
 } from '../../../scheme/api/myeonbul'
@@ -21,7 +20,6 @@ import {
 } from '@rmwc/data-table'
 import { fetchAPI } from '../../util'
 import { formatTimeD } from '../../../scheme/time'
-import { IconButton } from '@rmwc/icon-button'
 
 interface Props {
     data: token
@@ -76,6 +74,8 @@ class MyeonbulBoss extends React.Component<Props, State> {
                 myeonbulTableBody = this.state.todayMyeonbulData.data
                     .map((el: MyeonbulDB) => {
                         try {
+                            if (el.approved !== MyeonbulResponseType.ACCEPT)
+                                return undefined
                             let formattedDate: string,
                                 begin = new Date(el.timeRange.begin),
                                 end = new Date(el.timeRange.end)
