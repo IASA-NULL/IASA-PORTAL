@@ -1,84 +1,27 @@
-import express from 'express'
-import compression from 'compression'
-import logger from 'morgan'
-import path from 'path'
-import cookieParser from 'cookie-parser'
-import favicon from 'serve-favicon'
-import vhost from 'vhost'
-import cors from 'cors'
+import cluster from 'cluster'
+import createApp from './app'
+import { v4 as uuid } from 'uuid'
+import os from 'os'
 
-import apiRouter from './api/index'
-import authRouter from './auth'
-import accountRouter from './account'
-import applicationRouter from './application'
+if (cluster.isMaster) {
+    const cpuCount = os.cpus().length
+    const sid = uuid()
 
-import { getServerFlag } from './util/serverState'
-import mailParse from './mailParse'
+    for (let i = 0; i < cpuCount; i++) {
+        cluster.fork({ SID: sid })
+    }
 
-//import helmet from 'helmet'
+    cluster.on('online', function (worker) {
+        console.log('Worker ' + worker.process.pid + ' is online.')
+    })
 
-declare const DEV_MODE: boolean
-
-const app = express()
-
-const corsOptions = {
-    credentials: true,
-    origin: (origin: string, callback: any) => {
-        console.log(origin)
-        if (!origin || origin.includes('iasa.kr')) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    },
-}
-
-if (!DEV_MODE) app.use(cors(corsOptions))
-
-//app.use(helmet())
-app.use(cookieParser())
-
-app.use(compression())
-app.use(logger('dev'))
-app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')))
-
-app.use((req, res, next) => {
-    if (
-        req.headers['user-agent'].indexOf('MSIE') > -1 ||
-        req.headers['user-agent'].indexOf('rv:') > -1
-    )
-        res.sendFile(path.join(__dirname, '..', 'template', 'noIE.html'))
-    else next()
-})
-
-app.use((req, res, next) => {
-    if (getServerFlag('build')) {
-        res.set('Cache-Control', 'no-store')
-        res.sendFile(path.join(__dirname, '..', 'template', 'building.html'))
-    } else next()
-})
-
-app.use('/static', express.static(path.join(__dirname, '..', 'static')))
-app.use(authRouter)
-
-if (DEV_MODE) {
-    app.use('/api', apiRouter)
-    app.use('/account', accountRouter)
-    app.use('/application', applicationRouter)
+    cluster.on('exit', function (worker, code, signal) {
+        console.log('Worker ' + worker.process.pid + ' died. Restarting...')
+        cluster.fork({ SID: sid })
+    })
 } else {
-    app.use(vhost('api.iasa.kr', apiRouter))
-    app.use(vhost('account.iasa.kr', accountRouter))
-    app.use(vhost('application.iasa.kr', applicationRouter))
-    setInterval(mailParse, 5000)
+    createApp(process.env.SID)
 }
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'template', 'main.html'))
-})
-
-app.listen(80, () => {
-    console.log('Server is up on port 80.')
-})
 
 process.on('uncaughtException', function (err) {
     console.log('Caught exception: ' + err)
