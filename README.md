@@ -12,8 +12,8 @@ TS + Node.js + React + MongoDB로 만든 IASA PORTAL입니다.
 
 ### 시작하기
 
-1. `npm run build`로 파일을 빌드합니다.
-1. `npm run start`로 express 서버를 시작합니다.
+1. `yarn run build`로 파일을 빌드합니다.
+1. `yarn run start`로 express 서버를 시작합니다.
 
 ## TODO
 
