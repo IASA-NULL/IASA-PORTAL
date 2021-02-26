@@ -127,7 +127,7 @@
     "url": "https://github.com/IASA-Null/IASA-PORTAL"
   },
   "scripts": {
-    "build": "npm run format && npm run lint && webpack --mode=production",
+    "build": "webpack --mode=production",
     "dev": "webpack --mode=development --watch",
     "start": "nodemon build/index.js",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
