@@ -53,7 +53,7 @@ class OpenAPIIndex extends React.Component<any, {}> {
                             <a
                                 href='https://github.com/IASA-Null/IASA-PORTAL'
                                 target='_blank'
-                                rel='noreferer'>
+                                rel='noopener noreferrer'>
                                 <CardActionButton>깃허브 열기</CardActionButton>
                             </a>
                         </CardActionButtons>

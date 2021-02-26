@@ -1,3 +1,5 @@
+import { UID } from '../user'
+
 export enum Permission {
     none = 1,
     student,
@@ -7,7 +9,7 @@ export enum Permission {
 
 export interface token {
     id: string
-    uid: number
+    uid: UID
     code: number
     name: string
     expire: number
@@ -19,7 +21,7 @@ export interface token {
 
 export interface signupToken {
     type: Permission
-    uid: number
+    uid: UID
     id: string
     password: string
     email: string

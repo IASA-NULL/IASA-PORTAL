@@ -1,9 +1,10 @@
 import { ParsedMail } from 'mailparser'
 import commonApi from './commonApi'
+import { UID } from '../user'
 
 export interface MailDB extends ParsedMail {
     eid: string
-    uid: number
+    uid: UID
 }
 
 export interface MailListResponse extends commonApi {

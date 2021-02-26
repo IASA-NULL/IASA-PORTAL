@@ -1,9 +1,10 @@
 import commonApi from './commonApi'
+import { UID } from '../user'
 
 export interface MusicRequest {
     request: {
         type: string
-        uid: number
+        uid: UID
     }
 }
 

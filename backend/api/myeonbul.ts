@@ -25,7 +25,6 @@ import {
     MYEONBUL_RESPONSE_ALLOW,
     MYEONBUL_RESPONSE_DISALLOW,
 } from '../../string/notify'
-import createURL from '../../scheme/url'
 
 const router = express.Router()
 

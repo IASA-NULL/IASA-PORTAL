@@ -18,6 +18,7 @@ import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 import {
     getMyeonbulTime,
+    MID,
     MyeonbulDB,
     MyeonbulQuery,
     MyeonbulRequestListType,
@@ -144,7 +145,7 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
             })
     }
 
-    public response(mid: string, stat: boolean) {
+    public response(mid: MID, stat: boolean) {
         fetchAPI(
             'PUT',
             {
@@ -183,7 +184,7 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
             })
     }
 
-    public cancel(mid: string) {
+    public cancel(mid: MID) {
         fetchAPI('DELETE', {}, 'myeonbul', mid)
             .then((res) => {
                 if (res.success) {

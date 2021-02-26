@@ -1,11 +1,13 @@
 import commonApi from './commonApi'
-import { UserInfo } from '../user'
+import { UID, UserInfo } from '../user'
+
+export type PID = string
 
 export interface PenaltyRequest {
     token: string
     request: {
         type: string
-        uid: number
+        uid: UID
     }
 }
 
@@ -14,7 +16,7 @@ export interface PenaltyResponseOne {
     teacher: UserInfo
     info: string
     time: number
-    pid: string
+    pid: PID
 }
 
 export interface Penalty {

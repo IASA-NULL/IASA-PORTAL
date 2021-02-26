@@ -14,13 +14,17 @@ import {
 } from '@rmwc/data-table'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
-import { PenaltyResponse, PenaltyResponseOne } from '../../scheme/api/penalty'
+import {
+    PenaltyResponse,
+    PenaltyResponseOne,
+    PID,
+} from '../../scheme/api/penalty'
 import { Permission, token } from '../../scheme/api/auth'
 import { BrIfMobile, fetchAPI, focusNextInput, SearchUser } from '../util'
 import { Grid, GridCell, GridRow } from '@rmwc/grid'
 import { TextField } from '@rmwc/textfield'
 import { Select } from '@rmwc/select'
-import { UserInfo } from '../../scheme/user'
+import { UID, UserInfo } from '../../scheme/user'
 import { formatTimeD } from '../../scheme/time'
 import { IconButton } from '@rmwc/icon-button'
 
@@ -31,7 +35,7 @@ interface PenaltyProps {
 interface PenaltyState {
     data?: PenaltyResponse
     loaded: boolean
-    uid?: number
+    uid?: UID
     type?: string
     score?: string
     reason?: string
@@ -140,7 +144,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
             })
     }
 
-    public remove(pid: string) {
+    public remove(pid: PID) {
         fetchAPI('DELETE', {}, 'penalty', this.state?.uid.toString(), pid)
             .then((res: PenaltyResponse) => {
                 if (res.success)

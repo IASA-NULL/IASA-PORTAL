@@ -7,17 +7,16 @@ import {
     REQUIRE_PERMISSION_ERROR,
     REQUIRE_SIGNIN_ERROR,
 } from '../../string/error'
-import { User, UserInfo } from '../../scheme/user'
-import { PenaltyResponseOne } from '../../scheme/api/penalty'
+import { UID, User, UserInfo } from '../../scheme/user'
+import { PenaltyResponseOne, PID } from '../../scheme/api/penalty'
 import { v4 as uuid } from 'uuid'
 import _ from 'lodash'
 import { createNotify } from '../util/notification'
-import { MYEONBUL_REQUEST, PENALTY_GOT } from '../../string/notify'
-import createURL from '../../scheme/url'
+import { PENALTY_GOT } from '../../string/notify'
 
 const router = express.Router()
 
-async function getPenaltyInfo(uid: number, res: any) {
+async function getPenaltyInfo(uid: UID, res: any) {
     let account = (await db.get('account', 'uid', uid)) as User | undefined
     if (!account) {
         res.status(404)
@@ -37,7 +36,7 @@ async function getPenaltyInfo(uid: number, res: any) {
     res.send(createResponse(penalty))
 }
 
-async function addPenalty(uid: number, info: PenaltyResponseOne, res: any) {
+async function addPenalty(uid: UID, info: PenaltyResponseOne, res: any) {
     let account = (await db.get('account', 'uid', uid)) as User | undefined
     if (!account) {
         res.status(404)
@@ -64,7 +63,7 @@ async function addPenalty(uid: number, info: PenaltyResponseOne, res: any) {
     )
 }
 
-async function deletePenalty(uid: number, pid: string, res: any) {
+async function deletePenalty(uid: UID, pid: PID, res: any) {
     let account = (await db.get('account', 'uid', uid)) as User | undefined
     if (!account) {
         res.status(404)

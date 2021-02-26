@@ -26,13 +26,18 @@ function get_db() {
     })
 }
 
-async function get(collection: string, key: string, value: any) {
+async function get(
+    collection: string,
+    key: string,
+    value: any,
+    sub = 'iasa_portal'
+) {
     if (!key || !value) return undefined
     let db
     try {
         db = await get_db()
         return await db
-            .db('iasa_portal')
+            .db(sub)
             .collection(collection)
             .findOne({ [key]: value })
     } catch (e) {
@@ -41,13 +46,18 @@ async function get(collection: string, key: string, value: any) {
     }
 }
 
-async function del(collection: string, key: string, value: any) {
+async function del(
+    collection: string,
+    key: string,
+    value: any,
+    sub = 'iasa_portal'
+) {
     if (!key || !value) return undefined
     let db
     try {
         db = await get_db()
         return await db
-            .db('iasa_portal')
+            .db(sub)
             .collection(collection)
             .deleteOne({ [key]: value })
     } catch (e) {
@@ -56,24 +66,30 @@ async function del(collection: string, key: string, value: any) {
     }
 }
 
-async function set(collection: string, data: any) {
+async function set(collection: string, data: any, sub = 'iasa_portal') {
     let db
     try {
         db = await get_db()
-        db.db('iasa_portal').collection(collection).insert(data)
+        db.db(sub).collection(collection).insert(data)
         return true
     } catch (e) {
         return false
     }
 }
 
-async function update(collection: string, key: string, value: any, data: any) {
+async function update(
+    collection: string,
+    key: string,
+    value: any,
+    data: any,
+    sub = 'iasa_portal'
+) {
     if (!key || !value) return false
     let db
     try {
         db = await get_db()
         let original = get(collection, key, value)
-        db.db('iasa_portal')
+        db.db(sub)
             .collection(collection)
             .updateOne(
                 { [key]: value },
@@ -86,10 +102,10 @@ async function update(collection: string, key: string, value: any, data: any) {
     }
 }
 
-async function directDB(collection: string) {
+async function directDB(collection: string, sub = 'iasa_portal') {
     try {
         db = await get_db()
-        return db.db('iasa_portal').collection(collection)
+        return db.db(sub).collection(collection)
     } catch (e) {
         return false
     }

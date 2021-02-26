@@ -4,7 +4,7 @@ import db from './util/db'
 import { User } from '../scheme/user'
 import { v4 as uuid } from 'uuid'
 
-export default function () {
+export default function mailParse() {
     fileList('mail/', 'mail').then((res) => {
         res.Contents.forEach(async (el) => {
             const id = el.Key.split('/')[1]

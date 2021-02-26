@@ -1,9 +1,11 @@
 import { Permission } from './api/auth'
 import { Penalty } from './api/penalty'
 
+export type UID = number
+
 export interface User {
     permission: Permission
-    uid: number
+    uid: UID
     id: string
     pwHash: string
     email: string
@@ -12,10 +14,11 @@ export interface User {
     avatar?: string
     mail?: string[]
     unreadNotifications: number
+    group: string[]
 }
 
 export interface UserInfo {
     name: string
-    uid: number
+    uid: UID
     type: Permission
 }

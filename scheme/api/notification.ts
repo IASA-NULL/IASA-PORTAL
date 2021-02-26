@@ -1,7 +1,8 @@
 import commonApi from './commonApi'
+import { UID } from '../user'
 
 export interface NotificationOne {
-    uid: number
+    uid: UID
     title: string
     subtitle: string
     link: string

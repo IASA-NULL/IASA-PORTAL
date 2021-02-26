@@ -5,7 +5,7 @@ import { Permission } from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import { getServerFlag, setServerFlag } from '../util/serverState'
 import db from '../util/db'
-import { User } from '../../scheme/user'
+import { UID, User } from '../../scheme/user'
 import { getRandomInt } from '../util/random'
 import { base32Encode } from '@ctrl/ts-base32'
 import {
@@ -63,7 +63,7 @@ router.put('/code', async (req, res) => {
     if (req.body.type === 'S') cid = 0
     else cid = 700
     for (; ; ++cid) {
-        const uid = parseInt(req.body.year + ('0000' + cid).substr(-4))
+        const uid = parseInt(req.body.year + ('0000' + cid).substr(-4)) as UID
         try {
             let user = (await db.get('account', 'uid', uid)) as User | undefined
             if (user) continue

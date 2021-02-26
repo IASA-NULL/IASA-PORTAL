@@ -456,10 +456,6 @@ export function TimeSelect<
     const [eh, setEH] = useState('')
     const [em, setEM] = useState('')
 
-    useEffect(() => {
-        updateTime()
-    }, [bh, bm, eh, em])
-
     const [title, setTitle] = useState('')
     const [sel, setSel] = useState({} as TimeRange)
 
@@ -506,6 +502,10 @@ export function TimeSelect<
             }
         }, 100)
     }
+
+    useEffect(() => {
+        updateTime()
+    }, [bh, bm, eh, em])
 
     return (
         <MenuSurfaceAnchor>

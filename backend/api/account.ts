@@ -194,7 +194,7 @@ router.post('/changesecret', async (req, res) => {
             res.status(408)
             res.send(createResponse(false, TOKEN_EXPIRE_ERROR))
         }
-        let account = (await db.get('account', 'id', token.id)) as User
+
         await db.update('account', 'id', token.id, {
             pwHash: await bcrypt.hash(req.body.password, saltRound),
         })

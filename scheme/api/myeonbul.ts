@@ -2,6 +2,8 @@ import commonApi from './commonApi'
 import { UserInfo } from '../user'
 import { getToday, timeRange, TimeRange } from '../time'
 
+export type MID = string
+
 export enum MyeonbulRequestListType {
     listByUser,
     listByDate,
@@ -46,7 +48,7 @@ export interface MyeonbulQueryOne {
 }
 
 export interface MyeonbulDB extends MyeonbulQueryOne {
-    mid: string
+    mid: MID
     approved: MyeonbulResponseType
     date: string
 }
