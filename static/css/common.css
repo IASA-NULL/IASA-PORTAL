@@ -323,6 +323,12 @@ header.raised {
     .no-print * {
         display: none !important;
     }
+    * {
+        zoom:1 !important;
+    }
+    .init_zoom_print {
+        width:initial !important;
+    }
 }
 
 .rmwc-badge {
