@@ -72,13 +72,13 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
         let tableBody
         let message: string
         if (this.state?.data?.data?.score >= 0) message = '잘하고 있어요!'
-        else if (this.state?.data?.data?.score >= -5)
+        else if (this.state?.data?.data?.score > -5)
             message = '벌점을 받지 않도록 노력해봐요.'
-        else if (this.state?.data?.data?.score >= -10)
+        else if (this.state?.data?.data?.score > -10)
             message = '벌점을 받지 않도록 주의하세요.'
-        else if (this.state?.data?.data?.score >= -15)
+        else if (this.state?.data?.data?.score > -15)
             message = '벌점을 더 받으면 교내봉사를 해야 해요.'
-        else if (this.state?.data?.data?.score >= -21)
+        else if (this.state?.data?.data?.score > -21)
             message = '벌점을 더 받으면 기숙사에서 퇴소될 수 있어요!'
         else message = '저런...'
         if (this.state?.loaded) {
@@ -143,7 +143,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
             )
         return (
             <div>
-                <Typography use='headline3'>벌점</Typography>
+                <Typography use='headline3'>상벌점</Typography>
                 <BrIfMobile />
                 <Typography use='subtitle1' style={{ marginLeft: '10px' }}>
                     받은 상벌점을 확인할 수 있어요.

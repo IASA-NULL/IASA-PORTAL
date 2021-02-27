@@ -14,8 +14,10 @@ export interface PenaltyRequest {
 export interface PenaltyResponseOne {
     score: number
     teacher: UserInfo
+    target: UserInfo
     info: string
     time: number
+    uid: UID
     pid: PID
 }
 
@@ -26,4 +28,8 @@ export interface Penalty {
 
 export interface PenaltyResponse extends commonApi {
     data: Penalty
+}
+
+export interface PenaltyListResponse extends commonApi {
+    data: PenaltyResponseOne[]
 }

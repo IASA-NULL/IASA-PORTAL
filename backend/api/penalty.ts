@@ -10,7 +10,6 @@ import {
 import { UID, User, UserInfo } from '../../scheme/user'
 import { PenaltyResponseOne, PID } from '../../scheme/api/penalty'
 import { v4 as uuid } from 'uuid'
-import _ from 'lodash'
 import { createNotify } from '../util/notification'
 import { PENALTY_GOT } from '../../string/notify'
 
@@ -30,10 +29,22 @@ async function getPenaltyInfo(uid: UID, res: any) {
     }
     let penalty = account.penalty
     if (!penalty) {
-        penalty = { score: 0, history: [] }
+        penalty = 0
         await db.update('account', 'uid', uid, { penalty: penalty })
     }
-    res.send(createResponse(penalty))
+
+    const penaltyDB = await db.direct('penalty')
+    const penaltyHistory = await penaltyDB
+        .find({ uid: uid })
+        .sort('_id', -1)
+        .limit(40)
+        .toArray()
+    res.send(
+        createResponse({
+            score: penalty,
+            history: penaltyHistory,
+        })
+    )
 }
 
 async function addPenalty(uid: UID, info: PenaltyResponseOne, res: any) {
@@ -49,11 +60,17 @@ async function addPenalty(uid: UID, info: PenaltyResponseOne, res: any) {
         return
     }
     let penalty = account.penalty
-    if (!penalty) penalty = { score: 0, history: [] }
+    if (!penalty) penalty = 0
     info.pid = uuid()
-    penalty.score += info.score
-    penalty.history.unshift(info)
+    info.uid = uid
+    info.target = {
+        name: account.name,
+        uid: uid,
+        type: account.permission,
+    }
+    penalty += info.score
     await db.update('account', 'uid', uid, { penalty: penalty })
+    await db.set('penalty', info)
     res.send(createResponse(true))
     createNotify(
         [uid],
@@ -63,29 +80,34 @@ async function addPenalty(uid: UID, info: PenaltyResponseOne, res: any) {
     )
 }
 
-async function deletePenalty(uid: UID, pid: PID, res: any) {
-    let account = (await db.get('account', 'uid', uid)) as User | undefined
+async function deletePenalty(pid: PID, res: any) {
+    const penaltyInfo = (await db.get(
+        'penalty',
+        'pid',
+        pid
+    )) as PenaltyResponseOne
+    if (!penaltyInfo) {
+        res.status(404)
+        res.send(createResponse(false, '올바르지 않은 벌점 ID에요.'))
+        return
+    }
+    const account = (await db.get(
+        'account',
+        'uid',
+        penaltyInfo.target.uid
+    )) as User
     if (!account) {
         res.status(404)
         res.send(createResponse(false, '올바르지 않은 사용자에요.'))
         return
     }
-    if (account.permission !== Permission.student) {
-        res.status(404)
-        res.send(createResponse(false, '대상 계정이 학생이 아니에요.'))
-        return
-    }
     let penalty = account.penalty
-    if (!penalty) penalty = { score: 0, history: [] }
-    const uniquePenalty = _.find(penalty.history, {
-        pid: pid,
-    }) as PenaltyResponseOne
-    if (!uniquePenalty) return
-    penalty.history = _.remove(penalty.history, function (e) {
-        return e.pid !== pid
+    if (!penalty) penalty = 0
+    penalty -= penaltyInfo.score
+    await db.del('penalty', 'pid', pid)
+    await db.update('account', 'uid', penaltyInfo.target.uid, {
+        penalty: penalty,
     })
-    penalty.score -= uniquePenalty.score
-    await db.update('account', 'uid', uid, { penalty: penalty })
     res.send(createResponse(true))
 }
 
@@ -100,6 +122,21 @@ router.use((req, res, next) => {
 
 router.get('/', async (req, res) => {
     await getPenaltyInfo(req.auth.uid, res)
+})
+
+router.get('/list', async (req, res) => {
+    if (req.auth.permission === Permission.student) {
+        res.status(403)
+        res.send(createResponse(false, REQUIRE_PERMISSION_ERROR))
+        return
+    }
+    const penaltyDB = await db.direct('penalty')
+    const penaltyHistory = await penaltyDB
+        .find()
+        .sort('_id', -1)
+        .limit(40)
+        .toArray()
+    res.send(createResponse(penaltyHistory))
 })
 
 router.get('/:uid', async (req, res) => {
@@ -132,13 +169,13 @@ router.post('/', async (req, res) => {
     )
 })
 
-router.delete('/:uid/:pid', async (req, res) => {
+router.delete('/:pid', async (req, res) => {
     if (req.auth.permission === Permission.student) {
         res.status(403)
         res.send(createResponse(false, REQUIRE_PERMISSION_ERROR))
         return
     }
-    await deletePenalty(parseInt(req.params.uid), req.params.pid, res)
+    await deletePenalty(req.params.pid, res)
 })
 
 export default router

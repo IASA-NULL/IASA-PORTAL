@@ -10,7 +10,7 @@ export interface User {
     pwHash: string
     email: string
     name: string
-    penalty?: Penalty
+    penalty?: number
     avatar?: string
     mail?: string[]
     unreadNotifications: number
