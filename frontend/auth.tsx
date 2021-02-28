@@ -21,6 +21,7 @@ import {
     SignupFill1,
     SignupFill2,
     SignupFin,
+    SignupTerms,
 } from './account/signup'
 import { Permission } from '../scheme/api/auth'
 import ChangeSecret from './account/changesecret'
@@ -141,9 +142,17 @@ class App extends React.Component<any, IState> {
                                                 isMobile={isMobile}
                                                 context={context}
                                                 next={this.validateSignup2(
-                                                    <SignupFin
+                                                    <SignupTerms
                                                         isMobile={isMobile}
-                                                        next={this.resetForm()}
+                                                        context={context}
+                                                        next={this.submitSignup(
+                                                            <SignupFin
+                                                                isMobile={
+                                                                    isMobile
+                                                                }
+                                                                next={this.resetForm()}
+                                                            />
+                                                        )}
                                                     />
                                                 )}
                                             />
@@ -599,8 +608,19 @@ class App extends React.Component<any, IState> {
                 this.focusCurrentInput()
                 return
             }
-            this.setState({ loaded: false })
 
+            this.next(
+                form,
+                '약관 확인',
+                '계속하려면 IASA PORTAL의 약관에 동의하세요.',
+                'SignupTerms'
+            )()
+        }
+    }
+
+    public submitSignup(form: JSX.Element) {
+        return () => {
+            this.setState({ loaded: false })
             fetchAPI(
                 'POST',
                 {
@@ -882,6 +902,8 @@ class App extends React.Component<any, IState> {
                                             left: `-${
                                                 this.state?.currentPage * 100
                                             }%`,
+                                            maxHeight: '350px',
+                                            overflowY: 'scroll',
                                         }}>
                                         {this.state?.formList}
                                     </div>
@@ -1005,6 +1027,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         'font-size:30px;color:red;',
         'font-size:15px;color:red;'
     )
+    //@ts-ignore
+    window.scrollObj = OverlayScrollbars(document.body, {
+        callbacks: {
+            onScroll: (e: any) => {
+                if (!document.querySelector('header')) return
+                if (e.target.scrollTop === 0)
+                    document.querySelector('header').classList.remove('raised')
+                else document.querySelector('header').classList.add('raised')
+            },
+        },
+    })
     accountInfo = await fetchAPI('GET', {}, 'account', 'info')
     if (accountInfo.data.permission === Permission.none) {
         if (window.location.pathname.split('/').pop() === 'challenge')

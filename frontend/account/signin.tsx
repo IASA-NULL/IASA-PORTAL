@@ -2,7 +2,7 @@ import * as React from 'react'
 import { TextField } from '@rmwc/textfield'
 import { Button } from '@rmwc/button'
 import { Icon } from '@rmwc/icon'
-import { Menu, MenuSurfaceAnchor, MenuItem } from '@rmwc/menu'
+import { MenuSurfaceAnchor, MenuItem, MenuSurface } from '@rmwc/menu'
 import { Permission } from '../../scheme/api/auth'
 
 interface IProps {
@@ -113,13 +113,16 @@ export class IdForm extends React.Component<IdFormProps, IdFormState> {
                         marginBottom: '30px',
                     }}>
                     <MenuSurfaceAnchor>
-                        <Menu
+                        <MenuSurface
+                            fixed
+                            style={{ width: '140px' }}
                             open={this.state?.showSignupMenu}
                             onClose={() => {
                                 this.setState({ showSignupMenu: false })
                             }}>
                             <MenuItem
                                 onClick={() => {
+                                    this.setState({ showSignupMenu: false })
                                     this.props.context.set(
                                         'signupType',
                                         Permission.student
@@ -130,6 +133,7 @@ export class IdForm extends React.Component<IdFormProps, IdFormState> {
                             </MenuItem>
                             <MenuItem
                                 onClick={() => {
+                                    this.setState({ showSignupMenu: false })
                                     this.props.context.set(
                                         'signupType',
                                         Permission.teacher
@@ -138,7 +142,7 @@ export class IdForm extends React.Component<IdFormProps, IdFormState> {
                                 }}>
                                 선생님
                             </MenuItem>
-                        </Menu>
+                        </MenuSurface>
                         <Button
                             style={{ float: 'left' }}
                             onClick={() => {
