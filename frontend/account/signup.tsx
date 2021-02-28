@@ -376,7 +376,8 @@ export class SignupTerms extends React.Component<
                                 metaIcon='chevron_right'
                             />
                         }>
-                        <div>
+                        <div
+                            style={{ maxHeight: '200px', overflowY: 'scroll' }}>
                             <Typography
                                 use='headline3'
                                 id='cont_index'
@@ -911,7 +912,8 @@ export class SignupTerms extends React.Component<
                                 metaIcon='chevron_right'
                             />
                         }>
-                        <div>
+                        <div
+                            style={{ maxHeight: '200px', overflowY: 'scroll' }}>
                             <Typography use='headline3' id='cont_index'>
                                 개인정보 처리방침
                             </Typography>
