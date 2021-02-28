@@ -49,6 +49,9 @@ export default function createApp(sid: string) {
         else next()
     })
 
+    if (DEV_MODE) app.use('/api', apiRouter)
+    else app.use(vhost('api.iasa.kr', apiRouter))
+
     app.use((req, res, next) => {
         if (getServerFlag('build')) {
             res.set('Cache-Control', 'no-store')
@@ -62,11 +65,9 @@ export default function createApp(sid: string) {
     app.use(authRouter)
 
     if (DEV_MODE) {
-        app.use('/api', apiRouter)
         app.use('/account', accountRouter)
         app.use('/application', applicationRouter)
     } else {
-        app.use(vhost('api.iasa.kr', apiRouter))
         app.use(vhost('account.iasa.kr', accountRouter))
         app.use(vhost('application.iasa.kr', applicationRouter))
         setInterval(mailParse, 5000)

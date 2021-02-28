@@ -1,5 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
+import path from 'path'
 
 import mealRouter from './meal'
 import accountRouter from './account'
@@ -13,9 +14,20 @@ import mailRouter from './mail'
 import notificationRouter from './notification'
 
 import createResponse from '../createResponse'
+import { getServerFlag } from '../util/serverState'
 
 let jsonParser = bodyParser.json()
 const router = express.Router()
+
+router.use((req, res, next) => {
+    if (getServerFlag('build')) {
+        res.set('Cache-Control', 'no-store')
+        res.send(
+            createResponse(false, '사이트가 점검 중이에요. 새로고침 해보세요.')
+        )
+    } else next()
+})
+
 router.use(jsonParser)
 
 router.use('/account', accountRouter)
