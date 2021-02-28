@@ -979,7 +979,7 @@ function MainViewEl(
                             headerHeight + footerHeight
                         }px)`,
                         maxWidth: '1440px',
-                        width: 'calc(100% - 40px)',
+                        width: '100%',
                     }}>
                     {appCont}
                 </div>

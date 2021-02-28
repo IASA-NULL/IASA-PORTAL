@@ -402,7 +402,12 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                 </Grid>
                 {this.state?.data ? (
                     <>
-                        <Grid style={{ marginTop: '-30px' }}>
+                        <Grid
+                            style={{
+                                marginTop:
+                                    (window.innerWidth <= 760 ? '-10' : '-30') +
+                                    'px',
+                            }}>
                             <GridRow>
                                 <GridCell desktop={2} tablet={4} phone={4}>
                                     <Select

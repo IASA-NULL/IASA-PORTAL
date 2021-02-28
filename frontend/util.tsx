@@ -8,6 +8,14 @@ import createURL from '../scheme/url'
 import { Typography } from '@rmwc/typography'
 import { Permission } from '../scheme/api/auth'
 import { formatTime, getToday, timeRange, TimeRange } from '../scheme/time'
+import {
+    Card,
+    CardActionButton,
+    CardActionButtons,
+    CardActions,
+    CardMedia,
+    CardPrimaryAction,
+} from '@rmwc/card'
 
 declare const DEV_MODE: boolean
 
@@ -336,6 +344,48 @@ export function RequireSudo() {
         }
     }, 0)
     return <></>
+}
+
+export function CardLink(props: {
+    img: string
+    title: string
+    subtitle: string
+    link?: string
+}) {
+    return (
+        <Card style={{ margin: '10px' }}>
+            <Link to={props.link}>
+                <CardPrimaryAction>
+                    <CardMedia
+                        style={{
+                            backgroundImage: `url(${props.img})`,
+                            height: '220px',
+                        }}
+                    />
+                    <div style={{ padding: '0 1rem 1rem 1rem' }}>
+                        <Typography use='headline6' tag='h2'>
+                            {props.title}
+                        </Typography>
+                        <Typography
+                            use='body1'
+                            tag='div'
+                            theme='textSecondaryOnBackground'>
+                            {props.subtitle}
+                        </Typography>
+                    </div>
+                </CardPrimaryAction>
+            </Link>
+            {props.link && (
+                <CardActions style={{ marginTop: 'auto' }}>
+                    <CardActionButtons>
+                        <Link to={props.link}>
+                            <CardActionButton>열기</CardActionButton>
+                        </Link>
+                    </CardActionButtons>
+                </CardActions>
+            )}
+        </Card>
+    )
 }
 
 export function SearchUser<
