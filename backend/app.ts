@@ -44,9 +44,10 @@ export default function createApp(sid: string) {
         if (
             req.headers['user-agent'].indexOf('MSIE') > -1 ||
             req.headers['user-agent'].indexOf('rv:') > -1
-        )
+        ) {
+            res.status(412)
             res.sendFile(path.join(__dirname, '..', 'template', 'noIE.html'))
-        else next()
+        } else next()
     })
 
     app.use('/static', express.static(path.join(__dirname, '..', 'static')))
@@ -57,6 +58,7 @@ export default function createApp(sid: string) {
 
     app.use((req, res, next) => {
         if (getServerFlag('build')) {
+            res.status(503)
             res.set('Cache-Control', 'no-store')
             res.sendFile(
                 path.join(__dirname, '..', 'template', 'building.html')

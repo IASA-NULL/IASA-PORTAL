@@ -20,6 +20,7 @@ const router = express.Router()
 
 router.use((req, res, next) => {
     if (getServerFlag('build')) {
+        res.status(503)
         res.set('Cache-Control', 'no-store')
         res.send(
             createResponse(false, '사이트가 점검 중이에요. 새로고침 해보세요.')
@@ -33,6 +34,7 @@ router.use('/account', accountRouter)
 
 router.use('*', (req, res, next) => {
     if (req.auth && req.auth.expired) {
+        res.status(403)
         res.send(
             createResponse(
                 false,
