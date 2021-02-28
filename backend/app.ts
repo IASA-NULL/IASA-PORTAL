@@ -49,6 +49,9 @@ export default function createApp(sid: string) {
         else next()
     })
 
+    app.use('/static', express.static(path.join(__dirname, '..', 'static')))
+    app.use(authRouter)
+
     if (DEV_MODE) app.use('/api', apiRouter)
     else app.use(vhost('api.iasa.kr', apiRouter))
 
@@ -60,9 +63,6 @@ export default function createApp(sid: string) {
             )
         } else next()
     })
-
-    app.use('/static', express.static(path.join(__dirname, '..', 'static')))
-    app.use(authRouter)
 
     if (DEV_MODE) {
         app.use('/account', accountRouter)

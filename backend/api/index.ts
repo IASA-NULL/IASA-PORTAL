@@ -1,6 +1,5 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import path from 'path'
 
 import mealRouter from './meal'
 import accountRouter from './account'
