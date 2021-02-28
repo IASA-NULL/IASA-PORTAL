@@ -559,11 +559,54 @@ class Opensource extends React.Component<any, {}> {
                     either express or implied.
                 </Typography>
                 <br />
-                <Typography use='body1'>
-                    See the License for the specific language governing
-                    permissions and limitations under the License.
+                <br />
+                <Typography use='headline4' id='cont_undraw'>
+                    unDraw{' '}
+                    <a
+                        target='_blank'
+                        rel='noreferrer'
+                        href='https://undraw.co/'>
+                        (프로젝트 사이트)
+                    </a>
                 </Typography>
                 <br />
+                <Typography use='subtitle1'>웹사이트 디자인 목적</Typography>
+                <br />
+                <br />
+                <Typography use='body1'>
+                    Copyright 2021 Katerina Limpitsouni
+                </Typography>
+                <Typography use='body1'>
+                    All images, assets and vectors published on unDraw can be
+                    used for free. You can use them for noncommercial and
+                    commercial purposes. You do not need to ask permission from
+                    or provide credit to the creator or unDraw.
+                </Typography>
+                <Typography use='body1'>
+                    More precisely, unDraw grants you an nonexclusive, worldwide
+                    copyright license to download, copy, modify, distribute,
+                    perform, and use the assets provided from unDraw for free,
+                    including for commercial purposes, without permission from
+                    or attributing the creator or unDraw. This license does not
+                    include the right to compile assets, vectors or images from
+                    unDraw to replicate a similar or competing service, in any
+                    form or distribute the assets in packs or otherwise. This
+                    extends to automated and non-automated ways to link, embed,
+                    scrape, search or download the assets included on the
+                    website without our consent.
+                </Typography>
+                <Typography use='body1'>
+                    Regarding brand logos that are included:
+                </Typography>
+                <Typography use='body1'>
+                    Are registered trademarks of their respected owners. Are
+                    included on a promotional basis and do not represent an
+                    association with unDraw or its users. Do not indicate any
+                    kind of endorsement of the trademark holder towards unDraw,
+                    nor vice versa. Are provided with the sole purpose to
+                    represent the actual brand/service/company that has
+                    registered the trademark and must not be used otherwise.
+                </Typography>
             </div>
         )
     }

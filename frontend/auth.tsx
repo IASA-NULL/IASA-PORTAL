@@ -965,17 +965,17 @@ class App extends React.Component<any, IState> {
                                     }}>
                                     <MenuLink
                                         body='약관'
-                                        to='/terms'
+                                        to={createURL('', 'terms')}
                                         type={LinkType.a}
                                     />
                                     <MenuLink
                                         body='개인정보 처리방침'
-                                        to='/userdata'
+                                        to={createURL('', 'userdata')}
                                         type={LinkType.a}
                                     />
                                     <MenuLink
                                         body='오픈소스'
-                                        to='/opensource'
+                                        to={createURL('', 'opensource')}
                                         type={LinkType.a}
                                     />
                                 </Menu>
