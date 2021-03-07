@@ -44,6 +44,7 @@ import {
     AllergicInfo,
 } from '../../scheme/api/meal'
 import { BrIfMobile, fetchAPI } from '../util'
+import { IconButton } from '@rmwc/icon-button'
 
 interface MealProps {
     onClick: any
@@ -80,9 +81,38 @@ class MealOne extends React.Component<MealProps, MealState> {
         })
     }
 
+    public vote(score: number) {
+        fetchAPI('POST', { score: score, ...this.props.target }, 'meal', 'vote')
+            .then((res) => {
+                if (res.success)
+                    this.props.notify({
+                        title: <b>성공!</b>,
+                        body: '정상적으로 평가했어요.',
+                        icon: 'check',
+                        dismissIcon: true,
+                    })
+                else
+                    this.props.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                this.refresh()
+            })
+            .catch(() => {
+                this.props.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
+    }
+
     public render() {
         let menuText = [<p>{this.state?.data?.message}</p>],
-            kcalInfo = <></>
+            scoreInfo = <></>
         try {
             if (this.state.data.data.menu.length === 0)
                 menuText = [<p>급식 정보가 없어요!</p>]
@@ -94,17 +124,36 @@ class MealOne extends React.Component<MealProps, MealState> {
                         </>
                     )
                 })
-                kcalInfo = (
+                scoreInfo = (
                     <>
-                        <LinearProgress
-                            progress={this.state?.data?.data?.kcal / 1500}
-                            buffer={1}
-                        />
-                        <Typography use='subtitle1'>
-                            {this?.state?.data?.data?.kcal
-                                ? `${this?.state?.data?.data?.kcal}kcal`
-                                : '칼로리 정보가 없어요!'}
-                        </Typography>
+                        {this.state?.data?.data?.vote?.count ? (
+                            <>
+                                <LinearProgress
+                                    progress={
+                                        (this.state?.data?.data?.vote?.score ??
+                                            0) /
+                                            2 +
+                                        0.5
+                                    }
+                                    buffer={1}
+                                />
+                                <Typography use='caption'>
+                                    {this.state?.data?.data?.vote?.count}명이
+                                    평가했고, 평점은{' '}
+                                    {(
+                                        (this.state?.data?.data?.vote?.score ??
+                                            0) *
+                                            50 +
+                                        50
+                                    ).toFixed(0)}
+                                    점이에요.
+                                </Typography>
+                            </>
+                        ) : (
+                            <Typography use='caption'>
+                                아직 평가한 사람이 없어요.
+                            </Typography>
+                        )}
                     </>
                 )
             }
@@ -145,7 +194,7 @@ class MealOne extends React.Component<MealProps, MealState> {
                         </Typography>
                         {this.state?.loaded ? (
                             <>
-                                {kcalInfo}
+                                {scoreInfo}
                                 <Typography
                                     use='body1'
                                     tag='div'
@@ -167,25 +216,25 @@ class MealOne extends React.Component<MealProps, MealState> {
                     <CardActionIcons>
                         <CardActionIcon
                             onClick={() => {
-                                this.props?.notify({
-                                    title: <b>아직 개발 중이에요.</b>,
-                                    body: '곧 급식을 평가할 수 있어요!',
-                                    icon: 'build',
-                                    dismissIcon: true,
-                                })()
+                                if (this.state?.data?.data?.vote?.me === 1)
+                                    this.vote(0)
+                                else this.vote(1)
                             }}
-                            icon='thumb_up'
+                            onIcon='thumb_up'
+                            icon='thumb_up_off_alt'
+                            checked={this.state?.data?.data?.vote?.me === 1}
+                            style={{ paddingTop: '8px' }}
                         />
                         <CardActionIcon
                             onClick={() => {
-                                this.props?.notify({
-                                    title: <b>아직 개발 중이에요.</b>,
-                                    body: '곧 급식을 평가할 수 있어요!',
-                                    icon: 'build',
-                                    dismissIcon: true,
-                                })()
+                                if (this.state?.data?.data?.vote?.me === -1)
+                                    this.vote(0)
+                                else this.vote(-1)
                             }}
-                            icon='thumb_down'
+                            onIcon='thumb_down'
+                            icon='thumb_down_off_alt'
+                            checked={this.state?.data?.data?.vote?.me === -1}
+                            style={{ paddingTop: '8px' }}
                         />
                     </CardActionIcons>
                 </CardActions>
@@ -431,6 +480,40 @@ class Meal extends React.Component<any, MearContainerState> {
         }
     }
 
+    public vote(score: number) {
+        fetchAPI(
+            'POST',
+            { score: score, ...this.state?.selectedTime },
+            'meal',
+            'vote'
+        )
+            .then((res) => {
+                if (res.success)
+                    this.notify({
+                        title: <b>성공!</b>,
+                        body: '정상적으로 평가했어요.',
+                        icon: 'check',
+                        dismissIcon: true,
+                    })
+                else
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                this.getMealInfo(this.state.selectedTime)
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
+    }
+
     public render() {
         let menuText = [<p>{this.state?.data?.message}</p>],
             kcalInfo = <></>,
@@ -446,19 +529,6 @@ class Meal extends React.Component<any, MearContainerState> {
                         </>
                     )
                 })
-                kcalInfo = (
-                    <>
-                        <LinearProgress
-                            progress={this.state?.data?.data?.kcal / 1500}
-                            buffer={1}
-                        />
-                        <Typography use='subtitle1'>
-                            {this?.state?.data?.data?.kcal
-                                ? `${this?.state?.data?.data?.kcal}kcal`
-                                : '칼로리 정보가 없어요!'}
-                        </Typography>
-                    </>
-                )
                 detailTable = (
                     <List>
                         <CollapsibleList
@@ -639,7 +709,73 @@ class Meal extends React.Component<any, MearContainerState> {
                     <DialogContent>
                         {this.state?.detailLoaded ? (
                             <>
-                                {kcalInfo}
+                                <IconButton
+                                    onIcon='thumb_down'
+                                    icon='thumb_down_off_alt'
+                                    checked={
+                                        this.state?.data?.data?.vote?.me === -1
+                                    }
+                                    style={{
+                                        float: 'left',
+                                        paddingTop: '8px',
+                                    }}
+                                    onClick={() => {
+                                        if (
+                                            this.state?.data?.data?.vote?.me ===
+                                            -1
+                                        )
+                                            this.vote(0)
+                                        else this.vote(-1)
+                                    }}
+                                />
+                                <LinearProgress
+                                    progress={
+                                        (this.state?.data?.data?.vote?.score ??
+                                            0) /
+                                            2 +
+                                        0.5
+                                    }
+                                    buffer={1}
+                                    style={{
+                                        margin: '23px 10px',
+                                        width: 'calc(100% - 118px)',
+                                        float: 'left',
+                                    }}
+                                />
+                                <IconButton
+                                    onIcon='thumb_up'
+                                    icon='thumb_up_off_alt'
+                                    checked={
+                                        this.state?.data?.data?.vote?.me === 1
+                                    }
+                                    style={{
+                                        float: 'left',
+                                        paddingTop: '8px',
+                                    }}
+                                    onClick={() => {
+                                        if (
+                                            this.state?.data?.data?.vote?.me ===
+                                            1
+                                        )
+                                            this.vote(0)
+                                        else this.vote(1)
+                                    }}
+                                />
+                                <div style={{ clear: 'both' }} />
+                                <Typography use='caption'>
+                                    {this.state?.data?.data?.vote?.count
+                                        ? `${
+                                              this.state?.data?.data?.vote
+                                                  ?.count
+                                          }명이 평가했고, 평점은 ${(
+                                              (this.state?.data?.data?.vote
+                                                  ?.score ?? 0) *
+                                                  50 +
+                                              50
+                                          ).toFixed(0)}점이에요.`
+                                        : '아직 평가한 사람이 없어요.'}
+                                </Typography>
+                                <br />
                                 <Typography
                                     use='body1'
                                     tag='div'
@@ -691,7 +827,10 @@ class Meal extends React.Component<any, MearContainerState> {
                 <br />
                 <br />
                 <div style={{ height: '20px' }} />
-                <SnackbarQueue messages={this.messages} />
+                <SnackbarQueue
+                    messages={this.messages}
+                    style={{ zIndex: 100 }}
+                />
             </div>
         )
     }

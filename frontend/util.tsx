@@ -16,6 +16,7 @@ import {
     CardMedia,
     CardPrimaryAction,
 } from '@rmwc/card'
+import commonApi from '../scheme/api/commonApi'
 
 declare const DEV_MODE: boolean
 
@@ -313,7 +314,11 @@ export function focusNextInput() {
     return false
 }
 
-export function fetchAPI(method: string, body: any, ...props: string[]) {
+export function fetchAPI(
+    method: string,
+    body: any,
+    ...props: string[]
+): Promise<commonApi> {
     return fetch(createURL('api', ...props), {
         method: method,
         ...(!DEV_MODE && { credentials: 'include' }),

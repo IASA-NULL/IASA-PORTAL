@@ -3,11 +3,13 @@ import createApp from './app'
 import { v4 as uuid } from 'uuid'
 import os from 'os'
 
+declare const DEV_MODE: boolean
+
 if (cluster.isMaster) {
     const cpuCount = os.cpus().length
     const sid = uuid()
 
-    for (let i = 0; i < cpuCount; i++) {
+    for (let i = 0; i < (DEV_MODE ? 1 : cpuCount); i++) {
         cluster.fork({ SID: sid })
     }
 

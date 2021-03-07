@@ -7,8 +7,11 @@ import {
 import nodeFetch from 'node-fetch'
 
 import db from '../util/db'
+import { UID } from '../../scheme/user'
 import createResponse from '../createResponse'
 import express from 'express'
+import { REQUIRE_PERMISSION_ERROR } from '../../string/error'
+import _ from 'lodash'
 
 const fetch = require('fetch-cookie')(nodeFetch)
 
@@ -17,17 +20,15 @@ function isHangul(ch: string) {
     return 0xac00 <= c && c <= 0xd7a3
 }
 
-function getMeal(target: mealTime) {
+function getMeal(target: mealTime, uid: UID) {
     return new Promise(async (resolve, reject) => {
         try {
-            if (await db.get('meal', 'time', mealTimeToString(target))) {
+            let data = await db.get('meal', 'time', mealTimeToString(target))
+            if (data) {
+                data.data.vote = await getMealVoteRes(target, uid)
                 resolve({
                     success: true,
-                    data: await db.get(
-                        'meal',
-                        'time',
-                        mealTimeToString(target)
-                    ),
+                    data: data,
                 })
                 return
             }
@@ -218,6 +219,7 @@ function getMeal(target: mealTime) {
                         time: mealTimeToString(target),
                     }).catch()
                 }
+                res.data.vote = await getMealVoteRes(target, uid)
                 resolve(res)
                 return
             } catch (e) {
@@ -230,18 +232,95 @@ function getMeal(target: mealTime) {
     })
 }
 
+async function getMealVote(target: mealTime) {
+    let info = await db.get('meal_vote', 'time', mealTimeToString(target))
+    if (!info) {
+        await db.set('meal_vote', {
+            score: 0,
+            voteList: [] as { uid: UID; score: number }[],
+            time: mealTimeToString(target),
+        })
+        info = {
+            score: 0,
+            voteList: [] as { uid: UID; score: number }[],
+            time: mealTimeToString(target),
+        }
+    }
+    return info
+}
+
+async function getMealVoteRes(target: mealTime, uid: number) {
+    const info = await getMealVote(target)
+    return {
+        score: info.voteList.length ? info.score / info.voteList.length : 0,
+        me: _.find(info.voteList, { uid: uid })?.score ?? 0,
+        count: info.voteList.length,
+    }
+}
+
+async function voteMeal(target: mealTime, score: number, uid: UID) {
+    let info = await db.get('meal_vote', 'time', mealTimeToString(target))
+    if (!info) {
+        await db.set('meal_vote', {
+            score: 0,
+            voteList: [] as { uid: UID; score: number }[],
+            time: mealTimeToString(target),
+        })
+        info = {
+            score: 0,
+            voteList: [] as { uid: UID; score: number }[],
+            time: mealTimeToString(target),
+        }
+    }
+    const already = _.find(info.voteList, { uid: uid })
+    if (already) {
+        info.score -= already.score
+        _.remove(info.voteList, { uid: uid })
+    }
+    if (score) {
+        info.score += score
+        info.voteList.push({
+            uid: uid,
+            score: score,
+        })
+    }
+    await db.update('meal_vote', 'time', mealTimeToString(target), info)
+    return
+}
+
 const router = express.Router()
 
 router.post('/', (req, res) => {
-    getMeal(req.body)
-        .then((mealData: MealResponse) => {
+    getMeal(req.body, req.auth.uid)
+        .then(async (mealData: MealResponse) => {
             if (!mealData.success) res.status(404)
-            res.send(mealData)
+            res.send({
+                ...mealData,
+            })
         })
         .catch(() => {
             res.status(500)
             res.send(createResponse(false, '급식 정보를 불러올 수 없어요.'))
         })
+})
+
+router.post('/vote', async (req, res) => {
+    if (!req.auth) {
+        res.send(createResponse(false, REQUIRE_PERMISSION_ERROR))
+        return
+    }
+
+    await voteMeal(
+        {
+            type: req.body.type,
+            year: req.body.year,
+            month: req.body.month,
+            day: req.body.day,
+        },
+        req.body.score,
+        req.auth.uid
+    )
+    res.send(createResponse(true))
 })
 
 export default router

@@ -118,7 +118,11 @@ export interface MealResponse extends commonApi {
         time: mealTime
         menu: Menu[]
         image?: string
-        score?: number
+        vote?: {
+            score: number
+            me: number
+            count: number
+        }
         kcal?: number
         origin?: Origin[]
         energy?: Energy[]
