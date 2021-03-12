@@ -34,7 +34,11 @@ export default function createApp(sid: string) {
 
     if (!DEV_MODE) {
         app.use(cors(corsOptions))
-        app.use(helmet())
+        app.use(
+            helmet({
+                contentSecurityPolicy: false,
+            })
+        )
     }
 
     app.use(cookieParser())
