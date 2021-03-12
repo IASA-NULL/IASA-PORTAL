@@ -12,6 +12,7 @@ import accountRouter from './account'
 import applicationRouter from './application'
 import vhost from 'vhost'
 import mailParse from './mailParse'
+import helmet from 'helmet'
 declare const DEV_MODE: boolean
 
 export default function createApp(sid: string) {
@@ -31,9 +32,11 @@ export default function createApp(sid: string) {
         },
     }
 
-    if (!DEV_MODE) app.use(cors(corsOptions))
+    if (!DEV_MODE) {
+        app.use(cors(corsOptions))
+        app.use(helmet())
+    }
 
-    //app.use(helmet())
     app.use(cookieParser())
 
     app.use(compression())
