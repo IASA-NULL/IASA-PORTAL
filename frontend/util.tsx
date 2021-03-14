@@ -190,23 +190,6 @@ export function MenuLink(props: {
         )
 }
 
-export function LoremIpsum(props: { count: number }) {
-    return (
-        <>
-            {new Array(props.count).fill(
-                <p>
-                    Lorem ipsum odor amet, consectetuer adipiscing elit. Ac
-                    purus in massa egestas mollis varius; dignissim elementum.
-                    Mollis tincidunt mattis hendrerit dolor eros enim, nisi
-                    ligula ornare. Hendrerit parturient habitant pharetra rutrum
-                    gravida porttitor eros feugiat. Mollis elit sodales taciti
-                    duis praesent id. Consequat urna vitae morbi nunc congue.
-                </p>
-            )}
-        </>
-    )
-}
-
 export function FileInput(props: any) {
     const [value, setValue] = useState('')
     let orgClickHandler: any
@@ -466,6 +449,18 @@ export function SearchUser<
                                         })
                                         setMenu(false)
                                     }}>
+                                    <div
+                                        style={{ margin: '10px 10px 5px 0px' }}>
+                                        <UserImage
+                                            url={createURL(
+                                                'api',
+                                                'account',
+                                                'avatar',
+                                                user.uid
+                                            )}
+                                            size={30}
+                                        />
+                                    </div>
                                     {user.name}
                                 </MenuItem>
                             )
@@ -753,5 +748,24 @@ export function TimeSelect<
                 }}
             />
         </MenuSurfaceAnchor>
+    )
+}
+
+export function UserImage(props: { url: string; size: number }) {
+    return (
+        <span
+            title='Avatar'
+            className='rmwc-icon rmwc-icon--component material-icons rmwc-avatar rmwc-avatar--xlarge rmwc-avatar--has-image'>
+            <div
+                className='rmwc-avatar__icon'
+                style={{
+                    backgroundImage: `url("${props.url}")`,
+                    backgroundSize: 'cover',
+                    width: `${props.size}px`,
+                    height: `${props.size}px`,
+                    borderRadius: '50%',
+                }}
+            />
+        </span>
     )
 }

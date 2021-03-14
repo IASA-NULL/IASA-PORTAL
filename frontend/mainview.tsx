@@ -27,7 +27,7 @@ import { IconButton } from '@rmwc/icon-button'
 import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
 import { Badge } from '@rmwc/badge'
 
-import { ListLink, useForceUpdate, LinkType, fetchAPI } from './util'
+import { ListLink, useForceUpdate, LinkType, fetchAPI, UserImage } from './util'
 import { token } from '../scheme/api/auth'
 import createURL from '../scheme/url'
 import { useEffect } from 'react'
@@ -760,27 +760,11 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
                     }}>
                     {props?.accountInfo?.id ? (
                         <DrawerHeader>
-                            <DrawerTitle>
-                                <span
-                                    title='Avatar'
-                                    className='rmwc-icon rmwc-icon--component material-icons rmwc-avatar rmwc-avatar--xlarge rmwc-avatar--has-image'>
-                                    <div
-                                        className='rmwc-avatar__icon'
-                                        style={{
-                                            backgroundImage: `url("${createURL(
-                                                'api',
-                                                'account',
-                                                'avatar'
-                                            )}")`,
-                                            backgroundSize: 'cover',
-                                            width: '50px',
-                                            height: '50px',
-                                            borderRadius: '100px',
-                                            marginTop: '20px',
-                                            marginBottom: '10px',
-                                        }}
-                                    />
-                                </span>
+                            <DrawerTitle style={{ paddingTop: '20px' }}>
+                                <UserImage
+                                    url={createURL('api', 'account', 'avatar')}
+                                    size={50}
+                                />
                                 <br />
                                 {props?.accountInfo?.name}
                             </DrawerTitle>
@@ -852,7 +836,7 @@ function Footer() {
                                         <IconButton
                                             icon='call'
                                             tag='a'
-                                            href='tel:010-3193-6628'
+                                            href='tel:032-890-6700'
                                         />
                                     </GridCell>
                                 </GridRow>

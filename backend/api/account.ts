@@ -270,7 +270,7 @@ router.post('/sudo', async (req, res) => {
 
 router.get('/avatar', async (req, res) => {
     try {
-        const user = (await db.get('account', 'id', req.auth.id)) as User
+        const user = (await db.get('account', 'uid', req.auth.uid)) as User
         if (!user) throw new Error()
         const fileInfo = await db.get('upload', 'id', user.avatar)
         const fileBody = downloadAsStream(fileInfo.id)
@@ -286,9 +286,13 @@ router.get('/avatar', async (req, res) => {
     }
 })
 
-router.get('/avatar/:id', async (req, res) => {
+router.get('/avatar/:uid', async (req, res) => {
     try {
-        const user = (await db.get('account', 'id', req.params.id)) as User
+        const user = (await db.get(
+            'account',
+            'uid',
+            parseInt(req.params.uid)
+        )) as User
         if (!user) throw new Error()
         const fileInfo = await db.get('upload', 'id', user.avatar)
         const fileBody = downloadAsStream(fileInfo.id)
