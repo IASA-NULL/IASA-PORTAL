@@ -3,7 +3,7 @@ import express from 'express'
 const router = express.Router()
 
 router.get('/ver', async (req, res) => {
-    res.send(501)
+    res.send('501')
 })
 
 router.get('/link/lastest', async (req, res) => {
