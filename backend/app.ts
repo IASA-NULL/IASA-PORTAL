@@ -45,7 +45,6 @@ export default function createApp(sid: string) {
 
     app.use(compression())
     app.use(logger('dev'))
-    app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')))
 
     app.use((req, res, next) => {
         if (
@@ -62,6 +61,8 @@ export default function createApp(sid: string) {
 
     if (DEV_MODE) app.use('/api', apiRouter)
     else app.use(vhost('api.iasa.kr', apiRouter))
+
+    app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')))
 
     app.use((req, res, next) => {
         if (getServerFlag('build')) {
