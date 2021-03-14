@@ -12,6 +12,8 @@ import shareRouter from './share'
 import mailRouter from './mail'
 import notificationRouter from './notification'
 
+import ipRouter from './ip'
+
 import createResponse from '../createResponse'
 import { getServerFlag } from '../util/serverState'
 
@@ -55,6 +57,7 @@ router.use('/penalty', penaltyRouter)
 router.use('/share', shareRouter)
 router.use('/mail', mailRouter)
 router.use('/notifications', notificationRouter)
+router.use('/ip', ipRouter)
 
 router.use('*', (req, res) => {
     res.status(404)

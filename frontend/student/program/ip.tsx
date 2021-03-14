@@ -16,11 +16,11 @@ export default function PROGRAM_IP() {
             <Typography use='headline5'>다운로드</Typography>
             <BrIfMobile />
             <Typography use='subtitle2' style={{ marginLeft: '10px' }}>
-                V 4.2.1
+                V 5.0.1
             </Typography>
             <br />
             <br />
-            <a href='https://github.com/IASA-Null/iasa-ip/releases/latest/download/IP.exe'>
+            <a href='https://s3.ap-northeast-2.amazonaws.com/public.iasa.kr/IP/bin/IP_5_0_1.exe'>
                 <Button raised label='다운로드' icon='get_app' />
             </a>
             <br />
