@@ -9,7 +9,7 @@ if (cluster.isMaster) {
     const cpuCount = os.cpus().length
     const sid = uuid()
 
-    for (let i = 0; i < (DEV_MODE ? 1 : cpuCount); i++) {
+    for (let i = 0; i < (DEV_MODE ? 1 : cpuCount * 8); i++) {
         cluster.fork({ SID: sid })
     }
 
