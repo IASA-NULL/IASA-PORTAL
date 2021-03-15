@@ -2,7 +2,6 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import compression from 'compression'
-import logger from 'morgan'
 import favicon from 'serve-favicon'
 import path from 'path'
 import { getServerFlag, setServerState } from './util/serverState'
@@ -44,7 +43,6 @@ export default function createApp(sid: string) {
     app.use(cookieParser())
 
     app.use(compression())
-    app.use(logger('dev'))
 
     app.use((req, res, next) => {
         if (
