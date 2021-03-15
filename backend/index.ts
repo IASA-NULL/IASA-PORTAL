@@ -2,10 +2,17 @@ import cluster from 'cluster'
 import createApp from './app'
 import { v4 as uuid } from 'uuid'
 import os from 'os'
+import { createNotify } from './util/notification'
 
 declare const DEV_MODE: boolean
 
 if (cluster.isMaster) {
+    createNotify(
+        [0],
+        '서버가 시작됐어요.',
+        '예기치 않은 재시작일경우 서버를 확인해 보세요.',
+        ''
+    )
     const cpuCount = os.cpus().length
     const sid = uuid()
 

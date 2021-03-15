@@ -15,6 +15,7 @@ import {
     REQUIRE_SIGNIN_ERROR,
     REQUIRE_SUDO_ERROR,
 } from '../../string/error'
+import { createNotify } from '../util/notification'
 
 const router = express.Router()
 
@@ -38,6 +39,12 @@ router.post('/update', (req, res) => {
     if (getServerFlag('build')) {
         res.send(createResponse(false, ALREADY_BUILDING_ERROR))
     } else {
+        createNotify(
+            [0],
+            '서버를 업데이트했어요.',
+            `${req.body.branch} 브랜치로 업데이트했어요.`,
+            ''
+        )
         setServerFlag('build')
         res.send(createResponse(true))
         child_process.spawn(
