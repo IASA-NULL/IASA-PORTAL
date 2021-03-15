@@ -45,13 +45,19 @@ export default function createApp(sid: string) {
     app.use(compression())
 
     app.use((req, res, next) => {
-        if (
-            req.headers['user-agent'].indexOf('MSIE') > -1 ||
-            req.headers['user-agent'].indexOf('rv:') > -1
-        ) {
-            res.status(412)
-            res.sendFile(path.join(__dirname, '..', 'template', 'noIE.html'))
-        } else next()
+        try {
+            if (
+                req.headers['user-agent'].indexOf('MSIE') > -1 ||
+                req.headers['user-agent'].indexOf('rv:') > -1
+            ) {
+                res.status(412)
+                res.sendFile(
+                    path.join(__dirname, '..', 'template', 'noIE.html')
+                )
+            } else next()
+        } catch (e) {
+            next()
+        }
     })
 
     app.use('/static', express.static(path.join(__dirname, '..', 'static')))
