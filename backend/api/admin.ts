@@ -1,5 +1,5 @@
 import express from 'express'
-import child_process from 'child_process'
+import child_process, { exec } from 'child_process'
 
 import { Permission } from '../../scheme/api/auth'
 import createResponse from '../createResponse'
@@ -109,6 +109,10 @@ router.put('/code', async (req, res) => {
 })
 
 router.get('/code', async (req, res) => {
+    if (!req.auth || req.auth.permission !== Permission.admin) {
+        res.status(403)
+        res.send(createResponse(false, REQUIRE_PERMISSION_ERROR))
+    }
     try {
         let codeDB = await db.direct('code')
         codeDB.find({}).toArray((err: any, result: any[]) => {
@@ -123,6 +127,23 @@ router.get('/code', async (req, res) => {
                 )
             }
         })
+    } catch (e) {
+        res.status(500)
+        res.send(createResponse(false, DB_CONNECT_ERROR))
+    }
+})
+
+router.get('/current', async (req, res) => {
+    try {
+        exec(
+            'git show --oneline -s',
+            {
+                cwd: 'C:\\Server\\IASA-PORTAL',
+            },
+            function (error, stdout, stderr) {
+                res.send(createResponse(stdout))
+            }
+        )
     } catch (e) {
         res.status(500)
         res.send(createResponse(false, DB_CONNECT_ERROR))
