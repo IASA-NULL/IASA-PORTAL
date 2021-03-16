@@ -238,7 +238,6 @@ class CreateCode extends React.Component<any, IState> {
                 </Typography>
                 <br />
                 <br />
-                <br />
                 <Grid>
                     <GridRow>
                         <GridCell desktop={4} tablet={4} phone={4}>
@@ -312,7 +311,6 @@ class CreateCode extends React.Component<any, IState> {
                         </GridCell>
                     </GridRow>
                 </Grid>
-                <br />
                 <br />
                 <Typography use='headline5'>사용되지 않은 코드</Typography>
                 <br />

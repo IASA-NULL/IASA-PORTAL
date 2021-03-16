@@ -35,7 +35,7 @@ class NotFound extends React.Component<any, IState> {
             .then((res) => {
                 let branches = [] as string[]
                 res.forEach((br: any) => {
-                    branches.push(`${br.commit.sha.substr(0, 6)} @ ${br.name}`)
+                    branches.push(`${br.commit.sha.substr(0, 7)} @ ${br.name}`)
                 })
                 this.setState({ branches: branches })
             })
