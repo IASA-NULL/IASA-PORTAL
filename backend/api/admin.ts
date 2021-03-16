@@ -40,7 +40,7 @@ router.post('/update', (req, res) => {
         res.send(createResponse(false, ALREADY_BUILDING_ERROR))
     } else {
         createNotify(
-            [0],
+            [1],
             '서버를 업데이트했어요.',
             `${req.body.branch} 브랜치로 업데이트했어요.`,
             ''
