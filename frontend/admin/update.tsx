@@ -106,6 +106,7 @@ class NotFound extends React.Component<any, IState> {
                     업데이트
                 </Button>
                 <br />
+                <br />
                 <Typography use='headline5'>현재 버전</Typography>
                 <BrIfMobile />
                 <Typography use='subtitle1' style={{ marginLeft: '10px' }}>
