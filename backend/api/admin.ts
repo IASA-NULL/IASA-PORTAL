@@ -147,7 +147,7 @@ router.get('/current', async (req, res) => {
                         cwd: 'C:\\Server\\IASA-PORTAL',
                     },
                     function (error, branch, stderr) {
-                        let li = branch.trim().split(' ')
+                        let li = current.trim().split(' ')
                         const code = li.shift()
                         res.send(
                             createResponse({
