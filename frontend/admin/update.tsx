@@ -7,10 +7,12 @@ import { Select } from '@rmwc/select'
 
 import { BrIfMobile, fetchAPI, RequireSudo } from '../util'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
+import commonApi from '../../scheme/api/commonApi'
 
 interface IState {
     branches: string[]
     selectedBranch: string
+    data: commonApi
 }
 
 class NotFound extends React.Component<any, IState> {
@@ -37,6 +39,9 @@ class NotFound extends React.Component<any, IState> {
                 })
                 this.setState({ branches: branches })
             })
+        fetchAPI('GET', {}, 'admin', 'current').then((res) => {
+            this.setState({ data: res })
+        })
     }
 
     public update() {
@@ -83,7 +88,6 @@ class NotFound extends React.Component<any, IState> {
                 </Typography>
                 <br />
                 <br />
-                <br />
                 <div style={{ width: '200px' }}>
                     <Select
                         label='브랜치 선택'
@@ -101,6 +105,22 @@ class NotFound extends React.Component<any, IState> {
                 <Button onClick={this.update} outlined>
                     업데이트
                 </Button>
+                <br />
+                <Typography use='headline5'>현재 버전</Typography>
+                <BrIfMobile />
+                <Typography use='subtitle1' style={{ marginLeft: '10px' }}>
+                    현재 사이트의 버전을 나타내요.
+                </Typography>
+                <br />
+                <br />
+                <Typography use='headline6'>
+                    {this.state?.data
+                        ? this.state.data.success
+                            ? `${this.state.data.data.head} @ ${this.state.data.data.branch}\n${this.state.data.data.message}`
+                            : this.state.data.message
+                        : '불러오는 중...'}
+                </Typography>
+                <br />
                 <SnackbarQueue messages={this.messages} />
             </>
         )

@@ -140,8 +140,24 @@ router.get('/current', async (req, res) => {
             {
                 cwd: 'C:\\Server\\IASA-PORTAL',
             },
-            function (error, stdout, stderr) {
-                res.send(createResponse(stdout))
+            function (error, current, stderr) {
+                exec(
+                    'git branch --show-current',
+                    {
+                        cwd: 'C:\\Server\\IASA-PORTAL',
+                    },
+                    function (error, branch, stderr) {
+                        let li = branch.trim().split(' ')
+                        const code = li.shift()
+                        res.send(
+                            createResponse({
+                                branch: branch.trim(),
+                                head: code,
+                                message: li.join(' '),
+                            })
+                        )
+                    }
+                )
             }
         )
     } catch (e) {
