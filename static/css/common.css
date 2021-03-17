@@ -341,3 +341,13 @@ header.raised {
     opacity: 0;
     font-size: 0;
 }
+
+.rmwc-data-table--sticky-rows-1 .rmwc-data-table__head .rmwc-data-table__row:nth-child(-n+1) .rmwc-data-table__cell {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    box-shadow: 0 1px rgb(0 0 0 / 12%);
+    background-color: #fff;
+    background-color: var(--mdc-theme-surface,#fff);
+}
