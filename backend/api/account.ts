@@ -41,6 +41,7 @@ router.get('/info', (req, res) => {
                 'code',
                 'permission',
                 'sudo',
+                'expired',
             ])
         )
     )
