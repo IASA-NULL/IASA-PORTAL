@@ -11,6 +11,7 @@ import penaltyRouter from './penalty'
 import shareRouter from './share'
 import mailRouter from './mail'
 import notificationRouter from './notification'
+import printRouter from './print'
 
 import ipRouter from './ip'
 
@@ -57,6 +58,7 @@ router.use('/penalty', penaltyRouter)
 router.use('/share', shareRouter)
 router.use('/mail', mailRouter)
 router.use('/notifications', notificationRouter)
+router.use('/print', printRouter)
 router.use('/ip', ipRouter)
 
 router.use('*', (req, res) => {
