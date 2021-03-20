@@ -10,7 +10,7 @@ import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 import commonApi from '../../scheme/api/commonApi'
 
 interface IState {
-    branches: string[]
+    branches: { label: string; value: string }[]
     selectedBranch: string
     data: commonApi
 }
@@ -33,9 +33,12 @@ class NotFound extends React.Component<any, IState> {
         fetch('https://api.github.com/repos/IASA-NULL/IASA-PORTAL/branches')
             .then((res) => res.json())
             .then((res) => {
-                let branches = [] as string[]
+                let branches = [] as { label: string; value: string }[]
                 res.forEach((br: any) => {
-                    branches.push(`${br.commit.sha.substr(0, 7)} @ ${br.name}`)
+                    branches.push({
+                        label: `${br.commit.sha.substr(0, 7)} @ ${br.name}`,
+                        value: br.name,
+                    })
                 })
                 this.setState({ branches: branches })
             })
