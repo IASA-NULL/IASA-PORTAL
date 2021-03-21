@@ -215,6 +215,13 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
                 icon='music_note'
             />
             <ListLink
+                body='프린터 명부'
+                to='/print'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='print'
+            />
+            <ListLink
                 body='급식'
                 to='/meal'
                 onClick={closeIfModal}

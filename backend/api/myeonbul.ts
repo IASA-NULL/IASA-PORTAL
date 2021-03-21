@@ -15,7 +15,7 @@ import {
     REQUIRE_SIGNIN_ERROR,
 } from '../../string/error'
 import { User } from '../../scheme/user'
-import { v4 as uuid } from 'uuid'
+import { uuid } from '../util/random'
 import _ from 'lodash'
 import { getDateStr } from '../util/date'
 import { createNotify, removeNotification } from '../util/notification'

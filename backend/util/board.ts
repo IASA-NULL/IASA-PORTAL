@@ -1,5 +1,5 @@
 import db from './db'
-import { v4 as uuid } from 'uuid'
+import { uuid } from '../util/random'
 import { GID } from '../../scheme/group'
 
 export async function createBoard(name: string, gid: GID) {

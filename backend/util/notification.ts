@@ -1,5 +1,5 @@
 import db from './db'
-import { v4 as uuid } from 'uuid'
+import { uuid } from '../util/random'
 import { NotificationOne } from '../../scheme/api/notification'
 import { UID } from '../../scheme/user'
 

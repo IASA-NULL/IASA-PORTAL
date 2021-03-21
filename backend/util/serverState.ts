@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid'
+import { uuid } from '../util/random'
 import fs from 'fs'
 
 let serverState = {} as any

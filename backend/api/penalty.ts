@@ -9,7 +9,7 @@ import {
 } from '../../string/error'
 import { UID, User, UserInfo } from '../../scheme/user'
 import { PenaltyResponseOne, PID } from '../../scheme/api/penalty'
-import { v4 as uuid } from 'uuid'
+import { uuid } from '../util/random'
 import { createNotify } from '../util/notification'
 import { PENALTY_GOT } from '../../string/notify'
 

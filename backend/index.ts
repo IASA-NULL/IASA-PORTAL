@@ -1,6 +1,6 @@
 import cluster from 'cluster'
 import createApp from './app'
-import { v4 as uuid } from 'uuid'
+import { uuid } from './util/random'
 import os from 'os'
 import { createNotify } from './util/notification'
 
