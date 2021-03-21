@@ -5,6 +5,8 @@ import getSecret from './util/secret'
 import { getServerToken } from './util/serverState'
 import { reSignTime, maxTime, leftTokenTime } from './util/tokenTime'
 import createURL from '../scheme/url'
+import db from './util/db'
+import { User } from '../scheme/user'
 
 declare const DEV_MODE: boolean
 
@@ -18,7 +20,7 @@ declare global {
 
 const router = express.Router()
 
-router.use('*', (req, res, next) => {
+router.use('*', async (req, res, next) => {
     let sid = getServerToken()
     try {
         req.auth = jwt.verify(req.cookies.auth, getSecret('token')) as token
@@ -93,6 +95,19 @@ router.use('*', (req, res, next) => {
             ...(!DEV_MODE && { domain: '.iasa.kr' }),
         })
     }
+    try {
+        let user = (await db.get('account', 'id', req.params.id)) as
+            | User
+            | undefined
+        if (!user) {
+            req.auth = undefined
+            res.cookie('auth', '', {
+                maxAge: -1,
+                httpOnly: true,
+                ...(!DEV_MODE && { domain: '.iasa.kr' }),
+            })
+        }
+    } catch (e) {}
     try {
         const sudoToken = jwt.verify(
             req.cookies.sudo,
