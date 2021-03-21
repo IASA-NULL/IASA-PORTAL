@@ -96,7 +96,7 @@ router.use('*', async (req, res, next) => {
         })
     }
     try {
-        let user = (await db.get('account', 'id', req.params.id)) as
+        let user = (await db.get('account', 'id', req.auth.id)) as
             | User
             | undefined
         if (!user) {
