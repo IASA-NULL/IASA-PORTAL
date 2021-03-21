@@ -33,8 +33,8 @@ import {
     DataTableHeadCell,
     DataTableRow,
 } from '@rmwc/data-table'
-import { MyeonbulQuery } from '../../scheme/api/myeonbul'
 import { Permission } from '../../scheme/api/auth'
+import commonApi from '../../scheme/api/commonApi'
 
 interface IState {
     selectedType: string
@@ -156,7 +156,7 @@ class CreateCode extends React.Component<any, IState> {
 
     public refresh() {
         this.setState({ loaded: false })
-        fetchAPI('GET', {}, 'admin', 'code').then((res: MyeonbulQuery) => {
+        fetchAPI('GET', {}, 'admin', 'code').then((res: commonApi) => {
             this.setState({ loaded: true, data: res })
         })
     }

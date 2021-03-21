@@ -306,7 +306,9 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                 </div>
             </CollapsibleList>
             <CollapsibleList
-                defaultOpen={['/user/code'].includes(window.location.pathname)}
+                defaultOpen={['/user/code', '/createapi'].includes(
+                    window.location.pathname
+                )}
                 handle={
                     <SimpleListItem
                         text='사용자 관리'
@@ -321,6 +323,15 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                         onClick={closeIfModal}
                         type={LinkType.link}
                         icon='recent_actors'
+                    />
+                </div>
+                <div style={{ paddingLeft: '20px' }}>
+                    <ListLink
+                        body='API 계정 관리'
+                        to='/createapi'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='api'
                     />
                 </div>
             </CollapsibleList>

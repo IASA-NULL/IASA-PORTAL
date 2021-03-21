@@ -6,7 +6,7 @@ import createResponse from '../createResponse'
 import { getServerFlag, setServerFlag } from '../util/serverState'
 import db from '../util/db'
 import { UID, User } from '../../scheme/user'
-import { getRandomInt } from '../util/random'
+import { getRandomInt, uuid } from '../util/random'
 import { base32Encode } from '@ctrl/ts-base32'
 import {
     ALREADY_BUILDING_ERROR,
@@ -16,6 +16,8 @@ import {
     REQUIRE_SUDO_ERROR,
 } from '../../string/error'
 import { createNotify } from '../util/notification'
+import bcrypt from 'bcrypt'
+import { saltRound } from '../util/secret'
 
 const router = express.Router()
 
@@ -164,6 +166,70 @@ router.get('/current', async (req, res) => {
         res.status(500)
         res.send(createResponse(false, DB_CONNECT_ERROR))
     }
+})
+
+router.post('/api', async (req, res) => {
+    const id = 'api_' + req.body.id
+    try {
+        let user = (await db.get('account', 'id', id)) as User | undefined
+        if (user) {
+            res.send(createResponse(false, '중복되는 ID에요.'))
+            return
+        }
+    } catch (e) {
+        res.send(createResponse(false, DB_CONNECT_ERROR))
+        return
+    }
+
+    const password = Array(10)
+        .fill('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+        .map(function (x) {
+            return x[Math.floor(Math.random() * x.length)]
+        })
+        .join('')
+
+    await db.set('account', {
+        id: id,
+        permission: Permission.api,
+        pwHash: await bcrypt.hash(password, saltRound),
+        name: 'API_' + uuid(),
+        createTime: Date.now(),
+    })
+
+    res.send(createResponse(password))
+})
+
+router.get('/api', async (req, res) => {
+    const accountDB = await db.direct('account')
+    const accountHistory = await accountDB
+        .find({ permission: Permission.api })
+        .sort('_id', -1)
+        .limit(40)
+        .toArray()
+
+    res.send(createResponse(accountHistory))
+})
+
+router.delete('/api/:id', async (req, res) => {
+    try {
+        let user = (await db.get('account', 'id', req.params.id)) as
+            | User
+            | undefined
+        if (!user) {
+            res.status(404)
+            res.send(createResponse(false, '계정이 없어요.'))
+            return
+        }
+        if (user.permission !== Permission.api) {
+            res.send(createResponse(false, 'API 계정이 아니에요.'))
+            return
+        }
+    } catch (e) {
+        res.send(createResponse(false, DB_CONNECT_ERROR))
+        return
+    }
+    await db.del('account', 'id', req.params.id)
+    res.send(createResponse(true))
 })
 
 export default router

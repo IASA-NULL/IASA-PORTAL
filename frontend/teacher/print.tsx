@@ -26,20 +26,20 @@ import { formatTimeD } from '../../scheme/time'
 import { IconButton } from '@rmwc/icon-button'
 import commonApi from '../../scheme/api/commonApi'
 
-interface PenaltyProps {
+interface PrintProps {
     data: token
 }
 
-interface PenaltyState {
+interface PrintState {
     data?: PrintHistoryResponse
     loaded: boolean
 }
 
-class Penalty extends React.Component<PenaltyProps, PenaltyState> {
+class Print extends React.Component<PrintProps, PrintState> {
     messages: any
     notify: any
 
-    constructor(props: PenaltyProps) {
+    constructor(props: PrintProps) {
         super(props)
         let qu = createSnackbarQueue()
         this.messages = qu.messages
@@ -225,4 +225,4 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
     }
 }
 
-export default Penalty
+export default Print

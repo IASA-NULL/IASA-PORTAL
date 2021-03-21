@@ -1,5 +1,4 @@
 import { Permission } from './api/auth'
-import { Penalty } from './api/penalty'
 
 export type UID = number
 
@@ -15,6 +14,7 @@ export interface User {
     mail?: string[]
     unreadNotifications: number
     group: string[]
+    createTime: number
 }
 
 export interface UserInfo {
