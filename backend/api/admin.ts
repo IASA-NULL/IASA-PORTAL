@@ -42,7 +42,7 @@ router.post('/update', (req, res) => {
         createNotify(
             [1],
             '서버를 업데이트했어요.',
-            `${req.body.branch} 브랜치로 업데이트했어요.`,
+            `${req.body.info} 브랜치로 업데이트했어요.`,
             ''
         )
         setServerFlag('build')

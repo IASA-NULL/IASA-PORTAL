@@ -10,8 +10,9 @@ import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 import commonApi from '../../scheme/api/commonApi'
 
 interface IState {
-    branches: { label: string; value: string }[]
+    branches: string[]
     selectedBranch: string
+    branchInfo: string
     data: commonApi
 }
 
@@ -33,12 +34,9 @@ class NotFound extends React.Component<any, IState> {
         fetch('https://api.github.com/repos/IASA-NULL/IASA-PORTAL/branches')
             .then((res) => res.json())
             .then((res) => {
-                let branches = [] as { label: string; value: string }[]
+                let branches = [] as string[]
                 res.forEach((br: any) => {
-                    branches.push({
-                        label: `${br.commit.sha.substr(0, 7)} @ ${br.name}`,
-                        value: br.name,
-                    })
+                    branches.push(`${br.commit.sha.substr(0, 7)} @ ${br.name}`)
                 })
                 this.setState({ branches: branches })
             })
@@ -59,7 +57,10 @@ class NotFound extends React.Component<any, IState> {
         }
         fetchAPI(
             'POST',
-            { branch: this.state?.selectedBranch },
+            {
+                branch: this.state?.selectedBranch,
+                info: this.state?.branchInfo,
+            },
             'admin',
             'update'
         ).then((res) => {
@@ -99,7 +100,10 @@ class NotFound extends React.Component<any, IState> {
                         options={this.state?.branches || ['로드 중...']}
                         onChange={(e) =>
                             this.setState({
-                                selectedBranch: e.currentTarget.value,
+                                selectedBranch: e.currentTarget.value.split(
+                                    ' @ '
+                                )[1],
+                                branchInfo: e.currentTarget.value,
                             })
                         }
                     />
