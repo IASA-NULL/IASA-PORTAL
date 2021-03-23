@@ -62,6 +62,12 @@ class Main extends React.Component<any, {}> {
                         link='/music'
                     />
                     <CardLink
+                        img='/static/img/illust/print.png'
+                        title='출력명부'
+                        subtitle='출력명부를 확인할 수 있어요.'
+                        link='/print'
+                    />
+                    <CardLink
                         img='/static/img/illust/meal.png'
                         title='급식'
                         subtitle='급식 식단표를 확인하거나 급식을 평가할 수 있어요.'

@@ -44,6 +44,12 @@ class Main extends React.Component<any, {}> {
                         link='/user/code'
                     />
                     <CardLink
+                        img='/static/img/illust/api.png'
+                        title='API 계정 발급'
+                        subtitle='API용 계정을 발급해요.'
+                        link='/createapi'
+                    />
+                    <CardLink
                         img='/static/img/illust/noti.png'
                         title='알림'
                         subtitle='받은 알림들을 확인할 수 있어요.'

@@ -206,6 +206,19 @@ class CreateAPI extends React.Component<any, IState> {
                                     if (e.key === 'Enter') focusNextInput()
                                 }}
                                 onChange={(e) => this.handleChange(e, 'id')}
+                                icon={{
+                                    icon: 'api_',
+                                    tabIndex: 0,
+                                    strategy: 'custom',
+                                    render: ({ content }) => (
+                                        <div
+                                            style={{
+                                                margin: '12px -47px auto 10px',
+                                            }}>
+                                            {content}
+                                        </div>
+                                    ),
+                                }}
                             />
                         </GridCell>
 
