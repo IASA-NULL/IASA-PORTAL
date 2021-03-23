@@ -192,7 +192,7 @@ router.post('/api', async (req, res) => {
         id: id,
         permission: Permission.api,
         pwHash: await bcrypt.hash(password, saltRound),
-        name: 'API_' + id,
+        name: id,
         createTime: Date.now(),
     })
 
