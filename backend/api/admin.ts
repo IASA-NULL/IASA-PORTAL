@@ -111,10 +111,6 @@ router.put('/code', async (req, res) => {
 })
 
 router.get('/code', async (req, res) => {
-    if (!req.auth || req.auth.permission !== Permission.admin) {
-        res.status(403)
-        res.send(createResponse(false, REQUIRE_PERMISSION_ERROR))
-    }
     try {
         let codeDB = await db.direct('code')
         codeDB.find({}).toArray((err: any, result: any[]) => {
@@ -133,6 +129,27 @@ router.get('/code', async (req, res) => {
         res.status(500)
         res.send(createResponse(false, DB_CONNECT_ERROR))
     }
+})
+
+router.delete('/code/:code', async (req, res) => {
+    try {
+        let user = await db.get('code', 'code', req.params.code)
+        if (!user) {
+            res.status(404)
+            res.send(
+                createResponse(
+                    false,
+                    '올바른 코드가 아니거나 이미 사용되었어요.'
+                )
+            )
+            return
+        }
+    } catch (e) {
+        res.send(createResponse(false, DB_CONNECT_ERROR))
+        return
+    }
+    await db.del('code', 'code', req.params.code)
+    res.send(createResponse(true))
 })
 
 router.get('/current', async (req, res) => {

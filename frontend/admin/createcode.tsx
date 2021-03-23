@@ -35,6 +35,8 @@ import {
 } from '@rmwc/data-table'
 import { Permission } from '../../scheme/api/auth'
 import commonApi from '../../scheme/api/commonApi'
+import { IconButton } from '@rmwc/icon-button'
+import { PHID } from '../../scheme/api/print'
 
 interface IState {
     selectedType: string
@@ -56,6 +58,37 @@ class CreateCode extends React.Component<any, IState> {
         this.messages = qu.messages
         this.notify = qu.notify
         this.refresh()
+    }
+
+    public remove(code: string) {
+        fetchAPI('DELETE', {}, 'admin', 'code', code)
+            .then((res: commonApi) => {
+                if (res.success)
+                    this.notify({
+                        title: <b>성공!</b>,
+                        body: '가입 코드 삭제에 성공했어요.',
+                        icon: 'check',
+                        dismissIcon: true,
+                    })
+                else
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                setTimeout(() => {
+                    this.refresh()
+                }, 0)
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
     }
 
     public create() {
@@ -176,7 +209,7 @@ class CreateCode extends React.Component<any, IState> {
                                             : '선생님'}
                                     </DataTableCell>
                                     <DataTableCell>
-                                        {el.uid.substr(0, 4)}
+                                        {el.uid.toString().substr(0, 4)}
                                     </DataTableCell>
                                     <DataTableCell>{el.name}</DataTableCell>
                                     <DataTableCell>
@@ -191,6 +224,14 @@ class CreateCode extends React.Component<any, IState> {
                                         />
                                     </DataTableCell>
                                     <DataTableCell>{el.code}</DataTableCell>
+                                    <DataTableCell>
+                                        <IconButton
+                                            icon='delete'
+                                            onClick={() => {
+                                                this.remove(el.code)
+                                            }}
+                                        />
+                                    </DataTableCell>
                                 </DataTableRow>
                             )
                         } catch (e) {
@@ -214,6 +255,7 @@ class CreateCode extends React.Component<any, IState> {
                         <DataTableCell />
                         <DataTableCell />
                         <DataTableCell />
+                        <DataTableCell />
                     </DataTableRow>
                 )
             }
@@ -223,6 +265,7 @@ class CreateCode extends React.Component<any, IState> {
                     <DataTableCell>
                         <div>로딩 중...</div>
                     </DataTableCell>
+                    <DataTableCell />
                     <DataTableCell />
                     <DataTableCell />
                     <DataTableCell />
@@ -331,6 +374,7 @@ class CreateCode extends React.Component<any, IState> {
                                 <DataTableHeadCell>이름</DataTableHeadCell>
                                 <DataTableHeadCell>사진</DataTableHeadCell>
                                 <DataTableHeadCell>코드</DataTableHeadCell>
+                                <DataTableHeadCell>작업</DataTableHeadCell>
                             </DataTableRow>
                         </DataTableHead>
                         <DataTableBody>{tableBody}</DataTableBody>
