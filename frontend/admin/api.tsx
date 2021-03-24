@@ -24,7 +24,6 @@ import {
     DataTableHeadCell,
     DataTableRow,
 } from '@rmwc/data-table'
-import { MyeonbulQuery } from '../../scheme/api/myeonbul'
 import { formatTimeD } from '../../scheme/time'
 import { IconButton } from '@rmwc/icon-button'
 import commonApi from '../../scheme/api/commonApi'
@@ -92,7 +91,7 @@ class CreateAPI extends React.Component<any, IState> {
 
     public refresh() {
         this.setState({ loaded: false })
-        fetchAPI('GET', {}, 'admin', 'api').then((res: MyeonbulQuery) => {
+        fetchAPI('GET', {}, 'admin', 'api').then((res) => {
             this.setState({ loaded: true, data: res })
         })
     }

@@ -306,7 +306,7 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                 </div>
             </CollapsibleList>
             <CollapsibleList
-                defaultOpen={['/user/code', '/createapi'].includes(
+                defaultOpen={['/user/code', '/createapi', '/assign'].includes(
                     window.location.pathname
                 )}
                 handle={
@@ -332,6 +332,15 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                         onClick={closeIfModal}
                         type={LinkType.link}
                         icon='api'
+                    />
+                </div>
+                <div style={{ paddingLeft: '20px' }}>
+                    <ListLink
+                        body='반 배정'
+                        to='/assign'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='school'
                     />
                 </div>
             </CollapsibleList>

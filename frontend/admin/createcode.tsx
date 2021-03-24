@@ -36,11 +36,12 @@ import {
 import { Permission } from '../../scheme/api/auth'
 import commonApi from '../../scheme/api/commonApi'
 import { IconButton } from '@rmwc/icon-button'
-import { PHID } from '../../scheme/api/print'
+import { Gender } from '../../scheme/user'
 
 interface IState {
     selectedType: string
     name: string
+    gender: Gender
     code: string
     showDialog: boolean
     data: any
@@ -106,6 +107,7 @@ class CreateCode extends React.Component<any, IState> {
                         {
                             avatar: res.data.fileList[0],
                             name: this.state?.name,
+                            gender: this.state?.gender,
                             type: this.state?.selectedType[0],
                             year:
                                 new Date().getFullYear() -
@@ -147,6 +149,7 @@ class CreateCode extends React.Component<any, IState> {
                 {
                     name: this.state?.name,
                     type: this.state?.selectedType[0],
+                    gender: this.state?.gender,
                     year:
                         new Date().getFullYear() -
                         parseInt(this.state?.selectedType[1]) +
@@ -283,7 +286,7 @@ class CreateCode extends React.Component<any, IState> {
                 <br />
                 <Grid>
                     <GridRow>
-                        <GridCell desktop={4} tablet={4} phone={4}>
+                        <GridCell desktop={2} tablet={4} phone={4}>
                             <Select
                                 label='종류 선택'
                                 outlined
@@ -311,6 +314,29 @@ class CreateCode extends React.Component<any, IState> {
                                         selectedType: e.currentTarget.value,
                                     })
                                 }
+                            />
+                        </GridCell>
+                        <GridCell desktop={2} tablet={4} phone={4}>
+                            <Select
+                                label='성별'
+                                outlined
+                                enhanced
+                                options={[
+                                    {
+                                        label: '남성',
+                                        value: 'm',
+                                    },
+                                    {
+                                        label: '여성',
+                                        value: 'f',
+                                    },
+                                ]}
+                                onChange={(e) => {
+                                    if (e.currentTarget.value === 'm')
+                                        this.setState({ gender: Gender.male })
+                                    else
+                                        this.setState({ gender: Gender.female })
+                                }}
                             />
                         </GridCell>
                         <GridCell desktop={3} tablet={4} phone={4}>

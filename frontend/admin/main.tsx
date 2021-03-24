@@ -50,6 +50,12 @@ class Main extends React.Component<any, {}> {
                         link='/createapi'
                     />
                     <CardLink
+                        img='/static/img/illust/class.png'
+                        title='반 배정'
+                        subtitle='학생들의 반을 배정하고 학번을 부여해요.'
+                        link='/assign'
+                    />
+                    <CardLink
                         img='/static/img/illust/noti.png'
                         title='알림'
                         subtitle='받은 알림들을 확인할 수 있어요.'

@@ -40,6 +40,7 @@ import MainAdmin from './admin/main'
 import Update from './admin/update'
 import CreateCode from './admin/createcode'
 import CreateAPI from './admin/api'
+import Assign from './admin/assign'
 
 import Mail from './common/mail'
 import Meal from './common/meal'
@@ -463,6 +464,14 @@ class App extends React.Component<any, IState> {
                             accountInfo={this.state.data}
                             navList={DefaultAdminNavList}
                             appCont={<CreateAPI />}
+                        />
+                    </Route>
+
+                    <Route path='/assign'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultAdminNavList}
+                            appCont={<Assign />}
                         />
                     </Route>
 

@@ -99,6 +99,7 @@ router.put('/code', async (req, res) => {
             avatar: req.body.avatar,
             name: req.body.name,
             code: codeEncoded,
+            gender: req.body.gender,
         })
 
         res.send(

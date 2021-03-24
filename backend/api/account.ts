@@ -38,6 +38,7 @@ router.get('/info', (req, res) => {
                 'name',
                 'id',
                 'uid',
+                'sid',
                 'code',
                 'permission',
                 'sudo',
@@ -74,6 +75,7 @@ router.post('/signin', async (req, res) => {
                                 'name',
                                 'id',
                                 'uid',
+                                'sid',
                                 'code',
                                 'permission',
                             ]),
@@ -332,6 +334,10 @@ router.post('/search', async (req, res) => {
 })
 
 router.post('/list', async (req, res) => {
+    if (!req.auth) {
+        res.send(createResponse(false, REQUIRE_SIGNIN_ERROR))
+        return
+    }
     if (!req.body.type) {
         res.send(createResponse([]))
         return
@@ -344,6 +350,7 @@ router.post('/list', async (req, res) => {
                 return {
                     name: user.name,
                     uid: user.uid,
+                    gender: user.gender,
                 }
             else return undefined
         })
