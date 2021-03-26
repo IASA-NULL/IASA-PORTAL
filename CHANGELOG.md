@@ -57,7 +57,7 @@ All notable changes to this project will be documented in this file. See [standa
 -   show branch info when site updated ([fab6ecc](https://github.com/IASA-Null/IASA-PORTAL/commit/fab6ecc6ebd4a989de71540e8ab2955f43d62586))
 -   Updated Script npm into yarn ([c2d217c](https://github.com/IASA-Null/IASA-PORTAL/commit/c2d217c9ea00b31715e3e3bb7ffe27eec6276761))
 
-## 2.0.0 (2021-02-27)
+## 1.0.0 (2021-02-27)
 
 ### ⚠ BREAKING CHANGES
 
