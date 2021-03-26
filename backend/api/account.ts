@@ -38,9 +38,11 @@ router.get('/info', (req, res) => {
                 'name',
                 'id',
                 'uid',
+                'sid',
                 'code',
                 'permission',
                 'sudo',
+                'expired',
             ])
         )
     )
@@ -73,6 +75,7 @@ router.post('/signin', async (req, res) => {
                                 'name',
                                 'id',
                                 'uid',
+                                'sid',
                                 'code',
                                 'permission',
                             ]),
@@ -270,7 +273,7 @@ router.post('/sudo', async (req, res) => {
 
 router.get('/avatar', async (req, res) => {
     try {
-        const user = (await db.get('account', 'id', req.auth.id)) as User
+        const user = (await db.get('account', 'uid', req.auth.uid)) as User
         if (!user) throw new Error()
         const fileInfo = await db.get('upload', 'id', user.avatar)
         const fileBody = downloadAsStream(fileInfo.id)
@@ -286,9 +289,13 @@ router.get('/avatar', async (req, res) => {
     }
 })
 
-router.get('/avatar/:id', async (req, res) => {
+router.get('/avatar/:uid', async (req, res) => {
     try {
-        const user = (await db.get('account', 'id', req.params.id)) as User
+        const user = (await db.get(
+            'account',
+            'uid',
+            parseInt(req.params.uid)
+        )) as User
         if (!user) throw new Error()
         const fileInfo = await db.get('upload', 'id', user.avatar)
         const fileBody = downloadAsStream(fileInfo.id)
@@ -327,6 +334,10 @@ router.post('/search', async (req, res) => {
 })
 
 router.post('/list', async (req, res) => {
+    if (!req.auth) {
+        res.send(createResponse(false, REQUIRE_SIGNIN_ERROR))
+        return
+    }
     if (!req.body.type) {
         res.send(createResponse([]))
         return
@@ -339,6 +350,7 @@ router.post('/list', async (req, res) => {
                 return {
                     name: user.name,
                     uid: user.uid,
+                    gender: user.gender,
                 }
             else return undefined
         })

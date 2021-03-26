@@ -8,6 +8,15 @@ import createURL from '../scheme/url'
 import { Typography } from '@rmwc/typography'
 import { Permission } from '../scheme/api/auth'
 import { formatTime, getToday, timeRange, TimeRange } from '../scheme/time'
+import {
+    Card,
+    CardActionButton,
+    CardActionButtons,
+    CardActions,
+    CardMedia,
+    CardPrimaryAction,
+} from '@rmwc/card'
+import commonApi from '../scheme/api/commonApi'
 
 declare const DEV_MODE: boolean
 
@@ -181,23 +190,6 @@ export function MenuLink(props: {
         )
 }
 
-export function LoremIpsum(props: { count: number }) {
-    return (
-        <>
-            {new Array(props.count).fill(
-                <p>
-                    Lorem ipsum odor amet, consectetuer adipiscing elit. Ac
-                    purus in massa egestas mollis varius; dignissim elementum.
-                    Mollis tincidunt mattis hendrerit dolor eros enim, nisi
-                    ligula ornare. Hendrerit parturient habitant pharetra rutrum
-                    gravida porttitor eros feugiat. Mollis elit sodales taciti
-                    duis praesent id. Consequat urna vitae morbi nunc congue.
-                </p>
-            )}
-        </>
-    )
-}
-
 export function FileInput(props: any) {
     const [value, setValue] = useState('')
     let orgClickHandler: any
@@ -305,7 +297,11 @@ export function focusNextInput() {
     return false
 }
 
-export function fetchAPI(method: string, body: any, ...props: string[]) {
+export function fetchAPI(
+    method: string,
+    body: any,
+    ...props: string[]
+): Promise<commonApi> {
     return fetch(createURL('api', ...props), {
         method: method,
         ...(!DEV_MODE && { credentials: 'include' }),
@@ -336,6 +332,48 @@ export function RequireSudo() {
         }
     }, 0)
     return <></>
+}
+
+export function CardLink(props: {
+    img: string
+    title: string
+    subtitle: string
+    link?: string
+}) {
+    return (
+        <Card style={{ margin: '10px' }}>
+            <Link to={props.link}>
+                <CardPrimaryAction>
+                    <CardMedia
+                        style={{
+                            backgroundImage: `url(${props.img})`,
+                            height: '220px',
+                        }}
+                    />
+                    <div style={{ padding: '0 1rem 1rem 1rem' }}>
+                        <Typography use='headline6' tag='h2'>
+                            {props.title}
+                        </Typography>
+                        <Typography
+                            use='body1'
+                            tag='div'
+                            theme='textSecondaryOnBackground'>
+                            {props.subtitle}
+                        </Typography>
+                    </div>
+                </CardPrimaryAction>
+            </Link>
+            {props.link && (
+                <CardActions style={{ marginTop: 'auto' }}>
+                    <CardActionButtons>
+                        <Link to={props.link}>
+                            <CardActionButton>열기</CardActionButton>
+                        </Link>
+                    </CardActionButtons>
+                </CardActions>
+            )}
+        </Card>
+    )
 }
 
 export function SearchUser<
@@ -411,6 +449,18 @@ export function SearchUser<
                                         })
                                         setMenu(false)
                                     }}>
+                                    <div
+                                        style={{ margin: '10px 10px 5px 0px' }}>
+                                        <UserImage
+                                            url={createURL(
+                                                'api',
+                                                'account',
+                                                'avatar',
+                                                user.uid
+                                            )}
+                                            size={30}
+                                        />
+                                    </div>
                                     {user.name}
                                 </MenuItem>
                             )
@@ -698,5 +748,24 @@ export function TimeSelect<
                 }}
             />
         </MenuSurfaceAnchor>
+    )
+}
+
+export function UserImage(props: { url: string; size: number }) {
+    return (
+        <span
+            title='Avatar'
+            className='rmwc-icon rmwc-icon--component material-icons rmwc-avatar rmwc-avatar--xlarge rmwc-avatar--has-image'>
+            <div
+                className='rmwc-avatar__icon'
+                style={{
+                    backgroundImage: `url("${props.url}")`,
+                    backgroundSize: 'cover',
+                    width: `${props.size}px`,
+                    height: `${props.size}px`,
+                    borderRadius: '50%',
+                }}
+            />
+        </span>
     )
 }

@@ -32,6 +32,7 @@ interface State {
     show3: boolean
     all: boolean
     todayMyeonbulData?: MyeonbulQuery
+    zoom: number
 }
 
 class MyeonbulBoss extends React.Component<Props, State> {
@@ -41,9 +42,13 @@ class MyeonbulBoss extends React.Component<Props, State> {
             show1: true,
             show2: true,
             show3: true,
-            all: true,
+            all: false,
             loaded: false,
+            zoom: window.innerWidth * 0.0011,
         }
+        window.addEventListener('resize', () => {
+            this.setState({ zoom: window.innerWidth * 0.0011 })
+        })
         this.refresh()
     }
 
@@ -161,7 +166,12 @@ class MyeonbulBoss extends React.Component<Props, State> {
                         출력하기
                     </Button>
                     <hr style={{ margin: '0' }} />
-                    <div style={{ width: '100%', textAlign: 'center' }}>
+                    <div
+                        style={{
+                            width: '100%',
+                            textAlign: 'center',
+                            display: 'none',
+                        }}>
                         <div>
                             <Checkbox
                                 label='1학년'
@@ -205,102 +215,110 @@ class MyeonbulBoss extends React.Component<Props, State> {
                             />
                         </div>
                     </div>
-                    <hr style={{ margin: '0' }} />
+                    <hr style={{ margin: '0', display: 'none' }} />
                 </div>
-                <div style={{ margin: '40px' }}>
-                    <Typography use='headline3'>면불대장</Typography>
-                    <Typography use='subtitle1' style={{ marginLeft: '10px' }}>
-                        {new Date().getFullYear()}년 {new Date().getMonth() + 1}
-                        월 {new Date().getDate()}일
-                    </Typography>
-                    <Typography use='caption' style={{ float: 'right' }}>
-                        {new Date().toString()}, {this.props.data.name}
-                    </Typography>
-                    <br />
-                    <hr />
-                    <Typography use='headline4'>오늘 면불</Typography>
-                    <br />
-                    <br />
-                    <DataTable
-                        stickyRows={1}
-                        stickyColumns={0}
-                        style={{
-                            width: '100%',
-                        }}>
-                        <DataTableContent>
-                            <DataTableHead style={{ height: '35px' }}>
-                                <DataTableRow>
-                                    <DataTableHeadCell
-                                        style={{ height: '35px' }}>
-                                        학생 이름
-                                    </DataTableHeadCell>
-                                    <DataTableHeadCell
-                                        style={{ height: '35px' }}>
-                                        면불 시간
-                                    </DataTableHeadCell>
-                                    <DataTableHeadCell
-                                        style={{ height: '35px' }}>
-                                        면불 장소
-                                    </DataTableHeadCell>
-                                    <DataTableHeadCell
-                                        style={{ height: '35px' }}>
-                                        담당 선생님
-                                    </DataTableHeadCell>
-                                    <DataTableHeadCell
-                                        style={{ height: '35px' }}>
-                                        면불 사유
-                                    </DataTableHeadCell>
-                                    <DataTableHeadCell
-                                        alignEnd
-                                        style={{ height: '35px' }}>
-                                        체크
-                                    </DataTableHeadCell>
-                                </DataTableRow>
-                            </DataTableHead>
-                            <DataTableBody>{myeonbulTableBody}</DataTableBody>
-                        </DataTableContent>
-                    </DataTable>
-                    {this.state?.all ? (
-                        <>
-                            <br />
-                            <br />
-                            <Typography use='headline4'>
-                                전체 학생 체크리스트
-                            </Typography>
-                            <br />
-                            <br />
-                            <DataTable
-                                stickyRows={1}
-                                stickyColumns={0}
-                                style={{
-                                    width: '100%',
-                                }}>
-                                <DataTableContent>
-                                    <DataTableHead style={{ height: '35px' }}>
-                                        <DataTableRow>
-                                            <DataTableHeadCell
-                                                style={{ height: '35px' }}>
-                                                이름
-                                            </DataTableHeadCell>
-                                            <DataTableHeadCell
-                                                style={{ height: '35px' }}>
-                                                면학 1차
-                                            </DataTableHeadCell>
-                                            <DataTableHeadCell
-                                                style={{ height: '35px' }}>
-                                                면학 2차
-                                            </DataTableHeadCell>
-                                        </DataTableRow>
-                                    </DataTableHead>
-                                    <DataTableBody>
-                                        {listTableBody}
-                                    </DataTableBody>
-                                </DataTableContent>
-                            </DataTable>
-                        </>
-                    ) : (
-                        <></>
-                    )}
+                <div style={{ margin: '40px', zoom: this.state.zoom }}>
+                    <div style={{ width: '220mm' }} className='init_zoom_print'>
+                        <Typography use='headline3'>면불대장</Typography>
+                        <Typography
+                            use='subtitle1'
+                            style={{ marginLeft: '10px' }}>
+                            {new Date().getFullYear()}년{' '}
+                            {new Date().getMonth() + 1}월 {new Date().getDate()}
+                            일
+                        </Typography>
+                        <Typography use='caption' style={{ float: 'right' }}>
+                            {new Date().toString()}, {this.props.data.name}
+                        </Typography>
+                        <br />
+                        <hr />
+                        <Typography use='headline4'>오늘 면불</Typography>
+                        <br />
+                        <br />
+                        <DataTable
+                            stickyRows={1}
+                            stickyColumns={0}
+                            style={{
+                                width: '100%',
+                            }}>
+                            <DataTableContent>
+                                <DataTableHead style={{ height: '35px' }}>
+                                    <DataTableRow>
+                                        <DataTableHeadCell
+                                            style={{ height: '35px' }}>
+                                            학생 이름
+                                        </DataTableHeadCell>
+                                        <DataTableHeadCell
+                                            style={{ height: '35px' }}>
+                                            면불 시간
+                                        </DataTableHeadCell>
+                                        <DataTableHeadCell
+                                            style={{ height: '35px' }}>
+                                            면불 장소
+                                        </DataTableHeadCell>
+                                        <DataTableHeadCell
+                                            style={{ height: '35px' }}>
+                                            담당 선생님
+                                        </DataTableHeadCell>
+                                        <DataTableHeadCell
+                                            style={{ height: '35px' }}>
+                                            면불 사유
+                                        </DataTableHeadCell>
+                                        <DataTableHeadCell
+                                            alignEnd
+                                            style={{ height: '35px' }}>
+                                            체크
+                                        </DataTableHeadCell>
+                                    </DataTableRow>
+                                </DataTableHead>
+                                <DataTableBody>
+                                    {myeonbulTableBody}
+                                </DataTableBody>
+                            </DataTableContent>
+                        </DataTable>
+                        {this.state?.all ? (
+                            <>
+                                <br />
+                                <br />
+                                <Typography use='headline4'>
+                                    전체 학생 체크리스트
+                                </Typography>
+                                <br />
+                                <br />
+                                <DataTable
+                                    stickyRows={1}
+                                    stickyColumns={0}
+                                    style={{
+                                        width: '100%',
+                                    }}>
+                                    <DataTableContent>
+                                        <DataTableHead
+                                            style={{ height: '35px' }}>
+                                            <DataTableRow>
+                                                <DataTableHeadCell
+                                                    style={{ height: '35px' }}>
+                                                    이름
+                                                </DataTableHeadCell>
+                                                <DataTableHeadCell
+                                                    style={{ height: '35px' }}>
+                                                    면학 1차
+                                                </DataTableHeadCell>
+                                                <DataTableHeadCell
+                                                    style={{ height: '35px' }}>
+                                                    면학 2차
+                                                </DataTableHeadCell>
+                                            </DataTableRow>
+                                        </DataTableHead>
+                                        <DataTableBody>
+                                            {listTableBody}
+                                        </DataTableBody>
+                                    </DataTableContent>
+                                </DataTable>
+                            </>
+                        ) : (
+                            <></>
+                        )}
+                    </div>
                 </div>
             </>
         )

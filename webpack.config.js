@@ -23,7 +23,7 @@ module.exports = (env, argv) => {
                 rules: [
                     {
                         test: /\.ts?$/,
-                        loader: 'ts-loader',
+                        loader: 'babel-loader',
                     },
                 ],
             },
@@ -49,13 +49,14 @@ module.exports = (env, argv) => {
                 extensions: ['.ts', '.tsx', '.js', '.jsx'],
                 fallback: {
                     stream: require.resolve('stream-browserify'),
+                    domain: false,
                 },
             },
             module: {
                 rules: [
                     {
                         test: /\.tsx?$/,
-                        loader: 'ts-loader',
+                        loader: 'babel-loader',
                     },
                     {
                         test: /\.scss$/,

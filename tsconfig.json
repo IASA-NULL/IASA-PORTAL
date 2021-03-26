@@ -2,13 +2,14 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         "module": "commonjs",
-        "target": "esnext",
+        "target": "ESNext",
         "jsx": "react",
         "noImplicitAny": true,
         "sourceMap": true,
         "outDir": "./build",
         "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "skipLibCheck": true
     },
     "exclude": ["node_modules", "frontend"]
 }

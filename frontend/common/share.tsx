@@ -105,7 +105,7 @@ class Share extends React.Component<ShareProps, ShareState> {
             .then((res) => {
                 if (res.success) {
                     this.setState({ code: '' })
-                    function download_next(i: number) {
+                    const download_next = (i: number) => {
                         if (i >= res.data.length) {
                             return
                         }
@@ -171,7 +171,7 @@ class Share extends React.Component<ShareProps, ShareState> {
                 <Ripple>
                     <div
                         style={{
-                            width: 'calc(100% - 46px)',
+                            width: 'calc(100% - 66px)',
                             height: '300px',
                             margin: '23px',
                             borderRadius: '3px',
@@ -181,6 +181,7 @@ class Share extends React.Component<ShareProps, ShareState> {
                             justifyContent: 'center',
                             alignItems: 'center',
                             cursor: 'pointer',
+                            padding: '10px',
                         }}
                         onClick={() => {
                             this.fileInput.current.click()

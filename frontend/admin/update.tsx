@@ -7,10 +7,13 @@ import { Select } from '@rmwc/select'
 
 import { BrIfMobile, fetchAPI, RequireSudo } from '../util'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
+import commonApi from '../../scheme/api/commonApi'
 
 interface IState {
     branches: string[]
     selectedBranch: string
+    branchInfo: string
+    data: commonApi
 }
 
 class NotFound extends React.Component<any, IState> {
@@ -33,10 +36,13 @@ class NotFound extends React.Component<any, IState> {
             .then((res) => {
                 let branches = [] as string[]
                 res.forEach((br: any) => {
-                    branches.push(br.name)
+                    branches.push(`${br.commit.sha.substr(0, 7)} @ ${br.name}`)
                 })
                 this.setState({ branches: branches })
             })
+        fetchAPI('GET', {}, 'admin', 'current').then((res) => {
+            this.setState({ data: res })
+        })
     }
 
     public update() {
@@ -51,7 +57,10 @@ class NotFound extends React.Component<any, IState> {
         }
         fetchAPI(
             'POST',
-            { branch: this.state?.selectedBranch },
+            {
+                branch: this.state?.selectedBranch,
+                info: this.state?.branchInfo,
+            },
             'admin',
             'update'
         ).then((res) => {
@@ -83,7 +92,6 @@ class NotFound extends React.Component<any, IState> {
                 </Typography>
                 <br />
                 <br />
-                <br />
                 <div style={{ width: '200px' }}>
                     <Select
                         label='브랜치 선택'
@@ -92,7 +100,10 @@ class NotFound extends React.Component<any, IState> {
                         options={this.state?.branches || ['로드 중...']}
                         onChange={(e) =>
                             this.setState({
-                                selectedBranch: e.currentTarget.value,
+                                selectedBranch: e.currentTarget.value.split(
+                                    ' @ '
+                                )[1],
+                                branchInfo: e.currentTarget.value,
                             })
                         }
                     />
@@ -101,6 +112,23 @@ class NotFound extends React.Component<any, IState> {
                 <Button onClick={this.update} outlined>
                     업데이트
                 </Button>
+                <br />
+                <br />
+                <Typography use='headline5'>현재 버전</Typography>
+                <BrIfMobile />
+                <Typography use='subtitle1' style={{ marginLeft: '10px' }}>
+                    현재 사이트의 버전을 나타내요.
+                </Typography>
+                <br />
+                <br />
+                <Typography use='headline6'>
+                    {this.state?.data
+                        ? this.state.data.success
+                            ? `${this.state.data.data.head} @ ${this.state.data.data.branch}\n${this.state.data.data.message}`
+                            : this.state.data.message
+                        : '불러오는 중...'}
+                </Typography>
+                <br />
                 <SnackbarQueue messages={this.messages} />
             </>
         )

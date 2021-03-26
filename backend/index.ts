@@ -1,13 +1,22 @@
 import cluster from 'cluster'
 import createApp from './app'
-import { v4 as uuid } from 'uuid'
+import { uuid } from './util/random'
 import os from 'os'
+import { createNotify } from './util/notification'
+
+declare const DEV_MODE: boolean
 
 if (cluster.isMaster) {
+    createNotify(
+        [1],
+        '서버가 시작됐어요.',
+        '예기치 않은 재시작일경우 서버를 확인해 보세요.',
+        ''
+    )
     const cpuCount = os.cpus().length
     const sid = uuid()
 
-    for (let i = 0; i < cpuCount; i++) {
+    for (let i = 0; i < (DEV_MODE ? 1 : cpuCount * 8); i++) {
         cluster.fork({ SID: sid })
     }
 

@@ -1,5 +1,5 @@
 import db from './db'
-import { v4 as uuid } from 'uuid'
+import { uuid } from '../util/random'
 import { User, UID } from '../../scheme/user'
 
 export const UNIVERSAL_GROUP = '00000000-0000-0000-0000-000000000000'

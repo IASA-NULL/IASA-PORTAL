@@ -1,11 +1,18 @@
 import { Permission } from './api/auth'
-import { Penalty } from './api/penalty'
 
 export type UID = number
+export type SID = number
+
+export enum Gender {
+    male,
+    female,
+}
 
 export interface User {
     permission: Permission
     uid: UID
+    sid: SID
+    gender: Gender
     id: string
     pwHash: string
     email: string
@@ -15,6 +22,7 @@ export interface User {
     mail?: string[]
     unreadNotifications: number
     group: string[]
+    createTime: number
 }
 
 export interface UserInfo {

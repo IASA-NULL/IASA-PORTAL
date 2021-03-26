@@ -1,12 +1,12 @@
 import express from 'express'
-import child_process from 'child_process'
+import child_process, { exec } from 'child_process'
 
 import { Permission } from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import { getServerFlag, setServerFlag } from '../util/serverState'
 import db from '../util/db'
 import { UID, User } from '../../scheme/user'
-import { getRandomInt } from '../util/random'
+import { getRandomInt, uuid } from '../util/random'
 import { base32Encode } from '@ctrl/ts-base32'
 import {
     ALREADY_BUILDING_ERROR,
@@ -15,6 +15,9 @@ import {
     REQUIRE_SIGNIN_ERROR,
     REQUIRE_SUDO_ERROR,
 } from '../../string/error'
+import { createNotify } from '../util/notification'
+import bcrypt from 'bcrypt'
+import { saltRound } from '../util/secret'
 
 const router = express.Router()
 
@@ -38,6 +41,12 @@ router.post('/update', (req, res) => {
     if (getServerFlag('build')) {
         res.send(createResponse(false, ALREADY_BUILDING_ERROR))
     } else {
+        createNotify(
+            [1],
+            '서버를 업데이트했어요.',
+            `${req.body.info} 브랜치로 업데이트했어요.`,
+            ''
+        )
         setServerFlag('build')
         res.send(createResponse(true))
         child_process.spawn(
@@ -90,6 +99,7 @@ router.put('/code', async (req, res) => {
             avatar: req.body.avatar,
             name: req.body.name,
             code: codeEncoded,
+            gender: req.body.gender,
         })
 
         res.send(
@@ -120,6 +130,124 @@ router.get('/code', async (req, res) => {
         res.status(500)
         res.send(createResponse(false, DB_CONNECT_ERROR))
     }
+})
+
+router.delete('/code/:code', async (req, res) => {
+    try {
+        let user = await db.get('code', 'code', req.params.code)
+        if (!user) {
+            res.status(404)
+            res.send(
+                createResponse(
+                    false,
+                    '올바른 코드가 아니거나 이미 사용되었어요.'
+                )
+            )
+            return
+        }
+    } catch (e) {
+        res.send(createResponse(false, DB_CONNECT_ERROR))
+        return
+    }
+    await db.del('code', 'code', req.params.code)
+    res.send(createResponse(true))
+})
+
+router.get('/current', async (req, res) => {
+    try {
+        exec(
+            'git show --oneline -s',
+            {
+                cwd: 'C:\\Server\\IASA-PORTAL',
+            },
+            function (error, current, stderr) {
+                exec(
+                    'git branch --show-current',
+                    {
+                        cwd: 'C:\\Server\\IASA-PORTAL',
+                    },
+                    function (error, branch, stderr) {
+                        let li = current.trim().split(' ')
+                        const code = li.shift()
+                        res.send(
+                            createResponse({
+                                branch: branch.trim(),
+                                head: code,
+                                message: li.join(' '),
+                            })
+                        )
+                    }
+                )
+            }
+        )
+    } catch (e) {
+        res.status(500)
+        res.send(createResponse(false, DB_CONNECT_ERROR))
+    }
+})
+
+router.post('/api', async (req, res) => {
+    const id = 'api_' + req.body.id
+    try {
+        let user = (await db.get('account', 'id', id)) as User | undefined
+        if (user) {
+            res.send(createResponse(false, '중복되는 ID에요.'))
+            return
+        }
+    } catch (e) {
+        res.send(createResponse(false, DB_CONNECT_ERROR))
+        return
+    }
+
+    const password = Array(10)
+        .fill('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+        .map(function (x) {
+            return x[Math.floor(Math.random() * x.length)]
+        })
+        .join('')
+
+    await db.set('account', {
+        id: id,
+        permission: Permission.api,
+        pwHash: await bcrypt.hash(password, saltRound),
+        name: id,
+        createTime: Date.now(),
+    })
+
+    res.send(createResponse(password))
+})
+
+router.get('/api', async (req, res) => {
+    const accountDB = await db.direct('account')
+    const accountHistory = await accountDB
+        .find({ permission: Permission.api })
+        .sort('_id', -1)
+        .limit(40)
+        .toArray()
+
+    res.send(createResponse(accountHistory))
+})
+
+router.delete('/api/:id', async (req, res) => {
+    try {
+        let user = (await db.get('account', 'id', req.params.id)) as
+            | User
+            | undefined
+        if (!user) {
+            res.status(404)
+            res.send(createResponse(false, '계정이 없어요.'))
+            return
+        }
+        if (user.permission !== Permission.api) {
+            res.send(createResponse(false, 'API 계정이 아니에요.'))
+            return
+        }
+    } catch (e) {
+        res.send(createResponse(false, DB_CONNECT_ERROR))
+        return
+    }
+    await db.del('account', 'id', req.params.id)
+    res.send(createResponse(true))
 })
 
 export default router

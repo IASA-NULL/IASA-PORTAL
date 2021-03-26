@@ -5,6 +5,7 @@ export enum Permission {
     student,
     teacher,
     admin,
+    api,
 }
 
 export interface token {

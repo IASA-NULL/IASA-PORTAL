@@ -34,10 +34,13 @@ import MyeonbulTeacher from './teacher/myeonbul'
 import PenaltyTeacher from './teacher/penalty'
 import MainTeacher from './teacher/main'
 import MusicTeacher from './teacher/music'
+import Print from './teacher/print'
 
 import MainAdmin from './admin/main'
 import Update from './admin/update'
 import CreateCode from './admin/createcode'
+import CreateAPI from './admin/api'
+import Assign from './admin/assign'
 
 import Mail from './common/mail'
 import Meal from './common/meal'
@@ -294,6 +297,14 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/print'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultTeacherNavList}
+                            appCont={<Print data={this.state?.data} />}
+                        />
+                    </Route>
+
                     <Route path='/meal'>
                         <MainView
                             accountInfo={this.state.data}
@@ -448,6 +459,22 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/createapi'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultAdminNavList}
+                            appCont={<CreateAPI />}
+                        />
+                    </Route>
+
+                    <Route path='/assign'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultAdminNavList}
+                            appCont={<Assign />}
+                        />
+                    </Route>
+
                     <Route path='/mypage'>
                         <MainView
                             accountInfo={this.state.data}
@@ -547,7 +574,7 @@ class App extends React.Component<any, IState> {
                     <Route>
                         <MainView
                             accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
+                            navList={DefaultAdminNavList}
                             appCont={<NotFound />}
                         />
                     </Route>

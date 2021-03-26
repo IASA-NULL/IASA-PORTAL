@@ -285,7 +285,6 @@ class Terms extends React.Component<any, {}> {
                 <br />
                 <br />
                 <Typography use='body1'>
-                    {' '}
                     IASA Portal은 다양한 정보와 의견이 담긴 여러분의 콘텐츠를
                     소중히 다룰 것을 약속드립니다만, 여러분이 게재한 게시물이
                     관련 법령, 본 약관, 게시물 운영정책, 각 개별 서비스에서의
@@ -357,7 +356,6 @@ class Terms extends React.Component<any, {}> {
                 <br />
                 <br />
                 <Typography use='body1'>
-                    {' '}
                     IASA Portal은 연중 무휴, 1일 24시간 안정적으로 서비스를
                     제공하기 위해 최선을 다하고 있습니다만, 컴퓨터, 서버 등
                     정보통신설비의 보수점검, 교체 또는 고장, 통신두절 등 운영상
@@ -389,7 +387,6 @@ class Terms extends React.Component<any, {}> {
                 <br />
                 <br />
                 <Typography use='body1'>
-                    {' '}
                     IASA Portal은 서비스 이용에 필요한 주요사항을 적시에 잘
                     안내해 드릴 수 있도록 힘쓰겠습니다. 회원에게 통지를 하는
                     경우 전자메일, 서비스 내 알림 또는 기타 적절한 전자적 수단을
@@ -401,7 +398,6 @@ class Terms extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <Typography use='body1'>
-                    {' '}
                     IASA Portal은 여러분의 소중한 의견에 귀 기울이겠습니다.
                     여러분은 언제든지 고객센터를 통해 서비스 이용과 관련된
                     의견이나 개선사항을 전달할 수 있으며, IASA Portal은 합리적
@@ -417,7 +413,6 @@ class Terms extends React.Component<any, {}> {
                 <br />
                 <br />
                 <Typography use='body1'>
-                    {' '}
                     IASA Portal은 본 약관의 내용을 여러분이 쉽게 확인할 수
                     있도록 서비스 초기 화면에 게시하고 있습니다.
                 </Typography>
@@ -433,7 +428,6 @@ class Terms extends React.Component<any, {}> {
                 </Typography>
                 <br />
                 <Typography use='body1'>
-                    {' '}
                     IASA Portal은 변경된 약관을 게시한 날로부터 효력이 발생되는
                     날까지 약관 변경에 대한 여러분의 의견을 기다립니다. 위
                     기간이 지나도록 여러분의 의견이 IASA Portal에 접수되지

@@ -27,7 +27,7 @@ import { IconButton } from '@rmwc/icon-button'
 import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
 import { Badge } from '@rmwc/badge'
 
-import { ListLink, useForceUpdate, LinkType, fetchAPI } from './util'
+import { ListLink, useForceUpdate, LinkType, fetchAPI, UserImage } from './util'
 import { token } from '../scheme/api/auth'
 import createURL from '../scheme/url'
 import { useEffect } from 'react'
@@ -215,6 +215,13 @@ export const DefaultTeacherNavList = (closeIfModal: any) => {
                 icon='music_note'
             />
             <ListLink
+                body='프린터 명부'
+                to='/print'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='print'
+            />
+            <ListLink
                 body='급식'
                 to='/meal'
                 onClick={closeIfModal}
@@ -299,7 +306,9 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                 </div>
             </CollapsibleList>
             <CollapsibleList
-                defaultOpen={['/user/code'].includes(window.location.pathname)}
+                defaultOpen={['/user/code', '/createapi', '/assign'].includes(
+                    window.location.pathname
+                )}
                 handle={
                     <SimpleListItem
                         text='사용자 관리'
@@ -314,6 +323,24 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                         onClick={closeIfModal}
                         type={LinkType.link}
                         icon='recent_actors'
+                    />
+                </div>
+                <div style={{ paddingLeft: '20px' }}>
+                    <ListLink
+                        body='API 계정 관리'
+                        to='/createapi'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='api'
+                    />
+                </div>
+                <div style={{ paddingLeft: '20px' }}>
+                    <ListLink
+                        body='반 배정'
+                        to='/assign'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='school'
                     />
                 </div>
             </CollapsibleList>
@@ -570,6 +597,12 @@ export const OpensourceNavList = (closeIfModal: any) => {
                 onClick={closeIfModal}
                 type={LinkType.js}
             />
+            <ListLink
+                body='unDraw'
+                to='cont_undraw'
+                onClick={closeIfModal}
+                type={LinkType.js}
+            />
         </>
     )
 }
@@ -754,27 +787,11 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
                     }}>
                     {props?.accountInfo?.id ? (
                         <DrawerHeader>
-                            <DrawerTitle>
-                                <span
-                                    title='Avatar'
-                                    className='rmwc-icon rmwc-icon--component material-icons rmwc-avatar rmwc-avatar--xlarge rmwc-avatar--has-image'>
-                                    <div
-                                        className='rmwc-avatar__icon'
-                                        style={{
-                                            backgroundImage: `url("${createURL(
-                                                'api',
-                                                'account',
-                                                'avatar'
-                                            )}")`,
-                                            backgroundSize: 'cover',
-                                            width: '50px',
-                                            height: '50px',
-                                            borderRadius: '100px',
-                                            marginTop: '20px',
-                                            marginBottom: '10px',
-                                        }}
-                                    />
-                                </span>
+                            <DrawerTitle style={{ paddingTop: '20px' }}>
+                                <UserImage
+                                    url={createURL('api', 'account', 'avatar')}
+                                    size={50}
+                                />
                                 <br />
                                 {props?.accountInfo?.name}
                             </DrawerTitle>
@@ -846,7 +863,7 @@ function Footer() {
                                         <IconButton
                                             icon='call'
                                             tag='a'
-                                            href='tel:010-3193-6628'
+                                            href='tel:032-890-6700'
                                         />
                                     </GridCell>
                                 </GridRow>
@@ -973,7 +990,7 @@ function MainViewEl(
                             headerHeight + footerHeight
                         }px)`,
                         maxWidth: '1440px',
-                        width: 'calc(100% - 40px)',
+                        width: '100%',
                     }}>
                     {appCont}
                 </div>

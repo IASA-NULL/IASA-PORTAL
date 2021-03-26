@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid'
+
 export function getRandomInt(min: number, max: number) {
     min = Math.ceil(min)
     max = Math.floor(max)
@@ -7,3 +9,5 @@ export function getRandomInt(min: number, max: number) {
 export function getRandomCode(size = 4) {
     return ('0'.repeat(size) + getRandomInt(1, 10 ** size - 1)).substr(-size)
 }
+
+export { uuid }

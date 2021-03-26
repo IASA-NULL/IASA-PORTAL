@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk'
-import { v4 as uuid } from 'uuid'
+import { uuid } from '../util/random'
 
 const s3Client = new AWS.S3({
     region: 'ap-northeast-2',

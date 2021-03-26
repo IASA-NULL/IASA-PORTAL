@@ -366,20 +366,14 @@ class Userdata extends React.Component<any, {}> {
                 <br />
                 <Typography use='body1'>개인정보 보호책임자</Typography>
                 <br />
-                <Typography use='body1'>이름: 김준서</Typography>
+                <Typography use='body1'>이름: 정상현</Typography>
                 <br />
                 <Typography use='body1'>소속 : NULL</Typography>
                 <br />
                 <Typography use='body1'>직위 : 부장</Typography>
                 <br />
                 <Typography use='body1'>
-                    메일주소 :{' '}
-                    <a
-                        href='/cdn-cgi/l/email-protection'
-                        className='__cf_email__'
-                        data-cfemail='bfd5ccd48b868e8f8c86ffd8d2ded6d391dcd0d2'>
-                        [email&#160;protected]
-                    </a>
+                    메일주소 : alrndmiro@gmail.com
                 </Typography>
                 <br />
                 <Typography use='body1'>개인정보 보호담당자</Typography>
@@ -391,13 +385,7 @@ class Userdata extends React.Component<any, {}> {
                 <Typography use='body1'>직위 : 차장</Typography>
                 <br />
                 <Typography use='body1'>
-                    메일주소 :{' '}
-                    <a
-                        href='/cdn-cgi/l/email-protection'
-                        className='__cf_email__'
-                        data-cfemail='2e1e1a5d4b4146575b406e49434f4742004d4143'>
-                        [email&#160;protected]
-                    </a>
+                    메일주소 : 04seohyun@gmail.com
                 </Typography>
                 <br />
                 <Typography use='body1'>

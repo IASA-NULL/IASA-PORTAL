@@ -33,12 +33,15 @@ import {
     DataTableHeadCell,
     DataTableRow,
 } from '@rmwc/data-table'
-import { MyeonbulQuery } from '../../scheme/api/myeonbul'
 import { Permission } from '../../scheme/api/auth'
+import commonApi from '../../scheme/api/commonApi'
+import { IconButton } from '@rmwc/icon-button'
+import { Gender } from '../../scheme/user'
 
 interface IState {
     selectedType: string
     name: string
+    gender: Gender
     code: string
     showDialog: boolean
     data: any
@@ -58,6 +61,37 @@ class CreateCode extends React.Component<any, IState> {
         this.refresh()
     }
 
+    public remove(code: string) {
+        fetchAPI('DELETE', {}, 'admin', 'code', code)
+            .then((res: commonApi) => {
+                if (res.success)
+                    this.notify({
+                        title: <b>성공!</b>,
+                        body: '가입 코드 삭제에 성공했어요.',
+                        icon: 'check',
+                        dismissIcon: true,
+                    })
+                else
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                setTimeout(() => {
+                    this.refresh()
+                }, 0)
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
+    }
+
     public create() {
         if (this.fileList && this.fileList.length) {
             const data = new FormData()
@@ -73,6 +107,7 @@ class CreateCode extends React.Component<any, IState> {
                         {
                             avatar: res.data.fileList[0],
                             name: this.state?.name,
+                            gender: this.state?.gender,
                             type: this.state?.selectedType[0],
                             year:
                                 new Date().getFullYear() -
@@ -114,6 +149,7 @@ class CreateCode extends React.Component<any, IState> {
                 {
                     name: this.state?.name,
                     type: this.state?.selectedType[0],
+                    gender: this.state?.gender,
                     year:
                         new Date().getFullYear() -
                         parseInt(this.state?.selectedType[1]) +
@@ -156,7 +192,7 @@ class CreateCode extends React.Component<any, IState> {
 
     public refresh() {
         this.setState({ loaded: false })
-        fetchAPI('GET', {}, 'admin', 'code').then((res: MyeonbulQuery) => {
+        fetchAPI('GET', {}, 'admin', 'code').then((res: commonApi) => {
             this.setState({ loaded: true, data: res })
         })
     }
@@ -176,7 +212,7 @@ class CreateCode extends React.Component<any, IState> {
                                             : '선생님'}
                                     </DataTableCell>
                                     <DataTableCell>
-                                        {el.uid.substr(0, 4)}
+                                        {el.uid.toString().substr(0, 4)}
                                     </DataTableCell>
                                     <DataTableCell>{el.name}</DataTableCell>
                                     <DataTableCell>
@@ -191,6 +227,14 @@ class CreateCode extends React.Component<any, IState> {
                                         />
                                     </DataTableCell>
                                     <DataTableCell>{el.code}</DataTableCell>
+                                    <DataTableCell>
+                                        <IconButton
+                                            icon='delete'
+                                            onClick={() => {
+                                                this.remove(el.code)
+                                            }}
+                                        />
+                                    </DataTableCell>
                                 </DataTableRow>
                             )
                         } catch (e) {
@@ -214,6 +258,7 @@ class CreateCode extends React.Component<any, IState> {
                         <DataTableCell />
                         <DataTableCell />
                         <DataTableCell />
+                        <DataTableCell />
                     </DataTableRow>
                 )
             }
@@ -223,6 +268,7 @@ class CreateCode extends React.Component<any, IState> {
                     <DataTableCell>
                         <div>로딩 중...</div>
                     </DataTableCell>
+                    <DataTableCell />
                     <DataTableCell />
                     <DataTableCell />
                     <DataTableCell />
@@ -238,10 +284,9 @@ class CreateCode extends React.Component<any, IState> {
                 </Typography>
                 <br />
                 <br />
-                <br />
                 <Grid>
                     <GridRow>
-                        <GridCell desktop={4} tablet={4} phone={4}>
+                        <GridCell desktop={2} tablet={4} phone={4}>
                             <Select
                                 label='종류 선택'
                                 outlined
@@ -269,6 +314,29 @@ class CreateCode extends React.Component<any, IState> {
                                         selectedType: e.currentTarget.value,
                                     })
                                 }
+                            />
+                        </GridCell>
+                        <GridCell desktop={2} tablet={4} phone={4}>
+                            <Select
+                                label='성별'
+                                outlined
+                                enhanced
+                                options={[
+                                    {
+                                        label: '남성',
+                                        value: 'm',
+                                    },
+                                    {
+                                        label: '여성',
+                                        value: 'f',
+                                    },
+                                ]}
+                                onChange={(e) => {
+                                    if (e.currentTarget.value === 'm')
+                                        this.setState({ gender: Gender.male })
+                                    else
+                                        this.setState({ gender: Gender.female })
+                                }}
                             />
                         </GridCell>
                         <GridCell desktop={3} tablet={4} phone={4}>
@@ -313,7 +381,6 @@ class CreateCode extends React.Component<any, IState> {
                     </GridRow>
                 </Grid>
                 <br />
-                <br />
                 <Typography use='headline5'>사용되지 않은 코드</Typography>
                 <br />
                 <br />
@@ -333,6 +400,7 @@ class CreateCode extends React.Component<any, IState> {
                                 <DataTableHeadCell>이름</DataTableHeadCell>
                                 <DataTableHeadCell>사진</DataTableHeadCell>
                                 <DataTableHeadCell>코드</DataTableHeadCell>
+                                <DataTableHeadCell>작업</DataTableHeadCell>
                             </DataTableRow>
                         </DataTableHead>
                         <DataTableBody>{tableBody}</DataTableBody>

@@ -323,6 +323,12 @@ header.raised {
     .no-print * {
         display: none !important;
     }
+    * {
+        zoom:1 !important;
+    }
+    .init_zoom_print {
+        width:initial !important;
+    }
 }
 
 .rmwc-badge {
@@ -334,4 +340,14 @@ header.raised {
     transform: scale(0);
     opacity: 0;
     font-size: 0;
+}
+
+.rmwc-data-table--sticky-rows-1 .rmwc-data-table__head .rmwc-data-table__row:nth-child(-n+1) .rmwc-data-table__cell {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    box-shadow: 0 1px rgb(0 0 0 / 12%);
+    background-color: #ffffff99;
+    backdrop-filter: blur(5px);
 }

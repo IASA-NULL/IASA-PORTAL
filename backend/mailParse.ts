@@ -2,7 +2,7 @@ import { downloadAsStream, fileList, remove } from './util/s3'
 import mailParser from 'mailparser'
 import db from './util/db'
 import { User } from '../scheme/user'
-import { v4 as uuid } from 'uuid'
+import { uuid } from './util/random'
 
 export default function mailParse() {
     fileList('mail/', 'mail').then((res) => {

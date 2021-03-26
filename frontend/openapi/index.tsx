@@ -28,26 +28,31 @@ class OpenAPIIndex extends React.Component<any, {}> {
                 <br />
                 <br />
                 <Card style={{ width: '21rem' }}>
-                    <CardPrimaryAction>
-                        <CardMedia
-                            sixteenByNine
-                            style={{
-                                backgroundImage:
-                                    'url(/static/img/github-social.png)',
-                            }}
-                        />
-                        <div style={{ padding: '0 1rem 1rem 1rem' }}>
-                            <Typography use='headline6' tag='h2'>
-                                GITHUB 보기
-                            </Typography>
-                            <Typography
-                                use='body1'
-                                tag='div'
-                                theme='textSecondaryOnBackground'>
-                                이 사이트의 소스코드를 확인할 수 있어요.
-                            </Typography>
-                        </div>
-                    </CardPrimaryAction>
+                    <a
+                        href='https://github.com/IASA-Null/IASA-PORTAL'
+                        target='_blank'
+                        rel='noopener noreferrer'>
+                        <CardPrimaryAction>
+                            <CardMedia
+                                sixteenByNine
+                                style={{
+                                    backgroundImage:
+                                        'url(/static/img/github-social.png)',
+                                }}
+                            />
+                            <div style={{ padding: '0 1rem 1rem 1rem' }}>
+                                <Typography use='headline6' tag='h2'>
+                                    GITHUB 보기
+                                </Typography>
+                                <Typography
+                                    use='body1'
+                                    tag='div'
+                                    theme='textSecondaryOnBackground'>
+                                    이 사이트의 소스코드를 확인할 수 있어요.
+                                </Typography>
+                            </div>
+                        </CardPrimaryAction>
+                    </a>
                     <CardActions>
                         <CardActionButtons>
                             <a
