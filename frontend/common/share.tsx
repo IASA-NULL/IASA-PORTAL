@@ -105,7 +105,7 @@ class Share extends React.Component<ShareProps, ShareState> {
             .then((res) => {
                 if (res.success) {
                     this.setState({ code: '' })
-                    function download_next(i: number) {
+                    const download_next = (i: number) => {
                         if (i >= res.data.length) {
                             return
                         }

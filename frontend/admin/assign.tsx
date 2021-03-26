@@ -6,7 +6,6 @@ import { Typography } from '@rmwc/typography'
 import { BrIfMobile, fetchAPI } from '../util'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 import { Tab, TabBar } from '@rmwc/tabs'
-import { MyeonbulQuery } from '../../scheme/api/myeonbul'
 import { Gender, UID } from '../../scheme/user'
 import { Button } from '@rmwc/button'
 import _ from 'lodash'
@@ -73,17 +72,34 @@ function DraggableUser(props: {
                               }기`}
                     </span>
                     {props.sid && (
-                        <IconButton
-                            icon='add'
-                            style={{ top: '5px', margin: '0 -10px 0 0' }}
-                            onClick={() => {
-                                props.updateSid(
-                                    parseInt(props.sid.toString().slice(1, 2)) -
-                                        1,
-                                    props.sid.toString()
-                                )
-                            }}
-                        />
+                        <>
+                            <IconButton
+                                icon='add'
+                                style={{ top: '5px', margin: '0 -10px 0 0' }}
+                                onClick={() => {
+                                    props.updateSid(
+                                        parseInt(
+                                            props.sid.toString().slice(1, 2)
+                                        ) - 1,
+                                        props.sid,
+                                        1
+                                    )
+                                }}
+                            />
+                            <IconButton
+                                icon='remove'
+                                style={{ top: '5px', margin: '0 -10px 0 0' }}
+                                onClick={() => {
+                                    props.updateSid(
+                                        parseInt(
+                                            props.sid.toString().slice(1, 2)
+                                        ) - 1,
+                                        props.sid,
+                                        -1
+                                    )
+                                }}
+                            />
+                        </>
                     )}
                 </span>
             </span>
@@ -186,15 +202,28 @@ class Assign extends React.Component<any, IState> {
             })
     }
 
-    public updateSid(classNo: number, sid: number) {
+    public updateSid(classNo: number, sid: number, chg: number) {
         let classes = this.state.classes
         for (
             let i = 0;
             i < classes[this.state.targetAge][classNo].length;
             i++
         ) {
-            if (classes[this.state.targetAge][classNo][i].sid >= sid)
-                classes[this.state.targetAge][classNo][i].sid += 1
+            if (classes[this.state.targetAge][classNo][i].sid === sid) {
+                classes[this.state.targetAge][classNo][i].sid += chg
+                if (
+                    classes[this.state.targetAge][classNo][i].sid
+                        .toString()
+                        .slice(2) == '00'
+                )
+                    classes[this.state.targetAge][classNo][i].sid++
+                if (
+                    classes[this.state.targetAge][classNo][i].sid
+                        .toString()
+                        .slice(2) == '99'
+                )
+                    classes[this.state.targetAge][classNo][i].sid--
+            }
         }
         this.setState({ classes: classes })
     }
@@ -205,6 +234,9 @@ class Assign extends React.Component<any, IState> {
         for (let age = 0; age < 3; age++) {
             for (let classNo = 0; classNo < classes[age].length; classNo++) {
                 classes[age][classNo] = _.sortBy(classes[age][classNo], [
+                    (o) => {
+                        return -o.gender
+                    },
                     'name',
                 ])
                 for (
