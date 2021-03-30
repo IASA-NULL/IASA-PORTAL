@@ -16,7 +16,7 @@ interface IState {
     data: commonApi
 }
 
-class NotFound extends React.Component<any, IState> {
+class Update extends React.Component<any, IState> {
     messages: any
     notify: any
 
@@ -135,4 +135,4 @@ class NotFound extends React.Component<any, IState> {
     }
 }
 
-export default withRouter(NotFound)
+export default withRouter(Update)

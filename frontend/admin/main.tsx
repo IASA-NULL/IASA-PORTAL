@@ -56,10 +56,22 @@ class Main extends React.Component<any, {}> {
                         link='/assign'
                     />
                     <CardLink
+                        img='/static/img/illust/cloud.png'
+                        title='서비스 관리'
+                        subtitle='외부 서비스에 접속해요.'
+                        link='/external'
+                    />
+                    <CardLink
+                        img='/static/img/illust/server.png'
+                        title='서버 관리'
+                        subtitle='AWS 관련 사항을 조정할 수 있어요.'
+                        link='/server'
+                    />
+                    <CardLink
                         img='/static/img/illust/noti.png'
                         title='알림'
                         subtitle='받은 알림들을 확인할 수 있어요.'
-                        link='/notifications'
+                        link='/notify'
                     />
                     <CardLink
                         img='/static/img/illust/develop.png'
