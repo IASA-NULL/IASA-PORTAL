@@ -143,7 +143,7 @@ class External extends React.Component<any, IState> {
                     <Button outlined>rmwc</Button>
                 </a>{' '}
                 <a
-                    href='https://material.io/resources/icons/?search=server&style=baseline'
+                    href='https://material.io/resources/icons/'
                     target='_blank'
                     rel='noopener noreferrer'>
                     <Button outlined>Material Icons</Button>

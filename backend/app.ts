@@ -10,7 +10,6 @@ import apiRouter from './api'
 import accountRouter from './account'
 import applicationRouter from './application'
 import vhost from 'vhost'
-import mailParse from './mailParse'
 import helmet from 'helmet'
 declare const DEV_MODE: boolean
 
@@ -84,7 +83,6 @@ export default function createApp(sid: string) {
     } else {
         app.use(vhost('account.iasa.kr', accountRouter))
         app.use(vhost('application.iasa.kr', applicationRouter))
-        setInterval(mailParse, 5000)
     }
 
     app.get('*', (req, res) => {

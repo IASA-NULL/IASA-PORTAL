@@ -312,7 +312,7 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                         to='/external'
                         onClick={closeIfModal}
                         type={LinkType.link}
-                        icon='dns'
+                        icon='cloud'
                     />
                     <ListLink
                         body='인스턴스 관리'

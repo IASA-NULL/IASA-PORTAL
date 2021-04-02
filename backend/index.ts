@@ -3,6 +3,7 @@ import createApp from './app'
 import { uuid } from './util/random'
 import os from 'os'
 import { createNotify } from './util/notification'
+import backgroundWork from './background'
 
 declare const DEV_MODE: boolean
 
@@ -10,7 +11,7 @@ if (cluster.isMaster) {
     createNotify(
         [1],
         '서버가 시작됐어요.',
-        '예기치 않은 재시작일경우 서버를 확인해 보세요.',
+        `서버가 ${new Date().toLocaleString()}에 재시작됐어요. 예기치 않은 재시작일경우 서버를 확인해 보세요.`,
         ''
     )
     const cpuCount = os.cpus().length
@@ -28,10 +29,13 @@ if (cluster.isMaster) {
         console.log('Worker ' + worker.process.pid + ' died. Restarting...')
         cluster.fork({ SID: sid })
     })
+
+    backgroundWork()
 } else {
     createApp(process.env.SID)
 }
 
 process.on('uncaughtException', function (err) {
     console.log('Caught exception: ' + err)
+    createNotify([1], '오류가 발생했어요!', err.toString(), '')
 })
