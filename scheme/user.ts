@@ -23,6 +23,7 @@ export interface User {
     unreadNotifications: number
     group: string[]
     createTime: number
+    lastPWChange?: number
 }
 
 export interface UserInfo {
