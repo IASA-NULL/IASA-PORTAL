@@ -1,0 +1,129 @@
+*::selection {
+    background: var(--mdc-theme-primary);
+    color: var(--mdc-theme-on-primary);
+}
+
+header.transparent {
+    background: transparent !important;
+}
+
+a {
+    color: var(--mdc-theme-primary);
+}
+
+.footer {
+    background: #f2f2ff !important;
+}
+
+#app.dark .footer {
+    background: #383870 !important;
+}
+
+.footer * {
+    color: #383870 !important;
+}
+
+#app.dark .footer * {
+    color: white !important;
+}
+
+header:not(.transparent) {
+    background: white !important;
+}
+
+#app.dark header:not(.transparent) {
+    background: #383870 !important;
+}
+
+.header:not(.transparent) * {
+    color: var(--mdc-theme-primary) !important;
+}
+
+.header:not(.transparent):not(.raised) {
+    border-bottom: 1px solid rgb(221, 221, 221);
+}
+
+#app.dark header:not(.transparent) * {
+    color: white !important;
+}
+
+#app.dark .header:not(.transparent):not(.raised) {
+    border-bottom: 1px solid rgb(221, 221, 221);
+}
+
+.header .mdc-menu * {
+    color: black !important;
+}
+
+#app.dark .header .mdc-menu * {
+    color: white !important;
+}
+
+#app.dark aside {
+    background: #22222f !important;
+}
+
+#app.dark .mdc-drawer-app-content {
+    background: #22222f !important;
+}
+
+#app.dark {
+    color: white;
+    background: #22222f !important;
+}
+
+#app.dark .mdc-list-item {
+    color: white;
+}
+
+#app.dark .mdc-list-item__graphic {
+    color: white;
+}
+
+#app.dark .mdc-drawer__title {
+    color: white !important;
+}
+
+#app.dark .mdc-drawer__subtitle {
+    color: white !important;
+}
+
+#app.dark .mdc-floating-label {
+    color: white;
+}
+
+#app.dark .mdc-notched-outline__leading {
+    border-color: white;
+}
+
+#app.dark .mdc-notched-outline__notch {
+    border-color: white;
+}
+
+#app.dark .mdc-notched-outline__trailing {
+    border-color: white;
+}
+
+#app.dark .mdc-data-table__content * {
+    color: white;
+}
+
+#app.dark .mdc-text-field:not(.mdc-text-field--outlined) input {
+    background: #37474f;
+}
+
+#app.dark input {
+    color: white;
+}
+
+#app.dark .mdc-dialog__title {
+    color: white !important;
+}
+
+#app.dark .mdc-dialog__content {
+    color: white;
+}
+
+#app.dark .mdc-form-field {
+    color: white;
+}

@@ -23,7 +23,7 @@ import {
     UserDataNavList,
     OpenAPINavList,
 } from './mainview'
-import { fetchAPI } from './util'
+import { fetchAPI, isDarkTheme } from './util'
 
 import MyeonbulStudent from './student/myeonbul'
 import PenaltyStudent from './student/penalty'
@@ -54,7 +54,7 @@ import NotFound from './common/404'
 import About from './noauth/about'
 import PROGRAM_IP from './student/program/ip'
 import MyPage from './common/mypage'
-import { lightTheme } from './util'
+import { lightTheme, darkTheme } from './util'
 import MailView from './common/mailview'
 
 import OpenAPIIndex from './openapi'
@@ -66,12 +66,31 @@ import Notifications from './common/notifications'
 
 interface IState {
     loaded: boolean
-    data: token
+    data?: token
+    theme: any
 }
 
 class App extends React.Component<any, IState> {
     public componentDidMount() {
+        let theme
+        if (isDarkTheme()) {
+            theme = darkTheme
+            document.getElementById('app').classList.add('dark')
+        } else {
+            theme = lightTheme
+            document.getElementById('app').classList.remove('dark')
+        }
         this.refresh()
+        window.addEventListener('updateTheme', () => {
+            if (isDarkTheme()) {
+                this.setState({ theme: darkTheme })
+                document.getElementById('app').classList.add('dark')
+            } else {
+                this.setState({ theme: lightTheme })
+                document.getElementById('app').classList.remove('dark')
+            }
+        })
+        this.state = { loaded: false, theme: theme }
     }
 
     public refresh() {
@@ -82,9 +101,7 @@ class App extends React.Component<any, IState> {
     }
 
     public render() {
-        let theme = lightTheme,
-            mainView
-        //if (localStorage.theme === "1" || (localStorage.theme === "2" && window.matchMedia('(prefers-color-scheme: dark)').matches)) theme = darkTheme
+        let mainView
         if (this.state?.data?.permission === Permission.student) {
             mainView = (
                 <Switch>
@@ -687,7 +704,7 @@ class App extends React.Component<any, IState> {
             )
         }
         return (
-            <ThemeProvider options={theme}>
+            <ThemeProvider options={this.state?.theme ?? lightTheme}>
                 <Router>{mainView}</Router>
             </ThemeProvider>
         )

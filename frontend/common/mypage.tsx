@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 
 import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
+import { Radio } from '@rmwc/radio'
 import {
     BrIfMobile,
     fetchAPI,
@@ -18,6 +19,7 @@ interface IProps {}
 
 interface IState {
     edit: boolean
+    theme?: string
 }
 
 class MyPage extends React.Component<any, IState> {
@@ -36,9 +38,11 @@ class MyPage extends React.Component<any, IState> {
             const edit = searchParams.get('edit')
             if (edit) {
                 RequireSudo()
-                this.state = { edit: true }
-            }
-        } catch (e) {}
+                this.state = { edit: true, theme: localStorage.theme }
+            } else this.state = { edit: false, theme: localStorage.theme }
+        } catch (e) {
+            this.state = { edit: false, theme: localStorage.theme }
+        }
     }
 
     public enableEdit() {
@@ -114,6 +118,12 @@ class MyPage extends React.Component<any, IState> {
             })
     }
 
+    public setTheme(target: string) {
+        window.localStorage.theme = target
+        this.setState({ theme: target })
+        window.dispatchEvent(new Event('updateTheme'))
+    }
+
     public render() {
         return (
             <>
@@ -165,6 +175,38 @@ class MyPage extends React.Component<any, IState> {
                     style={{ marginLeft: '10px' }}>
                     비밀번호 변경하기
                 </Button>
+                <br />
+                <br />
+                <Typography use='headline5'>테마 설정</Typography>
+                <br />
+                <br />
+                <>
+                    <Radio
+                        value='시스템 설정'
+                        checked={this.state.theme === '0'}
+                        onChange={() => {
+                            this.setTheme('0')
+                        }}>
+                        시스템 설정
+                    </Radio>
+                    <Radio
+                        value='라이트'
+                        checked={this.state.theme === '1'}
+                        onChange={() => {
+                            this.setTheme('1')
+                        }}>
+                        라이트
+                    </Radio>
+
+                    <Radio
+                        value='다크'
+                        checked={this.state.theme === '2'}
+                        onChange={() => {
+                            this.setTheme('2')
+                        }}>
+                        다크
+                    </Radio>
+                </>
                 <SnackbarQueue messages={this.messages} />
             </>
         )

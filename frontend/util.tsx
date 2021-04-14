@@ -769,3 +769,13 @@ export function UserImage(props: { url: string; size: number }) {
         </span>
     )
 }
+
+export function isDarkTheme() {
+    if (!localStorage.theme || localStorage.theme === '0') {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches)
+            return true
+        else return false
+    }
+    if (localStorage.theme === '1') return false
+    return true
+}

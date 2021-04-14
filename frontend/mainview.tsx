@@ -694,8 +694,6 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
                 fixed
                 style={{
                     zIndex: 10,
-                    borderBottom: 'solid 1px #ddd',
-                    background: '#ffffff',
                     color: 'var(--mdc-theme-primary)',
                 }}
                 className={

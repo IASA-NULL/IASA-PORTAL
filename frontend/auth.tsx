@@ -12,7 +12,7 @@ import 'rmwc/dist/styles'
 import '@rmwc/list/collapsible-list.css'
 import '@material/list/dist/mdc.list.css'
 
-import { fetchAPI, LinkType, MenuLink } from './util'
+import { darkTheme, fetchAPI, isDarkTheme, LinkType, MenuLink } from './util'
 
 import { IdForm, PasswordForm, ReqChangePassword } from './account/signin'
 import { FindID, FindPassword, FoundId, FoundPassword } from './account/find'
@@ -820,8 +820,11 @@ class App extends React.Component<any, IState> {
     }
 
     public render() {
-        let theme = lightTheme
-        //if (localStorage.theme === "1" || (localStorage.theme === "2" && window.matchMedia('(prefers-color-scheme: dark)').matches)) theme = darkTheme
+        let theme
+        if (isDarkTheme()) {
+            theme = darkTheme
+            document.getElementById('app').classList.add('dark')
+        } else theme = lightTheme
 
         let commonStyle = {
             overflowX: 'hidden',
