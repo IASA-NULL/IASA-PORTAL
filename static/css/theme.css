@@ -151,3 +151,7 @@ header:not(.transparent) {
 #app.dark .mdc-list-item__secondary-text {
     color: white !important;
 }
+
+#app.dark .mdc-select__selected-text {
+    color: white;
+}
