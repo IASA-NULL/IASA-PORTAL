@@ -80,6 +80,10 @@ header:not(.transparent) {
     color: white;
 }
 
+#app.dark .mdc-list-item__meta {
+    color: white;
+}
+
 #app.dark .mdc-drawer__title {
     color: white !important;
 }
@@ -126,4 +130,16 @@ header:not(.transparent) {
 
 #app.dark .mdc-form-field {
     color: white;
+}
+
+#app.dark .mdc-menu-surface {
+    background: #37474f !important;
+}
+
+#app.dark .mdc-list {
+    background: #37474f !important;
+}
+
+#app.dark .mdc-list-item__primary-text {
+    color: white !important;
 }
