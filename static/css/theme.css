@@ -108,7 +108,11 @@ header:not(.transparent) {
     border-color: white;
 }
 
-#app.dark .mdc-data-table__content * {
+#app.dark .mdc-data-table {
+    background: #37474f;
+}
+
+#app.dark .mdc-data-table * {
     color: white;
 }
 
@@ -136,10 +140,14 @@ header:not(.transparent) {
     background: #37474f !important;
 }
 
-#app.dark .mdc-list {
+#app.dark .mdc-drawer-app-content .mdc-list {
     background: #37474f !important;
 }
 
 #app.dark .mdc-list-item__primary-text {
+    color: white !important;
+}
+
+#app.dark .mdc-list-item__secondary-text {
     color: white !important;
 }
