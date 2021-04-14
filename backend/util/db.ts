@@ -70,7 +70,7 @@ async function set(collection: string, data: any, sub = 'iasa_portal') {
     let db
     try {
         db = await get_db()
-        db.db(sub).collection(collection).insert(data)
+        db.db(sub).collection(collection).insertOne(data)
         return true
     } catch (e) {
         return false

@@ -113,7 +113,7 @@
   },
   "scripts": {
     "build": "webpack --mode=production",
-    "dev": "webpack --mode=development --watch",
+    "dev": "start yarn run run && webpack --mode=development --watch",
     "run": "nodemon build/index.js",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
