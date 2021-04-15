@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [21.4.0](https://github.com/IASA-Null/IASA-PORTAL/compare/v2.0.0...v21.4.0) (2021-04-15)
+
+### Features
+
+-   add change password form shows every 3 month ([8fa2847](https://github.com/IASA-Null/IASA-PORTAL/commit/8fa28475bd3456e27de14117a217efc61a1ea7e0))
+-   add external manage component ([4e5a0f4](https://github.com/IASA-Null/IASA-PORTAL/commit/4e5a0f4a7002f6f278902468dcf99fb63bea0860))
+-   add server manage component ([60c7cbc](https://github.com/IASA-Null/IASA-PORTAL/commit/60c7cbcb0d1b3f28d2b40f97ccc7aa747dfeacec))
+-   added dark theme ([e34d0b6](https://github.com/IASA-Null/IASA-PORTAL/commit/e34d0b6f55fd811045ef842357fe445d7fef9cb1))
+-   auto edge redirection for IE ([729c067](https://github.com/IASA-Null/IASA-PORTAL/commit/729c06795333528f750ea17899af617cd7d4bcfe))
+
+### Bug Fixes
+
+-   enhanced dark theme ([888a477](https://github.com/IASA-Null/IASA-PORTAL/commit/888a47749e47312e5e91330675bce489aeb2ca64))
+-   enhanced dark theme ([bd2a9ae](https://github.com/IASA-Null/IASA-PORTAL/commit/bd2a9ae03ba90a95e125969d0952a1479dd4fd67))
+-   enhanced dark theme ([e48f97c](https://github.com/IASA-Null/IASA-PORTAL/commit/e48f97cdc52b39d9c5922fef78b385dcc973ab61))
+-   enhanced dark theme ([85832c0](https://github.com/IASA-Null/IASA-PORTAL/commit/85832c06f5fd9ad760fdec3e3f15babe2fb2790e))
+-   use insertOne on DB ([3529459](https://github.com/IASA-Null/IASA-PORTAL/commit/352945930651d9a52cbda8dc2b43028867964f34))
+
 ## 2.0.0 (2021-03-26)
 
 ### ⚠ BREAKING CHANGES
