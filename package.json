@@ -119,5 +119,12 @@
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
     "release": "standard-version"
   },
-  "version": "21.4.0"
+  "version": "21.4.0",
+  "standard-version": {
+    "skip": {
+      "bump": true,
+      "commit": true,
+      "tag": true
+    }
+  }
 }
