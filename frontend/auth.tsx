@@ -12,9 +12,9 @@ import 'rmwc/dist/styles'
 import '@rmwc/list/collapsible-list.css'
 import '@material/list/dist/mdc.list.css'
 
-import { fetchAPI, LinkType, MenuLink } from './util'
+import { darkTheme, fetchAPI, isDarkTheme, LinkType, MenuLink } from './util'
 
-import { IdForm, PasswordForm } from './account/signin'
+import { IdForm, PasswordForm, ReqChangePassword } from './account/signin'
 import { FindID, FindPassword, FoundId, FoundPassword } from './account/find'
 import {
     SignupCode,
@@ -105,7 +105,14 @@ class App extends React.Component<any, IState> {
                                     'FindPassword'
                                 )}
                                 context={context}
-                                next={this.signin()}
+                                next={this.signin(
+                                    <ReqChangePassword
+                                        setState={this.setState}
+                                        isMobile={isMobile}
+                                        context={context}
+                                        next={this.moveToLink}
+                                    />
+                                )}
                             />
                         )}
                         find={this.next(
@@ -218,7 +225,14 @@ class App extends React.Component<any, IState> {
                             'FindPassword'
                         )}
                         context={context}
-                        next={this.sudo()}
+                        next={this.sudo(
+                            <ReqChangePassword
+                                setState={this.setState}
+                                isMobile={isMobile}
+                                context={context}
+                                next={this.moveToLink}
+                            />
+                        )}
                     />,
                 ],
                 currentPage: 0,
@@ -348,6 +362,7 @@ class App extends React.Component<any, IState> {
                     .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
+                            loaded: true,
                         })
                         this.focusCurrentInput()
                     })
@@ -392,6 +407,7 @@ class App extends React.Component<any, IState> {
                     .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
+                            loaded: true,
                         })
                         this.focusCurrentInput()
                     })
@@ -402,7 +418,7 @@ class App extends React.Component<any, IState> {
         }
     }
 
-    public signin() {
+    public signin(form: JSX.Element) {
         return () => {
             this.setState({ errMessage: '' })
             if (this.state?.password) {
@@ -418,7 +434,14 @@ class App extends React.Component<any, IState> {
                 )
                     .then((res) => {
                         if (res.success) {
-                            this.moveToLink()
+                            if (res.data.requestChangePW)
+                                this.next(
+                                    form,
+                                    '비밀번호 변경',
+                                    '3개월마다 비밀번호를 변경하는 것이 좋아요.',
+                                    'reqChangePassword'
+                                )()
+                            else this.moveToLink()
                         } else {
                             this.setState({
                                 errMessage: res.message,
@@ -430,6 +453,7 @@ class App extends React.Component<any, IState> {
                     .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
+                            loaded: true,
                         })
                         this.focusCurrentInput()
                     })
@@ -440,7 +464,7 @@ class App extends React.Component<any, IState> {
         }
     }
 
-    public sudo() {
+    public sudo(form: JSX.Element) {
         return () => {
             this.setState({ errMessage: '' })
             if (this.state?.password) {
@@ -456,7 +480,14 @@ class App extends React.Component<any, IState> {
                 )
                     .then((res) => {
                         if (res.success) {
-                            this.moveToLink()
+                            if (res.data.requestChangePW)
+                                this.next(
+                                    form,
+                                    '비밀번호 변경',
+                                    '3개월마다 비밀번호를 변경하는 것이 좋아요.',
+                                    'reqChangePassword'
+                                )()
+                            else this.moveToLink()
                         } else {
                             this.setState({
                                 errMessage: res.message,
@@ -468,6 +499,7 @@ class App extends React.Component<any, IState> {
                     .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
+                            loaded: true,
                         })
                         this.focusCurrentInput()
                     })
@@ -527,6 +559,7 @@ class App extends React.Component<any, IState> {
                     .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
+                            loaded: true,
                         })
                         this.focusCurrentInput()
                     })
@@ -704,6 +737,7 @@ class App extends React.Component<any, IState> {
                     .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
+                            loaded: true,
                         })
                         this.focusCurrentInput()
                     })
@@ -748,6 +782,7 @@ class App extends React.Component<any, IState> {
                     .catch(() => {
                         this.setState({
                             errMessage: '서버와 통신 중 오류가 발생했어요.',
+                            loaded: true,
                         })
                         this.focusCurrentInput()
                     })
@@ -785,8 +820,11 @@ class App extends React.Component<any, IState> {
     }
 
     public render() {
-        let theme = lightTheme
-        //if (localStorage.theme === "1" || (localStorage.theme === "2" && window.matchMedia('(prefers-color-scheme: dark)').matches)) theme = darkTheme
+        let theme
+        if (isDarkTheme()) {
+            theme = darkTheme
+            document.getElementById('app').classList.add('dark')
+        } else theme = lightTheme
 
         let commonStyle = {
             overflowX: 'hidden',

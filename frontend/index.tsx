@@ -23,7 +23,7 @@ import {
     UserDataNavList,
     OpenAPINavList,
 } from './mainview'
-import { fetchAPI } from './util'
+import { fetchAPI, isDarkTheme } from './util'
 
 import MyeonbulStudent from './student/myeonbul'
 import PenaltyStudent from './student/penalty'
@@ -41,6 +41,8 @@ import Update from './admin/update'
 import CreateCode from './admin/createcode'
 import CreateAPI from './admin/api'
 import Assign from './admin/assign'
+import External from './admin/external'
+import Server from './admin/server'
 
 import Mail from './common/mail'
 import Meal from './common/meal'
@@ -52,7 +54,7 @@ import NotFound from './common/404'
 import About from './noauth/about'
 import PROGRAM_IP from './student/program/ip'
 import MyPage from './common/mypage'
-import { lightTheme } from './util'
+import { lightTheme, darkTheme } from './util'
 import MailView from './common/mailview'
 
 import OpenAPIIndex from './openapi'
@@ -64,12 +66,31 @@ import Notifications from './common/notifications'
 
 interface IState {
     loaded: boolean
-    data: token
+    data?: token
+    theme: any
 }
 
 class App extends React.Component<any, IState> {
     public componentDidMount() {
+        let theme
+        if (isDarkTheme()) {
+            theme = darkTheme
+            document.getElementById('app').classList.add('dark')
+        } else {
+            theme = lightTheme
+            document.getElementById('app').classList.remove('dark')
+        }
         this.refresh()
+        window.addEventListener('updateTheme', () => {
+            if (isDarkTheme()) {
+                this.setState({ theme: darkTheme })
+                document.getElementById('app').classList.add('dark')
+            } else {
+                this.setState({ theme: lightTheme })
+                document.getElementById('app').classList.remove('dark')
+            }
+        })
+        this.state = { loaded: false, theme: theme }
     }
 
     public refresh() {
@@ -80,9 +101,7 @@ class App extends React.Component<any, IState> {
     }
 
     public render() {
-        let theme = lightTheme,
-            mainView
-        //if (localStorage.theme === "1" || (localStorage.theme === "2" && window.matchMedia('(prefers-color-scheme: dark)').matches)) theme = darkTheme
+        let mainView
         if (this.state?.data?.permission === Permission.student) {
             mainView = (
                 <Switch>
@@ -475,6 +494,22 @@ class App extends React.Component<any, IState> {
                         />
                     </Route>
 
+                    <Route path='/external'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultAdminNavList}
+                            appCont={<External />}
+                        />
+                    </Route>
+
+                    <Route path='/server'>
+                        <MainView
+                            accountInfo={this.state.data}
+                            navList={DefaultAdminNavList}
+                            appCont={<Server />}
+                        />
+                    </Route>
+
                     <Route path='/mypage'>
                         <MainView
                             accountInfo={this.state.data}
@@ -669,7 +704,7 @@ class App extends React.Component<any, IState> {
             )
         }
         return (
-            <ThemeProvider options={theme}>
+            <ThemeProvider options={this.state?.theme ?? lightTheme}>
                 <Router>{mainView}</Router>
             </ThemeProvider>
         )
@@ -703,6 +738,9 @@ function init() {
 declare const timerStart: number
 
 document.addEventListener('DOMContentLoaded', () => {
+    if (isDarkTheme()) {
+        document.getElementById('preloader').style.background = '#000'
+    }
     console.log(
         '%cIASA Portal\n%cCopyright 2019-2021 NULL®. All right reserved.\n%c경고!\n%c이곳에서 뭔가를 복사하거나 수정할 때는 꼭 무엇을 의미하는지 알아야 합니다. 신뢰할 수 없는 행위를 하는 경우 계정 해킹, 도용, 삭제 등의 심각한 상황이 일어날 수 있습니다. NULL은 이 문제에 관해 책임을 지지 않습니다.',
         'font-size:50px;',

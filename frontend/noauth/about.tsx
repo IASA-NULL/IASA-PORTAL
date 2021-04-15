@@ -18,10 +18,7 @@ function About() {
     const [accountMenuOpen, setAccountMenuOpen] = React.useState(false)
     return (
         <>
-            <TopAppBar
-                fixed
-                style={{ zIndex: 10, background: 'transparent' }}
-                className='transparent'>
+            <TopAppBar fixed style={{ zIndex: 10 }} className='transparent'>
                 <TopAppBarRow>
                     <TopAppBarSection alignStart>
                         <TopAppBarTitle>

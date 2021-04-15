@@ -17,7 +17,8 @@ import {
 } from '../../string/error'
 import { createNotify } from '../util/notification'
 import bcrypt from 'bcrypt'
-import { saltRound } from '../util/secret'
+import getSecret, { saltRound } from '../util/secret'
+import fetch from 'node-fetch'
 
 const router = express.Router()
 
@@ -248,6 +249,15 @@ router.delete('/api/:id', async (req, res) => {
     }
     await db.del('account', 'id', req.params.id)
     res.send(createResponse(true))
+})
+
+router.get('/sl', async (req, res) => {
+    let fr = await fetch('https://sl.iasa.kr/auth/signin', {
+        method: 'POST',
+        body: JSON.stringify({ password: getSecret('sl') }),
+    })
+    let data = await fr.json()
+    res.send(createResponse(data.data))
 })
 
 export default router

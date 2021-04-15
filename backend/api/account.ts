@@ -23,6 +23,7 @@ import {
     sudoTime,
     changePasswordTokenExpire,
     leftTokenTime,
+    pwChangeTime,
 } from '../util/tokenTime'
 import { getDownloadFilename } from '../util/encode'
 
@@ -58,7 +59,7 @@ router.post('/username', async (req, res) => {
 })
 
 router.post('/signin', async (req, res) => {
-    let accountInfo = await db.get('account', 'id', req.body.id)
+    let accountInfo = (await db.get('account', 'id', req.body.id)) as User
     if (!accountInfo) {
         res.status(404)
         res.send(createResponse(false, '아이디가 존재하지 않아요.'))
@@ -105,7 +106,12 @@ router.post('/signin', async (req, res) => {
                         ...(!DEV_MODE && { domain: '.iasa.kr' }),
                     }
                 )
-                res.send(createResponse(true))
+                if (
+                    !accountInfo.lastPWChange ||
+                    Date.now() - accountInfo.lastPWChange > pwChangeTime
+                )
+                    res.send(createResponse({ requestChangePW: true }))
+                else res.send(createResponse({ requestChangePW: false }))
             } else {
                 res.status(403)
                 res.send(createResponse(false, '비밀번호가 올바르지 않아요.'))
@@ -177,7 +183,7 @@ router.get('/reqchangesecret', async (req, res) => {
             'changesecret',
             jwt.sign(
                 {
-                    id: req.body.id,
+                    id: req.auth.id,
                     expire: Date.now() + changePasswordTokenExpire,
                 } as changePasswordToken,
                 getSecret('token')
@@ -196,11 +202,14 @@ router.post('/changesecret', async (req, res) => {
         if (token.expire < Date.now()) {
             res.status(408)
             res.send(createResponse(false, TOKEN_EXPIRE_ERROR))
+            return
         }
 
         await db.update('account', 'id', token.id, {
             pwHash: await bcrypt.hash(req.body.password, saltRound),
+            lastPWChange: Date.now(),
         })
+
         res.send(createResponse(true))
     } catch (e) {
         res.status(404)
@@ -259,7 +268,12 @@ router.post('/sudo', async (req, res) => {
                         ...(!DEV_MODE && { domain: '.iasa.kr' }),
                     }
                 )
-                res.send(createResponse(true))
+                if (
+                    !accountInfo.lastPWChange ||
+                    Date.now() - accountInfo.lastPWChange > pwChangeTime
+                )
+                    res.send(createResponse({ requestChangePW: true }))
+                else res.send(createResponse({ requestChangePW: false }))
             } else {
                 res.status(403)
                 res.send(createResponse(false, '비밀번호가 올바르지 않아요.'))

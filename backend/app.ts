@@ -1,3 +1,12 @@
+/*
+2021 SeoRii®. All right reserved.
+
+app.ts
+메인 애플리케이션!
+
+TODO : Helmet 정책에 CSP 적용!
+ */
+
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -10,15 +19,16 @@ import apiRouter from './api'
 import accountRouter from './account'
 import applicationRouter from './application'
 import vhost from 'vhost'
-import mailParse from './mailParse'
 import helmet from 'helmet'
 declare const DEV_MODE: boolean
 
 export default function createApp(sid: string) {
+    // sid 설정
     setServerState('sid', sid)
 
     const app = express()
 
+    // CORS 옵션 : iasa.kr 도메인에 대해 허용!
     const corsOptions = {
         credentials: true,
         origin: (origin: string, callback: any) => {
@@ -31,6 +41,7 @@ export default function createApp(sid: string) {
         },
     }
 
+    // CORS/Helmet 적용!(CSP 제외)
     if (!DEV_MODE) {
         app.use(cors(corsOptions))
         app.use(
@@ -40,10 +51,13 @@ export default function createApp(sid: string) {
         )
     }
 
+    // 쿠키 Parsing!
     app.use(cookieParser())
 
+    // HTTP 통신 압축!
     app.use(compression())
 
+    // IE일 경우 요청 거부!
     app.use((req, res, next) => {
         try {
             if (
@@ -60,14 +74,18 @@ export default function createApp(sid: string) {
         }
     })
 
+    // static 파일 처리
     app.use('/static', express.static(path.join(__dirname, '..', 'static')))
+    app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')))
+
+    // 인증 처리(auth.ts)
     app.use(authRouter)
 
+    // API 라우팅
     if (DEV_MODE) app.use('/api', apiRouter)
     else app.use(vhost('api.iasa.kr', apiRouter))
 
-    app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')))
-
+    // 서버 빌드 중 표시
     app.use((req, res, next) => {
         if (getServerFlag('build')) {
             res.status(503)
@@ -78,19 +96,22 @@ export default function createApp(sid: string) {
         } else next()
     })
 
+    // account/application 라우팅
     if (DEV_MODE) {
         app.use('/account', accountRouter)
         app.use('/application', applicationRouter)
     } else {
         app.use(vhost('account.iasa.kr', accountRouter))
         app.use(vhost('application.iasa.kr', applicationRouter))
-        setInterval(mailParse, 5000)
     }
 
+    // 메인 템플릿 라우팅
+    // TODO : ejs 라우팅 적용해서 최초 API 요청 없애기!
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, '..', 'template', 'main.html'))
     })
 
+    // 앱 시작시 로그
     app.listen(80, () => {
         console.log('Server is up on port 80.')
     })

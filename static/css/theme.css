@@ -1,0 +1,193 @@
+*::selection {
+    background: var(--mdc-theme-primary);
+    color: var(--mdc-theme-on-primary);
+}
+
+header.transparent {
+    background: transparent !important;
+}
+
+a {
+    color: var(--mdc-theme-primary);
+}
+
+.footer {
+    background: #f2f2ff !important;
+}
+
+#app.dark .footer {
+    background: #12121c !important;
+}
+
+.footer * {
+    color: #383870 !important;
+}
+
+#app.dark .footer * {
+    color: #ccc !important;
+}
+
+header:not(.transparent) {
+    background: white !important;
+}
+
+#app.dark header:not(.transparent) {
+    background: #12121c !important;
+}
+
+.header:not(.transparent) * {
+    color: var(--mdc-theme-primary) !important;
+}
+
+.header:not(.transparent):not(.raised) {
+    border-bottom: 1px solid rgb(221, 221, 221);
+}
+
+#app.dark header:not(.transparent) * {
+    color: #ccc !important;
+}
+
+#app.dark .header:not(.transparent):not(.raised) {
+    border-bottom: 1px solid #333;
+}
+
+.header .mdc-menu * {
+    color: black !important;
+}
+
+#app.dark .header .mdc-menu * {
+    color: #ccc !important;
+}
+
+#app.dark aside {
+    background: #22222f !important;
+}
+
+#app.dark .mdc-drawer-app-content {
+    background: #22222f !important;
+}
+
+#app.dark {
+    color: #ccc;
+    background: #22222f !important;
+}
+
+#app.dark .mdc-list-item {
+    color: #ccc;
+}
+
+#app.dark .mdc-list-item__graphic {
+    color: #ccc;
+}
+
+#app.dark .mdc-list-item__meta {
+    color: #ccc;
+}
+
+#app.dark .mdc-drawer__title {
+    color: #ccc !important;
+}
+
+#app.dark .mdc-drawer__subtitle {
+    color: #ccc !important;
+}
+
+#app.dark .mdc-floating-label {
+    color: #ccc;
+}
+
+#app.dark .mdc-notched-outline__leading {
+    border-color: #ccc;
+}
+
+#app.dark .mdc-notched-outline__notch {
+    border-color: #ccc;
+}
+
+#app.dark .mdc-notched-outline__trailing {
+    border-color: #ccc;
+}
+
+#app.dark .mdc-data-table .rmwc-data-table__head * {
+    background: #22222f !important;
+}
+
+#app.dark .mdc-data-table {
+    background: #2e2e42;
+}
+
+#app.dark .mdc-data-table * {
+    color: #ccc;
+}
+
+#app.dark .mdc-button {
+    border-color: #ccc;
+}
+
+#app.dark .mdc-text-field:not(.mdc-text-field--outlined) input {
+    background: #22222f;
+}
+
+#app.dark input {
+    color: #ccc;
+}
+
+#app.dark .mdc-dialog__title {
+    color: #ccc !important;
+}
+
+#app.dark .mdc-dialog__content {
+    color: #ccc;
+}
+
+#app.dark .mdc-form-field {
+    color: #ccc;
+}
+
+#app.dark .mdc-menu-surface {
+    background: #000 !important;
+}
+
+#app.dark .mdc-drawer-app-content .mdc-list {
+    background: #000 !important;
+}
+
+#app.dark .mdc-list-item__primary-text {
+    color: #ccc !important;
+}
+
+#app.dark .mdc-list-item__secondary-text {
+    color: #ccc !important;
+}
+
+#app.dark .mdc-select__selected-text {
+    color: #ccc;
+}
+
+#app.dark .mdc-card {
+    background: #000;
+}
+
+#app.dark .mdc-card * {
+    color: #ccc !important;
+}
+
+#app.dark .mdc-card__media.illust {
+    filter: saturate(0.2) hue-rotate(169deg) invert(1);
+}
+
+#app.dark .mdc-list span {
+    color: white;
+}
+
+#app.dark .mdc-linear-progress__buffer {
+    background: #000;
+}
+
+#app.dark .mdc-dialog__surface {
+    background: #000;
+}
+
+#app.dark .mdc-dialog__surface * {
+    color: #ccc;
+}

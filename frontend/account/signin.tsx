@@ -4,6 +4,7 @@ import { Button } from '@rmwc/button'
 import { Icon } from '@rmwc/icon'
 import { MenuSurfaceAnchor, MenuItem, MenuSurface } from '@rmwc/menu'
 import { Permission } from '../../scheme/api/auth'
+import createURL from '../../scheme/url'
 
 interface IProps {
     setState: any
@@ -20,6 +21,10 @@ interface IdFormProps extends IProps {
 interface PasswordFormProps extends IProps {
     next: any
     find: any
+}
+
+interface RequestChangePWFormProps extends IProps {
+    next?: any
 }
 
 interface IdFormState {
@@ -251,6 +256,52 @@ export class PasswordForm extends React.Component<
                         disabled={!this.props.context.get('loaded')}
                         onClick={this.props.next}>
                         로그인
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+}
+
+export class ReqChangePassword extends React.Component<
+    RequestChangePWFormProps,
+    null
+> {
+    public componentDidMount() {
+        window.addEventListener('loginStateUpdate', () => {
+            this.forceUpdate()
+        })
+    }
+
+    public render() {
+        return (
+            <div
+                style={{
+                    width: this.props.isMobile ? 'calc(100vw - 60px)' : '380px',
+                    padding: `5px ${this.props.isMobile ? 30 : 60}px`,
+                    float: 'left',
+                }}>
+                <div
+                    style={{
+                        clear: 'both',
+                        marginTop: '20px',
+                        marginBottom: '20px',
+                    }}>
+                    <Button
+                        style={{ float: 'left' }}
+                        onClick={this.props.next}
+                        disabled={!this.props.context.get('loaded')}>
+                        다음에 변경
+                    </Button>
+                    <Button
+                        style={{ float: 'right' }}
+                        raised
+                        onClick={() => {
+                            window.location.replace(
+                                createURL('api', 'account', 'reqchangesecret')
+                            )
+                        }}>
+                        지금 변경
                     </Button>
                 </div>
             </div>

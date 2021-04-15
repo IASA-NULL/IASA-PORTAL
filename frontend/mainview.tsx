@@ -287,7 +287,9 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                 icon='email'
             />
             <CollapsibleList
-                defaultOpen={['/update'].includes(window.location.pathname)}
+                defaultOpen={['/update', '/external', '/server'].includes(
+                    window.location.pathname
+                )}
                 handle={
                     <SimpleListItem
                         text='사이트 관리'
@@ -302,6 +304,22 @@ export const DefaultAdminNavList = (closeIfModal: any) => {
                         onClick={closeIfModal}
                         type={LinkType.link}
                         icon='system_update'
+                    />
+                </div>
+                <div style={{ paddingLeft: '20px' }}>
+                    <ListLink
+                        body='서비스 관리'
+                        to='/external'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='cloud'
+                    />
+                    <ListLink
+                        body='인스턴스 관리'
+                        to='/server'
+                        onClick={closeIfModal}
+                        type={LinkType.link}
+                        icon='dns'
                     />
                 </div>
             </CollapsibleList>
@@ -676,8 +694,6 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
                 fixed
                 style={{
                     zIndex: 10,
-                    borderBottom: 'solid 1px #ddd',
-                    background: '#ffffff',
                     color: 'var(--mdc-theme-primary)',
                 }}
                 className={

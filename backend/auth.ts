@@ -1,3 +1,11 @@
+/*
+2021 SeoRii®. All right reserved.
+
+auth.ts
+사용자 인증부!
+** 특히 보안에 주의할 것 **
+ */
+
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import { Permission, token } from '../scheme/api/auth'
@@ -10,6 +18,7 @@ import { User } from '../scheme/user'
 
 declare const DEV_MODE: boolean
 
+// req에 auth 정의
 declare global {
     namespace Express {
         interface Request {
@@ -24,9 +33,12 @@ router.use('*', async (req, res, next) => {
     let sid = getServerToken()
     try {
         req.auth = jwt.verify(req.cookies.auth, getSecret('token')) as token
+        // API용 계정은 토큰 만료 무시!
         if (req.auth.permission !== Permission.api) {
+            // SID가 같지 않을 경우 토큰 만료
             if (req.auth.sid !== sid) {
                 req.auth.expired = true
+                // 리다이렉션
                 if (
                     (DEV_MODE &&
                         !req.originalUrl.includes('/api') &&
@@ -47,8 +59,10 @@ router.use('*', async (req, res, next) => {
                     )
                     return
                 }
-            } else if (req.auth.expire < Date.now()) {
+            } //토큰 만료됨
+            else if (req.auth.expire < Date.now()) {
                 req.auth.expired = true
+                // 리다이렉션
                 if (
                     (DEV_MODE &&
                         !req.originalUrl.includes('/api') &&
@@ -69,7 +83,8 @@ router.use('*', async (req, res, next) => {
                     )
                     return
                 }
-            } else if (req.auth.expire < Date.now() + reSignTime) {
+            } // 토큰 재서명
+            else if (req.auth.expire < Date.now() + reSignTime) {
                 res.cookie(
                     'auth',
                     jwt.sign(
@@ -88,7 +103,9 @@ router.use('*', async (req, res, next) => {
             }
         }
     } catch (e) {
+        // 토큰 인증 오류!
         req.auth = undefined
+        // 토큰 폐기
         res.cookie('auth', '', {
             maxAge: -1,
             httpOnly: true,
@@ -96,6 +113,7 @@ router.use('*', async (req, res, next) => {
         })
     }
     try {
+        // 사용자 정당성 확인
         let user = (await db.get('account', 'id', req.auth.id)) as
             | User
             | undefined
@@ -109,6 +127,7 @@ router.use('*', async (req, res, next) => {
         }
     } catch (e) {}
     try {
+        // SUDO 판별!
         const sudoToken = jwt.verify(
             req.cookies.sudo,
             getSecret('token')
