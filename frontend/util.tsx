@@ -48,11 +48,11 @@ export const lightTheme = {
 }
 
 export const darkTheme = {
-    primary: '#24aee9',
+    primary: '#383870',
     secondary: '#e539ff',
     error: '#b00020',
     background: '#212121',
-    surface: '#37474F',
+    surface: '#3e3e6d',
     onPrimary: 'rgba(255,255,255,.87)',
     onSecondary: 'rgba(0,0,0,0.87)',
     onSurface: 'rgba(255,255,255,.87)',
@@ -349,6 +349,7 @@ export function CardLink(props: {
                             backgroundImage: `url(${props.img})`,
                             height: '220px',
                         }}
+                        className='illust'
                     />
                     <div style={{ padding: '0 1rem 1rem 1rem' }}>
                         <Typography use='headline6' tag='h2'>

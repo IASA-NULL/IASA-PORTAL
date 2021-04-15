@@ -16,7 +16,7 @@ a {
 }
 
 #app.dark .footer {
-    background: #383870 !important;
+    background: #12121c !important;
 }
 
 .footer * {
@@ -24,7 +24,7 @@ a {
 }
 
 #app.dark .footer * {
-    color: white !important;
+    color: #ccc !important;
 }
 
 header:not(.transparent) {
@@ -32,7 +32,7 @@ header:not(.transparent) {
 }
 
 #app.dark header:not(.transparent) {
-    background: #383870 !important;
+    background: #12121c !important;
 }
 
 .header:not(.transparent) * {
@@ -44,11 +44,11 @@ header:not(.transparent) {
 }
 
 #app.dark header:not(.transparent) * {
-    color: white !important;
+    color: #ccc !important;
 }
 
 #app.dark .header:not(.transparent):not(.raised) {
-    border-bottom: 1px solid rgb(221, 221, 221);
+    border-bottom: 1px solid #333;
 }
 
 .header .mdc-menu * {
@@ -56,7 +56,7 @@ header:not(.transparent) {
 }
 
 #app.dark .header .mdc-menu * {
-    color: white !important;
+    color: #ccc !important;
 }
 
 #app.dark aside {
@@ -68,90 +68,126 @@ header:not(.transparent) {
 }
 
 #app.dark {
-    color: white;
+    color: #ccc;
     background: #22222f !important;
 }
 
 #app.dark .mdc-list-item {
-    color: white;
+    color: #ccc;
 }
 
 #app.dark .mdc-list-item__graphic {
-    color: white;
+    color: #ccc;
 }
 
 #app.dark .mdc-list-item__meta {
-    color: white;
+    color: #ccc;
 }
 
 #app.dark .mdc-drawer__title {
-    color: white !important;
+    color: #ccc !important;
 }
 
 #app.dark .mdc-drawer__subtitle {
-    color: white !important;
+    color: #ccc !important;
 }
 
 #app.dark .mdc-floating-label {
-    color: white;
+    color: #ccc;
 }
 
 #app.dark .mdc-notched-outline__leading {
-    border-color: white;
+    border-color: #ccc;
 }
 
 #app.dark .mdc-notched-outline__notch {
-    border-color: white;
+    border-color: #ccc;
 }
 
 #app.dark .mdc-notched-outline__trailing {
-    border-color: white;
+    border-color: #ccc;
+}
+
+#app.dark .mdc-data-table .rmwc-data-table__head * {
+    background: #22222f !important;
 }
 
 #app.dark .mdc-data-table {
-    background: #37474f;
+    background: #2e2e42;
 }
 
 #app.dark .mdc-data-table * {
-    color: white;
+    color: #ccc;
+}
+
+#app.dark .mdc-button {
+    border-color: #ccc;
 }
 
 #app.dark .mdc-text-field:not(.mdc-text-field--outlined) input {
-    background: #37474f;
+    background: #22222f;
 }
 
 #app.dark input {
-    color: white;
+    color: #ccc;
 }
 
 #app.dark .mdc-dialog__title {
-    color: white !important;
+    color: #ccc !important;
 }
 
 #app.dark .mdc-dialog__content {
-    color: white;
+    color: #ccc;
 }
 
 #app.dark .mdc-form-field {
-    color: white;
+    color: #ccc;
 }
 
 #app.dark .mdc-menu-surface {
-    background: #37474f !important;
+    background: #000 !important;
 }
 
 #app.dark .mdc-drawer-app-content .mdc-list {
-    background: #37474f !important;
+    background: #000 !important;
 }
 
 #app.dark .mdc-list-item__primary-text {
-    color: white !important;
+    color: #ccc !important;
 }
 
 #app.dark .mdc-list-item__secondary-text {
-    color: white !important;
+    color: #ccc !important;
 }
 
 #app.dark .mdc-select__selected-text {
+    color: #ccc;
+}
+
+#app.dark .mdc-card {
+    background: #000;
+}
+
+#app.dark .mdc-card * {
+    color: #ccc !important;
+}
+
+#app.dark .mdc-card__media.illust {
+    filter: saturate(0.2) hue-rotate(169deg) invert(1);
+}
+
+#app.dark .mdc-list span {
     color: white;
+}
+
+#app.dark .mdc-linear-progress__buffer {
+    background: #000;
+}
+
+#app.dark .mdc-dialog__surface {
+    background: #000;
+}
+
+#app.dark .mdc-dialog__surface * {
+    color: #ccc;
 }

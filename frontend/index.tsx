@@ -738,6 +738,9 @@ function init() {
 declare const timerStart: number
 
 document.addEventListener('DOMContentLoaded', () => {
+    if (isDarkTheme()) {
+        document.getElementById('preloader').style.background = '#000'
+    }
     console.log(
         '%cIASA Portal\n%cCopyright 2019-2021 NULL®. All right reserved.\n%c경고!\n%c이곳에서 뭔가를 복사하거나 수정할 때는 꼭 무엇을 의미하는지 알아야 합니다. 신뢰할 수 없는 행위를 하는 경우 계정 해킹, 도용, 삭제 등의 심각한 상황이 일어날 수 있습니다. NULL은 이 문제에 관해 책임을 지지 않습니다.',
         'font-size:50px;',
