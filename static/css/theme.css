@@ -35,7 +35,7 @@ header:not(.transparent) {
     background: #12121c !important;
 }
 
-.header:not(.transparent) * {
+.header:not(.transparent) *:not(.mdc-theme--primary-bg) {
     color: var(--mdc-theme-primary) !important;
 }
 

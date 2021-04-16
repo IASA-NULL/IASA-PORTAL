@@ -1,10 +1,14 @@
-const path = require('path')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const nodeExternals = require('webpack-node-externals')
-const webpack = require('webpack')
+import path from 'path'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import nodeExternals from 'webpack-node-externals'
+import webpack from 'webpack'
+import { pages } from './loader'
+import { Permission } from './scheme/api/auth'
 
-module.exports = (env, argv) => {
+export default (env: any, argv: any) => {
     const devMode = argv.mode === 'development'
+
+    let template_pages = pages()
 
     return [
         {
@@ -24,6 +28,14 @@ module.exports = (env, argv) => {
                     {
                         test: /\.ts?$/,
                         loader: 'babel-loader',
+                    },
+                    {
+                        test: /\.tsx?$/,
+                        loader: 'string-replace-loader',
+                        options: {
+                            search: '//RENDER_DRAWER_ADMIN//',
+                            replace: template_pages.drawer[Permission.admin],
+                        },
                     },
                 ],
             },
@@ -91,6 +103,33 @@ module.exports = (env, argv) => {
                             ),
                             path.resolve('./node_modules/@material'),
                         ],
+                    },
+                    {
+                        test: /\.tsx?$/,
+                        loader: 'string-replace-loader',
+                        options: {
+                            multiple: [
+                                {
+                                    search: '//RENDER_DRAWER_ADMIN//',
+                                    replace:
+                                        template_pages.drawer[Permission.admin],
+                                },
+                                {
+                                    search: '//RENDER_DRAWER_TEACHER//',
+                                    replace:
+                                        template_pages.drawer[
+                                            Permission.teacher
+                                        ],
+                                },
+                                {
+                                    search: '//RENDER_DRAWER_STUDENT//',
+                                    replace:
+                                        template_pages.drawer[
+                                            Permission.student
+                                        ],
+                                },
+                            ],
+                        },
                     },
                 ],
             },
