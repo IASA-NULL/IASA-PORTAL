@@ -8,9 +8,16 @@ interface Config {
     name: string
     showOnDrawer?: boolean
     child?: Config[]
+    customNav?: string
 }
 
-const Permission_all = [
+const Permission_all_auth = [
+    Permission.admin,
+    Permission.teacher,
+    Permission.student,
+]
+
+const Permission_any = [
     Permission.admin,
     Permission.teacher,
     Permission.student,
@@ -44,7 +51,7 @@ export default [
     {
         file: 'common/share.tsx',
         path: '/share',
-        target: Permission_all,
+        target: Permission_any,
         icon: 'share',
         name: '빠른 공유',
         showOnDrawer: true,
@@ -52,7 +59,7 @@ export default [
     {
         file: 'common/mail.tsx',
         path: '/mail',
-        target: Permission_all,
+        target: Permission_all_auth,
         icon: 'mail',
         name: '메일',
         showOnDrawer: true,
@@ -128,13 +135,6 @@ export default [
     },
     {
         target: [Permission.student],
-        file: 'student/music.tsx',
-        path: '/music',
-        icon: 'music_note',
-        name: '기상곡',
-    },
-    {
-        target: [Permission.student],
         icon: 'playlist_add_check',
         name: '신청',
         child: [
@@ -171,16 +171,18 @@ export default [
         path: '/print',
         icon: 'music_note',
         name: '프린터 명부',
+        showOnDrawer: true,
     },
     {
-        target: Permission_all,
+        target: Permission_all_auth,
         file: 'common/meal.tsx',
         path: '/meal',
         icon: 'fastfood',
         name: '급식',
+        showOnDrawer: true,
     },
     {
-        target: Permission_all,
+        target: Permission_any,
         icon: 'folder',
         name: '프로그램',
         child: [
@@ -203,5 +205,57 @@ export default [
                 name: 'IASA CLIENT',
             },
         ],
+    },
+    {
+        target: Permission_all_auth,
+        file: 'common/mypage.tsx',
+        path: '/mypage',
+    },
+    {
+        target: Permission_all_auth,
+        file: 'common/notifications.tsx',
+        path: '/notifications',
+    },
+    {
+        target: Permission_any,
+        file: 'common/terms.tsx',
+        path: '/terms',
+        customNav: 'TermsNavList',
+    },
+    {
+        target: Permission_any,
+        file: 'common/userdata.tsx',
+        path: '/userdata',
+        customNav: 'UserDataNavList',
+    },
+    {
+        target: Permission_any,
+        file: 'common/opensource.tsx',
+        path: '/opensource',
+        customNav: 'OpensourceNavList',
+    },
+    {
+        target: Permission_any,
+        file: 'openapi/desc.tsx',
+        path: '/openapi/desc',
+        customNav: 'OpenAPINavList',
+    },
+    {
+        target: Permission_any,
+        file: 'openapi/account.tsx',
+        path: '/openapi/account',
+        customNav: 'OpenAPINavList',
+    },
+    {
+        target: Permission_any,
+        file: 'openapi/meal.tsx',
+        path: '/openapi/meal',
+        customNav: 'OpenAPINavList',
+    },
+    {
+        target: Permission_any,
+        file: 'openapi/index.tsx',
+        path: '/openapi',
+        customNav: 'OpenAPINavList',
     },
 ] as Array<Config>

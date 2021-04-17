@@ -128,6 +128,34 @@ export default (env: any, argv: any) => {
                                             Permission.student
                                         ],
                                 },
+                                {
+                                    search: '//RENDER_COMPONENT_IMPORTS//',
+                                    replace: template_pages.imports,
+                                },
+                                {
+                                    search: '//RENDER_ROUTER_STUDENT//',
+                                    replace:
+                                        template_pages.router[
+                                            Permission.student
+                                        ],
+                                },
+                                {
+                                    search: '//RENDER_ROUTER_TEACHER//',
+                                    replace:
+                                        template_pages.router[
+                                            Permission.teacher
+                                        ],
+                                },
+                                {
+                                    search: '//RENDER_ROUTER_ADMIN//',
+                                    replace:
+                                        template_pages.router[Permission.admin],
+                                },
+                                {
+                                    search: '//RENDER_ROUTER_NONE//',
+                                    replace:
+                                        template_pages.router[Permission.none],
+                                },
                             ],
                         },
                     },
