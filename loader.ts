@@ -8,7 +8,7 @@ function getNavListName(type: Permission) {
 }
 
 export function pages() {
-    let imports = ''
+    let imports = `import {OpensourceNavList,TermsNavList,UserDataNavList,OpenAPINavList} from './mainview'\n`
     let router = ['', '', '', '', '', '']
     let drawer = ['', '', '', '', '', '']
     for (let i of pagesConfig) {

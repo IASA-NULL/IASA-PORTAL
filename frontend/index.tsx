@@ -18,10 +18,6 @@ import {
     DefaultStudentNavList,
     DefaultTeacherNavList,
     DefaultAdminNavList,
-    OpensourceNavList,
-    TermsNavList,
-    UserDataNavList,
-    OpenAPINavList,
 } from './mainview'
 import { fetchAPI, isDarkTheme } from './util'
 
