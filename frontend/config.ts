@@ -21,6 +21,7 @@ const Permission_any = [
     Permission.admin,
     Permission.teacher,
     Permission.student,
+    Permission.none,
 ]
 
 export default [

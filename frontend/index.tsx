@@ -72,13 +72,16 @@ class App extends React.Component<any, IState> {
         if (this.state?.data?.permission === Permission.student) {
             mainView = (
                 <Switch>
-                    //RENDER_ROUTER_STUDENT//
                     <Route path='/mail/:eid'>
                         <MainView
                             accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
+                            navList={DefaultAdminNavList}
                             appCont={<MailView data={this.state?.data} />}
                         />
+                    </Route>
+                    //RENDER_ROUTER_STUDENT//
+                    <Route path='/print'>
+                        <Redirect to='/share' />
                     </Route>
                     <Route>
                         <MainView
@@ -92,14 +95,14 @@ class App extends React.Component<any, IState> {
         } else if (this.state?.data?.permission === Permission.teacher) {
             mainView = (
                 <Switch>
-                    //RENDER_ROUTER_TEACHER//
                     <Route path='/mail/:eid'>
                         <MainView
                             accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
+                            navList={DefaultAdminNavList}
                             appCont={<MailView data={this.state?.data} />}
                         />
                     </Route>
+                    //RENDER_ROUTER_TEACHER//
                     <Route>
                         <MainView
                             accountInfo={this.state.data}
@@ -112,7 +115,6 @@ class App extends React.Component<any, IState> {
         } else if (this.state?.data?.permission === Permission.admin) {
             mainView = (
                 <Switch>
-                    //RENDER_ROUTER_ADMIN//
                     <Route path='/mail/:eid'>
                         <MainView
                             accountInfo={this.state.data}
@@ -120,6 +122,7 @@ class App extends React.Component<any, IState> {
                             appCont={<MailView data={this.state?.data} />}
                         />
                     </Route>
+                    //RENDER_ROUTER_ADMIN//
                     <Route>
                         <MainView
                             accountInfo={this.state.data}
@@ -136,6 +139,9 @@ class App extends React.Component<any, IState> {
                         <About />
                     </Route>
                     //RENDER_ROUTER_NONE//
+                    <Route path='/print'>
+                        <Redirect to='/share' />
+                    </Route>
                     <Route>
                         <Redirect to='/about' />
                     </Route>
