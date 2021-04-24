@@ -573,6 +573,7 @@ class App extends React.Component<any, IState> {
     }
 
     public moveToLink() {
+        window.localStorage.tokenId = tokenId
         const searchParams = new URLSearchParams(window.location.search)
         try {
             const next = searchParams.get('next')
