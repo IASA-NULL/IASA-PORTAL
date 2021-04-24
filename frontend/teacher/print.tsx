@@ -2,7 +2,6 @@ import * as React from 'react'
 
 import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
-import { LinearProgress } from '@rmwc/linear-progress'
 import {
     DataTable,
     DataTableContent,
@@ -16,7 +15,6 @@ import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 import {
     PHID,
-    PrintHistory,
     PrintHistoryOne,
     PrintHistoryResponse,
 } from '../../scheme/api/print'

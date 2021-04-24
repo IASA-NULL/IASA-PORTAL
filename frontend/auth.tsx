@@ -30,7 +30,7 @@ import { lightTheme } from './util'
 
 const loginStateUpdate = new Event('loginStateUpdate')
 
-let accountInfo: any
+let accountInfo: any, tokenId: string
 
 interface IState {
     loaded: boolean
@@ -434,7 +434,7 @@ class App extends React.Component<any, IState> {
                 )
                     .then((res) => {
                         if (res.success) {
-                            window.localStorage.tokenId = res.data.tokenId
+                            tokenId = res.data.tokenId
                             if (res.data.requestChangePW)
                                 this.next(
                                     form,
@@ -481,7 +481,7 @@ class App extends React.Component<any, IState> {
                 )
                     .then((res) => {
                         if (res.success) {
-                            window.localStorage.tokenId = res.data.tokenId
+                            tokenId = res.data.tokenId
                             if (res.data.requestChangePW)
                                 this.next(
                                     form,
@@ -577,10 +577,18 @@ class App extends React.Component<any, IState> {
         try {
             const next = searchParams.get('next')
             if (next) {
-                window.location.replace(atob(next))
+                window.location.replace(
+                    createURL('', 'finalize') +
+                        '?tokenId=' +
+                        tokenId +
+                        '&next=' +
+                        next
+                )
             } else throw new Error()
         } catch (e) {
-            window.location.replace('/')
+            window.location.replace(
+                createURL('', 'finalize') + '?tokenId=' + tokenId
+            )
         }
     }
 

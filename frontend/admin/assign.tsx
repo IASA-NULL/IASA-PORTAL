@@ -214,13 +214,13 @@ class Assign extends React.Component<any, IState> {
                 if (
                     classes[this.state.targetAge][classNo][i].sid
                         .toString()
-                        .slice(2) == '00'
+                        .slice(2) === '00'
                 )
                     classes[this.state.targetAge][classNo][i].sid++
                 if (
                     classes[this.state.targetAge][classNo][i].sid
                         .toString()
-                        .slice(2) == '99'
+                        .slice(2) === '99'
                 )
                     classes[this.state.targetAge][classNo][i].sid--
             }

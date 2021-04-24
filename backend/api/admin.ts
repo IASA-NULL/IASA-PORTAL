@@ -6,7 +6,7 @@ import createResponse from '../createResponse'
 import { getServerFlag, setServerFlag } from '../util/serverState'
 import db from '../util/db'
 import { UID, User } from '../../scheme/user'
-import { getRandomInt, uuid } from '../util/random'
+import { getRandomInt } from '../util/random'
 import { base32Encode } from '@ctrl/ts-base32'
 import {
     ALREADY_BUILDING_ERROR,

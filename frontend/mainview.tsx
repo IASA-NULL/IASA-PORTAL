@@ -10,7 +10,7 @@ import {
     DrawerContent,
     DrawerAppContent,
 } from '@rmwc/drawer'
-import { List, CollapsibleList, SimpleListItem, ListDivider } from '@rmwc/list'
+import { List, ListDivider } from '@rmwc/list'
 import {
     TopAppBar,
     TopAppBarRow,
