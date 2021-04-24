@@ -434,6 +434,7 @@ class App extends React.Component<any, IState> {
                 )
                     .then((res) => {
                         if (res.success) {
+                            window.localStorage.tokenId = res.data.tokenId
                             if (res.data.requestChangePW)
                                 this.next(
                                     form,
@@ -480,6 +481,7 @@ class App extends React.Component<any, IState> {
                 )
                     .then((res) => {
                         if (res.success) {
+                            window.localStorage.tokenId = res.data.tokenId
                             if (res.data.requestChangePW)
                                 this.next(
                                     form,

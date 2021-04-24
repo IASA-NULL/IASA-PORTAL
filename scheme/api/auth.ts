@@ -16,6 +16,7 @@ export interface token {
     expire: number
     permission: Permission
     sid: string
+    tokenId: string
     sudo?: boolean
     expired?: boolean
 }

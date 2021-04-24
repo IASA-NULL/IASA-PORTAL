@@ -26,6 +26,7 @@ import {
     pwChangeTime,
 } from '../util/tokenTime'
 import { getDownloadFilename } from '../util/encode'
+import { uuid } from '../util/random'
 
 const router = express.Router()
 declare const DEV_MODE: boolean
@@ -68,6 +69,7 @@ router.post('/signin', async (req, res) => {
         .compare(req.body.password, accountInfo.pwHash)
         .then((result) => {
             if (result) {
+                let tokenId = uuid()
                 res.cookie(
                     'auth',
                     jwt.sign(
@@ -82,6 +84,7 @@ router.post('/signin', async (req, res) => {
                             ]),
                             expire: Date.now() + maxTime,
                             sid: getServerToken(),
+                            tokenId: tokenId,
                         } as token,
                         getSecret('token')
                     ),
@@ -110,8 +113,11 @@ router.post('/signin', async (req, res) => {
                     !accountInfo.lastPWChange ||
                     Date.now() - accountInfo.lastPWChange > pwChangeTime
                 )
-                    res.send(createResponse({ requestChangePW: true }))
-                else res.send(createResponse({ requestChangePW: false }))
+                    res.send(createResponse({ requestChangePW: true, tokenId }))
+                else
+                    res.send(
+                        createResponse({ requestChangePW: false, tokenId })
+                    )
             } else {
                 res.status(403)
                 res.send(createResponse(false, '비밀번호가 올바르지 않아요.'))
@@ -236,6 +242,7 @@ router.post('/sudo', async (req, res) => {
         .compare(req.body.password, accountInfo.pwHash)
         .then((result) => {
             if (result) {
+                let tokenId = uuid()
                 res.cookie(
                     'auth',
                     jwt.sign(
@@ -244,6 +251,7 @@ router.post('/sudo', async (req, res) => {
                             expire: Date.now() + maxTime,
                             expired: false,
                             sid: getServerToken(),
+                            tokenId,
                         },
                         getSecret('token')
                     ),
@@ -259,6 +267,7 @@ router.post('/sudo', async (req, res) => {
                         {
                             expire: Date.now() + sudoTime,
                             sid: getServerToken(),
+                            tokenId,
                         } as token,
                         getSecret('token')
                     ),
@@ -272,8 +281,11 @@ router.post('/sudo', async (req, res) => {
                     !accountInfo.lastPWChange ||
                     Date.now() - accountInfo.lastPWChange > pwChangeTime
                 )
-                    res.send(createResponse({ requestChangePW: true }))
-                else res.send(createResponse({ requestChangePW: false }))
+                    res.send(createResponse({ requestChangePW: true, tokenId }))
+                else
+                    res.send(
+                        createResponse({ requestChangePW: false, tokenId })
+                    )
             } else {
                 res.status(403)
                 res.send(createResponse(false, '비밀번호가 올바르지 않아요.'))

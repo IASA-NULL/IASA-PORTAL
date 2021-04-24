@@ -100,6 +100,10 @@ router.use('*', async (req, res, next) => {
                         ...(!DEV_MODE && { domain: '.iasa.kr' }),
                     }
                 )
+            } else if (req.auth.tokenId !== req.headers['verify']) {
+                req.auth = undefined
+                next()
+                return
             }
         }
     } catch (e) {
@@ -134,6 +138,9 @@ router.use('*', async (req, res, next) => {
         ) as token
         if (sudoToken.sid !== sid || sudoToken.expire < Date.now() || !req.auth)
             throw new Error()
+        else if (sudoToken.tokenId !== req.headers['verify']) {
+            throw new Error()
+        }
         req.auth.sudo = true
     } catch (e) {
         res.cookie('sudo', '', {

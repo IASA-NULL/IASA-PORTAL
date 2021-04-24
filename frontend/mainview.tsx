@@ -317,6 +317,7 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
     const [drawerOpen, setDrawerOpen] = React.useState(window.innerWidth > 760)
     const [accountMenuOpen, setAccountMenuOpen] = React.useState(false)
     const [unreadNotifications, setUnreadNotifications] = React.useState(0)
+    const [avatarBlob, setAvatarBlob] = React.useState('')
     const closeIfModal = () => {
         if (window.innerWidth <= 760) setDrawerOpen(false)
     }
@@ -329,6 +330,17 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
     useEffect(() => {
         refreshUnreadNotifications()
         setInterval(refreshUnreadNotifications, 3000)
+
+        fetch(createURL('api', 'account', 'avatar'), {
+            method: 'GET',
+            ...(!DEV_MODE && { credentials: 'include' }),
+            headers: {
+                'Content-Type': 'application/json',
+                verify: window.localStorage.tokenId,
+            },
+        })
+            .then((res) => res.blob())
+            .then((res) => setAvatarBlob(URL.createObjectURL(res)))
     }, [])
 
     return (
@@ -447,10 +459,7 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
                     {props?.accountInfo?.id ? (
                         <DrawerHeader>
                             <DrawerTitle style={{ paddingTop: '20px' }}>
-                                <UserImage
-                                    url={createURL('api', 'account', 'avatar')}
-                                    size={50}
-                                />
+                                <UserImage url={avatarBlob} size={50} />
                                 <br />
                                 {props?.accountInfo?.name}
                             </DrawerTitle>

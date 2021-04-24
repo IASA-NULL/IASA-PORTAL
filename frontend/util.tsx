@@ -307,6 +307,7 @@ export function fetchAPI(
         ...(!DEV_MODE && { credentials: 'include' }),
         headers: {
             'Content-Type': 'application/json',
+            verify: window.localStorage.tokenId,
         },
         ...(method !== 'GET' && { body: JSON.stringify(body) }),
     }).then((res) => res.json())
