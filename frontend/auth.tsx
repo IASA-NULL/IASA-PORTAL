@@ -74,9 +74,20 @@ class App extends React.Component<any, IState> {
             get: this.getSt.bind(this),
             set: this.setSt.bind(this),
         }
+        let targetAppName: string
         if (window.location.pathname.split('/').pop() === 'signin') {
             if (accountInfo.data.permission !== Permission.none)
                 this.moveToLink()
+            const searchParams = new URLSearchParams(window.location.search)
+            try {
+                const app = searchParams.get('app')
+                if (app) {
+                    targetAppName = atob(app)
+                } else throw new Error()
+            } catch (e) {
+                targetAppName = 'IASA PORTAL'
+            }
+
             this.setState({
                 formList: [
                     <IdForm
@@ -176,7 +187,11 @@ class App extends React.Component<any, IState> {
                 ],
                 currentPage: 0,
                 title: [
-                    { main: '로그인', sub: 'IASA PORTAL로 계속', id: 'IdForm' },
+                    {
+                        main: '로그인',
+                        sub: targetAppName + '(으)로 계속',
+                        id: 'IdForm',
+                    },
                 ],
             })
         } else if (
