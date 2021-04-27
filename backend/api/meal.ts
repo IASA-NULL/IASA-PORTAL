@@ -251,6 +251,12 @@ async function getMealVote(target: mealTime) {
 
 async function getMealVoteRes(target: mealTime, uid: number) {
     const info = await getMealVote(target)
+    if (!uid)
+        return {
+            score: info.voteList.length ? info.score / info.voteList.length : 0,
+            me: 0,
+            count: info.voteList.length,
+        }
     return {
         score: info.voteList.length ? info.score / info.voteList.length : 0,
         me: _.find(info.voteList, { uid: uid })?.score ?? 0,
@@ -291,7 +297,7 @@ async function voteMeal(target: mealTime, score: number, uid: UID) {
 const router = express.Router()
 
 router.post('/', (req, res) => {
-    getMeal(req.body, req.auth.uid)
+    getMeal(req.body, req.auth?.uid)
         .then(async (mealData: MealResponse) => {
             if (!mealData.success) res.status(404)
             res.send({
