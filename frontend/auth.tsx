@@ -590,22 +590,32 @@ class App extends React.Component<any, IState> {
     public moveToLink() {
         window.localStorage.tokenId = tokenId
         const searchParams = new URLSearchParams(window.location.search)
-        try {
-            const next = searchParams.get('next')
-            if (next) {
-                window.location.replace(
-                    createURL('', 'finalize') +
-                        '?tokenId=' +
-                        tokenId +
-                        '&next=' +
-                        next
-                )
-            } else throw new Error()
-        } catch (e) {
-            window.location.replace(
-                createURL('', 'finalize') + '?tokenId=' + tokenId
-            )
+
+        const next = searchParams.get('next') ?? ''
+        let form = document.createElement('form')
+        form._submit_function_ = form.submit
+
+        form.setAttribute('method', 'post')
+        form.setAttribute('action', createURL('', 'finalize'))
+
+        let params = {
+            next: next,
+            tokenId: tokenId,
         }
+
+        for (let key in params) {
+            let hiddenField = document.createElement('input')
+            hiddenField.setAttribute('type', 'hidden')
+            hiddenField.setAttribute('name', key)
+            //@ts-ignore
+            hiddenField.setAttribute('value', params[key])
+            form.appendChild(hiddenField)
+        }
+
+        document.body.appendChild(form)
+        form._submit_function_()
+
+        return
     }
 
     public validateSignup1(form: JSX.Element) {

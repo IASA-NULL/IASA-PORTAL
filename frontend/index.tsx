@@ -179,20 +179,6 @@ function init() {
 declare const timerStart: number
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.pathname === '/finalize') {
-        const searchParams = new URLSearchParams(window.location.search)
-        try {
-            const tokenId = searchParams.get('tokenId')
-            const next = searchParams.get('next')
-            window.localStorage.tokenId = tokenId
-            if (next) {
-                window.location.replace(atob(next))
-            } else throw new Error()
-        } catch (e) {
-            window.location.replace('/')
-        }
-        return
-    }
     if (isDarkTheme()) {
         document.getElementById('preloader').style.background = '#000'
     }

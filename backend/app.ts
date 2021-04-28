@@ -20,6 +20,7 @@ import accountRouter from './account'
 import applicationRouter from './application'
 import vhost from 'vhost'
 import helmet from 'helmet'
+import bodyParser from 'body-parser'
 declare const DEV_MODE: boolean
 
 export default function createApp(sid: string) {
@@ -104,6 +105,25 @@ export default function createApp(sid: string) {
         app.use(vhost('account.iasa.kr', accountRouter))
         app.use(vhost('application.iasa.kr', applicationRouter))
     }
+
+    app.post(
+        '/finalize',
+        bodyParser.urlencoded({ extended: false }),
+        (req: any, res: any) => {
+            console.log(req.body)
+            res.send(`<html><body><script type="text/javascript">
+            try {
+                const next = '${req.body.next}'
+                window.localStorage.tokenId = '${req.body.tokenId}'
+                if (next) {
+                    window.location.replace(atob(next))
+                } else throw new Error()
+            } catch (e) {
+                window.location.replace('/')
+            }
+        </script></body></html>`)
+        }
+    )
 
     // 메인 템플릿 라우팅
     // TODO : ejs 라우팅 적용해서 최초 API 요청 없애기!
