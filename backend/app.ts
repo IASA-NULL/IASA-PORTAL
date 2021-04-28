@@ -34,7 +34,7 @@ export default function createApp(sid: string) {
         credentials: true,
         origin: (origin: string, callback: any) => {
             console.log(origin)
-            if (!origin || origin.includes('iasa.kr')) {
+            if (!origin || origin.includes('iasa.kr') || origin === 'null') {
                 callback(null, true)
             } else {
                 callback(new Error('Not allowed by CORS'))
