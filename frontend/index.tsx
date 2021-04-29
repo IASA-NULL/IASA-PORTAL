@@ -60,6 +60,13 @@ class App extends React.Component<any, IState> {
         this.setState({ loaded: false })
         fetchAPI('GET', {}, 'account', 'info').then((data) => {
             this.setState({ loaded: true, data: data.data })
+            if (document.getElementById('preloader'))
+                setTimeout(function () {
+                    document.getElementById('preloader').style.opacity = '0'
+                    setTimeout(function () {
+                        document.getElementById('preloader').remove()
+                    }, 500)
+                }, 100)
         })
     }
 
@@ -168,12 +175,6 @@ function init() {
         },
     })
     ReactDOM.render(<App />, document.getElementById('app') as HTMLElement)
-    setTimeout(function () {
-        document.getElementById('preloader').style.opacity = '0'
-        setTimeout(function () {
-            document.getElementById('preloader').remove()
-        }, 500)
-    }, 100)
 }
 
 declare const timerStart: number
