@@ -8,7 +8,7 @@ auth.ts
 
 import express from 'express'
 import jwt from 'jsonwebtoken'
-import { Permission, token } from '../scheme/api/auth'
+import { Permission, SudoToken, token } from '../scheme/api/auth'
 import getSecret from './util/secret'
 import { getServerToken } from './util/serverState'
 import { reSignTime, maxTime, leftTokenTime } from './util/tokenTime'
@@ -135,7 +135,7 @@ router.use('*', async (req, res, next) => {
         const sudoToken = jwt.verify(
             req.cookies.sudo,
             getSecret('token')
-        ) as token
+        ) as SudoToken
         if (sudoToken.sid !== sid || sudoToken.expire < Date.now() || !req.auth)
             throw new Error()
         else if (sudoToken.tokenId !== req.headers['verify']) {

@@ -1,7 +1,12 @@
 import express from 'express'
 import getPath from '../util/getPath'
 import db from '../util/db'
-import { changePasswordToken, Permission, token } from '../../scheme/api/auth'
+import {
+    changePasswordToken,
+    Permission,
+    SudoToken,
+    token,
+} from '../../scheme/api/auth'
 import createResponse from '../createResponse'
 import jwt from 'jsonwebtoken'
 import getSecret, { saltRound } from '../util/secret'
@@ -84,7 +89,7 @@ router.post('/signin', async (req, res) => {
                             ]),
                             expire: Date.now() + maxTime,
                             sid: getServerToken(),
-                            tokenId: tokenId,
+                            tokenId,
                         } as token,
                         getSecret('token')
                     ),
@@ -100,7 +105,8 @@ router.post('/signin', async (req, res) => {
                         {
                             expire: Date.now() + sudoTime,
                             sid: getServerToken(),
-                        } as token,
+                            tokenId,
+                        } as SudoToken,
                         getSecret('token')
                     ),
                     {

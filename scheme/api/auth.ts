@@ -1,4 +1,6 @@
 import { UID } from '../user'
+import { sudoTime } from '../../backend/util/tokenTime'
+import { getServerToken } from '../../backend/util/serverState'
 
 export enum Permission {
     none = 1,
@@ -19,6 +21,12 @@ export interface token {
     tokenId: string
     sudo?: boolean
     expired?: boolean
+}
+
+export interface SudoToken {
+    expire: number
+    sid: string
+    tokenId: string
 }
 
 export interface signupToken {
