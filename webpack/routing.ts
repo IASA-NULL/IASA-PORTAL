@@ -1,13 +1,13 @@
 import { Permission } from '../scheme/api/auth'
 
-interface Config {
+interface Routing {
     file?: string
     path?: string
     target?: Permission[]
     icon: string
     name: string
     showOnDrawer?: boolean
-    child?: Config[]
+    child?: Routing[]
     customNav?: string
 }
 
@@ -63,6 +63,14 @@ export default [
         target: Permission_all_auth,
         icon: 'mail',
         name: '메일',
+        showOnDrawer: true,
+    },
+    {
+        file: 'student/classroom.tsx',
+        path: '/classroom',
+        target: [Permission.student],
+        icon: 'class',
+        name: '과제',
         showOnDrawer: true,
     },
     {
@@ -259,4 +267,4 @@ export default [
         path: '/openapi',
         customNav: 'OpenAPINavList',
     },
-] as Array<Config>
+] as Array<Routing>

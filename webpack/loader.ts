@@ -1,5 +1,5 @@
-import pagesConfig from './frontend/config'
-import { Permission } from './scheme/api/auth'
+import pagesConfig from './routing'
+import { Permission } from '../scheme/api/auth'
 
 function getNavListName(type: Permission) {
     if (type === Permission.student) return 'DefaultStudentNavList'

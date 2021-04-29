@@ -2,7 +2,7 @@ import path from 'path'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import nodeExternals from 'webpack-node-externals'
 import webpack from 'webpack'
-import { pages } from './loader'
+import { pages } from './webpack/loader'
 import { Permission } from './scheme/api/auth'
 
 export default (env: any, argv: any) => {

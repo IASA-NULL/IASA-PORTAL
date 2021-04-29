@@ -110,7 +110,6 @@ export default function createApp(sid: string) {
         '/finalize',
         bodyParser.urlencoded({ extended: false }),
         (req: any, res: any) => {
-            console.log(req.body)
             res.send(`<html><body><script type="text/javascript">
             try {
                 const next = '${req.body.next}'
