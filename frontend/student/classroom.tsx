@@ -6,22 +6,34 @@ import { Typography } from '@rmwc/typography'
 import { BrIfMobile } from '../util'
 
 class Classroom extends React.Component<any, {}> {
-    public toMain() {
-        this.props.history.push('/')
+    public moveToLink() {
+        let clientId =
+            '214248446717-fdl9qv6djmb3iim15ongcdirgioin4f6.apps.googleusercontent.com'
+        let redirectUrl = 'https://api.iasa.kr/account/gsuite'
+        let permissions = [
+            'https://www.googleapis.com/auth/classroom.announcements',
+            'https://www.googleapis.com/auth/classroom.course-work.readonly',
+            'https://www.googleapis.com/auth/classroom.courseworkmaterials.readonly',
+            'https://www.googleapis.com/auth/classroom.topics',
+            'https://www.googleapis.com/auth/classroom.push-notifications',
+        ].join(' ')
+        let endpoint = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=code&scope=${permissions}&flowName=GeneralOAuthFlow`
+
+        window.location.href = endpoint
     }
 
     public render() {
         return (
             <>
-                <Typography use='headline3'>404</Typography>
+                <Typography use='headline3'>Google Classroom 연동</Typography>
                 <BrIfMobile />
                 <Typography use='subtitle1' style={{ marginLeft: '10px' }}>
-                    페이지를 찾을 수 없어요 :(
+                    계속하려면 G Suite 계정으로 로그인하세요.
                 </Typography>
                 <br />
                 <br />
-                <Button onClick={this.toMain.bind(this)} outlined>
-                    메인으로
+                <Button onClick={this.moveToLink} outlined>
+                    로그인
                 </Button>
             </>
         )
