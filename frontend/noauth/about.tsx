@@ -14,16 +14,20 @@ import { Button } from '@rmwc/button'
 import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
 import createURL from '../../scheme/url'
 import { createDialogQueue, DialogQueue } from '@rmwc/dialog'
+import { useEffect } from 'react'
 
 export const queue = createDialogQueue()
 
 function About() {
     const [accountMenuOpen, setAccountMenuOpen] = React.useState(false)
-    queue.alert({
-        title: '사이언스 버스킹 관련 공지',
-        body:
-            '사이언스 버스킹은 현재 신청 기간이 아닙니다. 조금만 기다려 주세요!',
-    })
+    useEffect(() => {
+        queue.alert({
+            title: '사이언스 버스킹 관련 공지',
+            body:
+                '사이언스 버스킹은 현재 신청 기간이 아닙니다. 조금만 기다려 주세요!',
+        })
+    }, [])
+
     return (
         <>
             <TopAppBar fixed style={{ zIndex: 10 }} className='transparent'>
