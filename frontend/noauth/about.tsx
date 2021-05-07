@@ -21,11 +21,15 @@ export const queue = createDialogQueue()
 function About() {
     const [accountMenuOpen, setAccountMenuOpen] = React.useState(false)
     useEffect(() => {
-        queue.alert({
-            title: '사이언스 버스킹 관련 공지',
-            body:
-                '사이언스 버스킹은 현재 신청 기간이 아닙니다. 조금만 기다려 주세요!',
-        })
+        queue
+            .confirm({
+                title: '사이언스 버스킹 관련 공지',
+                body: '사이언스 버스킹을 신청하시려면 확인을 누르세요!',
+            })
+            .then((res) => {
+                if (res)
+                    window.location.href = createURL('application', 'busking')
+            })
     }, [])
 
     return (

@@ -13,6 +13,8 @@ import mailRouter from './mail'
 import notificationRouter from './notification'
 import printRouter from './print'
 
+import buskingRouter from '../app/busking'
+
 import ipRouter from './ip'
 
 import createResponse from '../createResponse'
@@ -60,6 +62,7 @@ router.use('/mail', mailRouter)
 router.use('/notifications', notificationRouter)
 router.use('/print', printRouter)
 router.use('/ip', ipRouter)
+router.use('/busking', buskingRouter)
 
 router.use('*', (req, res) => {
     res.status(404)

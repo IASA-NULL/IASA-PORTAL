@@ -183,6 +183,14 @@ export default [
         showOnDrawer: true,
     },
     {
+        target: [Permission.teacher],
+        file: 'teacher/busking.tsx',
+        path: '/busking',
+        icon: 'science',
+        name: '버스킹 명부',
+        showOnDrawer: true,
+    },
+    {
         target: Permission_all_auth,
         file: 'common/meal.tsx',
         path: '/meal',
