@@ -417,24 +417,28 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
                                     </MenuItem>
                                 )}
                             </Menu>
-                            <TopAppBarActionItem
-                                icon='notifications'
-                                onClick={() => {
-                                    props.history.push('/notifications')
-                                }}
-                                style={{ right: '-20px' }}
-                            />
-                            <Badge
-                                align='inline'
-                                label={unreadNotifications}
-                                style={{
-                                    position: 'relative',
-                                    top: '-20px',
-                                    margin: '0',
-                                }}
-                                theme={['primaryBg', 'onPrimary']}
-                                exited={!unreadNotifications}
-                            />
+                            {props?.accountInfo?.id && (
+                                <>
+                                    <TopAppBarActionItem
+                                        icon='notifications'
+                                        onClick={() => {
+                                            props.history.push('/notifications')
+                                        }}
+                                        style={{ right: '-20px' }}
+                                    />
+                                    <Badge
+                                        align='inline'
+                                        label={unreadNotifications}
+                                        style={{
+                                            position: 'relative',
+                                            top: '-20px',
+                                            margin: '0',
+                                        }}
+                                        theme={['primaryBg', 'onPrimary']}
+                                        exited={!unreadNotifications}
+                                    />
+                                </>
+                            )}
                             <TopAppBarActionItem
                                 icon='account_circle'
                                 onClick={() =>
