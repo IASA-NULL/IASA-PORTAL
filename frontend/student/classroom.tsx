@@ -11,6 +11,7 @@ class Classroom extends React.Component<any, {}> {
             '214248446717-fdl9qv6djmb3iim15ongcdirgioin4f6.apps.googleusercontent.com'
         let redirectUrl = 'https://api.iasa.kr/account/gsuite'
         let permissions = [
+            'https://www.googleapis.com/auth/userinfo.email',
             'https://www.googleapis.com/auth/classroom.announcements',
             'https://www.googleapis.com/auth/classroom.course-work.readonly',
             'https://www.googleapis.com/auth/classroom.courseworkmaterials.readonly',
