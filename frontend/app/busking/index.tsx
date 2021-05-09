@@ -15,6 +15,15 @@ import {
     DialogContent,
     DialogActions,
 } from '@rmwc/dialog'
+import {
+    DataTable,
+    DataTableContent,
+    DataTableHead,
+    DataTableHeadCell,
+    DataTableRow,
+    DataTableBody,
+    DataTableCell,
+} from '@rmwc/data-table'
 import { useState } from 'react'
 import { TextField } from '@rmwc/textfield'
 import { CollapsibleList, List, SimpleListItem } from '@rmwc/list'
@@ -37,6 +46,9 @@ const trans3 = (x: number, y: number) =>
 let qu = createSnackbarQueue()
 let messages = qu.messages
 let notify = qu.notify
+
+let today = new Date()
+let currentYear = today.getFullYear()
 
 function register(name: string, call: string) {
     fetchAPI('POST', { name, call }, 'busking')
@@ -68,11 +80,26 @@ function register(name: string, call: string) {
 }
 
 function About() {
-    const [dialogOpen, setDialogOpen] = useState(false)
     const [agreeTerms, setAgreeTerms] = useState(false)
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [listOpen, setListOpen] = useState(false)
 
     const [name, setName] = useState('')
     const [call, setCall] = useState('')
+
+    let applyDate =
+        new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
+            ? new Date(2021, 5 - 1, 12, 13, 0, 0)
+            : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
+            ? new Date(2021, 6 - 1, 9, 13, 0, 0)
+            : new Date(2021, 8 - 1, 25, 13, 0, 0)
+
+    let playDate =
+        new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
+            ? new Date(2021, 5 - 1, 16, 0, 0, 0)
+            : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
+            ? new Date(2021, 6 - 1, 13, 0, 0, 0)
+            : new Date(2021, 8 - 1, 29, 0, 0, 0)
 
     const [props, set] = useSpring(() => ({
         xy: [0, 0],
@@ -162,31 +189,53 @@ function About() {
                     <br />
                     <br />
                     <br />
-                    <Button
-                        outlined
-                        style={
-                            {
-                                '--mdc-theme-primary': 'white',
-                                borderColor: 'white',
-                                padding: '20px',
-                                fontSize: '20px',
-                            } as React.CSSProperties
+                    {(() => {
+                        if (new Date(Date.now()) < playDate) {
+                            return (
+                                <Button
+                                    outlined
+                                    style={
+                                        {
+                                            '--mdc-theme-primary': 'white',
+                                            borderColor: 'white',
+                                            padding: '20px',
+                                            fontSize: '20px',
+                                        } as React.CSSProperties
+                                    }
+                                    onClick={() => {
+                                        if (new Date(Date.now()) < applyDate) {
+                                            notify({
+                                                title: <b>오류</b>,
+                                                body:
+                                                    '아직 신청 시간 전이에요.',
+                                                icon: 'error_outline',
+                                                dismissIcon: true,
+                                            })
+                                        } else setDialogOpen(true)
+                                    }}>
+                                    신청하기
+                                </Button>
+                            )
+                        } else {
+                            return (
+                                <Button
+                                    outlined
+                                    style={
+                                        {
+                                            '--mdc-theme-primary': 'white',
+                                            borderColor: 'white',
+                                            padding: '20px',
+                                            fontSize: '20px',
+                                        } as React.CSSProperties
+                                    }
+                                    onClick={() => {
+                                        setListOpen(true)
+                                    }}>
+                                    확인하기
+                                </Button>
+                            )
                         }
-                        onClick={() => {
-                            if (
-                                new Date(Date.now()) <
-                                new Date(2021, 5, 12, 13, 0, 0)
-                            ) {
-                                notify({
-                                    title: <b>오류</b>,
-                                    body: '아직 신청 시간 전이에요.',
-                                    icon: 'error_outline',
-                                    dismissIcon: true,
-                                })
-                            } else setDialogOpen(true)
-                        }}>
-                        신청하기
-                    </Button>
+                    })()}
                 </div>
                 <div
                     style={{
@@ -205,7 +254,7 @@ function About() {
                         <Typography use='headline4'>IASA PORTAL</Typography>
                         <br />
                         <Typography use='subtitle1'>
-                            Made with ♥ by 2019-2021 club NULL;
+                            Made with ♥ by 2019-{currentYear} club NULL;
                         </Typography>
                         <br />
                         <br />
@@ -1414,6 +1463,120 @@ function About() {
                 </DialogActions>
             </Dialog>
 
+            <Dialog
+                open={listOpen}
+                onClose={() => {
+                    setListOpen(false)
+                }}>
+                <DialogTitle>일정</DialogTitle>
+                <DialogContent>
+                    <DataTable>
+                        <DataTableContent>
+                            <DataTableHead>
+                                <DataTableHeadCell alignMiddle>
+                                    체험
+                                </DataTableHeadCell>
+                                <DataTableHeadCell alignMiddle>
+                                    ZOOM 회의 ID
+                                </DataTableHeadCell>
+                                <DataTableHeadCell alignMiddle>
+                                    PassWord
+                                </DataTableHeadCell>
+                            </DataTableHead>
+                            <DataTableBody>
+                                <DataTableRow>
+                                    <DataTableCell alignMiddle>
+                                        체험A(로봇)
+                                    </DataTableCell>
+                                    <DataTableCell alignMiddle>
+                                        227 077 3235
+                                    </DataTableCell>
+                                    <DataTableCell alignMiddle>
+                                        6700
+                                    </DataTableCell>
+                                </DataTableRow>
+                                <DataTableRow>
+                                    <DataTableCell alignMiddle>
+                                        체험B(과학완구)
+                                    </DataTableCell>
+                                    <DataTableCell alignMiddle>
+                                        892 9757 8646
+                                    </DataTableCell>
+                                    <DataTableCell alignMiddle>
+                                        6700
+                                    </DataTableCell>
+                                </DataTableRow>
+                                <DataTableRow>
+                                    <DataTableCell alignMiddle>
+                                        체험C(비행체)
+                                    </DataTableCell>
+                                    <DataTableCell alignMiddle>
+                                        861 9773 5238
+                                    </DataTableCell>
+                                    <DataTableCell alignMiddle>
+                                        6700
+                                    </DataTableCell>
+                                </DataTableRow>
+                                <DataTableRow>
+                                    <DataTableCell alignMiddle>
+                                        체험D(체험수학)
+                                    </DataTableCell>
+                                    <DataTableCell alignMiddle>
+                                        293 475 8580
+                                    </DataTableCell>
+                                    <DataTableCell alignMiddle>
+                                        6700
+                                    </DataTableCell>
+                                </DataTableRow>
+                            </DataTableBody>
+                        </DataTableContent>
+                    </DataTable>
+                    <br />
+                    <br />
+                    <br />
+                    <DataTable style={{ height: '270px', width: '365px' }}>
+                        <DataTableContent>
+                            <DataTableHead>
+                                <DataTableHeadCell alignMiddle>
+                                    회차
+                                </DataTableHeadCell>
+                                <DataTableHeadCell alignMiddle>
+                                    시간
+                                </DataTableHeadCell>
+                            </DataTableHead>
+                            <DataTableBody>
+                                <DataTableRow>
+                                    <DataTableCell alignMiddle>1</DataTableCell>
+                                    <DataTableCell alignMiddle>
+                                        15:00 ~ 15:25
+                                    </DataTableCell>
+                                </DataTableRow>
+                                <DataTableRow>
+                                    <DataTableCell alignMiddle>2</DataTableCell>
+                                    <DataTableCell alignMiddle>
+                                        15:30 ~ 15:55
+                                    </DataTableCell>
+                                </DataTableRow>
+                                <DataTableRow>
+                                    <DataTableCell alignMiddle>3</DataTableCell>
+                                    <DataTableCell alignMiddle>
+                                        16:00 ~ 16:25
+                                    </DataTableCell>
+                                </DataTableRow>
+                                <DataTableRow>
+                                    <DataTableCell alignMiddle>4</DataTableCell>
+                                    <DataTableCell alignMiddle>
+                                        16:30 ~ 16:55
+                                    </DataTableCell>
+                                </DataTableRow>
+                            </DataTableBody>
+                        </DataTableContent>
+                    </DataTable>
+                </DialogContent>
+                <DialogActions>
+                    <DialogButton action='close'>확인</DialogButton>
+                </DialogActions>
+            </Dialog>
             <SnackbarQueue messages={messages} />
         </div>
     )
