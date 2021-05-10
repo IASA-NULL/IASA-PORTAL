@@ -101,6 +101,13 @@ function About() {
             ? new Date(2021, 6 - 1, 13, 0, 0, 0)
             : new Date(2021, 8 - 1, 29, 0, 0, 0)
 
+    let whatNumber =
+        new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
+            ? [1, 5, 12]
+            : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
+            ? [2, 6, 9]
+            : [3, 8, 25]
+
     const [props, set] = useSpring(() => ({
         xy: [0, 0],
         config: { mass: 10, tension: 550, friction: 140 },
@@ -205,9 +212,8 @@ function About() {
                                     onClick={() => {
                                         if (new Date(Date.now()) < applyDate) {
                                             notify({
-                                                title: <b>오류</b>,
-                                                body:
-                                                    '아직 신청 시간 전이에요.',
+                                                title: <b>신청알림</b>,
+                                                body: `${whatNumber[0]}회차 신청은 ${whatNumber[1]}/${whatNumber[2]}(수) 13시부터 접수 가능합니다.`,
                                                 icon: 'error_outline',
                                                 dismissIcon: true,
                                             })
