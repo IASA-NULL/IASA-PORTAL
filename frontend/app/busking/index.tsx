@@ -14,6 +14,7 @@ import {
     DialogButton,
     DialogContent,
     DialogActions,
+    createDialogQueue,
 } from '@rmwc/dialog'
 import {
     DataTable,
@@ -96,10 +97,10 @@ function About() {
 
     let playDate =
         new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
-            ? new Date(2021, 5 - 1, 16, 0, 0, 0)
+            ? new Date(2021, 5 - 1, 12, 13, 15, 0)
             : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
-            ? new Date(2021, 6 - 1, 13, 0, 0, 0)
-            : new Date(2021, 8 - 1, 29, 0, 0, 0)
+            ? new Date(2021, 6 - 1, 9, 13, 15, 0)
+            : new Date(2021, 8 - 1, 25, 13, 15, 0)
 
     let whatNumber =
         new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
@@ -194,6 +195,11 @@ function About() {
                         인천과학예술영재학교 사이언스 버스킹
                     </Typography>
                     <br />
+                    <br />
+                    <Typography use='headline6'>
+                        사이언스 버스킹 1회차 신청이 마감되었습니다! 일정은 아래
+                        버튼을 통해 참고해주세요
+                    </Typography>
                     <br />
                     <br />
                     {(() => {
@@ -1474,7 +1480,7 @@ function About() {
                 onClose={() => {
                     setListOpen(false)
                 }}>
-                <DialogTitle>일정</DialogTitle>
+                <DialogTitle>5/16(일) 사이언스 버스킹 1회차 일정</DialogTitle>
                 <DialogContent>
                     <DataTable>
                         <DataTableContent>
