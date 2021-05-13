@@ -196,60 +196,78 @@ function About() {
                     </Typography>
                     <br />
                     <br />
-                    <Typography use='headline6'>
-                        사이언스 버스킹 1회차 신청이 마감되었습니다! 일정은 아래
-                        버튼을 통해 참고해주세요
-                    </Typography>
-                    <br />
-                    <br />
-                    <Typography use='headline6'>
-                        체험꾸러미가 없어도 누구나 ZOOM 참관은 가능합니다.
-                    </Typography>
-                    <br />
-                    <br />
                     {(() => {
                         if (new Date(Date.now()) < playDate) {
                             return (
-                                <Button
-                                    outlined
-                                    style={
-                                        {
-                                            '--mdc-theme-primary': 'white',
-                                            borderColor: 'white',
-                                            padding: '20px',
-                                            fontSize: '20px',
-                                        } as React.CSSProperties
-                                    }
-                                    onClick={() => {
-                                        if (new Date(Date.now()) < applyDate) {
-                                            notify({
-                                                title: <b>신청알림</b>,
-                                                body: `${whatNumber[0]}회차 신청은 ${whatNumber[1]}/${whatNumber[2]}(수) 13시부터 접수 가능합니다.`,
-                                                icon: 'error_outline',
-                                                dismissIcon: true,
-                                            })
-                                        } else setDialogOpen(true)
-                                    }}>
-                                    신청하기
-                                </Button>
+                                <>
+                                    <Typography use='headline6'>
+                                        사이언스 버스킹 {whatNumber[0]}회차
+                                        신청은 {whatNumber[1]}/{whatNumber[2]}
+                                        (수) 13시부터 접수 가능합니다.
+                                    </Typography>
+                                    <br />
+                                    <br />
+                                    <Button
+                                        outlined
+                                        style={
+                                            {
+                                                '--mdc-theme-primary': 'white',
+                                                borderColor: 'white',
+                                                padding: '20px',
+                                                fontSize: '20px',
+                                            } as React.CSSProperties
+                                        }
+                                        onClick={() => {
+                                            if (
+                                                new Date(Date.now()) < applyDate
+                                            ) {
+                                                notify({
+                                                    title: <b>신청알림</b>,
+                                                    body: `${whatNumber[0]}회차 신청은 ${whatNumber[1]}/${whatNumber[2]}(수) 13시부터 접수 가능합니다.`,
+                                                    icon: 'error_outline',
+                                                    dismissIcon: true,
+                                                })
+                                            } else setDialogOpen(true)
+                                        }}>
+                                        신청하기
+                                    </Button>
+                                </>
                             )
                         } else {
                             return (
-                                <Button
-                                    outlined
-                                    style={
-                                        {
-                                            '--mdc-theme-primary': 'white',
-                                            borderColor: 'white',
-                                            padding: '20px',
-                                            fontSize: '20px',
-                                        } as React.CSSProperties
-                                    }
-                                    onClick={() => {
-                                        setListOpen(true)
-                                    }}>
-                                    확인하기
-                                </Button>
+                                <>
+                                    <Typography use='headline6'>
+                                        사이언스 버스킹 {whatNumber[0]}회차
+                                        신청이 마감되었습니다!
+                                    </Typography>
+                                    <br />
+                                    <br />
+                                    <Typography use='headline6'>
+                                        체험꾸러미가 없어도 누구나 ZOOM 참관은
+                                        가능합니다.
+                                    </Typography>
+                                    <br />
+                                    <Typography use='headline6'>
+                                        일정은 아래 버튼을 통해 참고해주세요.
+                                    </Typography>
+                                    <br />
+                                    <br />
+                                    <Button
+                                        outlined
+                                        style={
+                                            {
+                                                '--mdc-theme-primary': 'white',
+                                                borderColor: 'white',
+                                                padding: '20px',
+                                                fontSize: '20px',
+                                            } as React.CSSProperties
+                                        }
+                                        onClick={() => {
+                                            setListOpen(true)
+                                        }}>
+                                        확인하기
+                                    </Button>
+                                </>
                             )
                         }
                     })()}
