@@ -202,6 +202,11 @@ function About() {
                     </Typography>
                     <br />
                     <br />
+                    <Typography use='headline6'>
+                        체험꾸러미가 없어도 누구나 ZOOM 참관은 가능합니다.
+                    </Typography>
+                    <br />
+                    <br />
                     {(() => {
                         if (new Date(Date.now()) < playDate) {
                             return (
