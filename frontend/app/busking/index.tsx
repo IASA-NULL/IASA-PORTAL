@@ -63,7 +63,7 @@ function register(name: string, call: string) {
                 })
             } else {
                 notify({
-                    title: <b>오류</b>,
+                    title: <b>신청알림</b>,
                     body: res.message,
                     icon: 'error_outline',
                     dismissIcon: true,
@@ -238,7 +238,7 @@ function About() {
                                 <>
                                     <Typography use='headline6'>
                                         사이언스 버스킹 {whatNumber[0]}회차
-                                        신청이 마감되었습니다!
+                                        신청이 마감되었습니다.
                                     </Typography>
                                     <br />
                                     <br />

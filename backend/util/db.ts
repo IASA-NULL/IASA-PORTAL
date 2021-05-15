@@ -1,6 +1,7 @@
 import * as MongoDB from 'mongodb'
 import getSecret from './secret'
 
+declare const DEV_MODE: boolean
 let db: any
 
 function get_db() {
