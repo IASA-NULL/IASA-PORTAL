@@ -14,6 +14,7 @@ import {
     DialogButton,
     DialogContent,
     DialogActions,
+    createDialogQueue,
 } from '@rmwc/dialog'
 import {
     DataTable,
@@ -62,7 +63,7 @@ function register(name: string, call: string) {
                 })
             } else {
                 notify({
-                    title: <b>오류</b>,
+                    title: <b>신청알림</b>,
                     body: res.message,
                     icon: 'error_outline',
                     dismissIcon: true,
@@ -96,10 +97,17 @@ function About() {
 
     let playDate =
         new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
-            ? new Date(2021, 5 - 1, 16, 0, 0, 0)
+            ? new Date(2021, 5 - 1, 12, 13, 15, 0)
             : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
-            ? new Date(2021, 6 - 1, 13, 0, 0, 0)
-            : new Date(2021, 8 - 1, 29, 0, 0, 0)
+            ? new Date(2021, 6 - 1, 9, 13, 15, 0)
+            : new Date(2021, 8 - 1, 25, 13, 15, 0)
+
+    let whatNumber =
+        new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
+            ? [1, 5, 12]
+            : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
+            ? [2, 6, 9]
+            : [3, 8, 25]
 
     const [props, set] = useSpring(() => ({
         xy: [0, 0],
@@ -188,51 +196,78 @@ function About() {
                     </Typography>
                     <br />
                     <br />
-                    <br />
                     {(() => {
                         if (new Date(Date.now()) < playDate) {
                             return (
-                                <Button
-                                    outlined
-                                    style={
-                                        {
-                                            '--mdc-theme-primary': 'white',
-                                            borderColor: 'white',
-                                            padding: '20px',
-                                            fontSize: '20px',
-                                        } as React.CSSProperties
-                                    }
-                                    onClick={() => {
-                                        if (new Date(Date.now()) < applyDate) {
-                                            notify({
-                                                title: <b>오류</b>,
-                                                body:
-                                                    '아직 신청 시간 전이에요.',
-                                                icon: 'error_outline',
-                                                dismissIcon: true,
-                                            })
-                                        } else setDialogOpen(true)
-                                    }}>
-                                    신청하기
-                                </Button>
+                                <>
+                                    <Typography use='headline6'>
+                                        사이언스 버스킹 {whatNumber[0]}회차
+                                        신청은 {whatNumber[1]}/{whatNumber[2]}
+                                        (수) 13시부터 접수 가능합니다.
+                                    </Typography>
+                                    <br />
+                                    <br />
+                                    <Button
+                                        outlined
+                                        style={
+                                            {
+                                                '--mdc-theme-primary': 'white',
+                                                borderColor: 'white',
+                                                padding: '20px',
+                                                fontSize: '20px',
+                                            } as React.CSSProperties
+                                        }
+                                        onClick={() => {
+                                            if (
+                                                new Date(Date.now()) < applyDate
+                                            ) {
+                                                notify({
+                                                    title: <b>신청알림</b>,
+                                                    body: `${whatNumber[0]}회차 신청은 ${whatNumber[1]}/${whatNumber[2]}(수) 13시부터 접수 가능합니다.`,
+                                                    icon: 'error_outline',
+                                                    dismissIcon: true,
+                                                })
+                                            } else setDialogOpen(true)
+                                        }}>
+                                        신청하기
+                                    </Button>
+                                </>
                             )
                         } else {
                             return (
-                                <Button
-                                    outlined
-                                    style={
-                                        {
-                                            '--mdc-theme-primary': 'white',
-                                            borderColor: 'white',
-                                            padding: '20px',
-                                            fontSize: '20px',
-                                        } as React.CSSProperties
-                                    }
-                                    onClick={() => {
-                                        setListOpen(true)
-                                    }}>
-                                    확인하기
-                                </Button>
+                                <>
+                                    <Typography use='headline6'>
+                                        사이언스 버스킹 {whatNumber[0]}회차
+                                        신청이 마감되었습니다.
+                                    </Typography>
+                                    <br />
+                                    <br />
+                                    <Typography use='headline6'>
+                                        체험꾸러미가 없어도 누구나 ZOOM 참관은
+                                        가능합니다.
+                                    </Typography>
+                                    <br />
+                                    <Typography use='headline6'>
+                                        일정은 아래 버튼을 통해 참고해주세요.
+                                    </Typography>
+                                    <br />
+                                    <br />
+                                    <Button
+                                        outlined
+                                        style={
+                                            {
+                                                '--mdc-theme-primary': 'white',
+                                                borderColor: 'white',
+                                                padding: '20px',
+                                                fontSize: '20px',
+                                            } as React.CSSProperties
+                                        }
+                                        onClick={() => {
+                                            setListOpen(true)
+                                        }}>
+                                        확인하기
+                                    </Button>
+                                </>
                             )
                         }
                     })()}
@@ -1468,7 +1503,7 @@ function About() {
                 onClose={() => {
                     setListOpen(false)
                 }}>
-                <DialogTitle>일정</DialogTitle>
+                <DialogTitle>5/16(일) 사이언스 버스킹 1회차 일정</DialogTitle>
                 <DialogContent>
                     <DataTable>
                         <DataTableContent>

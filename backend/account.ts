@@ -10,7 +10,7 @@ declare const DEV_MODE: boolean
 const authRouter = express.Router()
 
 authRouter.get('/signin', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'template', 'auth.html'))
+    res.sendFile(path.join(__dirname, '..', 'static', 'html', 'auth.html'))
 })
 
 authRouter.get('/changesecret/:token', (req, res) => {
@@ -20,7 +20,7 @@ authRouter.get('/changesecret/:token', (req, res) => {
             getSecret('token')
         ) as changePasswordToken
         if (token.expire < Date.now()) throw new Error()
-        res.sendFile(path.join(__dirname, '..', 'template', 'auth.html'))
+        res.sendFile(path.join(__dirname, '..', 'static', 'html', 'auth.html'))
     } catch (e) {
         res.sendFile(
             path.join(__dirname, '..', 'template', 'changesecretfail.html')
@@ -29,7 +29,7 @@ authRouter.get('/changesecret/:token', (req, res) => {
 })
 
 authRouter.get('/challenge', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'template', 'auth.html'))
+    res.sendFile(path.join(__dirname, '..', 'static', 'html', 'auth.html'))
 })
 
 authRouter.get('/signout', (req, res) => {

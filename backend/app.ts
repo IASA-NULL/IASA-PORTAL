@@ -127,7 +127,7 @@ export default function createApp(sid: string) {
     // 메인 템플릿 라우팅
     // TODO : ejs 라우팅 적용해서 최초 API 요청 없애기!
     app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '..', 'template', 'main.html'))
+        res.sendFile(path.join(__dirname, '..', 'static', 'html', 'main.html'))
     })
 
     // 앱 시작시 로그

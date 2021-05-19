@@ -33,11 +33,6 @@ async function addBusking(name: string, call: string, res: any) {
             res.send(createResponse(false, '신청이 마감되었어요.'))
             return
         }
-        if (new Date(Date.now()) < new Date(2021, 5, 12, 13, 0, 0)) {
-            res.status(412)
-            res.send(createResponse(false, '아직 신청 시간 전이에요.'))
-            return
-        }
 
         let register = (await db.get('y2021', 'call', call, 'iasa_busking')) as
             | User

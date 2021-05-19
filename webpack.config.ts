@@ -5,6 +5,9 @@ import webpack from 'webpack'
 import { pages } from './webpack/loader'
 import { Permission } from './scheme/api/auth'
 
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
 export default (env: any, argv: any) => {
     const devMode = argv.mode === 'development'
 
@@ -55,7 +58,8 @@ export default (env: any, argv: any) => {
             target: 'es6',
             output: {
                 path: path.resolve(__dirname, 'static', 'js'),
-                filename: '[name].js',
+                filename: '[name].[contenthash:8].js',
+                publicPath: './static/js/',
             },
             resolve: {
                 extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -163,6 +167,22 @@ export default (env: any, argv: any) => {
             },
             plugins: [
                 new MiniCssExtractPlugin({ filename: 'app.css' }),
+                new HtmlWebpackPlugin({
+                    template: './template/main.html',
+                    filename: '../html/main.html',
+                    chunks: ['main'],
+                }),
+                new HtmlWebpackPlugin({
+                    template: './template/auth.html',
+                    filename: '../html/auth.html',
+                    chunks: ['auth'],
+                }),
+                new HtmlWebpackPlugin({
+                    template: './template/app.html',
+                    filename: '../html/app.html',
+                    chunks: ['app'],
+                }),
+                new CleanWebpackPlugin(),
                 new webpack.DefinePlugin({
                     DEV_MODE: devMode,
                 }),
