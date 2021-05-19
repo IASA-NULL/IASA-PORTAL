@@ -191,11 +191,19 @@ export default [
         showOnDrawer: true,
     },
     {
-        target: Permission_all_auth,
+        target: Permission_any,
         file: 'common/meal.tsx',
         path: '/meal',
         icon: 'fastfood',
         name: '급식',
+        showOnDrawer: true,
+    },
+    {
+        target: Permission_any,
+        file: 'common/record.tsx',
+        path: '/record',
+        icon: 'voice_chat',
+        name: '화면 녹화',
         showOnDrawer: true,
     },
     {

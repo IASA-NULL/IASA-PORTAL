@@ -12,6 +12,7 @@ import shareRouter from './share'
 import mailRouter from './mail'
 import notificationRouter from './notification'
 import printRouter from './print'
+import recordRouter from './record'
 
 import buskingRouter from '../app/busking'
 
@@ -62,6 +63,7 @@ router.use('/mail', mailRouter)
 router.use('/notifications', notificationRouter)
 router.use('/print', printRouter)
 router.use('/ip', ipRouter)
+router.use('/record', recordRouter)
 router.use('/busking', buskingRouter)
 
 router.use('*', (req, res) => {
