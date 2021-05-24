@@ -11,8 +11,10 @@ import { DB_CONNECT_ERROR, REQUIRE_PERMISSION_ERROR } from '../../string/error'
 
 const router = express.Router()
 
+const dbname = 'y2021-2'
+
 async function getBusking(res: any) {
-    const buskingDB = await db.direct('y2021', 'iasa_busking')
+    const buskingDB = await db.direct(dbname, 'iasa_busking')
     const buskingList = await buskingDB.find({}).sort('_id', -1).toArray()
     res.send(createResponse(buskingList))
 }
@@ -25,7 +27,7 @@ async function addBusking(name: string, call: string, res: any) {
             return
         }
 
-        const buskingDB = await db.direct('y2021', 'iasa_busking')
+        const buskingDB = await db.direct(dbname, 'iasa_busking')
         const buskingList = await buskingDB.find({}).toArray()
 
         if (buskingList.length >= 60) {
@@ -34,7 +36,7 @@ async function addBusking(name: string, call: string, res: any) {
             return
         }
 
-        let register = (await db.get('y2021', 'call', call, 'iasa_busking')) as
+        let register = (await db.get(dbname, 'call', call, 'iasa_busking')) as
             | User
             | undefined
         if (register) {
@@ -45,7 +47,7 @@ async function addBusking(name: string, call: string, res: any) {
 
         let pid = uuid()
         await db.set(
-            'y2021',
+            dbname,
             {
                 name,
                 call,
@@ -62,7 +64,7 @@ async function addBusking(name: string, call: string, res: any) {
 
 async function deleteBusking(pid: string, res: any) {
     const buskingInfo = (await db.get(
-        'y2021',
+        dbname,
         'pid',
         pid,
         'iasa_busking'
@@ -72,8 +74,21 @@ async function deleteBusking(pid: string, res: any) {
         res.send(createResponse(false, '올바르지 않은 버스킹 ID에요.'))
         return
     }
-    await db.del('y2021', 'pid', pid, 'iasa_busking')
+    await db.del(dbname, 'pid', pid, 'iasa_busking')
     res.send(createResponse(true))
+}
+
+async function checkBusking(res: any) {
+    const buskingDB = await db.direct(dbname, 'iasa_busking')
+    const buskingList = await buskingDB.find({}).toArray()
+
+    if (buskingList.length >= 60) {
+        res.status(412)
+        res.send(createResponse(false, '신청이 마감되었어요.'))
+        return
+    } else {
+        res.send(createResponse(true))
+    }
 }
 
 router.get('/', async (req, res) => {
@@ -86,6 +101,10 @@ router.post('/', async (req, res) => {
 
 router.delete('/:pid', async (req, res) => {
     await deleteBusking(req.params.pid, res)
+})
+
+router.get('/check', async (req, res) => {
+    await checkBusking(res)
 })
 
 export default router
