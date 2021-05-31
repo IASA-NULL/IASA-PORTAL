@@ -209,7 +209,7 @@ class Busking extends React.Component<BuskingProps, BuskingState> {
                 <Typography use='headline3'>버스킹</Typography>
                 <BrIfMobile />
                 <Typography use='subtitle1' style={{ marginLeft: '10px' }}>
-                    사이언스 버스킹 신청자 명단을 확인할 수 있어요.
+                    사이언스 버스킹 2회차 신청자 명단을 확인할 수 있어요.
                 </Typography>
                 <br />
                 <br />

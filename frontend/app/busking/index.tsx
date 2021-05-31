@@ -80,6 +80,29 @@ function register(name: string, call: string) {
         })
 }
 
+function length() {
+    fetchAPI('GET', {}, 'busking', 'check')
+        .then((res) => {
+            if (!res.success) {
+                notify({
+                    title: <b>신청알림</b>,
+                    body: res.message,
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            } else {
+            }
+        })
+        .catch(() => {
+            notify({
+                title: <b>오류</b>,
+                body: '서버와 연결할 수 없어요.',
+                icon: 'error_outline',
+                dismissIcon: true,
+            })
+        })
+}
+
 function About() {
     const [agreeTerms, setAgreeTerms] = useState(false)
     const [dialogOpen, setDialogOpen] = useState(false)
@@ -227,7 +250,42 @@ function About() {
                                                     icon: 'error_outline',
                                                     dismissIcon: true,
                                                 })
-                                            } else setDialogOpen(true)
+                                            } else {
+                                                fetchAPI(
+                                                    'GET',
+                                                    {},
+                                                    'busking',
+                                                    'check'
+                                                )
+                                                    .then((res) => {
+                                                        if (!res.success) {
+                                                            notify({
+                                                                title: (
+                                                                    <b>
+                                                                        신청알림
+                                                                    </b>
+                                                                ),
+                                                                body:
+                                                                    res.message,
+                                                                icon:
+                                                                    'error_outline',
+                                                                dismissIcon: true,
+                                                            })
+                                                        } else {
+                                                            setDialogOpen(true)
+                                                        }
+                                                    })
+                                                    .catch(() => {
+                                                        notify({
+                                                            title: <b>오류</b>,
+                                                            body:
+                                                                '서버와 연결할 수 없어요.',
+                                                            icon:
+                                                                'error_outline',
+                                                            dismissIcon: true,
+                                                        })
+                                                    })
+                                            }
                                         }}>
                                         신청하기
                                     </Button>
