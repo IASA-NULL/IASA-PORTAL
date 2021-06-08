@@ -56,8 +56,16 @@ function register(name: string, call: string) {
         .then((res) => {
             if (res.success) {
                 notify({
-                    title: <b>성공!</b>,
-                    body: '버스킹에 성공적으로 등록했어요.',
+                    title: <b style={{ fontSize: '15px' }}>신청알림</b>,
+                    body: (
+                        <div>
+                            버스킹에 성공적으로 등록했습니다. 사이언스버스킹
+                            접수자 명단은
+                            <br />
+                            인천과학예술영재학교 홈페이지 공지사항에서 확인
+                            가능합니다.
+                        </div>
+                    ),
                     icon: 'check',
                     dismissIcon: true,
                 })
@@ -122,7 +130,7 @@ function About() {
         new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
             ? new Date(2021, 5 - 1, 12, 13, 15, 0)
             : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
-            ? new Date(2021, 6 - 1, 8, 13, 55, 0)
+            ? new Date(2021, 6 - 1, 12, 0, 0, 0)
             : new Date(2021, 8 - 1, 25, 13, 15, 0)
 
     let whatNumber =
@@ -215,7 +223,7 @@ function About() {
                     <br />
                     <br />
                     <Typography use='headline4'>
-                        인천과학예술영재학교 사이언스 버스킹
+                        인천과학예술영재학교 사이언스 버스킹(TEST)
                     </Typography>
                     <br />
                     <br />
@@ -261,12 +269,51 @@ function About() {
                                                         if (!res.success) {
                                                             notify({
                                                                 title: (
-                                                                    <b>
+                                                                    <b
+                                                                        style={{
+                                                                            fontSize:
+                                                                                '15px',
+                                                                        }}>
                                                                         신청알림
                                                                     </b>
                                                                 ),
-                                                                body:
-                                                                    res.message,
+                                                                body: (
+                                                                    <div>
+                                                                        신청이
+                                                                        마감되었습니다.
+                                                                        체험꾸러미가
+                                                                        없어도
+                                                                        누구나
+                                                                        ZOOM
+                                                                        참관은
+                                                                        가능합니다.
+                                                                        <br />
+                                                                        <br />
+                                                                        <Button
+                                                                            outlined
+                                                                            style={
+                                                                                {
+                                                                                    '--mdc-theme-primary':
+                                                                                        'white',
+                                                                                    borderColor:
+                                                                                        'white',
+                                                                                    padding:
+                                                                                        '10px 15px',
+                                                                                    fontSize:
+                                                                                        '15px',
+                                                                                    float:
+                                                                                        'right',
+                                                                                } as React.CSSProperties
+                                                                            }
+                                                                            onClick={() => {
+                                                                                setListOpen(
+                                                                                    true
+                                                                                )
+                                                                            }}>
+                                                                            확인하기
+                                                                        </Button>
+                                                                    </div>
+                                                                ),
                                                                 icon:
                                                                     'error_outline',
                                                                 dismissIcon: true,
