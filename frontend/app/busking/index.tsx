@@ -123,7 +123,7 @@ function About() {
         new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
             ? new Date(2021, 5 - 1, 12, 13, 0, 0)
             : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
-            ? new Date(2021, 6 - 1, 8, 13, 0, 0)
+            ? new Date(2021, 6 - 1, 9, 13, 0, 0)
             : new Date(2021, 8 - 1, 25, 13, 0, 0)
 
     let playDate =
@@ -223,7 +223,7 @@ function About() {
                     <br />
                     <br />
                     <Typography use='headline4'>
-                        인천과학예술영재학교 사이언스 버스킹(TEST)
+                        인천과학예술영재학교 사이언스 버스킹
                     </Typography>
                     <br />
                     <br />
