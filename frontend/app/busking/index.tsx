@@ -115,14 +115,14 @@ function About() {
         new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
             ? new Date(2021, 5 - 1, 12, 13, 0, 0)
             : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
-            ? new Date(2021, 6 - 1, 9, 13, 0, 0)
+            ? new Date(2021, 6 - 1, 8, 13, 0, 0)
             : new Date(2021, 8 - 1, 25, 13, 0, 0)
 
     let playDate =
         new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
             ? new Date(2021, 5 - 1, 12, 13, 15, 0)
             : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
-            ? new Date(2021, 6 - 1, 9, 13, 15, 0)
+            ? new Date(2021, 6 - 1, 8, 13, 55, 0)
             : new Date(2021, 8 - 1, 25, 13, 15, 0)
 
     let whatNumber =
