@@ -56,6 +56,18 @@ class Main extends React.Component<any, {}> {
                         link='/assign'
                     />
                     <CardLink
+                        img='/static/img/illust/class.png'
+                        title='동아리 개설'
+                        subtitle='동아리를 관리해요.'
+                        link='/club'
+                    />
+                    <CardLink
+                        img='/static/img/illust/class.png'
+                        title='동아리 신청 인원'
+                        subtitle='동아리 신청인원을 관리해요.'
+                        link='/clubUser'
+                    />
+                    <CardLink
                         img='/static/img/illust/cloud.png'
                         title='서비스 관리'
                         subtitle='외부 서비스에 접속해요.'
