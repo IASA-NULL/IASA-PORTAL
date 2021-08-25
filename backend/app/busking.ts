@@ -30,7 +30,7 @@ async function addBusking(name: string, call: string, res: any) {
         const buskingDB = await db.direct(dbname, 'iasa_busking')
         const buskingList = await buskingDB.find({}).toArray()
 
-        if (buskingList.length >= 6) {
+        if (buskingList.length >= 60) {
             res.status(412)
             res.send(createResponse(false, '신청이 마감되었어요.'))
             return
