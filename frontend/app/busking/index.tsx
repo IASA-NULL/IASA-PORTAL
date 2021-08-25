@@ -131,7 +131,7 @@ function About() {
             ? new Date(2021, 5 - 1, 12, 13, 15, 0)
             : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
             ? new Date(2021, 6 - 1, 12, 0, 0, 0)
-            : new Date(2021, 8 - 1, 25, 13, 15, 0)
+            : new Date(2021, 8 - 1, 26, 13, 15, 0)
 
     let whatNumber =
         new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
