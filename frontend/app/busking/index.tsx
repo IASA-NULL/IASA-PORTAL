@@ -1608,7 +1608,7 @@ function About() {
                 onClose={() => {
                     setListOpen(false)
                 }}>
-                <DialogTitle>5/16(일) 사이언스 버스킹 1회차 일정</DialogTitle>
+                <DialogTitle>8/29(일) 사이언스 버스킹 3회차 일정</DialogTitle>
                 <DialogContent>
                     <DataTable>
                         <DataTableContent>
@@ -1640,7 +1640,11 @@ function About() {
                                         체험B(과학완구)
                                     </DataTableCell>
                                     <DataTableCell alignMiddle>
-                                        892 9757 8646
+                                        <del>892 9757 8646</del>
+                                        <br />
+                                        <div style={{ color: '#39389f' }}>
+                                            826 5625 7272(변경)
+                                        </div>
                                     </DataTableCell>
                                     <DataTableCell alignMiddle>
                                         6700
