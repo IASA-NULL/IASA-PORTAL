@@ -140,6 +140,18 @@ export default [
                 icon: 'school',
                 name: '반 배정',
             },
+            {
+                file: 'admin/club.tsx',
+                path: '/club',
+                icon: 'groups',
+                name: '동아리 개설',
+            },
+            {
+                file: 'admin/clubUser.tsx',
+                path: '/clubUser',
+                icon: 'account_box',
+                name: '동아리 신청인원 관리',
+            },
         ],
     },
     {
