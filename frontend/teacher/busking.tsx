@@ -1,50 +1,22 @@
 import * as React from 'react'
 
-import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
-import {
-    DataTable,
-    DataTableBody,
-    DataTableCell,
-    DataTableContent,
-    DataTableHead,
-    DataTableHeadCell,
-    DataTableRow,
-} from '@rmwc/data-table'
-import { Checkbox } from '@rmwc/checkbox'
-import { TextField } from '@rmwc/textfield'
-import { Grid, GridCell, GridRow } from '@rmwc/grid'
+import { DataTableCell, DataTableRow } from '@rmwc/data-table'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
-import {
-    getMyeonbulTime,
-    MID,
-    MyeonbulDB,
-    MyeonbulQuery,
-    MyeonbulRequestListType,
-    MyeonbulResponseType,
-    MyeonbulTimeType,
-} from '../../scheme/api/myeonbul'
-import { Permission, token } from '../../scheme/api/auth'
-import {
-    BrIfMobile,
-    fetchAPI,
-    focusNextInput,
-    SearchUser,
-    TimeSelect,
-} from '../util'
+import { token } from '../../scheme/api/auth'
+import { BrIfMobile, fetchAPI } from '../util'
 import { UserInfo } from '../../scheme/user'
-import { formatTimeD, TimeRange } from '../../scheme/time'
+import { dateToString, TimeRange } from '../../scheme/time'
 import { IconButton } from '@rmwc/icon-button'
-import createURL from '../../scheme/url'
-import commonApi from '../../scheme/api/commonApi'
+import Table from '../util/table'
+import { uuid } from '../../backend/util/random'
 
 interface BuskingProps {
     data: token
 }
 
 interface BuskingState {
-    data?: commonApi
     loaded: boolean
     teacherSelectOpened: boolean
     selectedStudent: UserInfo
@@ -52,6 +24,7 @@ interface BuskingState {
     selectedTime: TimeRange
     selectedPlace: string
     reason: string
+    refreshToken: string
 }
 
 class Busking extends React.Component<BuskingProps, BuskingState> {
@@ -77,28 +50,7 @@ class Busking extends React.Component<BuskingProps, BuskingState> {
     }
 
     public refresh() {
-        this.setState({ loaded: false })
-        fetchAPI('GET', {}, 'busking')
-            .then((res: commonApi) => {
-                if (res.success) {
-                    this.setState({ loaded: true, data: res })
-                } else {
-                    this.notify({
-                        title: <b>오류</b>,
-                        body: res.message,
-                        icon: 'error_outline',
-                        dismissIcon: true,
-                    })
-                }
-            })
-            .catch(() => {
-                this.notify({
-                    title: <b>오류</b>,
-                    body: '서버와 연결할 수 없어요.',
-                    icon: 'error_outline',
-                    dismissIcon: true,
-                })
-            })
+        this.setState({ refreshToken: uuid() })
     }
 
     public cancel(pid: string) {
@@ -131,79 +83,6 @@ class Busking extends React.Component<BuskingProps, BuskingState> {
     }
 
     public render() {
-        let tableBody
-        if (this.state?.loaded) {
-            try {
-                tableBody = this.state.data.data
-                    .map(
-                        (el: {
-                            time: number
-                            name: string
-                            call: string
-                            pid: string
-                        }) => {
-                            try {
-                                let time = new Date(el.time)
-                                return (
-                                    <DataTableRow>
-                                        <DataTableCell>
-                                            {`${time.getFullYear()}/${
-                                                time.getMonth() + 1
-                                            }/${time.getDate()} ${formatTimeD(
-                                                time
-                                            )}`}
-                                        </DataTableCell>
-                                        <DataTableCell alignEnd>
-                                            {el.name}
-                                        </DataTableCell>
-                                        <DataTableCell alignEnd>
-                                            {el.call}
-                                        </DataTableCell>
-                                        <DataTableCell alignEnd>
-                                            <IconButton
-                                                icon='delete'
-                                                onClick={() => {
-                                                    this.cancel(el.pid)
-                                                }}
-                                            />
-                                        </DataTableCell>
-                                    </DataTableRow>
-                                )
-                            } catch (e) {
-                                return null
-                            }
-                        }
-                    )
-                    .filter((x: any) => x)
-            } catch (e) {}
-            if (!tableBody || tableBody.length === 0) {
-                let message
-                try {
-                    message = this.state.data.message
-                } catch (e) {}
-                if (!message) message = '신청 내역이 없어요!'
-                tableBody = (
-                    <DataTableRow>
-                        <DataTableCell>
-                            <div>{message}</div>
-                        </DataTableCell>
-                        <DataTableCell />
-                        <DataTableCell />
-                        <DataTableCell />
-                    </DataTableRow>
-                )
-            }
-        } else
-            tableBody = (
-                <DataTableRow>
-                    <DataTableCell>
-                        <div>로딩 중...</div>
-                    </DataTableCell>
-                    <DataTableCell />
-                    <DataTableCell />
-                    <DataTableCell />
-                </DataTableRow>
-            )
         return (
             <div>
                 <Typography use='headline3'>버스킹</Typography>
@@ -215,37 +94,32 @@ class Busking extends React.Component<BuskingProps, BuskingState> {
                 <br />
                 <Typography use='headline5'>목록</Typography>
                 <br />
-                <DataTable
-                    stickyRows={1}
-                    stickyColumns={0}
-                    style={{
-                        width: 'calc(100% - 40px)',
-                        margin: '20px',
-                        maxHeight: 'calc(100vh - 300px)',
-                    }}>
-                    <DataTableContent>
-                        <DataTableHead>
+                <Table
+                    apiOption={['busking']}
+                    dataHandler={(el: any) => {
+                        return (
                             <DataTableRow>
-                                <DataTableHeadCell>신청 시간</DataTableHeadCell>
-                                <DataTableHeadCell>이름</DataTableHeadCell>
-                                <DataTableHeadCell>전화번호</DataTableHeadCell>
-                                <DataTableHeadCell alignEnd>
-                                    작업
-                                </DataTableHeadCell>
+                                <DataTableCell>
+                                    {dateToString(el.time)}
+                                </DataTableCell>
+                                <DataTableCell>{el.name}</DataTableCell>
+                                <DataTableCell>{el.call}</DataTableCell>
+                                <DataTableCell>
+                                    <IconButton
+                                        icon='delete'
+                                        onClick={() => {
+                                            this.cancel(el.pid)
+                                        }}
+                                    />
+                                </DataTableCell>
                             </DataTableRow>
-                        </DataTableHead>
-                        <DataTableBody>{tableBody}</DataTableBody>
-                    </DataTableContent>
-                </DataTable>
-                <br />
-                <Button
-                    outlined
-                    onClick={this.refresh.bind(this)}
-                    style={{ marginLeft: '20px' }}>
-                    새로고침
-                </Button>
-                <br />
-                <br />
+                        )
+                    }}
+                    cols={['신청 시각', '이름', '전화번호', '작업']}
+                    notify={this.notify}
+                    key={this.state?.refreshToken}
+                    emptyMessage='신청 내역이 없어요!'
+                />
                 <SnackbarQueue messages={this.messages} />
             </div>
         )

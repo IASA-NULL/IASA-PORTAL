@@ -2,15 +2,7 @@ import * as React from 'react'
 
 import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
-import {
-    DataTable,
-    DataTableBody,
-    DataTableCell,
-    DataTableContent,
-    DataTableHead,
-    DataTableHeadCell,
-    DataTableRow,
-} from '@rmwc/data-table'
+import { DataTableCell, DataTableRow } from '@rmwc/data-table'
 import { Checkbox } from '@rmwc/checkbox'
 import { TextField } from '@rmwc/textfield'
 import { Grid, GridCell, GridRow } from '@rmwc/grid'
@@ -34,9 +26,11 @@ import {
     TimeSelect,
 } from '../util'
 import { UserInfo } from '../../scheme/user'
-import { formatTimeD, TimeRange } from '../../scheme/time'
+import { myeonbulTimtToString, TimeRange } from '../../scheme/time'
 import { IconButton } from '@rmwc/icon-button'
 import createURL from '../../scheme/url'
+import Table from '../util/table'
+import { uuid } from '../../backend/util/random'
 
 interface MyeonbulProps {
     data: token
@@ -51,6 +45,7 @@ interface MyeonbulState {
     selectedTime: TimeRange
     selectedPlace: string
     reason: string
+    refreshToken: string
 }
 
 class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
@@ -66,45 +61,13 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
         this.handleChange = this.handleChange.bind(this)
     }
 
-    public componentDidMount() {
-        this.refresh()
-    }
-
     public handleChange(e: React.FormEvent<HTMLInputElement>, target: string) {
         // @ts-ignore
         this.setState({ [target]: e.target.value })
     }
 
     public refresh() {
-        this.setState({ loaded: false })
-        fetchAPI(
-            'POST',
-            {
-                type: MyeonbulRequestListType.listByUser,
-            },
-            'myeonbul',
-            'list'
-        )
-            .then((res: MyeonbulQuery) => {
-                if (res.success) {
-                    this.setState({ loaded: true, data: res })
-                } else {
-                    this.notify({
-                        title: <b>오류</b>,
-                        body: res.message,
-                        icon: 'error_outline',
-                        dismissIcon: true,
-                    })
-                }
-            })
-            .catch(() => {
-                this.notify({
-                    title: <b>오류</b>,
-                    body: '서버와 연결할 수 없어요.',
-                    icon: 'error_outline',
-                    dismissIcon: true,
-                })
-            })
+        this.setState({ refreshToken: uuid() })
     }
 
     public register() {
@@ -214,114 +177,6 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
     }
 
     public render() {
-        let tableBody
-        if (this.state?.loaded) {
-            try {
-                tableBody = this.state.data.data
-                    .map((el: MyeonbulDB) => {
-                        try {
-                            let formattedDate: string,
-                                begin = new Date(el.timeRange.begin),
-                                end = new Date(el.timeRange.end)
-                            if (el.timeRange.nickname)
-                                formattedDate = `${end.getFullYear()}/${
-                                    end.getMonth() + 1
-                                }/${end.getDate()} ${el.timeRange.nickname}`
-                            else if (begin.getDay() === end.getDay())
-                                formattedDate = `${end.getFullYear()}/${
-                                    end.getMonth() + 1
-                                }/${end.getDate()} ${formatTimeD(
-                                    begin
-                                )} - ${formatTimeD(end)}`
-                            else
-                                formattedDate = `${begin.getFullYear()}/${
-                                    begin.getMonth() + 1
-                                }/${begin.getDate()} ${formatTimeD(
-                                    begin
-                                )} - ${end.getFullYear()}/${
-                                    end.getMonth() + 1
-                                }/${end.getDate()} ${formatTimeD(end)}`
-                            return (
-                                <DataTableRow>
-                                    <DataTableCell>
-                                        {formattedDate}
-                                    </DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        {el.place}
-                                    </DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        {el.target.name}
-                                    </DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        {el.reason}
-                                    </DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        <Checkbox
-                                            indeterminate={
-                                                el.approved ===
-                                                MyeonbulResponseType.UNDEFINED
-                                            }
-                                            checked={
-                                                el.approved ===
-                                                MyeonbulResponseType.ACCEPT
-                                            }
-                                            onClick={(e) => {
-                                                this.response(
-                                                    el.mid,
-                                                    (e.target as HTMLInputElement)
-                                                        .checked
-                                                )
-                                            }}
-                                        />
-                                    </DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        <IconButton
-                                            icon='delete'
-                                            onClick={() => {
-                                                this.cancel(el.mid)
-                                            }}
-                                        />
-                                    </DataTableCell>
-                                </DataTableRow>
-                            )
-                        } catch (e) {
-                            return null
-                        }
-                    })
-                    .filter((x) => x)
-            } catch (e) {}
-            if (!tableBody || tableBody.length === 0) {
-                let message
-                try {
-                    message = this.state.data.message
-                } catch (e) {}
-                if (!message) message = '면불 내역이 없어요!'
-                tableBody = (
-                    <DataTableRow>
-                        <DataTableCell>
-                            <div>{message}</div>
-                        </DataTableCell>
-                        <DataTableCell />
-                        <DataTableCell />
-                        <DataTableCell />
-                        <DataTableCell />
-                        <DataTableCell />
-                    </DataTableRow>
-                )
-            }
-        } else
-            tableBody = (
-                <DataTableRow>
-                    <DataTableCell>
-                        <div>로딩 중...</div>
-                    </DataTableCell>
-                    <DataTableCell />
-                    <DataTableCell />
-                    <DataTableCell />
-                    <DataTableCell />
-                    <DataTableCell />
-                </DataTableRow>
-            )
         return (
             <div>
                 <Typography use='headline3'>면불</Typography>
@@ -409,41 +264,63 @@ class Myeonbul extends React.Component<MyeonbulProps, MyeonbulState> {
                 <br />
                 <Typography use='headline5'>면불 승인</Typography>
                 <br />
-                <DataTable
-                    stickyRows={1}
-                    stickyColumns={0}
-                    style={{
-                        width: 'calc(100% - 40px)',
-                        margin: '20px',
-                        maxHeight: 'calc(100vh - 300px)',
-                    }}>
-                    <DataTableContent>
-                        <DataTableHead>
+                <Table
+                    apiOption={{
+                        target: ['myeonbul', 'list'],
+                        method: 'POST',
+                        body: { type: MyeonbulRequestListType.listByUser },
+                    }}
+                    dataHandler={(el: MyeonbulDB) => {
+                        return (
                             <DataTableRow>
-                                <DataTableHeadCell>면불 시간</DataTableHeadCell>
-                                <DataTableHeadCell>면불 장소</DataTableHeadCell>
-                                <DataTableHeadCell>
-                                    담당 선생님
-                                </DataTableHeadCell>
-                                <DataTableHeadCell>면불 사유</DataTableHeadCell>
-                                <DataTableHeadCell alignEnd>
-                                    승인
-                                </DataTableHeadCell>
-                                <DataTableHeadCell alignEnd>
-                                    작업
-                                </DataTableHeadCell>
+                                <DataTableCell>
+                                    {myeonbulTimtToString(el.timeRange)}
+                                </DataTableCell>
+                                <DataTableCell>{el.place}</DataTableCell>
+                                <DataTableCell>{el.target.name}</DataTableCell>
+                                <DataTableCell>{el.reason}</DataTableCell>
+                                <DataTableCell>
+                                    <Checkbox
+                                        indeterminate={
+                                            el.approved ===
+                                            MyeonbulResponseType.UNDEFINED
+                                        }
+                                        checked={
+                                            el.approved ===
+                                            MyeonbulResponseType.ACCEPT
+                                        }
+                                        onClick={(e) => {
+                                            this.response(
+                                                el.mid,
+                                                (e.target as HTMLInputElement)
+                                                    .checked
+                                            )
+                                        }}
+                                    />
+                                </DataTableCell>
+                                <DataTableCell>
+                                    <IconButton
+                                        icon='delete'
+                                        onClick={() => {
+                                            this.cancel(el.mid)
+                                        }}
+                                    />
+                                </DataTableCell>
                             </DataTableRow>
-                        </DataTableHead>
-                        <DataTableBody>{tableBody}</DataTableBody>
-                    </DataTableContent>
-                </DataTable>
-                <br />
-                <Button
-                    outlined
-                    onClick={this.refresh.bind(this)}
-                    style={{ marginLeft: '20px' }}>
-                    새로고침
-                </Button>
+                        )
+                    }}
+                    cols={[
+                        '면불 시간',
+                        '면불 장소',
+                        '신청 학생',
+                        '면불 사유',
+                        '승인',
+                        '작업',
+                    ]}
+                    notify={this.notify}
+                    key={this.state?.refreshToken}
+                    emptyMessage='면불 내역이 없어요!'
+                />
                 <br />
                 <br />
                 <Typography use='headline5'>면불대장 출력</Typography>

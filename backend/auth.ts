@@ -36,7 +36,7 @@ router.use('*', async (req, res, next) => {
         // API용 계정은 토큰 만료 무시!
         if (req.auth.permission !== Permission.api) {
             // SID가 같지 않을 경우 토큰 만료
-            if (req.auth.sid !== sid) {
+            if (req.auth.sid !== sid && !DEV_MODE) {
                 req.auth.expired = true
                 // 리다이렉션
                 if (
@@ -136,7 +136,11 @@ router.use('*', async (req, res, next) => {
             req.cookies.sudo,
             getSecret('token')
         ) as SudoToken
-        if (sudoToken.sid !== sid || sudoToken.expire < Date.now() || !req.auth)
+        if (
+            (sudoToken.sid !== sid && !DEV_MODE) ||
+            sudoToken.expire < Date.now() ||
+            !req.auth
+        )
             throw new Error()
         else if (sudoToken.tokenId !== req.headers['verify']) {
             throw new Error()

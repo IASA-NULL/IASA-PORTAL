@@ -3,15 +3,7 @@ import * as React from 'react'
 import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
 import { LinearProgress } from '@rmwc/linear-progress'
-import {
-    DataTable,
-    DataTableContent,
-    DataTableHead,
-    DataTableRow,
-    DataTableHeadCell,
-    DataTableBody,
-    DataTableCell,
-} from '@rmwc/data-table'
+import { DataTableRow, DataTableCell } from '@rmwc/data-table'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 import {
@@ -26,8 +18,10 @@ import { Grid, GridCell, GridRow } from '@rmwc/grid'
 import { TextField } from '@rmwc/textfield'
 import { Select } from '@rmwc/select'
 import { UID, UserInfo } from '../../scheme/user'
-import { formatTimeD } from '../../scheme/time'
+import { dateToString } from '../../scheme/time'
 import { IconButton } from '@rmwc/icon-button'
+import Table from '../util/table'
+import { uuid } from '../../backend/util/random'
 
 interface PenaltyProps {
     data: token
@@ -42,6 +36,29 @@ interface PenaltyState {
     type?: string
     score?: string
     reason?: string
+    refreshToken?: string
+}
+
+function penaltyFormatter(el: PenaltyResponseOne) {
+    return (
+        <DataTableRow>
+            <DataTableCell>
+                {(el.score > 0 ? '상점 ' : '벌점 ') + Math.abs(el.score) + '점'}
+            </DataTableCell>
+            <DataTableCell>{dateToString(el.time)}</DataTableCell>
+            <DataTableCell>{el.target.name}</DataTableCell>
+            <DataTableCell>{el.teacher.name}</DataTableCell>
+            <DataTableCell>{el.info}</DataTableCell>
+            <DataTableCell>
+                <IconButton
+                    icon='delete'
+                    onClick={() => {
+                        this.remove(el.pid)
+                    }}
+                />
+            </DataTableCell>
+        </DataTableRow>
+    )
 }
 
 class Penalty extends React.Component<PenaltyProps, PenaltyState> {
@@ -62,10 +79,6 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
         this.handleChange = this.handleChange.bind(this)
     }
 
-    public componentDidMount() {
-        this.refreshList()
-    }
-
     public handleChange(e: React.FormEvent<HTMLInputElement>, target: string) {
         // @ts-ignore
         this.setState({ [target]: e.target.value })
@@ -77,32 +90,11 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
         fetchAPI('GET', {}, 'penalty', this.state?.uid.toString())
             .then((res: PenaltyResponse) => {
                 if (res.success) {
-                    this.setState({ loaded: true, data: res })
-                } else {
-                    this.notify({
-                        title: <b>오류</b>,
-                        body: res.message,
-                        icon: 'error_outline',
-                        dismissIcon: true,
+                    this.setState({
+                        loaded: true,
+                        data: res,
+                        refreshToken: uuid(),
                     })
-                }
-            })
-            .catch(() => {
-                this.notify({
-                    title: <b>오류</b>,
-                    body: '서버와 연결할 수 없어요.',
-                    icon: 'error_outline',
-                    dismissIcon: true,
-                })
-            })
-    }
-
-    public refreshList() {
-        this.setState({ loadedList: false })
-        fetchAPI('GET', {}, 'penalty', 'list')
-            .then((res: PenaltyListResponse) => {
-                if (res.success) {
-                    this.setState({ loadedList: true, listData: res })
                 } else {
                     this.notify({
                         title: <b>오류</b>,
@@ -161,7 +153,6 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                 this.setState({ score: '', reason: '' })
                 setTimeout(() => {
                     this.refresh()
-                    this.refreshList()
                 }, 0)
             })
             .catch(() => {
@@ -194,7 +185,6 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                 this.setState({ score: '', reason: '' })
                 setTimeout(() => {
                     this.refresh()
-                    this.refreshList()
                 }, 0)
             })
             .catch(() => {
@@ -208,152 +198,6 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
     }
 
     public render() {
-        let tableBody, listTableBody
-        if (this.state?.loaded) {
-            try {
-                tableBody = this.state.data.data.history
-                    .map((el: PenaltyResponseOne) => {
-                        try {
-                            let time = new Date(el.time)
-                            return (
-                                <DataTableRow>
-                                    <DataTableCell alignEnd>
-                                        {(el.score > 0 ? '상점 ' : '벌점 ') +
-                                            Math.abs(el.score) +
-                                            '점'}
-                                    </DataTableCell>
-                                    <DataTableCell>{`${time.getFullYear()}/${
-                                        time.getMonth() + 1
-                                    }/${time.getDate()} ${formatTimeD(
-                                        time
-                                    )}`}</DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        {el.teacher.name}
-                                    </DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        {el.info}
-                                    </DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        <IconButton
-                                            icon='delete'
-                                            onClick={() => {
-                                                this.remove(el.pid)
-                                            }}
-                                        />
-                                    </DataTableCell>
-                                </DataTableRow>
-                            )
-                        } catch (e) {
-                            return null
-                        }
-                    })
-                    .filter((x: any) => x)
-            } catch (e) {}
-            if (!tableBody || tableBody.length === 0) {
-                let message
-                try {
-                    message = this.state.data.message
-                } catch (e) {}
-                if (!message) message = '상벌점 내역이 없어요!'
-                tableBody = (
-                    <DataTableRow>
-                        <DataTableCell>
-                            <div>{message}</div>
-                        </DataTableCell>
-                        <DataTableCell />
-                        <DataTableCell />
-                        <DataTableCell />
-                        <DataTableCell />
-                    </DataTableRow>
-                )
-            }
-        } else
-            tableBody = (
-                <DataTableRow>
-                    <DataTableCell>
-                        <div>로딩 중...</div>
-                    </DataTableCell>
-                    <DataTableCell />
-                    <DataTableCell />
-                    <DataTableCell />
-                    <DataTableCell />
-                </DataTableRow>
-            )
-        if (this.state?.loadedList) {
-            try {
-                listTableBody = this.state.listData.data
-                    .map((el: PenaltyResponseOne) => {
-                        try {
-                            let time = new Date(el.time)
-                            return (
-                                <DataTableRow>
-                                    <DataTableCell alignEnd>
-                                        {(el.score > 0 ? '상점 ' : '벌점 ') +
-                                            Math.abs(el.score) +
-                                            '점'}
-                                    </DataTableCell>
-                                    <DataTableCell>{`${time.getFullYear()}/${
-                                        time.getMonth() + 1
-                                    }/${time.getDate()} ${formatTimeD(
-                                        time
-                                    )}`}</DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        {el.target.name}
-                                    </DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        {el.teacher.name}
-                                    </DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        {el.info}
-                                    </DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        <IconButton
-                                            icon='delete'
-                                            onClick={() => {
-                                                this.remove(el.pid)
-                                            }}
-                                        />
-                                    </DataTableCell>
-                                </DataTableRow>
-                            )
-                        } catch (e) {
-                            return null
-                        }
-                    })
-                    .filter((x: any) => x)
-            } catch (e) {}
-            if (!listTableBody || listTableBody.length === 0) {
-                let message
-                try {
-                    message = this.state.listData.message
-                } catch (e) {}
-                if (!message) message = '상벌점 내역이 없어요!'
-                listTableBody = (
-                    <DataTableRow>
-                        <DataTableCell>
-                            <div>{message}</div>
-                        </DataTableCell>
-                        <DataTableCell />
-                        <DataTableCell />
-                        <DataTableCell />
-                        <DataTableCell />
-                        <DataTableCell />
-                    </DataTableRow>
-                )
-            }
-        } else
-            listTableBody = (
-                <DataTableRow>
-                    <DataTableCell>
-                        <div>로딩 중...</div>
-                    </DataTableCell>
-                    <DataTableCell />
-                    <DataTableCell />
-                    <DataTableCell />
-                    <DataTableCell />
-                    <DataTableCell />
-                </DataTableRow>
-            )
         return (
             <div>
                 <Typography use='headline3'>상벌점</Typography>
@@ -400,7 +244,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                         </GridCell>
                     </GridRow>
                 </Grid>
-                {this.state?.data ? (
+                {this.state?.data && (
                     <>
                         <Grid
                             style={{
@@ -503,92 +347,45 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                         <br />
                         <Typography use='headline5'>상벌점 내역</Typography>
                         <br />
-                        <DataTable
-                            stickyRows={1}
-                            stickyColumns={0}
-                            style={{
-                                width: 'calc(100% - 40px)',
-                                margin: '20px',
-                                maxHeight: 'calc(100vh - 300px)',
-                            }}>
-                            <DataTableContent>
-                                <DataTableHead>
-                                    <DataTableRow>
-                                        <DataTableHeadCell>
-                                            받은 점수
-                                        </DataTableHeadCell>
-                                        <DataTableHeadCell>
-                                            받은 시간
-                                        </DataTableHeadCell>
-                                        <DataTableHeadCell>
-                                            부여한 선생님
-                                        </DataTableHeadCell>
-                                        <DataTableHeadCell alignEnd>
-                                            사유
-                                        </DataTableHeadCell>
-                                        <DataTableHeadCell alignEnd>
-                                            작업
-                                        </DataTableHeadCell>
-                                    </DataTableRow>
-                                </DataTableHead>
-                                <DataTableBody>{tableBody}</DataTableBody>
-                            </DataTableContent>
-                        </DataTable>
-                        <br />
-                        <br />
-                        <Button
-                            outlined
-                            onClick={this.refresh.bind(this)}
-                            style={{ marginLeft: '20px' }}>
-                            새로고침
-                        </Button>
-                        <br />
+                        <Table
+                            apiOption={['penalty', this.state?.uid.toString()]}
+                            dataHandler={penaltyFormatter}
+                            cols={[
+                                '받은 점수',
+                                '받은 시각',
+                                '받은 학생',
+                                '부여한 선생님',
+                                '사유',
+                                '작업',
+                            ]}
+                            notify={this.notify}
+                            listObj='history'
+                            key={this.state?.refreshToken}
+                            emptyMessage='상벌점 내역이 없어요!'
+                        />
                         <br />
                     </>
-                ) : (
-                    <></>
                 )}
                 <br />
                 <Typography use='headline5'>
                     최근 부여 상벌점(전체 학생)
                 </Typography>
                 <br />
-                <DataTable
-                    stickyRows={1}
-                    stickyColumns={0}
-                    style={{
-                        width: 'calc(100% - 40px)',
-                        margin: '20px',
-                        maxHeight: 'calc(100vh - 300px)',
-                    }}>
-                    <DataTableContent>
-                        <DataTableHead>
-                            <DataTableRow>
-                                <DataTableHeadCell>받은 점수</DataTableHeadCell>
-                                <DataTableHeadCell>받은 시간</DataTableHeadCell>
-                                <DataTableHeadCell>받은 학생</DataTableHeadCell>
-                                <DataTableHeadCell>
-                                    부여한 선생님
-                                </DataTableHeadCell>
-                                <DataTableHeadCell alignEnd>
-                                    사유
-                                </DataTableHeadCell>
-                                <DataTableHeadCell alignEnd>
-                                    작업
-                                </DataTableHeadCell>
-                            </DataTableRow>
-                        </DataTableHead>
-                        <DataTableBody>{listTableBody}</DataTableBody>
-                    </DataTableContent>
-                </DataTable>
-                <br />
-                <br />
-                <Button
-                    outlined
-                    onClick={this.refreshList.bind(this)}
-                    style={{ marginLeft: '20px' }}>
-                    새로고침
-                </Button>
+                <Table
+                    apiOption={['penalty', 'list']}
+                    dataHandler={penaltyFormatter}
+                    cols={[
+                        '받은 점수',
+                        '받은 시각',
+                        '받은 학생',
+                        '부여한 선생님',
+                        '사유',
+                        '작업',
+                    ]}
+                    notify={this.notify}
+                    key={this.state?.refreshToken}
+                    emptyMessage='상벌점 내역이 없어요!'
+                />
                 <SnackbarQueue messages={this.messages} />
             </div>
         )

@@ -41,3 +41,31 @@ export function formatTime(hour: number, minute: number, second?: number) {
 export function formatTimeD(date: Date) {
     return formatTime(date.getHours(), date.getMinutes())
 }
+
+export function myeonbulTimtToString(timeRange: TimeRange) {
+    let formattedDate: string,
+        begin = new Date(timeRange.begin),
+        end = new Date(timeRange.end)
+    if (timeRange.nickname)
+        formattedDate = `${end.getFullYear()}/${
+            end.getMonth() + 1
+        }/${end.getDate()} ${timeRange.nickname}`
+    else if (begin.getDay() === end.getDay())
+        formattedDate = `${end.getFullYear()}/${
+            end.getMonth() + 1
+        }/${end.getDate()} ${formatTimeD(begin)} - ${formatTimeD(end)}`
+    else
+        formattedDate = `${begin.getFullYear()}/${
+            begin.getMonth() + 1
+        }/${begin.getDate()} ${formatTimeD(begin)} - ${end.getFullYear()}/${
+            end.getMonth() + 1
+        }/${end.getDate()} ${formatTimeD(end)}`
+    return formattedDate
+}
+
+export function dateToString(date: any) {
+    let time = new Date(date)
+    return `${time.getFullYear()}/${
+        time.getMonth() + 1
+    }/${time.getDate()} ${time.getHours()}:${time.getMinutes()}`
+}
