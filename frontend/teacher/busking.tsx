@@ -11,6 +11,8 @@ import { dateToString, TimeRange } from '../../scheme/time'
 import { IconButton } from '@rmwc/icon-button'
 import Table from '../util/table'
 import { uuid } from '../../backend/util/random'
+import { MyeonbulResponseType } from '../../scheme/api/myeonbul'
+import { Checkbox } from '@rmwc/checkbox'
 
 interface BuskingProps {
     data: token
@@ -25,6 +27,36 @@ interface BuskingState {
     selectedPlace: string
     reason: string
     refreshToken: string
+    maskPhone: boolean
+}
+
+function phoneFomatter(num: string, mask = false) {
+    let formatNum = ''
+    num = num.replace(/\D/g, '')
+    if (num.length === 11) {
+        if (mask) {
+            formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-****-$3')
+        } else {
+            formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')
+        }
+    } else if (num.length === 8) {
+        formatNum = num.replace(/(\d{4})(\d{4})/, '$1-$2')
+    } else {
+        if (num.indexOf('02') === 0) {
+            if (mask) {
+                formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-****-$3')
+            } else {
+                formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3')
+            }
+        } else {
+            if (mask) {
+                formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-***-$3')
+            } else {
+                formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3')
+            }
+        }
+    }
+    return formatNum
 }
 
 class Busking extends React.Component<BuskingProps, BuskingState> {
@@ -94,6 +126,14 @@ class Busking extends React.Component<BuskingProps, BuskingState> {
                 <br />
                 <Typography use='headline5'>목록</Typography>
                 <br />
+                <br />
+                <Checkbox
+                    checked={this.state?.maskPhone}
+                    onClick={(e) => {
+                        this.setState({ maskPhone: !this.state?.maskPhone })
+                    }}>
+                    전화번호 마스킹
+                </Checkbox>
                 <Table
                     apiOption={['busking']}
                     dataHandler={(el: any) => {
@@ -103,7 +143,12 @@ class Busking extends React.Component<BuskingProps, BuskingState> {
                                     {dateToString(el.time)}
                                 </DataTableCell>
                                 <DataTableCell>{el.name}</DataTableCell>
-                                <DataTableCell>{el.call}</DataTableCell>
+                                <DataTableCell>
+                                    {phoneFomatter(
+                                        el.call,
+                                        this.state?.maskPhone
+                                    )}
+                                </DataTableCell>
                                 <DataTableCell>
                                     <IconButton
                                         icon='delete'
