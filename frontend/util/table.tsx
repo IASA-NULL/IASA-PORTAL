@@ -12,6 +12,7 @@ import { useEffect } from 'react'
 import { fetchAPI } from '../util'
 import commonApi from '../../scheme/api/commonApi'
 import { Button } from '@rmwc/button'
+import * as XLSX from 'xlsx'
 
 export default function Table(props: {
     apiOption: { target: string[]; method: string; body: any } | string[]
@@ -64,7 +65,15 @@ export default function Table(props: {
             })
     }
 
+    const toExcel = () => {
+        // @ts-ignore
+        let wb = XLSX.utils.table_to_book(tableRef.current, { sheet: 'sheet1' })
+        // @ts-ignore
+        return XLSX.writeFile(wb, 'res.xlsx')
+    }
+
     useEffect(refresh, [])
+    const tableRef = React.useRef(null)
 
     let tableBody
     if (loaded) {
@@ -111,6 +120,7 @@ export default function Table(props: {
     return (
         <>
             <DataTable
+                ref={tableRef}
                 stickyRows={1}
                 stickyColumns={0}
                 style={{
@@ -133,6 +143,9 @@ export default function Table(props: {
             </DataTable>
             <Button outlined onClick={refresh} style={{ marginLeft: '20px' }}>
                 새로고침
+            </Button>
+            <Button outlined onClick={toExcel} style={{ marginLeft: '20px' }}>
+                엑셀로 변환
             </Button>
         </>
     )

@@ -36,7 +36,8 @@
     "siema": "^1.5.1",
     "swiper": "^6.7.5",
     "uuid": "^8.3.2",
-    "vhost": "^3.0.2"
+    "vhost": "^3.0.2",
+    "xlsx": "^0.17.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.10",

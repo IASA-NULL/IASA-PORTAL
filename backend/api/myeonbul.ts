@@ -108,8 +108,6 @@ router.post('/', async (req, res) => {
         res.send(createResponse(false, '올바르지 않은 요청이에요.'))
         return
     }
-    console.log(student)
-    console.log(teacher)
     if (!student || !teacher) {
         res.status(400)
         res.send(createResponse(false, '올바르지 않은 요청이에요.'))
