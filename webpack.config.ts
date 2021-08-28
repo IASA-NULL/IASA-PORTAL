@@ -66,6 +66,9 @@ export default (env: any, argv: any) => {
                 fallback: {
                     stream: require.resolve('stream-browserify'),
                     domain: false,
+                    fs: false,
+                    util: false,
+                    crypto: false,
                 },
             },
             module: {
