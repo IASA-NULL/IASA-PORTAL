@@ -11,7 +11,6 @@ import { dateToString, TimeRange } from '../../scheme/time'
 import { IconButton } from '@rmwc/icon-button'
 import Table from '../util/table'
 import { uuid } from '../../backend/util/random'
-import { MyeonbulResponseType } from '../../scheme/api/myeonbul'
 import { Checkbox } from '@rmwc/checkbox'
 
 interface BuskingProps {
@@ -127,13 +126,6 @@ class Busking extends React.Component<BuskingProps, BuskingState> {
                 <Typography use='headline5'>목록</Typography>
                 <br />
                 <br />
-                <Checkbox
-                    checked={this.state?.maskPhone}
-                    onClick={(e) => {
-                        this.setState({ maskPhone: !this.state?.maskPhone })
-                    }}>
-                    전화번호 마스킹
-                </Checkbox>
                 <Table
                     apiOption={['busking']}
                     dataHandler={(el: any) => {
@@ -142,7 +134,13 @@ class Busking extends React.Component<BuskingProps, BuskingState> {
                                 <DataTableCell>
                                     {dateToString(el.time)}
                                 </DataTableCell>
-                                <DataTableCell>{el.name}</DataTableCell>
+                                <DataTableCell>
+                                    {this.state?.maskPhone
+                                        ? el.name.slice(0, 1) +
+                                          '*' +
+                                          el.name.slice(2)
+                                        : el.name}
+                                </DataTableCell>
                                 <DataTableCell>
                                     {phoneFomatter(
                                         el.call,
@@ -163,8 +161,15 @@ class Busking extends React.Component<BuskingProps, BuskingState> {
                     cols={['신청 시각', '이름', '전화번호', '작업']}
                     notify={this.notify}
                     key={this.state?.refreshToken}
-                    emptyMessage='신청 내역이 없어요!'
-                />
+                    emptyMessage='신청 내역이 없어요!'>
+                    <Checkbox
+                        checked={this.state?.maskPhone}
+                        onClick={(e) => {
+                            this.setState({ maskPhone: !this.state?.maskPhone })
+                        }}>
+                        개인정보 마스킹
+                    </Checkbox>
+                </Table>
                 <SnackbarQueue messages={this.messages} />
             </div>
         )

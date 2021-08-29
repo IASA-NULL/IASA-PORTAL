@@ -100,7 +100,10 @@ router.use('*', async (req, res, next) => {
                         ...(!DEV_MODE && { domain: '.iasa.kr' }),
                     }
                 )
-            } else if (req.auth.tokenId !== req.headers['verify']) {
+            } else if (
+                req.auth.tokenId !== req.headers['verify'] &&
+                req.auth.tokenId !== req.query.verify
+            ) {
                 req.auth = undefined
                 next()
                 return
@@ -142,7 +145,10 @@ router.use('*', async (req, res, next) => {
             !req.auth
         )
             throw new Error()
-        else if (sudoToken.tokenId !== req.headers['verify']) {
+        else if (
+            sudoToken.tokenId !== req.headers['verify'] &&
+            sudoToken.tokenId !== req.query.verify
+        ) {
             throw new Error()
         }
         req.auth.sudo = true

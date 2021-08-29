@@ -454,12 +454,16 @@ export function SearchUser<
                                     <div
                                         style={{ margin: '10px 10px 5px 0px' }}>
                                         <UserImage
-                                            url={createURL(
-                                                'api',
-                                                'account',
-                                                'avatar',
-                                                user.uid
-                                            )}
+                                            url={
+                                                createURL(
+                                                    'api',
+                                                    'account',
+                                                    'avatar',
+                                                    user.uid
+                                                ) +
+                                                '?verify=' +
+                                                window.localStorage.tokenId
+                                            }
                                             size={30}
                                         />
                                     </div>

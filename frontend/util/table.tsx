@@ -21,6 +21,7 @@ export default function Table(props: {
     emptyMessage: string
     dataHandler: any
     listObj?: string
+    children?: React.ReactNode
 }) {
     const [loaded, setLoaded] = React.useState(false)
     const [data, setData] = React.useState({} as commonApi['data'])
@@ -144,9 +145,13 @@ export default function Table(props: {
             <Button outlined onClick={refresh} style={{ marginLeft: '20px' }}>
                 새로고침
             </Button>
-            <Button outlined onClick={toExcel} style={{ marginLeft: '20px' }}>
+            <Button
+                outlined
+                onClick={toExcel}
+                style={{ marginLeft: '20px', marginRight: '20px' }}>
                 엑셀로 변환
             </Button>
+            {props.children}
         </>
     )
 }
