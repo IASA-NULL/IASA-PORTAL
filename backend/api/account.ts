@@ -333,7 +333,7 @@ router.get('/avatar/:uid', async (req, res) => {
         const fileBody = downloadAsStream(fileInfo.id)
         res.setHeader(
             'Content-disposition',
-            'attachment; filename=' + fileInfo.name
+            'attachment; filename=' + getDownloadFilename(fileInfo.name, req)
         )
         res.set('Content-Type', fileInfo.mime)
         res.set('Content-Length', fileInfo.size)
