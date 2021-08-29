@@ -12,6 +12,10 @@ import { Typography } from '@rmwc/typography'
 import { Button } from '@rmwc/button'
 
 import MyeonbulBoss from './myeonbul_boss'
+import BuskingLanding from './busking'
+import Club from './club'
+import ClubDirector from './clubDirector'
+import { MainView } from '../mainview'
 
 declare const DEV_MODE: boolean
 
@@ -47,6 +51,27 @@ class App extends React.Component<any, IState> {
                             }>
                             <RequireSudo />
                             <MyeonbulBoss data={this.state.data} />
+                        </Route>
+                        <Route
+                            exact
+                            path={
+                                DEV_MODE ? '/application/busking' : '/busking'
+                            }>
+                            <BuskingLanding />
+                        </Route>
+                        <Route
+                            exact
+                            path={DEV_MODE ? '/application/club' : '/club'}>
+                            <Club />
+                        </Route>
+                        <Route
+                            exact
+                            path={
+                                DEV_MODE
+                                    ? '/application/clubDirector'
+                                    : '/clubDirector'
+                            }>
+                            <ClubDirector />
                         </Route>
                         <Route>
                             <div

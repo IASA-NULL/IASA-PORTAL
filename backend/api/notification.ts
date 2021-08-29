@@ -49,6 +49,22 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.delete('/', async (req, res) => {
+    try {
+        const notificationList = (await getNotifications(
+            req.auth.uid,
+            true
+        )) as Notifications
+        for (let i of notificationList) {
+            await removeNotification(i.nid)
+        }
+        res.send(createResponse(true))
+    } catch (e) {
+        res.status(500)
+        res.send(createResponse(false, DB_CONNECT_ERROR))
+    }
+})
+
 router.get('/count', async (req, res) => {
     try {
         const user = (await db.get('account', 'uid', req.auth.uid)) as User

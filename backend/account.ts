@@ -4,12 +4,13 @@ import jwt from 'jsonwebtoken'
 import getSecret from './util/secret'
 import { changePasswordToken } from '../scheme/api/auth'
 import createURL from '../scheme/url'
+import fetch from 'node-fetch'
 
 declare const DEV_MODE: boolean
 const authRouter = express.Router()
 
 authRouter.get('/signin', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'template', 'auth.html'))
+    res.sendFile(path.join(__dirname, '..', 'static', 'html', 'auth.html'))
 })
 
 authRouter.get('/changesecret/:token', (req, res) => {
@@ -19,7 +20,7 @@ authRouter.get('/changesecret/:token', (req, res) => {
             getSecret('token')
         ) as changePasswordToken
         if (token.expire < Date.now()) throw new Error()
-        res.sendFile(path.join(__dirname, '..', 'template', 'auth.html'))
+        res.sendFile(path.join(__dirname, '..', 'static', 'html', 'auth.html'))
     } catch (e) {
         res.sendFile(
             path.join(__dirname, '..', 'template', 'changesecretfail.html')
@@ -28,7 +29,7 @@ authRouter.get('/changesecret/:token', (req, res) => {
 })
 
 authRouter.get('/challenge', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'template', 'auth.html'))
+    res.sendFile(path.join(__dirname, '..', 'static', 'html', 'auth.html'))
 })
 
 authRouter.get('/signout', (req, res) => {
@@ -38,6 +39,35 @@ authRouter.get('/signout', (req, res) => {
         ...(!DEV_MODE && { domain: '.iasa.kr' }),
     })
     res.redirect('/')
+})
+
+authRouter.get('/gsuite', (req, res) => {
+    console.log(req.query)
+    if (req.query.error) {
+        res.redirect(createURL('', 'classroom') + '?error=disallow')
+        return
+    }
+    if (req.query.scope.toString().split(' ').length !== 8) {
+        res.redirect(createURL('', 'classroom') + '?error=not_all')
+        return
+    }
+    fetch(
+        `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${getSecret(
+            'youtube'
+        )}`,
+        {
+            headers: {
+                Authorization: `Bearer ${req.query.code}`,
+            },
+        }
+    )
+        .then((res) => res.json())
+        .then((res) => {
+            console.log(res)
+        })
+    res.send(200)
+    return
+    res.redirect(createURL('', 'classroom'))
 })
 
 authRouter.use('*', (req, res) => {

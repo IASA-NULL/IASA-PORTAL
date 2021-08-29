@@ -110,12 +110,10 @@ class Share extends React.Component<ShareProps, ShareState> {
                             return
                         }
                         const a = document.createElement('a')
-                        a.href = createURL(
-                            'api',
-                            'files',
-                            'download',
-                            res.data[i]
-                        )
+                        a.href =
+                            createURL('api', 'files', 'download', res.data[i]) +
+                            '?verify=' +
+                            window.localStorage.tokenId
                         a.target = '_parent'
                         ;(
                             document.body || document.documentElement

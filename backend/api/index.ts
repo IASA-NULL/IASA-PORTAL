@@ -12,6 +12,11 @@ import shareRouter from './share'
 import mailRouter from './mail'
 import notificationRouter from './notification'
 import printRouter from './print'
+import recordRouter from './record'
+
+import buskingRouter from '../app/busking'
+import clubRouter from '../app/club'
+import clubPersonRouter from '../app/clubPerson'
 
 import ipRouter from './ip'
 
@@ -60,6 +65,10 @@ router.use('/mail', mailRouter)
 router.use('/notifications', notificationRouter)
 router.use('/print', printRouter)
 router.use('/ip', ipRouter)
+router.use('/record', recordRouter)
+router.use('/busking', buskingRouter)
+router.use('/club', clubRouter)
+router.use('/clubPerson', clubPersonRouter)
 
 router.use('*', (req, res) => {
     res.status(404)

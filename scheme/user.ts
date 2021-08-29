@@ -31,3 +31,32 @@ export interface UserInfo {
     uid: UID
     type: Permission
 }
+
+export interface Club {
+    permission: string
+    uid: string
+    name: string
+    poster?: any
+    logo?: string
+    subject?: string
+    introduce?: string
+    interview?: string
+    interviewTime?: string
+    coverLetter?: string
+    maxStudent?: string
+    url?: string
+    backgroundColor1?: string
+    backgroundColor2?: string
+    backgroundColor3?: string
+}
+
+export interface Person {
+    number: string
+    name: string
+    first1: string
+    first2: string
+    second1: string
+    second2: string
+    firstClub: string
+    secondClub: string
+}

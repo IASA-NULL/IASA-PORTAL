@@ -14,55 +14,18 @@ import '@rmwc/list/collapsible-list.css'
 import '@material/list/dist/mdc.list.css'
 import { Permission, token } from '../scheme/api/auth'
 import {
+    MainView,
     DefaultStudentNavList,
     DefaultTeacherNavList,
     DefaultAdminNavList,
-    MainView,
-    OpensourceNavList,
-    TermsNavList,
-    UserDataNavList,
-    OpenAPINavList,
 } from './mainview'
 import { fetchAPI, isDarkTheme } from './util'
 
-import MyeonbulStudent from './student/myeonbul'
-import PenaltyStudent from './student/penalty'
-import MainStudent from './student/main'
-import MusicStudent from './student/music'
-
-import MyeonbulTeacher from './teacher/myeonbul'
-import PenaltyTeacher from './teacher/penalty'
-import MainTeacher from './teacher/main'
-import MusicTeacher from './teacher/music'
-import Print from './teacher/print'
-
-import MainAdmin from './admin/main'
-import Update from './admin/update'
-import CreateCode from './admin/createcode'
-import CreateAPI from './admin/api'
-import Assign from './admin/assign'
-import External from './admin/external'
-import Server from './admin/server'
-
-import Mail from './common/mail'
-import Meal from './common/meal'
-import Share from './common/share'
-import Terms from './common/terms'
-import Userdata from './common/userdata'
-import Opensource from './common/opensource'
 import NotFound from './common/404'
 import About from './noauth/about'
-import PROGRAM_IP from './student/program/ip'
-import MyPage from './common/mypage'
 import { lightTheme, darkTheme } from './util'
 import MailView from './common/mailview'
-
-import OpenAPIIndex from './openapi'
-import OpenAPIAccount from './openapi/account'
-import OpenAPIMeal from './openapi/meal'
-import OpenAPIDesc from './openapi/desc'
-import PROGRAM_NETWORK from './common/network'
-import Notifications from './common/notifications'
+//RENDER_COMPONENT_IMPORTS//
 
 interface IState {
     loaded: boolean
@@ -97,6 +60,13 @@ class App extends React.Component<any, IState> {
         this.setState({ loaded: false })
         fetchAPI('GET', {}, 'account', 'info').then((data) => {
             this.setState({ loaded: true, data: data.data })
+            if (document.getElementById('preloader'))
+                setTimeout(function () {
+                    document.getElementById('preloader').style.opacity = '0'
+                    setTimeout(function () {
+                        document.getElementById('preloader').remove()
+                    }, 500)
+                }, 100)
         })
     }
 
@@ -105,156 +75,17 @@ class App extends React.Component<any, IState> {
         if (this.state?.data?.permission === Permission.student) {
             mainView = (
                 <Switch>
-                    <Route exact path='/'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
-                            appCont={<MainStudent />}
-                        />
-                    </Route>
-
                     <Route path='/mail/:eid'>
                         <MainView
                             accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
+                            navList={DefaultAdminNavList}
                             appCont={<MailView data={this.state?.data} />}
                         />
                     </Route>
-
-                    <Route path='/mail'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
-                            appCont={<Mail data={this.state?.data} />}
-                        />
+                    //RENDER_ROUTER_STUDENT//
+                    <Route path='/print'>
+                        <Redirect to='/share' />
                     </Route>
-
-                    <Route path='/myeonbul'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
-                            appCont={
-                                <MyeonbulStudent data={this.state?.data} />
-                            }
-                        />
-                    </Route>
-                    <Route path='/music'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
-                            appCont={<MusicStudent />}
-                        />
-                    </Route>
-
-                    <Route path='/meal'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
-                            appCont={<Meal />}
-                        />
-                    </Route>
-                    <Route path='/penalty'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
-                            appCont={<PenaltyStudent data={this.state?.data} />}
-                        />
-                    </Route>
-
-                    <Route path='/share'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
-                            appCont={<Share />}
-                        />
-                    </Route>
-
-                    <Route path='/mypage'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
-                            appCont={<MyPage />}
-                        />
-                    </Route>
-
-                    <Route path='/notifications'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
-                            appCont={<Notifications data={this.state.data} />}
-                        />
-                    </Route>
-
-                    <Route path='/terms'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={TermsNavList}
-                            appCont={<Terms />}
-                        />
-                    </Route>
-                    <Route path='/userdata'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={UserDataNavList}
-                            appCont={<Userdata />}
-                        />
-                    </Route>
-                    <Route path='/opensource'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpensourceNavList}
-                            appCont={<Opensource />}
-                        />
-                    </Route>
-
-                    <Route path='/program/ip'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
-                            appCont={<PROGRAM_IP />}
-                        />
-                    </Route>
-
-                    <Route path='/program/network'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultStudentNavList}
-                            appCont={<PROGRAM_NETWORK />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi/desc'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIDesc />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi/account'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIAccount />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi/meal'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIMeal />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIIndex />}
-                        />
-                    </Route>
-
                     <Route>
                         <MainView
                             accountInfo={this.state.data}
@@ -267,165 +98,14 @@ class App extends React.Component<any, IState> {
         } else if (this.state?.data?.permission === Permission.teacher) {
             mainView = (
                 <Switch>
-                    <Route exact path='/'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
-                            appCont={<MainTeacher />}
-                        />
-                    </Route>
-
                     <Route path='/mail/:eid'>
                         <MainView
                             accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
+                            navList={DefaultAdminNavList}
                             appCont={<MailView data={this.state?.data} />}
                         />
                     </Route>
-
-                    <Route path='/mail'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
-                            appCont={<Mail data={this.state?.data} />}
-                        />
-                    </Route>
-
-                    <Route path='/myeonbul'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
-                            appCont={
-                                <MyeonbulTeacher data={this.state?.data} />
-                            }
-                        />
-                    </Route>
-                    <Route path='/penalty'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
-                            appCont={<PenaltyTeacher data={this.state?.data} />}
-                        />
-                    </Route>
-
-                    <Route path='/music'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
-                            appCont={<MusicTeacher />}
-                        />
-                    </Route>
-
-                    <Route path='/print'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
-                            appCont={<Print data={this.state?.data} />}
-                        />
-                    </Route>
-
-                    <Route path='/meal'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
-                            appCont={<Meal />}
-                        />
-                    </Route>
-
-                    <Route path='/mypage'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
-                            appCont={<MyPage />}
-                        />
-                    </Route>
-
-                    <Route path='/notifications'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
-                            appCont={<Notifications data={this.state.data} />}
-                        />
-                    </Route>
-
-                    <Route path='/terms'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={TermsNavList}
-                            appCont={<Terms />}
-                        />
-                    </Route>
-                    <Route path='/userdata'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={UserDataNavList}
-                            appCont={<Userdata />}
-                        />
-                    </Route>
-                    <Route path='/opensource'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpensourceNavList}
-                            appCont={<Opensource />}
-                        />
-                    </Route>
-
-                    <Route path='/program/ip'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
-                            appCont={<PROGRAM_IP />}
-                        />
-                    </Route>
-
-                    <Route path='/program/network'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
-                            appCont={<PROGRAM_NETWORK />}
-                        />
-                    </Route>
-
-                    <Route path='/share'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultTeacherNavList}
-                            appCont={<Share />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi/desc'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIDesc />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi/account'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIAccount />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi/meal'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIMeal />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIIndex />}
-                        />
-                    </Route>
-
+                    //RENDER_ROUTER_TEACHER//
                     <Route>
                         <MainView
                             accountInfo={this.state.data}
@@ -438,14 +118,6 @@ class App extends React.Component<any, IState> {
         } else if (this.state?.data?.permission === Permission.admin) {
             mainView = (
                 <Switch>
-                    <Route exact path='/'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<MainAdmin />}
-                        />
-                    </Route>
-
                     <Route path='/mail/:eid'>
                         <MainView
                             accountInfo={this.state.data}
@@ -453,159 +125,7 @@ class App extends React.Component<any, IState> {
                             appCont={<MailView data={this.state?.data} />}
                         />
                     </Route>
-
-                    <Route path='/mail'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<Mail data={this.state?.data} />}
-                        />
-                    </Route>
-
-                    <Route path='/update'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<Update />}
-                        />
-                    </Route>
-
-                    <Route path='/user/code'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<CreateCode />}
-                        />
-                    </Route>
-
-                    <Route path='/createapi'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<CreateAPI />}
-                        />
-                    </Route>
-
-                    <Route path='/assign'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<Assign />}
-                        />
-                    </Route>
-
-                    <Route path='/external'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<External />}
-                        />
-                    </Route>
-
-                    <Route path='/server'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<Server />}
-                        />
-                    </Route>
-
-                    <Route path='/mypage'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<MyPage />}
-                        />
-                    </Route>
-
-                    <Route path='/share'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<Share />}
-                        />
-                    </Route>
-
-                    <Route path='/notifications'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<Notifications data={this.state.data} />}
-                        />
-                    </Route>
-
-                    <Route path='/program/ip'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<PROGRAM_IP />}
-                        />
-                    </Route>
-
-                    <Route path='/program/network'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={DefaultAdminNavList}
-                            appCont={<PROGRAM_NETWORK />}
-                        />
-                    </Route>
-
-                    <Route path='/terms'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={TermsNavList}
-                            appCont={<Terms />}
-                        />
-                    </Route>
-
-                    <Route path='/userdata'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={UserDataNavList}
-                            appCont={<Userdata />}
-                        />
-                    </Route>
-
-                    <Route path='/opensource'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpensourceNavList}
-                            appCont={<Opensource />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi/desc'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIDesc />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi/account'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIAccount />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi/meal'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIMeal />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIIndex />}
-                        />
-                    </Route>
-
+                    //RENDER_ROUTER_ADMIN//
                     <Route>
                         <MainView
                             accountInfo={this.state.data}
@@ -621,82 +141,10 @@ class App extends React.Component<any, IState> {
                     <Route exact path='/about'>
                         <About />
                     </Route>
-
-                    <Route path='/terms'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={TermsNavList}
-                            appCont={<Terms />}
-                        />
+                    //RENDER_ROUTER_NONE//
+                    <Route path='/print'>
+                        <Redirect to='/share' />
                     </Route>
-                    <Route path='/userdata'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={UserDataNavList}
-                            appCont={<Userdata />}
-                        />
-                    </Route>
-                    <Route path='/opensource'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpensourceNavList}
-                            appCont={<Opensource />}
-                        />
-                    </Route>
-
-                    <Route path='/program/ip'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            appCont={<PROGRAM_IP />}
-                        />
-                    </Route>
-
-                    <Route path='/program/network'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            appCont={<PROGRAM_NETWORK />}
-                        />
-                    </Route>
-
-                    <Route path='/share'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            appCont={<Share hideDownload={true} />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi/desc'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIDesc />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi/account'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIAccount />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi/meal'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIMeal />}
-                        />
-                    </Route>
-
-                    <Route path='/openapi'>
-                        <MainView
-                            accountInfo={this.state.data}
-                            navList={OpenAPINavList}
-                            appCont={<OpenAPIIndex />}
-                        />
-                    </Route>
-
                     <Route>
                         <Redirect to='/about' />
                     </Route>
@@ -727,12 +175,6 @@ function init() {
         },
     })
     ReactDOM.render(<App />, document.getElementById('app') as HTMLElement)
-    setTimeout(function () {
-        document.getElementById('preloader').style.opacity = '0'
-        setTimeout(function () {
-            document.getElementById('preloader').remove()
-        }, 500)
-    }, 100)
 }
 
 declare const timerStart: number

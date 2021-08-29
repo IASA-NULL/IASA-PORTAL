@@ -8,7 +8,7 @@ auth.ts
 
 import express from 'express'
 import jwt from 'jsonwebtoken'
-import { Permission, token } from '../scheme/api/auth'
+import { Permission, SudoToken, token } from '../scheme/api/auth'
 import getSecret from './util/secret'
 import { getServerToken } from './util/serverState'
 import { reSignTime, maxTime, leftTokenTime } from './util/tokenTime'
@@ -36,7 +36,7 @@ router.use('*', async (req, res, next) => {
         // API용 계정은 토큰 만료 무시!
         if (req.auth.permission !== Permission.api) {
             // SID가 같지 않을 경우 토큰 만료
-            if (req.auth.sid !== sid) {
+            if (req.auth.sid !== sid && !DEV_MODE) {
                 req.auth.expired = true
                 // 리다이렉션
                 if (
@@ -100,6 +100,13 @@ router.use('*', async (req, res, next) => {
                         ...(!DEV_MODE && { domain: '.iasa.kr' }),
                     }
                 )
+            } else if (
+                req.auth.tokenId !== req.headers['verify'] &&
+                req.auth.tokenId !== req.query.verify
+            ) {
+                req.auth = undefined
+                next()
+                return
             }
         }
     } catch (e) {
@@ -131,9 +138,19 @@ router.use('*', async (req, res, next) => {
         const sudoToken = jwt.verify(
             req.cookies.sudo,
             getSecret('token')
-        ) as token
-        if (sudoToken.sid !== sid || sudoToken.expire < Date.now() || !req.auth)
+        ) as SudoToken
+        if (
+            (sudoToken.sid !== sid && !DEV_MODE) ||
+            sudoToken.expire < Date.now() ||
+            !req.auth
+        )
             throw new Error()
+        else if (
+            sudoToken.tokenId !== req.headers['verify'] &&
+            sudoToken.tokenId !== req.query.verify
+        ) {
+            throw new Error()
+        }
         req.auth.sudo = true
     } catch (e) {
         res.cookie('sudo', '', {

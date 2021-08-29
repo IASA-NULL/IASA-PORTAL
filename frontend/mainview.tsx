@@ -35,372 +35,15 @@ import { useEffect } from 'react'
 declare const DEV_MODE: boolean
 
 export const DefaultStudentNavList = (closeIfModal: any) => {
-    return (
-        <>
-            <ListLink
-                body='메인'
-                to='/'
-                onClick={closeIfModal}
-                type={LinkType.link}
-                icon='home'
-            />
-            <ListLink
-                body='빠른 공유'
-                to='/share'
-                onClick={closeIfModal}
-                type={LinkType.link}
-                icon='share'
-            />
-            <ListLink
-                body='메일'
-                to='/mail'
-                onClick={closeIfModal}
-                type={LinkType.link}
-                icon='email'
-            />
-            <CollapsibleList
-                defaultOpen={['/myeonbul', '/music'].includes(
-                    window.location.pathname
-                )}
-                handle={
-                    <SimpleListItem
-                        text='신청'
-                        graphic='playlist_add_check'
-                        metaIcon='chevron_right'
-                    />
-                }>
-                <div style={{ paddingLeft: '20px' }}>
-                    <ListLink
-                        body='면불'
-                        to='/myeonbul'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='pan_tool'
-                    />
-                    <ListLink
-                        body='기상곡'
-                        to='/music'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='music_note'
-                    />
-                </div>
-            </CollapsibleList>
-            <CollapsibleList
-                defaultOpen={['/penalty', '/meal'].includes(
-                    window.location.pathname
-                )}
-                handle={
-                    <SimpleListItem
-                        text='생활'
-                        graphic='night_shelter'
-                        metaIcon='chevron_right'
-                    />
-                }>
-                <div style={{ paddingLeft: '20px' }}>
-                    <ListLink
-                        body='상벌점'
-                        to='/penalty'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='assignment_late'
-                    />
-                    <ListLink
-                        body='급식'
-                        to='/meal'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='fastfood'
-                    />
-                </div>
-            </CollapsibleList>
-            <CollapsibleList
-                defaultOpen={[
-                    '/program/network',
-                    '/program/ip',
-                    '/program/client',
-                ].includes(window.location.pathname)}
-                handle={
-                    <SimpleListItem
-                        text='프로그램'
-                        graphic='folder'
-                        metaIcon='chevron_right'
-                    />
-                }>
-                <div style={{ paddingLeft: '20px' }}>
-                    <ListLink
-                        body='인터넷 연결 도구'
-                        to='/program/network'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='wysiwyg'
-                    />
-                    <ListLink
-                        body='IP'
-                        to='/program/ip'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='wysiwyg'
-                    />
-                    <ListLink
-                        body='IASA CLIENT'
-                        to='/program/client'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='wysiwyg'
-                    />
-                </div>
-            </CollapsibleList>
-        </>
-    )
+    return <>//RENDER_DRAWER_STUDENT//</>
 }
 
 export const DefaultTeacherNavList = (closeIfModal: any) => {
-    return (
-        <>
-            <ListLink
-                body='메인'
-                to='/'
-                onClick={closeIfModal}
-                type={LinkType.link}
-                icon='home'
-            />
-            <ListLink
-                body='빠른 공유'
-                to='/share'
-                onClick={closeIfModal}
-                type={LinkType.link}
-                icon='share'
-            />
-            <ListLink
-                body='메일'
-                to='/mail'
-                onClick={closeIfModal}
-                type={LinkType.link}
-                icon='email'
-            />
-            <CollapsibleList
-                defaultOpen={['/penalty', '/myeonbul'].includes(
-                    window.location.pathname
-                )}
-                handle={
-                    <SimpleListItem
-                        text='학생지도'
-                        graphic='auto_fix_normal'
-                        metaIcon='chevron_right'
-                    />
-                }>
-                <div style={{ paddingLeft: '20px' }}>
-                    <ListLink
-                        body='면불'
-                        to='/myeonbul'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='pan_tool'
-                    />
-                    <ListLink
-                        body='상벌점'
-                        to='/penalty'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='assignment_late'
-                    />
-                </div>
-            </CollapsibleList>
-            <ListLink
-                body='기상곡'
-                to='/music'
-                onClick={closeIfModal}
-                type={LinkType.link}
-                icon='music_note'
-            />
-            <ListLink
-                body='프린터 명부'
-                to='/print'
-                onClick={closeIfModal}
-                type={LinkType.link}
-                icon='print'
-            />
-            <ListLink
-                body='급식'
-                to='/meal'
-                onClick={closeIfModal}
-                type={LinkType.link}
-                icon='fastfood'
-            />
-            <CollapsibleList
-                defaultOpen={[
-                    '/program/network',
-                    '/program/ip',
-                    '/program/client',
-                ].includes(window.location.pathname)}
-                handle={
-                    <SimpleListItem
-                        text='프로그램'
-                        graphic='folder'
-                        metaIcon='chevron_right'
-                    />
-                }>
-                <div style={{ paddingLeft: '20px' }}>
-                    <ListLink
-                        body='인터넷 연결 도구'
-                        to='/program/network'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='wysiwyg'
-                    />
-                    <ListLink
-                        body='IP'
-                        to='/program/ip'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='wysiwyg'
-                    />
-                    <ListLink
-                        body='IASA CLIENT'
-                        to='/program/client'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='wysiwyg'
-                    />
-                </div>
-            </CollapsibleList>
-        </>
-    )
+    return <>//RENDER_DRAWER_TEACHER//</>
 }
 
 export const DefaultAdminNavList = (closeIfModal: any) => {
-    return (
-        <>
-            <ListLink
-                body='메인'
-                to='/'
-                onClick={closeIfModal}
-                type={LinkType.link}
-                icon='home'
-            />
-            <ListLink
-                body='메일'
-                to='/mail'
-                onClick={closeIfModal}
-                type={LinkType.link}
-                icon='email'
-            />
-            <CollapsibleList
-                defaultOpen={['/update', '/external', '/server'].includes(
-                    window.location.pathname
-                )}
-                handle={
-                    <SimpleListItem
-                        text='사이트 관리'
-                        graphic='settings'
-                        metaIcon='chevron_right'
-                    />
-                }>
-                <div style={{ paddingLeft: '20px' }}>
-                    <ListLink
-                        body='업데이트'
-                        to='/update'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='system_update'
-                    />
-                </div>
-                <div style={{ paddingLeft: '20px' }}>
-                    <ListLink
-                        body='서비스 관리'
-                        to='/external'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='cloud'
-                    />
-                    <ListLink
-                        body='인스턴스 관리'
-                        to='/server'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='dns'
-                    />
-                </div>
-            </CollapsibleList>
-            <CollapsibleList
-                defaultOpen={['/user/code', '/createapi', '/assign'].includes(
-                    window.location.pathname
-                )}
-                handle={
-                    <SimpleListItem
-                        text='사용자 관리'
-                        graphic='account_circle'
-                        metaIcon='chevron_right'
-                    />
-                }>
-                <div style={{ paddingLeft: '20px' }}>
-                    <ListLink
-                        body='가입 코드 발급'
-                        to='/user/code'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='recent_actors'
-                    />
-                </div>
-                <div style={{ paddingLeft: '20px' }}>
-                    <ListLink
-                        body='API 계정 관리'
-                        to='/createapi'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='api'
-                    />
-                </div>
-                <div style={{ paddingLeft: '20px' }}>
-                    <ListLink
-                        body='반 배정'
-                        to='/assign'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='school'
-                    />
-                </div>
-            </CollapsibleList>
-            <CollapsibleList
-                defaultOpen={[
-                    '/program/network',
-                    '/program/ip',
-                    '/program/client',
-                ].includes(window.location.pathname)}
-                handle={
-                    <SimpleListItem
-                        text='프로그램'
-                        graphic='folder'
-                        metaIcon='chevron_right'
-                    />
-                }>
-                <div style={{ paddingLeft: '20px' }}>
-                    <ListLink
-                        body='인터넷 연결 도구'
-                        to='/program/network'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='wysiwyg'
-                    />
-                    <ListLink
-                        body='IP'
-                        to='/program/ip'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='wysiwyg'
-                    />
-                    <ListLink
-                        body='IASA CLIENT'
-                        to='/program/client'
-                        onClick={closeIfModal}
-                        type={LinkType.link}
-                        icon='wysiwyg'
-                    />
-                </div>
-            </CollapsibleList>
-        </>
-    )
+    return <>//RENDER_DRAWER_ADMIN//</>
 }
 
 export const TermsNavList = (closeIfModal: any) => {
@@ -674,6 +317,7 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
     const [drawerOpen, setDrawerOpen] = React.useState(window.innerWidth > 760)
     const [accountMenuOpen, setAccountMenuOpen] = React.useState(false)
     const [unreadNotifications, setUnreadNotifications] = React.useState(0)
+    const [avatarBlob, setAvatarBlob] = React.useState('')
     const closeIfModal = () => {
         if (window.innerWidth <= 760) setDrawerOpen(false)
     }
@@ -686,6 +330,17 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
     useEffect(() => {
         refreshUnreadNotifications()
         setInterval(refreshUnreadNotifications, 3000)
+
+        fetch(createURL('api', 'account', 'avatar'), {
+            method: 'GET',
+            ...(!DEV_MODE && { credentials: 'include' }),
+            headers: {
+                'Content-Type': 'application/json',
+                verify: window.localStorage.tokenId,
+            },
+        })
+            .then((res) => res.blob())
+            .then((res) => setAvatarBlob(URL.createObjectURL(res)))
     }, [])
 
     return (
@@ -762,24 +417,28 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
                                     </MenuItem>
                                 )}
                             </Menu>
-                            <TopAppBarActionItem
-                                icon='notifications'
-                                onClick={() => {
-                                    props.history.push('/notifications')
-                                }}
-                                style={{ right: '-20px' }}
-                            />
-                            <Badge
-                                align='inline'
-                                label={unreadNotifications}
-                                style={{
-                                    position: 'relative',
-                                    top: '-20px',
-                                    margin: '0',
-                                }}
-                                theme={['primaryBg', 'onPrimary']}
-                                exited={!unreadNotifications}
-                            />
+                            {props?.accountInfo?.id && (
+                                <>
+                                    <TopAppBarActionItem
+                                        icon='notifications'
+                                        onClick={() => {
+                                            props.history.push('/notifications')
+                                        }}
+                                        style={{ right: '-20px' }}
+                                    />
+                                    <Badge
+                                        align='inline'
+                                        label={unreadNotifications}
+                                        style={{
+                                            position: 'relative',
+                                            top: '-20px',
+                                            margin: '0',
+                                        }}
+                                        theme={['primaryBg', 'onPrimary']}
+                                        exited={!unreadNotifications}
+                                    />
+                                </>
+                            )}
                             <TopAppBarActionItem
                                 icon='account_circle'
                                 onClick={() =>
@@ -804,10 +463,7 @@ function Navbar(props: { list?: any; accountInfo: token; history: any }) {
                     {props?.accountInfo?.id ? (
                         <DrawerHeader>
                             <DrawerTitle style={{ paddingTop: '20px' }}>
-                                <UserImage
-                                    url={createURL('api', 'account', 'avatar')}
-                                    size={50}
-                                />
+                                <UserImage url={avatarBlob} size={50} />
                                 <br />
                                 {props?.accountInfo?.name}
                             </DrawerTitle>

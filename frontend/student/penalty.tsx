@@ -1,30 +1,22 @@
 import * as React from 'react'
 
-import { Button } from '@rmwc/button'
 import { Typography } from '@rmwc/typography'
 import { LinearProgress } from '@rmwc/linear-progress'
-import {
-    DataTable,
-    DataTableContent,
-    DataTableHead,
-    DataTableRow,
-    DataTableHeadCell,
-    DataTableBody,
-    DataTableCell,
-} from '@rmwc/data-table'
+import { DataTableRow, DataTableCell } from '@rmwc/data-table'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
 
 import { PenaltyResponse, PenaltyResponseOne } from '../../scheme/api/penalty'
 import { token } from '../../scheme/api/auth'
 import { BrIfMobile, fetchAPI } from '../util'
-import { formatTimeD } from '../../scheme/time'
+import { dateToString } from '../../scheme/time'
+import Table from '../util/table'
 
 interface PenaltyProps {
     data: token
 }
 
 interface PenaltyState {
-    data?: PenaltyResponse
+    score: number
     loaded: boolean
 }
 
@@ -48,7 +40,7 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
         fetchAPI('GET', {}, 'penalty')
             .then((res: PenaltyResponse) => {
                 if (res.success) {
-                    this.setState({ loaded: true, data: res })
+                    this.setState({ loaded: true, score: res.data.score })
                 } else {
                     this.notify({
                         title: <b>오류</b>,
@@ -69,78 +61,17 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
     }
 
     public render() {
-        let tableBody
         let message: string
-        if (this.state?.data?.data?.score >= 0) message = '잘하고 있어요!'
-        else if (this.state?.data?.data?.score > -5)
+        if (this.state?.score >= 0) message = '잘하고 있어요!'
+        else if (this.state?.score > -5)
             message = '벌점을 받지 않도록 노력해봐요.'
-        else if (this.state?.data?.data?.score > -10)
+        else if (this.state?.score > -10)
             message = '벌점을 받지 않도록 주의하세요.'
-        else if (this.state?.data?.data?.score > -15)
+        else if (this.state?.score > -15)
             message = '벌점을 더 받으면 교내봉사를 해야 해요.'
-        else if (this.state?.data?.data?.score > -21)
+        else if (this.state?.score > -21)
             message = '벌점을 더 받으면 기숙사에서 퇴소될 수 있어요!'
         else message = '저런...'
-        if (this.state?.loaded) {
-            try {
-                tableBody = this.state.data.data.history
-                    .map((el: PenaltyResponseOne) => {
-                        try {
-                            let time = new Date(el.time)
-                            return (
-                                <DataTableRow>
-                                    <DataTableCell alignEnd>
-                                        {(el.score > 0 ? '상점 ' : '벌점 ') +
-                                            Math.abs(el.score) +
-                                            '점'}
-                                    </DataTableCell>
-                                    <DataTableCell>{`${time.getFullYear()}/${
-                                        time.getMonth() + 1
-                                    }/${time.getDate()} ${formatTimeD(
-                                        time
-                                    )}`}</DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        {el.teacher.name}
-                                    </DataTableCell>
-                                    <DataTableCell alignEnd>
-                                        {el.info}
-                                    </DataTableCell>
-                                </DataTableRow>
-                            )
-                        } catch (e) {
-                            return null
-                        }
-                    })
-                    .filter((x) => x)
-            } catch (e) {}
-            if (!tableBody || tableBody.length === 0) {
-                let message
-                try {
-                    message = this.state.data.message
-                } catch (e) {}
-                if (!message) message = '상벌점 내역이 없어요!'
-                tableBody = (
-                    <DataTableRow>
-                        <DataTableCell>
-                            <div>{message}</div>
-                        </DataTableCell>
-                        <DataTableCell />
-                        <DataTableCell />
-                        <DataTableCell />
-                    </DataTableRow>
-                )
-            }
-        } else
-            tableBody = (
-                <DataTableRow>
-                    <DataTableCell>
-                        <div>로딩 중...</div>
-                    </DataTableCell>
-                    <DataTableCell />
-                    <DataTableCell />
-                    <DataTableCell />
-                </DataTableRow>
-            )
         return (
             <div>
                 <Typography use='headline3'>상벌점</Typography>
@@ -151,18 +82,15 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                 <br />
                 <br />
                 <LinearProgress
-                    progress={-this.state?.data?.data?.score / 21.0}
+                    progress={-this.state?.score / 21.0}
                     buffer={1}
                 />
                 <br />
                 {this.state?.loaded ? (
                     <>
                         <Typography use='headline4'>
-                            현재{' '}
-                            {this.state?.data?.data?.score > 0
-                                ? '상점'
-                                : '벌점'}{' '}
-                            {Math.abs(this.state?.data?.data?.score)}점이에요.
+                            현재 {this.state?.score > 0 ? '상점' : '벌점'}{' '}
+                            {Math.abs(this.state?.score)}점이에요.
                         </Typography>
                         <br />
                         <Typography use='subtitle1'>{message}</Typography>
@@ -175,39 +103,28 @@ class Penalty extends React.Component<PenaltyProps, PenaltyState> {
                 <br />
                 <Typography use='headline5'>상벌점 내역</Typography>
                 <br />
-                <br />
-                <DataTable
-                    stickyRows={1}
-                    stickyColumns={0}
-                    style={{
-                        width: 'calc(100% - 40px)',
-                        margin: '20px',
-                        maxHeight: 'calc(100vh - 300px)',
-                    }}>
-                    <DataTableContent>
-                        <DataTableHead>
+                <Table
+                    apiOption={['penalty']}
+                    dataHandler={(el: PenaltyResponseOne) => {
+                        return (
                             <DataTableRow>
-                                <DataTableHeadCell>받은 점수</DataTableHeadCell>
-                                <DataTableHeadCell>받은 시간</DataTableHeadCell>
-                                <DataTableHeadCell>
-                                    부여한 선생님
-                                </DataTableHeadCell>
-                                <DataTableHeadCell alignEnd>
-                                    사유
-                                </DataTableHeadCell>
+                                <DataTableCell>
+                                    {(el.score > 0 ? '상점 ' : '벌점 ') +
+                                        Math.abs(el.score) +
+                                        '점'}
+                                </DataTableCell>
+                                <DataTableCell>
+                                    {dateToString(el.time)}
+                                </DataTableCell>
+                                <DataTableCell>{el.teacher.name}</DataTableCell>
+                                <DataTableCell>{el.info}</DataTableCell>
                             </DataTableRow>
-                        </DataTableHead>
-                        <DataTableBody>{tableBody}</DataTableBody>
-                    </DataTableContent>
-                </DataTable>
-                <br />
-                <br />
-                <Button
-                    outlined
-                    onClick={this.refresh.bind(this)}
-                    style={{ marginLeft: '20px' }}>
-                    새로고침
-                </Button>
+                        )
+                    }}
+                    cols={['받은 점수', '받은 시각', '부여한 선생님', '사유']}
+                    notify={this.notify}
+                    emptyMessage='상벌점 내역이 없어요!'
+                />
                 <SnackbarQueue messages={this.messages} />
             </div>
         )

@@ -75,6 +75,29 @@ class Notifications extends React.Component<
             })
     }
 
+    public clear() {
+        fetchAPI('DELETE', {}, 'notifications')
+            .then((res: commonApi) => {
+                if (!res.success) {
+                    this.notify({
+                        title: <b>오류</b>,
+                        body: res.message,
+                        icon: 'error_outline',
+                        dismissIcon: true,
+                    })
+                }
+                this.refresh()
+            })
+            .catch(() => {
+                this.notify({
+                    title: <b>오류</b>,
+                    body: '서버와 연결할 수 없어요.',
+                    icon: 'error_outline',
+                    dismissIcon: true,
+                })
+            })
+    }
+
     public remove(nid: string) {
         fetchAPI('DELETE', {}, 'notifications', nid).then((res: commonApi) => {
             if (res.success) {
@@ -188,6 +211,13 @@ class Notifications extends React.Component<
                     onClick={this.refresh.bind(this)}
                     style={{ marginLeft: '20px' }}>
                     새로고침
+                </Button>
+
+                <Button
+                    outlined
+                    onClick={this.clear.bind(this)}
+                    style={{ marginLeft: '20px' }}>
+                    모두 지우기
                 </Button>
                 <SnackbarQueue messages={this.messages} />
             </div>

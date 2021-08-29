@@ -30,7 +30,7 @@ import { lightTheme } from './util'
 
 const loginStateUpdate = new Event('loginStateUpdate')
 
-let accountInfo: any
+let accountInfo: any, tokenId: string
 
 interface IState {
     loaded: boolean
@@ -74,9 +74,20 @@ class App extends React.Component<any, IState> {
             get: this.getSt.bind(this),
             set: this.setSt.bind(this),
         }
+        let targetAppName: string
         if (window.location.pathname.split('/').pop() === 'signin') {
             if (accountInfo.data.permission !== Permission.none)
                 this.moveToLink()
+            const searchParams = new URLSearchParams(window.location.search)
+            try {
+                const app = searchParams.get('app')
+                if (app) {
+                    targetAppName = atob(app)
+                } else throw new Error()
+            } catch (e) {
+                targetAppName = 'IASA PORTAL'
+            }
+
             this.setState({
                 formList: [
                     <IdForm
@@ -176,7 +187,11 @@ class App extends React.Component<any, IState> {
                 ],
                 currentPage: 0,
                 title: [
-                    { main: '로그인', sub: 'IASA PORTAL로 계속', id: 'IdForm' },
+                    {
+                        main: '로그인',
+                        sub: targetAppName + '(으)로 계속',
+                        id: 'IdForm',
+                    },
                 ],
             })
         } else if (
@@ -434,6 +449,7 @@ class App extends React.Component<any, IState> {
                 )
                     .then((res) => {
                         if (res.success) {
+                            tokenId = res.data.tokenId
                             if (res.data.requestChangePW)
                                 this.next(
                                     form,
@@ -480,6 +496,7 @@ class App extends React.Component<any, IState> {
                 )
                     .then((res) => {
                         if (res.success) {
+                            tokenId = res.data.tokenId
                             if (res.data.requestChangePW)
                                 this.next(
                                     form,
@@ -571,15 +588,34 @@ class App extends React.Component<any, IState> {
     }
 
     public moveToLink() {
+        window.localStorage.tokenId = tokenId
         const searchParams = new URLSearchParams(window.location.search)
-        try {
-            const next = searchParams.get('next')
-            if (next) {
-                window.location.replace(atob(next))
-            } else throw new Error()
-        } catch (e) {
-            window.location.replace('/')
+
+        const next = searchParams.get('next') ?? ''
+        let form = document.createElement('form')
+        form._submit_function_ = form.submit
+
+        form.setAttribute('method', 'post')
+        form.setAttribute('action', createURL('', 'finalize'))
+
+        let params = {
+            next: next,
+            tokenId: tokenId,
         }
+
+        for (let key in params) {
+            let hiddenField = document.createElement('input')
+            hiddenField.setAttribute('type', 'hidden')
+            hiddenField.setAttribute('name', key)
+            //@ts-ignore
+            hiddenField.setAttribute('value', params[key])
+            form.appendChild(hiddenField)
+        }
+
+        document.body.appendChild(form)
+        form._submit_function_()
+
+        return
     }
 
     public validateSignup1(form: JSX.Element) {

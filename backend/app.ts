@@ -20,6 +20,7 @@ import accountRouter from './account'
 import applicationRouter from './application'
 import vhost from 'vhost'
 import helmet from 'helmet'
+import bodyParser from 'body-parser'
 declare const DEV_MODE: boolean
 
 export default function createApp(sid: string) {
@@ -33,7 +34,7 @@ export default function createApp(sid: string) {
         credentials: true,
         origin: (origin: string, callback: any) => {
             console.log(origin)
-            if (!origin || origin.includes('iasa.kr')) {
+            if (!origin || origin.includes('iasa.kr') || origin === 'null') {
                 callback(null, true)
             } else {
                 callback(new Error('Not allowed by CORS'))
@@ -105,10 +106,28 @@ export default function createApp(sid: string) {
         app.use(vhost('application.iasa.kr', applicationRouter))
     }
 
+    app.post(
+        '/finalize',
+        bodyParser.urlencoded({ extended: false }),
+        (req: any, res: any) => {
+            res.send(`<html><body><script type="text/javascript">
+            try {
+                const next = '${req.body.next}'
+                window.localStorage.tokenId = '${req.body.tokenId}'
+                if (next) {
+                    window.location.replace(atob(next))
+                } else throw new Error()
+            } catch (e) {
+                window.location.replace('/')
+            }
+        </script></body></html>`)
+        }
+    )
+
     // 메인 템플릿 라우팅
     // TODO : ejs 라우팅 적용해서 최초 API 요청 없애기!
     app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '..', 'template', 'main.html'))
+        res.sendFile(path.join(__dirname, '..', 'static', 'html', 'main.html'))
     })
 
     // 앱 시작시 로그

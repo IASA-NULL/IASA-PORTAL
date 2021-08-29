@@ -35,7 +35,7 @@ header:not(.transparent) {
     background: #12121c !important;
 }
 
-.header:not(.transparent) * {
+.header:not(.transparent) *:not(.mdc-theme--primary-bg) {
     color: var(--mdc-theme-primary) !important;
 }
 
@@ -149,7 +149,7 @@ header:not(.transparent) {
 }
 
 #app.dark .mdc-drawer-app-content .mdc-list {
-    background: #000 !important;
+    background: #262433 !important;
 }
 
 #app.dark .mdc-list-item__primary-text {
@@ -165,7 +165,7 @@ header:not(.transparent) {
 }
 
 #app.dark .mdc-card {
-    background: #000;
+    background: #262433;
 }
 
 #app.dark .mdc-card * {

@@ -13,9 +13,25 @@ import {
 import { Button } from '@rmwc/button'
 import { Menu, MenuItem, MenuSurfaceAnchor } from '@rmwc/menu'
 import createURL from '../../scheme/url'
+import { createDialogQueue, DialogQueue } from '@rmwc/dialog'
+import { useEffect } from 'react'
+
+export const queue = createDialogQueue()
 
 function About() {
     const [accountMenuOpen, setAccountMenuOpen] = React.useState(false)
+    useEffect(() => {
+        queue
+            .confirm({
+                title: '사이언스 버스킹 관련 공지',
+                body: '사이언스 버스킹 신청은 다음 링크를 통해 확인하세요',
+            })
+            .then((res) => {
+                if (res)
+                    window.location.href = createURL('application', 'busking')
+            })
+    }, [])
+
     return (
         <>
             <TopAppBar fixed style={{ zIndex: 10 }} className='transparent'>
@@ -168,7 +184,7 @@ function About() {
                                                 <IconButton
                                                     icon='call'
                                                     tag='a'
-                                                    href='tel:010-3193-6628'
+                                                    href='tel:032-890-6700'
                                                 />
                                             </GridCell>
                                         </GridRow>
@@ -235,6 +251,7 @@ function About() {
                     </footer>
                 </div>
             </div>
+            <DialogQueue dialogs={queue.dialogs} />
         </>
     )
 }

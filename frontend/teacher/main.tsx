@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import { Typography } from '@rmwc/typography'
 import { CardLink } from '../util'

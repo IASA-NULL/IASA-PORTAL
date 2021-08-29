@@ -307,6 +307,7 @@ export function fetchAPI(
         ...(!DEV_MODE && { credentials: 'include' }),
         headers: {
             'Content-Type': 'application/json',
+            verify: window.localStorage.tokenId,
         },
         ...(method !== 'GET' && { body: JSON.stringify(body) }),
     }).then((res) => res.json())
@@ -453,12 +454,16 @@ export function SearchUser<
                                     <div
                                         style={{ margin: '10px 10px 5px 0px' }}>
                                         <UserImage
-                                            url={createURL(
-                                                'api',
-                                                'account',
-                                                'avatar',
-                                                user.uid
-                                            )}
+                                            url={
+                                                createURL(
+                                                    'api',
+                                                    'account',
+                                                    'avatar',
+                                                    user.uid
+                                                ) +
+                                                '?verify=' +
+                                                window.localStorage.tokenId
+                                            }
                                             size={30}
                                         />
                                     </div>

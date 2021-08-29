@@ -516,7 +516,6 @@ class Meal extends React.Component<any, MearContainerState> {
 
     public render() {
         let menuText = [<p>{this.state?.data?.message}</p>],
-            kcalInfo = <></>,
             detailTable = <></>
         try {
             if (this.state.data.data.menu.length === 0)
