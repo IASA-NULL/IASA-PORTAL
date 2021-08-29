@@ -250,11 +250,10 @@ class MyPage extends React.Component<any, IState> {
                 )}
                 <Button
                     onClick={() => {
-                        window.location.href = createURL(
-                            'api',
-                            'account',
-                            'reqchangesecret'
-                        )
+                        window.location.href =
+                            createURL('api', 'account', 'reqchangesecret') +
+                            '?verify=' +
+                            window.localStorage.tokenId
                     }}
                     outlined
                     style={{ marginLeft: '10px' }}>
