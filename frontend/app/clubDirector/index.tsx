@@ -133,7 +133,12 @@ function ClubTable(name: any) {
     })
 
     return (
-        <div>
+        <div
+            style={{
+                overflowX: 'hidden',
+                overflowY: 'auto',
+                height: '85%',
+            }}>
             <div
                 style={{
                     color: 'black',
@@ -806,7 +811,7 @@ function InfoStudent(name: any) {
                     backgroundColor: '#F1F3F5',
                     float: 'left',
                     width: '45vw',
-                    height: '85vh',
+                    height: '90%',
                 }}>
                 <p
                     style={{
@@ -1031,7 +1036,7 @@ function InfoStudent(name: any) {
                     backgroundColor: '#9BC867',
                     float: 'left',
                     width: '45vw',
-                    height: '85vh',
+                    height: '90%',
                 }}>
                 <p
                     style={{
@@ -1255,68 +1260,71 @@ function About() {
                     color: 'white',
                     width: '90vw',
                     height: '96vh',
-                    overflow: 'hidden',
                     grid: '2%',
                     marginTop: '1.5vh',
-                    overflowX: 'hidden',
-                    overflowY: 'auto',
+                    overflow: 'hidden',
                 }}>
-                <Grid>
-                    <GridRow>
-                        <GridCell desktop={3} tablet={4} phone={4}>
-                            <Select
-                                label='종류 선택'
-                                outlined
-                                enhanced
-                                options={[
-                                    {
-                                        label: '제1동아리',
-                                        value: '1',
-                                    },
-                                    {
-                                        label: '제2동아리',
-                                        value: '2',
-                                    },
-                                ]}
-                                onChange={(e: any) =>
-                                    setClub({
-                                        ...club,
-                                        permission: e.currentTarget.value,
-                                    })
-                                }
-                            />
-                        </GridCell>
-                        <GridCell desktop={3} tablet={4} phone={4}>
-                            <Select
-                                label='동아리 선택'
-                                outlined
-                                enhanced
-                                options={
-                                    club.permission === '2'
-                                        ? secondClub
-                                        : firstClub
-                                }
-                                onChange={(e: any) =>
-                                    setClub({
-                                        ...club,
-                                        name: e.currentTarget.value,
-                                    })
-                                }
-                            />
-                        </GridCell>
-                        <GridCell desktop={3} tablet={8} phone={4}></GridCell>
-                        <GridCell desktop={3} tablet={8} phone={4}>
-                            <TabBar
-                                activeTabIndex={activeTab}
-                                onActivate={(evt: any) =>
-                                    setActiveTab(evt.detail.index)
-                                }>
-                                <Tab>창 설정</Tab>
-                                <Tab>인원 확인</Tab>
-                            </TabBar>
-                        </GridCell>
-                    </GridRow>
-                </Grid>
+                <header>
+                    <Grid>
+                        <GridRow>
+                            <GridCell desktop={3} tablet={4} phone={4}>
+                                <Select
+                                    label='종류 선택'
+                                    outlined
+                                    enhanced
+                                    options={[
+                                        {
+                                            label: '제1동아리',
+                                            value: '1',
+                                        },
+                                        {
+                                            label: '제2동아리',
+                                            value: '2',
+                                        },
+                                    ]}
+                                    onChange={(e: any) =>
+                                        setClub({
+                                            ...club,
+                                            permission: e.currentTarget.value,
+                                        })
+                                    }
+                                />
+                            </GridCell>
+                            <GridCell desktop={3} tablet={4} phone={4}>
+                                <Select
+                                    label='동아리 선택'
+                                    outlined
+                                    enhanced
+                                    options={
+                                        club.permission === '2'
+                                            ? secondClub
+                                            : firstClub
+                                    }
+                                    onChange={(e: any) =>
+                                        setClub({
+                                            ...club,
+                                            name: e.currentTarget.value,
+                                        })
+                                    }
+                                />
+                            </GridCell>
+                            <GridCell
+                                desktop={3}
+                                tablet={8}
+                                phone={4}></GridCell>
+                            <GridCell desktop={3} tablet={8} phone={4}>
+                                <TabBar
+                                    activeTabIndex={activeTab}
+                                    onActivate={(evt: any) =>
+                                        setActiveTab(evt.detail.index)
+                                    }>
+                                    <Tab>창 설정</Tab>
+                                    <Tab>인원 확인</Tab>
+                                </TabBar>
+                            </GridCell>
+                        </GridRow>
+                    </Grid>
+                </header>
                 <Section />
             </Elevation>
 
