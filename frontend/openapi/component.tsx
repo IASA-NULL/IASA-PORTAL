@@ -20,6 +20,71 @@ export function CodeBlock(props: { code: string }) {
     )
 }
 
+function stringIterator(data: any, currentPath = 'data', indent = 0) {
+    let str = ''
+    if (data._type === 'object') {
+        str += ' '.repeat(indent * 4) + currentPath + ': {\n'
+        for (let i in data) {
+            if (i[0] === '_') continue
+            str += stringIterator(data[i], i, indent + 1)
+        }
+        str = str.slice(0, -2) + '\n'
+        str += ' '.repeat(indent * 4) + '}' + (data._isArray ? '[]' : '')
+        if (indent) str += ',\n'
+    } else {
+        str =
+            ' '.repeat(indent * 4) +
+            currentPath +
+            ': ' +
+            data._type +
+            (data._isArray ? '[]' : '') +
+            ',\n'
+    }
+    return str
+}
+
+function typeToTSCode(
+    props: {
+        name: string
+        type: string
+        info: string
+        enum_val?: { value: any; desc: string }[]
+        optional?: boolean
+    }[],
+    isArray: boolean
+) {
+    let data = {} as any
+    if (props[0].name === 'data') {
+        return 'data: ' + props[0].type
+    }
+    for (let i of props) {
+        let path = i.name.split('.'),
+            currentPath = data
+        for (let j of path.slice(0, -1)) {
+            let isArray = false
+            if (j.slice(-2) === '[]') {
+                isArray = true
+                j = j.slice(0, -2)
+            }
+            if (!currentPath[j])
+                currentPath[j] = { _type: 'object', _isArray: isArray }
+            currentPath = currentPath[j]
+        }
+        if (path.slice(-1)[0].slice(-2) === '[]')
+            currentPath[path.slice(-1)[0].slice(0, -2)] = {
+                _type: i.type,
+                _isArray: true,
+            }
+        else
+            currentPath[path.slice(-1)[0]] = {
+                _type: i.type,
+                _isArray: false,
+            }
+    }
+    data = { _type: 'object', _isArray: isArray, ...data }
+    return stringIterator(data)
+}
+
 export function APIInfo(props: {
     path: string
     method: string
@@ -27,9 +92,10 @@ export function APIInfo(props: {
     secure?: boolean
     beta?: boolean
     signin?: boolean
-    request: {
+    studentOnly?: boolean
+    teacherOnly?: boolean
+    request?: {
         desc?: string
-        raw: string
         props: {
             name: string
             type: string
@@ -37,10 +103,10 @@ export function APIInfo(props: {
             enum_val?: { value: any; desc: string }[]
             optional?: boolean
         }[]
+        isArray?: boolean
     }
     response: {
         desc?: string
-        raw: string
         props: {
             name: string
             type: string
@@ -48,6 +114,7 @@ export function APIInfo(props: {
             enum_val?: { value: any; desc: string }[]
             optional?: boolean
         }[]
+        isArray?: boolean
     }
 }) {
     return (
@@ -65,32 +132,49 @@ export function APIInfo(props: {
             {props.secure && <Badge align='inline' label='HTTPS 전용' />}
             {props.beta && <Badge align='inline' label='베타' />}
             {props.signin && <Badge align='inline' label='로그인 필요' />}
+            {props.studentOnly && <Badge align='inline' label='학생 전용' />}
+            {props.teacherOnly && <Badge align='inline' label='선생님 전용' />}
             <br />
-            <br />
-            <Typography use='headline5'>요청</Typography>
-            <br />
-            <br />
-            <CodeBlock code={props.request.raw} />
-            <br />
-            {props.request.desc && <br />}
-            {props.request.props.map((el) => {
-                return (
-                    <>
-                        <PropInfo
-                            name={el.name}
-                            type={el.type}
-                            info={el.info}
-                            enum_val={el.enum_val}
-                            optional={el.optional}
-                        />
-                    </>
-                )
-            })}
+            {props.request && (
+                <>
+                    <br />
+                    <Typography use='headline5'>요청</Typography>
+                    <br />
+                    <br />
+                    <CodeBlock
+                        code={typeToTSCode(
+                            props.request.props,
+                            props.request.isArray
+                        ).slice(6)}
+                    />
+                    <br />
+                </>
+            )}
+            {props.request && props.request.desc && <br />}
+            {props.request &&
+                props.request.props.map((el) => {
+                    return (
+                        <>
+                            <PropInfo
+                                name={el.name}
+                                type={el.type}
+                                info={el.info}
+                                enum_val={el.enum_val}
+                                optional={el.optional}
+                            />
+                        </>
+                    )
+                })}
             <br />
             <Typography use='headline5'>응답</Typography>
             <br />
             <br />
-            <CodeBlock code={props.response.raw} />
+            <CodeBlock
+                code={typeToTSCode(
+                    props.response.props,
+                    props.response.isArray
+                )}
+            />
             <br />
             {props.response.desc && <br />}
             {props.response.props.map((el) => {
@@ -101,6 +185,7 @@ export function APIInfo(props: {
                             type={el.type}
                             info={el.info}
                             enum_val={el.enum_val}
+                            optional={el.optional}
                         />
                     </>
                 )

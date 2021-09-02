@@ -291,6 +291,12 @@ export default [
     },
     {
         target: Permission_any,
+        file: 'openapi/penalty.tsx',
+        path: '/openapi/penalty',
+        customNav: 'OpenAPINavList',
+    },
+    {
+        target: Permission_any,
         file: 'openapi/index.tsx',
         path: '/openapi',
         customNav: 'OpenAPINavList',

@@ -27,9 +27,6 @@ class OpenAPIAccount extends React.Component<any, {}> {
                     secure
                     signin
                     request={{
-                        raw: `{
-    type: number
-}`,
                         props: [
                             {
                                 name: 'type',
@@ -49,10 +46,6 @@ class OpenAPIAccount extends React.Component<any, {}> {
                         ],
                     }}
                     response={{
-                        raw: `data: {
-    name: string,
-    uid: number
-}[]`,
                         props: [
                             {
                                 name: 'name',
@@ -65,6 +58,53 @@ class OpenAPIAccount extends React.Component<any, {}> {
                                 info: '유저의 unique ID',
                             },
                         ],
+                    }}
+                />
+
+                <APIInfo
+                    path='/account/search'
+                    method='POST'
+                    info='이름으로 학생/선생님을 검색합니다.'
+                    secure
+                    signin
+                    request={{
+                        props: [
+                            {
+                                name: 'name',
+                                type: 'string',
+                                info: '검색할 대상의 이름입니다.',
+                            },
+                            {
+                                name: 'type[]',
+                                type: 'enum',
+                                info: '검색할 계정의 정보입니다.',
+                                enum_val: [
+                                    {
+                                        value: 2,
+                                        desc: '학생',
+                                    },
+                                    {
+                                        value: 3,
+                                        desc: '선생님',
+                                    },
+                                ],
+                            },
+                        ],
+                    }}
+                    response={{
+                        props: [
+                            {
+                                name: 'name',
+                                type: 'string',
+                                info: '검색한 대상의 이름입니다.',
+                            },
+                            {
+                                name: 'uid',
+                                type: 'UUID',
+                                info: '검색한 대상의 unique id입니다.',
+                            },
+                        ],
+                        isArray: true,
                     }}
                 />
             </>

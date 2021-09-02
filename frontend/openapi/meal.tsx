@@ -25,12 +25,6 @@ class OpenAPIMeal extends React.Component<any, {}> {
                     method='POST'
                     info='급식 정보를 불러옵니다.'
                     request={{
-                        raw: `{
-    year: number,
-    month: number,
-    day: number,
-    type: number,
-}`,
                         props: [
                             {
                                 name: 'year',
@@ -69,30 +63,6 @@ class OpenAPIMeal extends React.Component<any, {}> {
                         ],
                     }}
                     response={{
-                        raw: `{
-    time: {
-        year: number,
-        month: number,
-        day: number,
-        type: number,
-    }
-    menu: {
-        name: string,
-        allergicInfo: number[]
-    }[]
-    image?: string
-    score?: number
-    kcal?: number
-    origin?: {
-        name: string,
-        origin: string
-    }[]
-    energy?: {
-        name: string,
-        value: number,
-        unit: string
-    }[]
-}`,
                         props: [
                             {
                                 name: 'time.year',
@@ -275,12 +245,6 @@ class OpenAPIMeal extends React.Component<any, {}> {
                     beta
                     signin
                     request={{
-                        raw: `{
-    year: number,
-    month: number,
-    day: number,
-    type: number,
-}`,
                         props: [
                             {
                                 name: 'year',
@@ -319,8 +283,13 @@ class OpenAPIMeal extends React.Component<any, {}> {
                         ],
                     }}
                     response={{
-                        raw: ``,
-                        props: [],
+                        props: [
+                            {
+                                name: 'data',
+                                type: 'boolean',
+                                info: '성공시 true를 반환합니다.',
+                            },
+                        ],
                     }}
                 />
             </>

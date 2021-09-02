@@ -309,6 +309,13 @@ export const OpenAPINavList = (closeIfModal: any) => {
                 type={LinkType.link}
                 icon='fastfood'
             />
+            <ListLink
+                body='상벌점'
+                to='/openapi/penalty'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='assignment_late'
+            />
         </>
     )
 }
