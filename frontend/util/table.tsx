@@ -13,6 +13,7 @@ import { fetchAPI } from '../util'
 import commonApi from '../../scheme/api/commonApi'
 import { Button } from '@rmwc/button'
 import * as XLSX from 'xlsx'
+import { CircularProgress } from '@rmwc/circular-progress'
 
 export default function Table(props: {
     apiOption: { target: string[]; method: string; body: any } | string[]
@@ -24,6 +25,7 @@ export default function Table(props: {
     children?: React.ReactNode
 }) {
     const [loaded, setLoaded] = React.useState(false)
+    const [printing, setPrinting] = React.useState(false)
     const [data, setData] = React.useState({} as commonApi['data'])
     const [rmessage, setrMessage] = React.useState('')
 
@@ -67,10 +69,12 @@ export default function Table(props: {
     }
 
     const toExcel = () => {
+        setPrinting(true)
         // @ts-ignore
         let wb = XLSX.utils.table_to_book(tableRef.current, { sheet: 'sheet1' })
         // @ts-ignore
-        return XLSX.writeFile(wb, 'res.xlsx')
+        XLSX.writeFile(wb, `res_${Date.now()}.xlsx`)
+        setPrinting(false)
     }
 
     useEffect(refresh, [])
@@ -143,13 +147,21 @@ export default function Table(props: {
                 </DataTableContent>
             </DataTable>
             <Button outlined onClick={refresh} style={{ marginLeft: '20px' }}>
-                새로고침
+                {loaded ? (
+                    '새로고침'
+                ) : (
+                    <CircularProgress style={{ margin: '7px 7px 0 0' }} />
+                )}
             </Button>
             <Button
                 outlined
                 onClick={toExcel}
                 style={{ marginLeft: '20px', marginRight: '20px' }}>
-                엑셀로 변환
+                {printing || !loaded ? (
+                    <CircularProgress style={{ margin: '7px 7px 0 0' }} />
+                ) : (
+                    '엑셀로 변환'
+                )}
             </Button>
             {props.children}
         </>
