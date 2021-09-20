@@ -297,6 +297,12 @@ export default [
     },
     {
         target: Permission_any,
+        file: 'openapi/myeonbul.tsx',
+        path: '/openapi/myeonbul',
+        customNav: 'OpenAPINavList',
+    },
+    {
+        target: Permission_any,
         file: 'openapi/index.tsx',
         path: '/openapi',
         customNav: 'OpenAPINavList',

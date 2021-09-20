@@ -316,6 +316,13 @@ export const OpenAPINavList = (closeIfModal: any) => {
                 type={LinkType.link}
                 icon='assignment_late'
             />
+            <ListLink
+                body='면불'
+                to='/openapi/myeonbul'
+                onClick={closeIfModal}
+                type={LinkType.link}
+                icon='pan_tool'
+            />
         </>
     )
 }

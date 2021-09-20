@@ -131,6 +131,7 @@
   "scripts": {
     "build": "webpack --mode=production",
     "build:dev": "nodemon --watch webpack/ -e ts,tsx,js,jsx,json --exec \"webpack --mode=development --watch\"",
+    "build:dev:nowatch": "webpack --mode=development",
     "dev": "npm-run-all --parallel --continue-on-error run build:dev",
     "run": "nodemon build/index.js",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
