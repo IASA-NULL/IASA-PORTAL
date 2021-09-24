@@ -1,19 +1,7 @@
 import * as React from 'react'
-import { Typography } from '@rmwc/typography'
-import { Link, withRouter } from 'react-router-dom'
-import {
-    TopAppBar,
-    TopAppBarRow,
-    TopAppBarSection,
-    TopAppBarTitle,
-} from '@rmwc/top-app-bar'
-import {
-    Dialog,
-    DialogTitle,
-    DialogButton,
-    DialogContent,
-    DialogActions,
-} from '@rmwc/dialog'
+import { useState, useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
+
 import {
     DataTable,
     DataTableContent,
@@ -23,22 +11,18 @@ import {
     DataTableBody,
     DataTableCell,
 } from '@rmwc/data-table'
-import { useState, useEffect } from 'react'
 import { TextField } from '@rmwc/textfield'
 import { Select } from '@rmwc/select'
-import { CollapsibleList, List, SimpleListItem } from '@rmwc/list'
-import { Checkbox } from '@rmwc/checkbox'
 import { createSnackbarQueue, SnackbarQueue } from '@rmwc/snackbar'
-import { fetchAPI } from '../../util'
 import { Button } from '@rmwc/button'
 import { Grid, GridCell, GridRow } from '@rmwc/grid'
-import { Club, Person } from '../../../scheme/user'
 import { Elevation } from '@rmwc/elevation'
 import { TabBar, Tab } from '@rmwc/tabs'
-import { Badge } from '@rmwc/badge'
 import { IconButton } from '@rmwc/icon-button'
-import { focusNextInput, uploadFile, UserImage, FileInput } from '../../util'
-import { cond } from 'lodash'
+
+import { focusNextInput } from '../../util'
+import { Club, Person } from '../../../scheme/user'
+import { fetchAPI } from '../../util'
 
 let qu = createSnackbarQueue()
 let messages = qu.messages
