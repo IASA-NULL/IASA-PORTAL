@@ -21,6 +21,7 @@ import applicationRouter from './application'
 import vhost from 'vhost'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
+import morgan from 'morgan'
 declare const DEV_MODE: boolean
 
 export default function createApp(sid: string) {
@@ -28,6 +29,7 @@ export default function createApp(sid: string) {
     setServerState('sid', sid)
 
     const app = express()
+    app.use(morgan('tiny'))
 
     // CORS 옵션 : iasa.kr 도메인에 대해 허용!
     const corsOptions = {
