@@ -11,7 +11,7 @@ import { DB_CONNECT_ERROR, REQUIRE_PERMISSION_ERROR } from '../../string/error'
 
 const router = express.Router()
 
-const dbname = 'y2021-3'
+const dbname = 'y2021-4'
 
 async function getBusking(res: any) {
     const buskingDB = await db.direct(dbname, 'iasa_busking')

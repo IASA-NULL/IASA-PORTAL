@@ -13,7 +13,7 @@ function get_db() {
         MongoDB.MongoClient.connect(
             `mongodb://portal:${getSecret(
                 'db'
-            )}@host.docker.internal:27017/?authSource=admin&readPreference=primary&appname=portal&ssl=false`,
+            )}@172.17.0.1:27017/?authSource=admin&readPreference=primary&appname=portal&ssl=false`,
             { useUnifiedTopology: true },
             (err, _db) => {
                 if (err) {

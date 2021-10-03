@@ -118,26 +118,11 @@ function About() {
     const [name, setName] = useState('')
     const [call, setCall] = useState('')
 
-    let applyDate =
-        new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
-            ? new Date(2021, 5 - 1, 12, 13, 0, 0)
-            : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
-            ? new Date(2021, 6 - 1, 9, 13, 0, 0)
-            : new Date(2021, 8 - 1, 25, 13, 0, 0)
+    let applyDate = new Date(2021, 10 - 1, 13, 13, 0, 0)
 
-    let playDate =
-        new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
-            ? new Date(2021, 5 - 1, 12, 13, 15, 0)
-            : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
-            ? new Date(2021, 6 - 1, 12, 0, 0, 0)
-            : new Date(2021, 8 - 1, 26, 13, 15, 0)
+    let playDate = new Date(2021, 10 - 1, 13, 13, 15, 0)
 
-    let whatNumber =
-        new Date(Date.now()) < new Date(2021, 5 - 1, 16, 23, 59, 59)
-            ? [1, 5, 12]
-            : new Date(Date.now()) < new Date(2021, 6 - 1, 13, 23, 59, 59)
-            ? [2, 6, 9]
-            : [3, 8, 25]
+    let whatNumber = [4, 10, 13]
 
     const [props, set] = useSpring(() => ({
         xy: [0, 0],
